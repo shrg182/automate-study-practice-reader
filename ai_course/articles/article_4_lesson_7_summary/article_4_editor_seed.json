@@ -1,0 +1,210 @@
+{
+  "version": 3,
+  "savedAt": "2026-08-05T03:41:03.153Z",
+  "bodyHTML": "<p data-paragraph=\"1\">Using AI Responsibly—and Reviewing the Journey</p>\n<p data-paragraph=\"2\">The first six lessons explained how AI systems learn patterns, improve through training, process information in neural networks, generate language, and classify new examples. The final lesson asks how people should evaluate and use those capabilities responsibly.</p>\n<p data-paragraph=\"3\">Lesson 7: <span class=\"interlinear-note\" data-note=\"\" title=\"\"><ruby>Bias<rt contenteditable=\"false\"></rt></ruby></span>, <span class=\"interlinear-note\" data-note=\"\" title=\"\"><ruby>Privacy<rt contenteditable=\"false\"></rt></ruby></span>, <span class=\"interlinear-note\" data-note=\"\" title=\"\"><ruby>Reliability<rt contenteditable=\"false\"></rt></ruby></span>, and Responsible Use<sup class=\"footnote-ref\" data-note-id=\"397b6cad-925d-4bab-b8ea-512769731711\" contenteditable=\"false\" title=\"Systematic distortion can arise from data, objectives, evaluation, or deployment.\n\nProtecting sensitive information and controlling how it is used.\n\nDependable performance under the conditions that matter for a task.\n\nIt means being accountable and thinking about the effects of your actions before you act. \" aria-label=\"脚注 1\">〔1〕</sup></p>\n<p data-paragraph=\"4\">An AI model learns from data selected and shaped by people. If some groups, situations, or viewpoints are missing or misrepresented, the <span style=\"background-color:#fff1a8\">model can learn an incomplete pattern</span>. Bias can enter through data collection, labels, objectives, evaluation methods, or the way a system is deployed.</p>\n<p data-paragraph=\"5\">Suppose a hiring model is trained mainly on the history of one company. If past hiring decisions favored a narrow group, the model may reproduce that pattern even when nobody writes an explicitly discriminatory rule. <span class=\"doubt\" data-issue=\"Different fairness definitions can conflict; later study should compare them explicitly.\" title=\"Different fairness definitions can conflict; later study should compare them explicitly.\" style=\"background-color: transparent;\">Fairness therefore requires examining outcomes</span>, not merely checking whether the program contains forbidden words.</p>\n<p data-paragraph=\"6\">Privacy is another concern because prompts and training examples may contain personal, confidential, or copyrighted information. Before sending information to an AI service, a user should ask whether the material is necessary, whether identifying details can be removed, and whether the service is appropriate for that data.</p>\n<p data-paragraph=\"7\">Reliability depends on the task. A harmless brainstorming suggestion and a medical dosage recommendation do not require the same level of evidence. The higher the possible harm, the stronger the <span class=\"notation auto-notation\" data-term=\"verification\" data-note=\"Checking a claim or output against independent evidence or tests.\" title=\"Checking a claim or output against independent evidence or tests.\" style=\"\"><span class=\"term-anchor\" tabindex=\"0\" role=\"link\" aria-label=\"查看“verification”的词典解释\">verification</span></span> should be. Important claims should be checked against trustworthy sources, calculations, tests, or <span class=\"doubt\" data-issue=\"The appropriate expert and evidence standard depend on the domain and jurisdiction.\" title=\"The appropriate expert and evidence standard depend on the domain and jurisdiction.\" style=\"background-color: transparent;\">qualified experts</span>.</p>\n<p data-paragraph=\"8\"><span style=\"text-decoration-line: underline;\">Language models can produce fluent errors, omit context, or follow misleading instructions</span>. Other AI systems can fail <span style=\"font-weight: bold;\">when real-world inputs differ from their training data</span>. Confidence in the wording is not evidence of correctness. A responsible user separates what the model generated from what has been independently verified.</p>\n<p data-paragraph=\"9\"><span class=\"interlinear-note\" data-note=\"\" title=\"\"><ruby><span class=\"notation\" data-term=\"Human oversight\" data-note=\"Specific human review with authority and a defined standard.\" title=\"Specific human review with authority and a defined standard.\"><span class=\"term-anchor\" tabindex=\"0\" role=\"link\" aria-label=\"查看“Human oversight”的词典解释\"><ruby>Human oversight<rt></rt></ruby></span></span><rt contenteditable=\"false\"></rt></ruby></span> is most useful when it is specific. A person should know what to inspect, what standard to apply, and what action to take when the system fails. Simply placing a human near an automated decision does not guarantee meaningful review.</p>\n<p data-paragraph=\"10\">Responsible design also includes <span class=\"notation auto-notation\" data-term=\"security\" data-note=\"Protection against unauthorized access, manipulation, and harmful use.\" title=\"Protection against unauthorized access, manipulation, and harmful use.\"><span class=\"term-anchor\" tabindex=\"0\" role=\"link\" aria-label=\"查看“security”的词典解释\">security</span></span> and <span class=\"notation auto-notation\" data-term=\"misuse\" data-note=\"Use of a system in a harmful, deceptive, or unintended way.\" title=\"Use of a system in a harmful, deceptive, or unintended way.\"><span class=\"term-anchor\" tabindex=\"0\" role=\"link\" aria-label=\"查看“misuse”的词典解释\">misuse</span></span> prevention. Developers should consider who can access a system, what harmful actions it might enable, how abuse can be detected, and how incidents can be reported and corrected. Monitoring after release matters because not every failure can be predicted in advance.</p>\n<p data-paragraph=\"11\">A practical responsible-use checklist is straightforward: define the task, limit sensitive data, examine likely <span class=\"notation auto-notation\" data-term=\"bias\" data-note=\"A systematic tendency that can produce uneven or unfair results.\" title=\"A systematic tendency that can produce uneven or unfair results.\"><span class=\"term-anchor\" tabindex=\"0\" role=\"link\" aria-label=\"查看“bias”的词典解释\">bias</span></span>es, test on relevant examples, verify important outputs, preserve human <span class=\"interlinear-note\" data-note=\"\" title=\"\"><ruby><span class=\"notation auto-notation\" data-term=\"accountability\" data-note=\"Clear responsibility for decisions, outcomes, and corrective action.\" title=\"Clear responsibility for decisions, outcomes, and corrective action.\"><span class=\"term-anchor\" tabindex=\"0\" role=\"link\" aria-label=\"查看“accountability”的词典解释\">accountability</span></span><rt contenteditable=\"false\"></rt></ruby></span>, and record significant limitations. Responsible use is a continuing process, not a one-time approval.</p>\n<p data-paragraph=\"12\">Quick check: Should every AI answer receive the same amount of verification? No. Verification should <span style=\"background-color: rgb(221, 181, 235);\">increase with uncertainty, consequence, and the difficulty of correcting an error</span>.</p>\n<p data-paragraph=\"13\">Your turn: Choose an AI use such as homework feedback, résumé screening, medical information, or travel planning. Identify one possible bias, one <span class=\"notation auto-notation\" data-term=\"privacy\" data-note=\"Protection of personal or sensitive information and control over its use.\" title=\"Protection of personal or sensitive information and control over its use.\"><span class=\"term-anchor\" tabindex=\"0\" role=\"link\" aria-label=\"查看“privacy”的词典解释\">privacy</span></span> risk, one <span class=\"notation auto-notation\" data-term=\"reliability\" data-note=\"The degree to which a system performs dependably under relevant conditions.\" title=\"The degree to which a system performs dependably under relevant conditions.\"><span class=\"term-anchor\" tabindex=\"0\" role=\"link\" aria-label=\"查看“reliability”的词典解释\">reliability</span></span> check, and the person who should remain accountable.</p>\n<p data-paragraph=\"14\">Course Summary: Seven Lessons in One View</p>\n<p data-paragraph=\"15\">Lesson 1 distinguished artificial intelligence from ordinary fixed-rule software. AI is a broad field; machine learning is one way to build systems that discover patterns from examples.</p>\n<p data-paragraph=\"16\">Lesson 2 introduced examples, features, labels, training sets, and test sets. A model must <span class=\"interlinear-note\" data-note=\"\" title=\"\"><ruby><span class=\"notation\" data-term=\"generalize\" data-note=\"Perform well on relevant examples not seen during training.\" title=\"Perform well on relevant examples not seen during training.\"><span class=\"term-anchor\" tabindex=\"0\" role=\"link\" aria-label=\"查看“generalize”的词典解释\"><ruby>generalize<rt></rt></ruby></span></span><rt contenteditable=\"false\"></rt></ruby></span> to new data rather than merely remember its training examples.</p>\n<p data-paragraph=\"17\">Lesson 3 followed the training loop: predict, measure loss, calculate useful adjustments, and update parameters. Gradient descent, learning rates, epochs, and validation help control this process.</p>\n<p data-paragraph=\"18\">Lesson 4 opened the neural network. Artificial neurons combine numbers, hidden layers build internal representations, and backpropagation connects prediction errors to parameter updates.</p>\n<p data-paragraph=\"19\">Lesson 5 explained language models as next-token predictors. Tokens, context windows, transformers, attention, and sampling shape generation, while fluent output can still contain <span class=\"notation auto-notation\" data-term=\"hallucination\" data-note=\"A generated claim that is unsupported or false despite sounding plausible.\" title=\"A generated claim that is unsupported or false despite sounding plausible.\"><span class=\"term-anchor\" tabindex=\"0\" role=\"link\" aria-label=\"查看“hallucination”的词典解释\">hallucination</span></span>s.</p>\n<p data-paragraph=\"20\">Lesson 6 turned the ideas into a small Python classifier. Labeled examples supplied evidence, naive Bayes combined word counts, and held-out testing measured <span class=\"notation auto-notation\" data-term=\"generalization\" data-note=\"The ability to perform well on relevant examples not seen during training.\" title=\"The ability to perform well on relevant examples not seen during training.\"><span class=\"term-anchor\" tabindex=\"0\" role=\"link\" aria-label=\"查看“generalization”的词典解释\">generalization</span></span>.</p>\n<p data-paragraph=\"21\">Lesson 7 placed the technology inside human decisions. Bias, privacy, reliability, security, verification, and accountability determine whether a technically capable system is used wisely.</p>\n<p data-paragraph=\"22\">The central lesson is that AI is neither magic nor an independent human mind. It is engineered pattern-processing technology. Understanding its training and limitations helps people use it creatively without surrendering judgment.</p>\n<p data-paragraph=\"23\">Ответственное использование ИИ требует проверки важных утверждений, защиты личных данных и внимания к возможной предвзятости. Чем серьёзнее последствия решения, тем важнее независимые источники, человеческий контроль и ясная ответственность. Понимание ограничений модели помогает использовать её возможности без отказа от собственного суждения.<sup class=\"footnote-ref\" data-note-id=\"6e3ca796-ecb9-435e-9fc8-884ecf75bf77\" contenteditable=\"false\" title=\"马克思的比喻是蜜蜂筑巢与工程师盖房。\" aria-label=\"脚注 2\">〔2〕</sup></p>",
+  "terms": [
+    {
+      "term": "bias",
+      "pinyin": "",
+      "type": "concept",
+      "annotation": "A systematic tendency that can produce uneven or unfair results."
+    },
+    {
+      "term": "fairness",
+      "pinyin": "",
+      "type": "concept",
+      "annotation": "The effort to assess and reduce unjust differences in a system’s outcomes."
+    },
+    {
+      "term": "privacy",
+      "pinyin": "",
+      "type": "concept",
+      "annotation": "Protection of personal or sensitive information and control over its use."
+    },
+    {
+      "term": "confidential information",
+      "pinyin": "",
+      "type": "concept",
+      "annotation": "Information intended to be accessible only to authorized people."
+    },
+    {
+      "term": "reliability",
+      "pinyin": "",
+      "type": "concept",
+      "annotation": "The degree to which a system performs dependably under relevant conditions."
+    },
+    {
+      "term": "verification",
+      "pinyin": "",
+      "type": "concept",
+      "annotation": "Checking a claim or output against independent evidence or tests."
+    },
+    {
+      "term": "human oversight",
+      "pinyin": "",
+      "type": "concept",
+      "annotation": "Structured human review of an automated system and its decisions."
+    },
+    {
+      "term": "accountability",
+      "pinyin": "",
+      "type": "concept",
+      "annotation": "Clear responsibility for decisions, outcomes, and corrective action."
+    },
+    {
+      "term": "security",
+      "pinyin": "",
+      "type": "concept",
+      "annotation": "Protection against unauthorized access, manipulation, and harmful use."
+    },
+    {
+      "term": "misuse",
+      "pinyin": "",
+      "type": "concept",
+      "annotation": "Use of a system in a harmful, deceptive, or unintended way."
+    },
+    {
+      "term": "monitoring",
+      "pinyin": "",
+      "type": "concept",
+      "annotation": "Ongoing observation of performance and failures after deployment."
+    },
+    {
+      "term": "generalization",
+      "pinyin": "",
+      "type": "concept",
+      "annotation": "The ability to perform well on relevant examples not seen during training."
+    },
+    {
+      "term": "hallucination",
+      "pinyin": "",
+      "type": "concept",
+      "annotation": "A generated claim that is unsupported or false despite sounding plausible."
+    }
+  ],
+  "footnotes": [
+    {
+      "id": "397b6cad-925d-4bab-b8ea-512769731711",
+      "note": "Systematic distortion can arise from data, objectives, evaluation, or deployment.\n\nProtecting sensitive information and controlling how it is used.\n\nDependable performance under the conditions that matter for a task.\n\nIt means being accountable and thinking about the effects of your actions before you act. "
+    },
+    {
+      "id": "6e3ca796-ecb9-435e-9fc8-884ecf75bf77",
+      "note": "马克思的比喻是蜜蜂筑巢与工程师盖房。"
+    }
+  ],
+  "notes": [
+    {
+      "time": "2026-08-05T03:40:57.788Z",
+      "text": "3rd edition"
+    },
+    {
+      "time": "2026-08-05T03:33:03.556Z",
+      "text": "2nd edition"
+    },
+    {
+      "time": "2026-08-04T22:50:00.000Z",
+      "text": "Course summary note: The recurring pattern is examples, prediction, error, adjustment, evaluation, and responsible human judgment."
+    },
+    {
+      "time": "2026-08-04T22:45:00.000Z",
+      "text": "Lesson 7 note: Verification should be proportional to risk; low-stakes brainstorming and high-stakes decisions require different safeguards."
+    }
+  ],
+  "log": [
+    {
+      "time": "2026-08-05T03:40:57.788Z",
+      "action": "添加用户札记",
+      "detail": ""
+    },
+    {
+      "time": "2026-08-05T03:40:28.514Z",
+      "action": "添加编者注",
+      "detail": "马克思的比喻是蜜蜂筑巢与工程师（建筑师）盖房。"
+    },
+    {
+      "time": "2026-08-05T03:33:03.557Z",
+      "action": "添加用户札记",
+      "detail": ""
+    },
+    {
+      "time": "2026-08-05T03:32:07.358Z",
+      "action": "导出编辑日志",
+      "detail": ""
+    },
+    {
+      "time": "2026-08-05T03:32:04.559Z",
+      "action": "手动保存",
+      "detail": ""
+    },
+    {
+      "time": "2026-08-05T03:06:40.724Z",
+      "action": "添加编者注",
+      "detail": "马克思的比喻是蜜蜂筑巢与工程师（建筑师）盖房。"
+    },
+    {
+      "time": "2026-08-05T03:04:36.826Z",
+      "action": "编辑本篇词典",
+      "detail": "generalize"
+    },
+    {
+      "time": "2026-08-05T03:04:19.591Z",
+      "action": "添加注音/简注",
+      "detail": "generalize"
+    },
+    {
+      "time": "2026-08-05T03:02:50.613Z",
+      "action": "设置Purple 高亮",
+      "detail": ", consequence, and the difficulty of correcting an error"
+    },
+    {
+      "time": "2026-08-05T03:02:28.720Z",
+      "action": "设置Purple 高亮",
+      "detail": "increase with uncertainty"
+    },
+    {
+      "time": "2026-08-05T03:00:04.798Z",
+      "action": "编辑本篇词典",
+      "detail": "Human oversight"
+    },
+    {
+      "time": "2026-08-05T02:59:50.225Z",
+      "action": "添加注音/简注",
+      "detail": "Human oversight"
+    },
+    {
+      "time": "2026-08-05T02:57:48.750Z",
+      "action": "设置清除高亮",
+      "detail": "Confidence in the wording is not evidence of correctness"
+    },
+    {
+      "time": "2026-08-05T02:57:37.644Z",
+      "action": "设置粗体",
+      "detail": "when real-world inputs differ from their training data"
+    },
+    {
+      "time": "2026-08-05T02:57:15.825Z",
+      "action": "设置下划线",
+      "detail": "Language models can produce fluent errors, omit context, or follow misleading instructions"
+    },
+    {
+      "time": "2026-08-05T02:56:57.101Z",
+      "action": "设置清除高亮",
+      "detail": "qualified experts"
+    },
+    {
+      "time": "2026-08-05T02:56:40.869Z",
+      "action": "设置清除高亮",
+      "detail": "The higher the possible harm, the stronger the verification should be"
+    },
+    {
+      "time": "2026-08-05T02:55:18.736Z",
+      "action": "设置清除高亮",
+      "detail": "Fairness therefore requires examining outcomes"
+    },
+    {
+      "time": "2026-08-05T02:47:40.836Z",
+      "action": "添加编者注",
+      "detail": "Systematic distortion can arise from data, objectives, evaluation."
+    }
+  ]
+}

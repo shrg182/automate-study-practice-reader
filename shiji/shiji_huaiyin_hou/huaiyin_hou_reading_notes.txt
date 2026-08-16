@@ -1,0 +1,10 @@
+2026-07-31T18:35:26.672Z	It seems that the editing history is the same as reading notes, i.e., they are all listed in the editing note block.
+2026-07-31T18:35:05.806Z	No. They export different information:
+
+- 导出日志: exports the automatic editing history—when you added annotations, changed dictionary entries, saved, imported, or performed other editor actions.
+- 导出札记: exports reading notes you manually entered in the “用户札记” block, such as interpretations, questions, research ideas, or reading reflections.
+
+In short:
+
+- 日志 = what actions were performed
+- 札记 = what the reader thought or recorded

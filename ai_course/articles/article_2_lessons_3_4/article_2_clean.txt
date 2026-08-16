@@ -1,0 +1,53 @@
+How AI Learns: Training and Neural Networks
+
+The first article introduced AI and showed how models learn patterns from examples. This second article steps inside the training process, then follows information through the layers of a neural network.
+
+Lesson 3: How Training Improves a Model
+
+Training turns mistakes into directions for improvement. A model receives an input, makes a prediction, and compares that prediction with the known answer. The difference tells the training process how far the model is from the desired result.
+
+Imagine a model predicting the price of a house. If the correct price is $300,000 and the model predicts $240,000, its error is $60,000. A loss function converts the difference between predictions and answers into a number. A larger loss usually means that the prediction was worse.
+
+The learning algorithm then asks which internal parameters contributed to the error. In a large model, millions or even billions of parameters may share responsibility. The algorithm calculates a small adjustment to many parameters, aiming to make the loss slightly lower the next time similar data appears.
+
+One widely used adjustment method is gradient descent. Imagine standing on a foggy hillside and trying to reach the lowest point. You cannot see the whole landscape, but you can feel which direction slopes downward. By taking repeated downhill steps, you may approach a low point. Gradient descent similarly uses the local slope of the loss to choose a direction for updating parameters.
+
+The size of each update is controlled by the learning rate. If the learning rate is too small, training may be extremely slow. If it is too large, the model may repeatedly jump past a useful solution. Effective training requires a balance between learning too slowly and overshooting.
+
+One complete pass through the training data is called an epoch. Models commonly train for many epochs, but more is not always better. We can monitor performance on a validation set while training. If training loss continues to improve while validation performance becomes worse, the model may be starting to overfit.
+
+Quick check: Why not make the learning rate as large as possible? A very large update can skip over better parameter settings or make training unstable.
+
+Your turn: Picture yourself walking downhill in fog. What do the hill’s height, downhill direction, step size, and repeated steps represent in model training?
+
+Lesson 4: Neural Networks
+
+〔按语：neural network (also neural net)
+noun
+a computer system modeled on the human brain and nervous system. （神经网络）〕
+
+A neural network is a model built from layers of simple mathematical units often called artificial neurons. The name is loosely inspired by biological brains, but an artificial neural network is an engineered system of calculations, not a miniature human brain.
+
+Each artificial neuron receives several input numbers. It multiplies each input by a learned weight, adds the results together, and usually adds another adjustable value called a bias term. An activation function then transforms the total and determines the value passed forward.
+
+The weights tell the network which inputs deserve more or less influence. Consider a simple system estimating whether a student will complete an assignment. Time available, assignment length, and previous completion patterns might enter as numbers. Training adjusts their weights according to how strongly each input helps predict the answer.
+
+Neurons are arranged in layers. The input layer receives the original information. One or more hidden layers transform it into increasingly useful internal patterns. The output layer produces the final prediction. Information moving from input to output is called a forward pass.
+
+Hidden layers allow a network to build representations in stages. In an image system, early layers may respond to edges or colors, middle layers may combine them into textures and shapes, and later layers may respond to larger structures. The programmer does not need to write a separate rule for every possible shape; training helps the network discover useful combinations.
+
+After a forward pass, the loss function measures the prediction error. Backpropagation〔1〕 works backward through the network to calculate how each weight contributed to that error. Gradient descent then uses those calculations to update the weights. Repeating forward passes, loss measurements, backward calculations, and updates gradually changes the network’s behavior.
+
+Deep learning uses neural networks with multiple hidden layers. Greater depth can help a network represent complicated patterns, but a larger network is not automatically better. It may require more data, computation, careful evaluation, and safeguards against overfitting〔2〕.
+
+Quick check: Does an artificial neuron understand its inputs in the human sense? No. It performs numerical operations; useful behavior emerges from many trained operations working together.
+
+Your turn: Draw a tiny network with three input circles, two hidden-layer circles, and one output circle. What real-world quantities could the three inputs represent, and what could the output predict?
+
+Обучение превращает ошибки модели в указания для улучшения. Нейронная сеть передаёт числа через слои искусственных нейронов, а обратное распространение ошибки показывает, как изменить веса. Эти вычисления могут создавать полезное поведение, но сами по себе они не означают человеческого понимания.〔3〕
+
+脚注
+
+〔1〕In machine learning, backpropagation is a gradient computation method commonly used for training a neural network in computing parameter updates. It is an efficient application of the chain rule to neural networks. Backpropagation efficiently computes the gradient of the loss with respect to the network weights for a single input–output example.
+〔2〕In mathematical modeling, overfitting is the production of an analysis that corresponds too closely or exactly to a particular set of data and may therefore fail to fit to additional data or predict future observations reliably. An overfitted model is a mathematical model that contains more parameters than can be justified by the data. In the special case of a model that consists of a polynomial function, these parameters represent the degree of a polynomial.
+〔3〕The Russian paragraph summarizes training, neural-network layers, backpropagation, and the distinction between useful computation and human understanding.

@@ -1,0 +1,41 @@
+term,pinyin,type,annotation
+翦商,jiǎn shāng,concept,周人剪灭商朝的政治行动。
+易经,yì jīng,text,文王卦爻辞体系，书中用以讨论翦商谋略。
+卦爻辞,guà yáo cí,concept,《易经》中卦辞和爻辞的合称。
+卦象,guà xiàng,concept,由阴阳爻组成的卦形图象。
+卦辞,guà cí,concept,解释一卦吉凶和意义的文字。
+爻辞,yáo cí,concept,解释每一爻吉凶和意义的文字。
+八卦,bā guà,concept,由三爻组成的八种基本卦象。
+六十四卦,liù shí sì guà,concept,由上下两个八卦重叠形成的六十四种六爻卦象。
+阳爻,yáng yáo,concept,八卦、六十四卦中的阳性爻。
+阴爻,yīn yáo,concept,八卦、六十四卦中的阴性爻。
+筮,shì,rare_word,用蓍草或草棍占算。
+贞人,zhēn rén,concept,甲骨占卜中主持或记录占问的人。
+周昌,zhōu chāng,person,周文王姬昌，书中常称周昌。
+周文王,zhōu wén wáng,person,周族领袖姬昌。
+羑里,yǒu lǐ,place,文王被商纣囚禁之地。
+孔颖达,kǒng yǐng dá,person,唐代经学家，《周易正义》编纂者之一。
+顾颉刚,gù jié gāng,person,现代史学家，曾研究《周易》爻辞中的故事。
+高亨,gāo hēng,person,现代《周易》研究学者。
+同人,tóng rén,text,《易经》卦名，文中解释为集结盟军。
+屯,tún,text,《易经》卦名，震下坎上。
+蒙,méng,text,《易经》卦名，坎下艮上。
+无妄,wú wàng,text,《易经》卦名，文中用于说明卦象成对原则。
+大畜,dà xù,text,《易经》卦名，文中与无妄成对举例。
+蹇,jiǎn,text,《易经》卦名，文中以数字卦举例。
+颐,yí,text,《易经》卦名，文中列为自身对称的卦。
+大过,dà guò,text,《易经》卦名，文中列为自身对称的卦。
+中孚,zhōng fú,text,《易经》卦名，文中列为自身对称的卦。
+小过,xiǎo guò,text,《易经》卦名，文中列为自身对称的卦。
+缊,yùn,rare_word,包藏；文中见《周易正义》引文“缊在爻卦之中矣”。
+牝马,pìn mǎ,rare_word,母马；见《易经》坤卦卦辞。
+乾,qián,text,八卦和六十四卦卦名。
+坤,kūn,text,八卦和六十四卦卦名。
+坎,kǎn,text,八卦之一。
+离,lí,text,八卦之一。
+震,zhèn,text,八卦之一。
+艮,gèn,text,八卦之一。
+巽,xùn,text,八卦之一。
+兑,duì,text,八卦之一。
+戡,kān,rare_word,用武力平定；文中“戡商”即翦灭商朝。
+杞,qǐ,rare_word,木名；此处见垢卦“以杞包瓜”。

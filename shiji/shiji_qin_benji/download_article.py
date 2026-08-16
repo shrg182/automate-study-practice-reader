@@ -1,0 +1,20 @@
+#!/usr/bin/env python3
+"""Download 《史记·秦本纪》 from Guwendao."""
+from pathlib import Path
+import sys
+
+BASE_DIR = Path(__file__).resolve().parent
+SHARED_DIR = BASE_DIR.parent / "shiji_lisheng_lujia"
+sys.path.insert(0, str(SHARED_DIR))
+from download_article import download, extract
+
+URL = "https://www.guwendao.net/guwen/bookv_cab5e2fff7da.aspx"
+
+if __name__ == "__main__":
+    page_html = download(URL)
+    title, text = extract(page_html)
+    (BASE_DIR / "sources").mkdir(exist_ok=True)
+    (BASE_DIR / "sources" / "page.html").write_text(page_html, encoding="utf-8")
+    (BASE_DIR / "source.txt").write_text(text, encoding="utf-8")
+    (BASE_DIR / "qin_benji_clean.txt").write_text(text, encoding="utf-8")
+    print(f"Title: {title}\nParagraphs: {text.count(chr(10)+chr(10))+1}\nCharacters: {len(text)}")

@@ -1,0 +1,79 @@
+How a Question Became an AI Course
+
+Learner: “Are you AI a machine or a half-machine and half-human?”
+
+Codex: “I am entirely artificial intelligence—not a human or a half-human. I can communicate in a humanlike way, but I do not have a human body or consciousness.”
+
+That question opened the door to a much larger project. The learner did not stop after discovering what the AI was. The next request turned curiosity into a plan.
+
+Learner: “Can you start a course to teach me how AI works?”
+
+The course began as a brief, essay-like news report for an English learner. Its purpose was not merely to define artificial intelligence, but to make a difficult technical subject readable. The learner then asked for the material to become a Shiji article with its own editor. From that point onward, Codex drafted and programmed while the learner read, annotated, corrected, and redesigned.
+
+Choosing the Journey
+
+The first two lessons introduced artificial intelligence and machine learning through examples, features, labels, training sets, and test sets. The learner then asked how long the complete course would be. Codex proposed seven lessons.
+
+Learner: “How did you come up with this decision?”
+
+After reviewing the reasoning, the learner replied, “Your decision is correct. We shall stay with it.” The seven lessons would move from basic definitions to training, neural networks, language models, a small Python classifier, and responsible use.
+
+The learner then improved the publication plan: “I would suggest to divide lessons 3–7 into 3–4, 5–6, and 7 + a brief summary, i.e., in 3 articles.” One further requirement shaped everything that followed: “Each article should have its own editor so that I can write notes in it.”
+
+The request for seven lessons was not simply a request for more pages. It created a gradual personal learning path. Each article could be studied on its own while still belonging to a larger sequence. Headings offered a route through the ideas, short checks encouraged reflection, and “Your turn” prompts changed passive reading into practice. The structure itself became part of the learning.
+
+Editing Became Part of the Lesson
+
+The project was no longer only a collection of readings. Each article became an independent study environment. The learner could highlight difficult expressions in yellow, green, blue, and purple while reserving pink for highlighting bugs. Underline, strikethrough, dehighlighting, reader notes, inline notes, editorial comments, and footnotes were added and tested in actual reading.
+
+The learner repeatedly found details that automated generation had missed. When highlighted text carried unwanted underlines, the learner asked for their removal. When a note attached to “overfitting” disappeared beside a footnote marker, the display was revised until “overfitting（缺对应中文）” became visible. When bold text appeared in the editor but not in the PDF, Codex traced the problem to the PDF font-family mapping and connected the regular, italic, and bold faces correctly.
+
+The Color of Difficulty
+
+The highlight colors acquired a meaning of their own. Yellow, green, blue, and purple indicated different levels of difficulty, while pink was deliberately reserved for bugs. The distinction came from the learner’s reading practice rather than from an abstract design specification.
+
+Learner: “The difficulty of the words/phrase is colored by the Preview’s highlight panel from yellow, green, blue, (pink) and purple except pink. I reserve pink for highlight bugs.”
+
+This rule illustrates how the course was made. Codex could implement a menu and reproduce the visual choices of Preview, but the learner decided what those choices meant. A color was not merely decoration; it communicated a reader’s judgment. When the highlighting tools could change one color into another but could not remove a highlight, the learner noticed the missing operation. Dehighlighting was then added. Design improved through use.
+
+Learner: “I have done the manual editing… Please process it.”
+
+Codex: “The imports succeeded.”
+
+That exchange became the rhythm of the work. The learner exported editor backups; Codex imported the rich formatting, rebuilt the editors, regenerated the PDFs, and checked every rendered page. The learner decided which words were difficult, which annotations were helpful, and what the pages should look like. Codex supplied drafting, programming, conversion, and troubleshooting.
+
+Corrections Became Evidence
+
+Every defect revealed something about the system. A hidden inline note showed that two valid annotations could still interfere with one another. Missing bold type showed that correct HTML did not guarantee correct PDF typography. Chinese characters rendered as empty boxes when a Latin italic font was asked to display them. A nearly blank page revealed that an intentional page break could become wasteful after the surrounding text changed.
+
+These were not failures outside the learning process. They became concrete examples of Lesson 7’s central message: outputs must be checked in the environment where people will actually use them. The source text, editor, and PDF were three different representations of the same article, and success in one did not prove success in the others. Visual inspection remained necessary.
+
+The learner’s brief responses—“It works,” “It looks better,” and “It looks good”—therefore carried real weight. They were acceptance tests expressed in ordinary language. Each one followed observation, comparison, and revision.
+
+A Course About AI—and With AI
+
+Lessons 3 and 4 followed prediction errors through loss, gradient descent, learning rates, artificial neurons, hidden layers, and backpropagation. Lessons 5 and 6 explained next-token prediction and turned theory into a small Python classifier. Lesson 7 examined bias, privacy, reliability, verification, accountability, security, and human oversight.
+
+The making of the course demonstrated its final lesson. The AI did not become human, and the human did not surrender editorial control. The machine generated and transformed; the learner evaluated, corrected, and decided. Their different roles made the result stronger.
+
+The Story Turns Back on Itself
+
+After the lessons and their study editions were complete, the learner suggested that the collaboration itself should become part of the course.
+
+Learner: “Now please write an article describe a story using extracts of the dialogue between you and me for making this AI course.”
+
+The learner then made the publishing intention explicit.
+
+Learner: “Please make it an article and provide an editor, i.e., treat it the same way as it is a part of the AI course.”
+
+Codex: “I’ll add this as a new companion article in the AI course, with its own independent editor, import workflow, vocabulary, and a news-style PDF constrained to two pages.”
+
+In that moment, the process became its own subject. A dialogue that had produced a course was transformed into another editable lesson within the course.
+
+The collaboration had become recursive: the participants used an AI course editor to edit a story about building the AI course editor. Yet the purpose remained practical. The story preserved decisions that would otherwise be scattered across many short requests. It showed future readers that a polished course did not arrive in one prompt. It emerged from planning, disagreement, experimentation, manual reading, and repeated repair.
+
+At the end of another regenerated edition, the learner gave the shortest possible review.
+
+Learner: “It looks good!”
+
+What began as a question about whether an AI was a machine became a practical story of human–AI collaboration. The course taught how AI works, but its creation also showed how AI can be used responsibly: through clear goals, repeated checking, preserved human judgment, and a willingness to revise.

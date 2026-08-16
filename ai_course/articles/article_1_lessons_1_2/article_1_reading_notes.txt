@@ -1,0 +1,2 @@
+2026-08-04T12:00:00.000Z	Reader’s note: The calculator and spam-filter contrast separates fixed rules from patterns learned from examples.
+2026-08-04T12:10:00.000Z	Lesson 2 note: The fruit example makes features and labels concrete, while the test set distinguishes generalization from memorization.

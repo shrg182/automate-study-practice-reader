@@ -1,0 +1,6 @@
+text	note
+adjustable values	These values are the model’s parameters.
+trained model	The result of learning from examples; it can be used on new input.
+features	Measurable properties or inputs used by a model to make a prediction.
+called its label	A label is the known answer associated with a training example.
+overfitting	Learning the training examples too narrowly and failing to generalize.

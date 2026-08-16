@@ -1,0 +1,31 @@
+term,pinyin,type,annotation
+artificial intelligence,,concept,Computer systems designed to perform tasks associated with human intelligence.
+machine learning,,concept,A method in which a computer model learns patterns from data rather than relying only on fixed rules.
+model,,concept,A trained mathematical system that produces predictions or generated output from input.
+training,,concept,The process of adjusting a model so that its predictions improve on examples.
+parameter,,concept,An adjustable numerical value inside a model that is changed during training.
+neural network,,concept,A model made from connected layers of mathematical operations.
+token,,concept,A unit of text processed by a language model; it may be a word or part of a word.
+language model,,concept,A model trained to recognize and predict patterns in sequences of language.
+next-token prediction,,concept,The task of estimating which token is likely to follow the tokens already provided.
+bias,,concept,A systematic tendency in data or a model that can produce uneven or unfair results.
+feature,,concept,A measurable property or input used by a model to make a prediction.
+label,,concept,The known answer associated with a training example.
+training set,,concept,The examples used to adjust a model during training.
+test set,,concept,Separate examples used to evaluate a trained model on unseen data.
+overfitting,,concept,Learning training examples too narrowly and performing poorly on new examples.
+loss function,,concept,A rule that converts prediction error into a number for training to minimize.
+gradient descent,,concept,A method for adjusting parameters in a direction that reduces loss.
+learning rate,,concept,The setting that controls the size of each parameter update.
+epoch,,concept,One complete pass through the training data.
+validation set,,concept,Separate data used during training to monitor generalization and guide decisions.
+artificial neuron,,concept,A mathematical unit that combines input values and passes a transformed value forward.
+weight,,concept,A learned number controlling how strongly an input influences a neuron.
+bias term,,concept,An adjustable offset added to a neuron’s weighted inputs.
+activation function,,concept,A function that transforms a neuron’s combined input before passing it onward.
+input layer,,concept,The layer that receives the model’s original input values.
+hidden layer,,concept,An internal layer that transforms information into learned representations.
+output layer,,concept,The layer that produces a network’s final prediction.
+forward pass,,concept,The movement and transformation of information from input to output.
+backpropagation,,concept,A method for calculating how network parameters contributed to prediction error.
+deep learning,,concept,Machine learning using neural networks with multiple hidden layers.

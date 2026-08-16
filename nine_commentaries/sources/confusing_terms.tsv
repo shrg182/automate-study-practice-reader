@@ -1,0 +1,14 @@
+term	expected_form	notes
+颐年堂	颐年堂	OCR often reads this as 项年堂 or 显年党; verify against the scan.
+赫鲁晓夫	赫鲁晓夫	OCR often damages 赫/鲁/晓/夫, sometimes reading 世人鲁晓夫 or 幸鲁晓夫.
+苏共“20大”	苏共“20大”	OCR often inserts spaces or reads 20 大 as 20 KR/KN.
+斯大林	斯大林	OCR sometimes reads 斯人林, 斯天林, or 斯大朵.
+张闻天	张闻天	OCR may read 张间天 or 张闻天 with corrupted neighbors.
+王稼祥	王稼祥	OCR may read 于稼祥 or damage 稼.
+杨尚昆	杨尚昆	OCR may read 杨尚民.
+任弼时	任弼时	OCR may read 任弱时 or 任独时.
+饶漱石	饶漱石	OCR may read 饶油五 or other malformed names.
+习仲勋	习仲勋	OCR may read 习仲苑.
+《人民日报》	《人民日报》	OCR may lose book-title marks or damage 日/民.
+《红旗》	《红旗》	OCR may lose book-title marks.
+《关于无产阶级专政的历史经验》	《关于无产阶级专政的历史经验》	Long title; verify every occurrence against the scan.

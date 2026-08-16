@@ -1,0 +1,31 @@
+chapter,title,pdf_page_start,pdf_page_end,printed_page_start,printed_page_end,source_page_start,source_page_end,notes
+intro,引子,15,36,1,22,13,34,"PDF viewer pages are printed pages plus 14; extraction pages are viewer pages minus 2."
+chapter_01,第一章 新石器时代的社会升级,37,48,23,34,35,46,Verified with rendered PDF start/end pages.
+chapter_02,第二章 大禹治水真相：稻与龙,49,62,35,48,47,60,Verified with rendered PDF pages; extraction page 60 is blank and chapter 3 starts on extraction page 61.
+chapter_03,第三章 二里头：青铜铸造王权,63,88,49,74,61,86,Verified with rendered PDF pages; chapter 4 starts on viewer page 89.
+chapter_04,第四章 异族占领二里头,89,102,75,88,87,100,Verified with rendered PDF pages; extraction page 100 is blank and chapter 5 starts on viewer page 103.
+chapter_05,第五章 商族来源之谜,103,116,89,102,101,114,Verified boundary; chapter 6 starts on PDF viewer page 117 / printed page 103 / extraction page 115.
+chapter_06,第六章 早商：仓城奇观,117,130,103,116,115,128,Verified boundary; chapter 7 starts on PDF viewer page 131 / printed page 117 / extraction page 129.
+chapter_07,第七章 人祭繁荣与宗教改革运动,131,158,117,144,129,156,Verified with rendered PDF pages; notes end on extraction page 155 and extraction page 156 is blank.
+chapter_08,第八章 武德沦丧南土：盘龙城,159,174,145,160,157,172,Verified with OCR/rendered PDF pages; chapter 9 starts on viewer page 175.
+chapter_09,第九章 3300年前的军营：台西,175,194,161,180,173,192,Verified with OCR/rendered PDF pages; chapter 10 starts on viewer page 195.
+chapter_10,第十章 殷都王室的人祭,195,222,181,208,193,220,PDF viewer pages are printed pages plus 14.
+chapter_11,第十一章 商人的思维与国家,223,242,209,228,221,240,PDF viewer pages are printed pages plus 14.
+chapter_12,第十二章 王后的社交圈,243,262,229,248,241,260,PDF viewer pages are printed pages plus 14.
+chapter_13,第十三章 大学与王子,263,282,249,268,261,280,PDF viewer pages are printed pages plus 14.
+chapter_14,第十四章 西土拉锯战：老牛坡,283,300,269,286,281,298,PDF viewer pages are printed pages plus 14.
+chapter_15,第十五章 周族的起源史诗与考古,301,324,287,310,299,322,PDF viewer pages are printed pages plus 14.
+chapter_16,第十六章 成为商朝爪牙：去周原,325,340,311,326,323,338,PDF viewer pages are printed pages plus 14.
+chapter_17,第十七章 周文王地窖里的秘密,341,354,327,340,339,352,PDF viewer pages are printed pages plus 14.
+chapter_18,第十八章 《易经》里的猎俘与献俘,355,370,341,356,353,368,PDF viewer pages are printed pages plus 14.
+chapter_19,第十九章 羑里牢狱记忆,371,388,357,374,369,386,PDF viewer pages are printed pages plus 14; chapter 20 starts on viewer page 389.
+chapter_20,第二十章 翦商与《易经》的世界观,389,406,375,392,387,404,PDF viewer pages are printed pages plus 14.
+chapter_21,第二十一章 殷都民间的人祭,407,428,393,414,405,426,PDF viewer pages are printed pages plus 14.
+chapter_22,第二十二章 纣王的东南战争,429,442,415,428,427,440,PDF viewer pages are printed pages plus 14.
+chapter_23,第二十三章 姜太公与周方伯,443,464,429,450,441,462,PDF viewer pages are printed pages plus 14.
+chapter_24,第二十四章 西土之人,465,494,451,480,463,492,PDF viewer pages are printed pages plus 14.
+chapter_25,第二十五章 牧野鹰扬,495,522,481,508,493,520,PDF viewer pages are printed pages plus 14.
+chapter_26,第二十六章 周公新时代,523,562,509,548,521,560,PDF viewer pages are printed pages plus 14.
+chapter_27,第二十七章 诸神远去之后,563,572,549,558,561,570,PDF viewer pages are printed pages plus 14; epilogue starts on viewer page 573.
+epilogue,尾声：周公到孔子,573,588,559,574,571,586,PDF viewer pages are printed pages plus 14; includes the eight-note source section.
+afterword,后记,589,593,575,579,587,591,PDF viewer pages are printed pages plus 14; final prose page is physical PDF 591.

@@ -1,0 +1,33 @@
+{
+  "savedAt": "2026-08-14T17:50:09.229Z",
+  "bodyHTML": "<p data-paragraph=\"1\">唐人呼<span class=\"notation auto-notation\" data-term=\"县令\" data-note=\"负责管理一县的行政长官。\" title=\"负责管理一县的行政长官。\"><span class=\"term-anchor\" tabindex=\"0\" role=\"link\" aria-label=\"查看“县令”的词典解释\">县令</span></span><sup class=\"footnote-ref\" data-note-id=\"clean-footnote-1\" contenteditable=\"false\" title=\"【来源注释】县令：负责管理一县的行政长官。\" aria-label=\"脚注 1\">〔1〕</sup>为明府，<span class=\"notation auto-notation\" data-term=\"丞\" data-note=\"此指县丞，为县令辅佐。\" title=\"此指县丞，为县令辅佐。\"><span class=\"term-anchor\" tabindex=\"0\" role=\"link\" aria-label=\"查看“丞”的词典解释\">丞</span></span><sup class=\"footnote-ref\" data-note-id=\"clean-footnote-2\" contenteditable=\"false\" title=\"【来源注释】丞：此指县丞，为县令辅佐。\" aria-label=\"脚注 2\">〔2〕</sup>为赞府，<span class=\"notation auto-notation\" data-term=\"尉\" data-note=\"县尉。县级行政机构佐官。隋唐时掌课调征收，判司户、司法等曹事务。\" title=\"县尉。县级行政机构佐官。隋唐时掌课调征收，判司户、司法等曹事务。\"><span class=\"term-anchor\" tabindex=\"0\" role=\"link\" aria-label=\"查看“尉”的词典解释\">尉</span></span><sup class=\"footnote-ref\" data-note-id=\"clean-footnote-3\" contenteditable=\"false\" title=\"【来源注释】尉：县尉。县级行政机构佐官。隋唐时掌课调征收，判司户、司法等曹事务。\" aria-label=\"脚注 3\">〔3〕</sup>为少府。《<span class=\"notation auto-notation\" data-term=\"李太白\" data-note=\"即李白（701—762），字太白，号青莲居士，唐代伟大诗人，后世誉为“诗仙”\" title=\"即李白（701—762），字太白，号青莲居士，唐代伟大诗人，后世誉为“诗仙”\"><span class=\"term-anchor\" tabindex=\"0\" role=\"link\" aria-label=\"查看“李太白”的词典解释\">李太白</span></span><sup class=\"footnote-ref\" data-note-id=\"clean-footnote-4\" contenteditable=\"false\" title=\"【来源注释】李太白：即李白（701—762），字太白，号青莲居士，唐代伟大诗人，后世誉为“诗仙”\" aria-label=\"脚注 4\">〔4〕</sup>集》有《饯阳曲王赞公贾少公石艾尹少公序》<sup class=\"footnote-ref\" data-note-id=\"f1bbb521-cbd7-4dcc-beea-e6efcc3689d5\" contenteditable=\"false\" title=\"原文讹误。\" aria-label=\"脚注 5\">〔5〕</sup>，盖阳曲丞、尉，石艾尉也。赞公、少公之语益奇。</p><p class=\"comment-block\">探索唐朝官称雅号，从李白文集解读“赞公”“少公”的由来，了解县令称明府、县丞称赞府、县尉称少府的文化典故。&nbsp;</p>",
+  "footnotes": [
+    {
+      "id": "clean-footnote-1",
+      "note": "【来源注释】县令：负责管理一县的行政长官。",
+      "mediaIds": []
+    },
+    {
+      "id": "clean-footnote-2",
+      "note": "【来源注释】丞：此指县丞，为县令辅佐。",
+      "mediaIds": []
+    },
+    {
+      "id": "clean-footnote-3",
+      "note": "【来源注释】尉：县尉。县级行政机构佐官。隋唐时掌课调征收，判司户、司法等曹事务。",
+      "mediaIds": []
+    },
+    {
+      "id": "clean-footnote-4",
+      "note": "【来源注释】李太白：即李白（701—762），字太白，号青莲居士，唐代伟大诗人，后世誉为“诗仙”",
+      "mediaIds": []
+    },
+    {
+      "id": "f1bbb521-cbd7-4dcc-beea-e6efcc3689d5",
+      "note": "原文讹误。",
+      "mediaIds": []
+    }
+  ],
+  "notes": [],
+  "media": []
+}

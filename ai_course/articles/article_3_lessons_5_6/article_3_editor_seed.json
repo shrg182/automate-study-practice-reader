@@ -1,0 +1,246 @@
+{
+  "version": 3,
+  "savedAt": "2026-08-05T03:38:59.659Z",
+  "bodyHTML": "<p data-paragraph=\"1\">How AI Uses Language—and How to Build a Small Model</p>\n<p data-paragraph=\"2\">The previous article followed prediction errors through training and neural-network layers. This article turns to <span class=\"notation auto-notation\" data-term=\"language model\" data-note=\"A model trained to recognize and predict patterns in sequences of language.\" title=\"A model trained to recognize and predict patterns in sequences of language.\"><span class=\"term-anchor\" tabindex=\"0\" role=\"link\" aria-label=\"查看“language model”的词典解释\">language model</span></span>s, then converts the main ideas into a small program that can learn from labeled messages.</p>\n<p data-paragraph=\"3\">Lesson 5: Language Models and <span style=\"background-color: rgb(221, 181, 235);\">Next-Token Prediction</span></p>\n<p data-paragraph=\"4\">A language model learns statistical relationships in sequences of text. It does not begin with a human-style dictionary of meanings. During training, it examines many examples and adjusts its parameters so it becomes better at predicting what is likely to come next.</p>\n<p data-paragraph=\"5\">Before text enters a model, it is divided into <span class=\"notation auto-notation\" data-term=\"token\" data-note=\"A unit of text processed by a language model.\" title=\"A unit of text processed by a language model.\"><span class=\"term-anchor\" tabindex=\"0\" role=\"link\" aria-label=\"查看“token”的词典解释\">token</span></span>s. A token may be a whole word, part of a word, punctuation, or another recurring unit. Tokenization<sup class=\"footnote-ref\" data-note-id=\"84f25e71-20d8-493b-a340-f5fe4518d748\" contenteditable=\"false\" title=\"Tokenization, when applied to data security, is the process of substituting a sensitive data element with a non-sensitive equivalent, referred to as a token, that has no intrinsic or exploitable meaning or value. The token is a reference that maps back to the sensitive data through a tokenization system. The mapping from original data to a token uses methods that render tokens infeasible to reverse in the absence of the tokenization system, for example using tokens created from random numbers.\" aria-label=\"脚注 1\">〔1〕</sup> allows a model to represent text as numbers that a neural network can process.</p>\n<p data-paragraph=\"6\">During generation, <span style=\"font-weight: bold;\">a language model predicts one token at a time</span>. Given “The cat sat on the,” it might assign high probability to “mat,” “floor,” or “chair.” It selects a continuation, adds that token to the context, and repeats the process. A long response is produced through many successive predictions.</p>\n<p data-paragraph=\"7\">The <span class=\"notation auto-notation\" data-term=\"context window\" data-note=\"The amount of text a model can consider at one time.\" title=\"The amount of text a model can consider at one time.\"><span class=\"term-anchor\" tabindex=\"0\" role=\"link\" aria-label=\"查看“context window”的词典解释\">context window</span></span> is the text the model can consider at one time. Context changes which continuation is likely. After “She deposited money at the,” the word “bank” probably refers to a financial institution; after “She sat beside the river,” the same word has another likely meaning.</p>\n<p data-paragraph=\"8\">Modern language models commonly use a neural-network design called a <span class=\"notation auto-notation\" data-term=\"transformer\" data-note=\"A neural-network architecture designed to process relationships within sequences.\" title=\"A neural-network architecture designed to process relationships within sequences.\"><span class=\"term-anchor\" tabindex=\"0\" role=\"link\" aria-label=\"查看“transformer”的词典解释\">transformer</span></span>. Its <span class=\"notation auto-notation\" data-term=\"attention mechanism\" data-note=\"A method that lets a model weigh relationships among parts of its context.\" title=\"A method that lets a model weigh relationships among parts of its context.\"><span class=\"term-anchor\" tabindex=\"0\" role=\"link\" aria-label=\"查看“attention mechanism”的词典解释\">attention mechanism</span></span> helps the model compare relevant parts of the context. In a long sentence, attention can strengthen connections between words that depend on one another even when they are far apart.</p>\n<p data-paragraph=\"9\">The model’s output is a <span class=\"notation auto-notation\" data-term=\"probability distribution\" data-note=\"A set of possible outcomes paired with their estimated probabilities.\" title=\"A set of possible outcomes paired with their estimated probabilities.\"><span class=\"term-anchor\" tabindex=\"0\" role=\"link\" aria-label=\"查看“probability distribution”的词典解释\">probability distribution</span></span>, not a single fact retrieved from a perfect encyclopedia. Sampling settings influence whether generation favors the safest high-probability continuation or explores less likely alternatives. This is one reason the same prompt can produce different answers.</p>\n<p data-paragraph=\"10\">Training on large collections of text gives a model broad linguistic patterns, but plausible language is not the same as verified truth. A model can generate an incorrect statement that sounds confident because its immediate task is producing a likely continuation. Such an unsupported or false generation is often called a <span class=\"notation auto-notation\" data-term=\"hallucination\" data-note=\"A generated claim that is unsupported or false despite sounding plausible. （幻觉）\" title=\"A generated claim that is unsupported or false despite sounding plausible. （幻觉）\"><span class=\"term-anchor\" tabindex=\"0\" role=\"link\" aria-label=\"查看“hallucination”的词典解释\">hallucination</span></span>.</p>\n<p data-paragraph=\"11\">Quick check: If a language model writes a grammatically excellent answer, does that prove the answer is factually correct? No. Fluency and factual reliability must be evaluated separately.</p>\n<p data-paragraph=\"12\">Your turn: Complete the phrase “After the storm, the street was” in three different ways. How does each continuation change the direction of the next sentence?</p>\n<p data-paragraph=\"13\">Lesson 6: Building a Small AI System in Python</p>\n<p data-paragraph=\"14\">We can demonstrate learning without a giant neural network. The accompanying Python program trains a tiny <span class=\"notation auto-notation\" data-term=\"classifier\" data-note=\"A model that assigns an input to one of several categories.\" title=\"A model that assigns an input to one of several categories.\"><span class=\"term-anchor\" tabindex=\"0\" role=\"link\" aria-label=\"查看“classifier”的词典解释\">classifier</span></span> to decide whether a short message belongs to the category “study” or “everyday.” Its goal is modest, but its workflow mirrors larger machine-learning projects.</p>\n<p data-paragraph=\"15\">First, we prepare a small labeled collection of example messages. “Review the chapter before class” is labeled study, while “Buy fruit on the way home” is labeled everyday. The labels tell the program which pattern each example should support.</p>\n<p data-paragraph=\"16\">Next, the program tokenizes the messages and counts how often each word appears in each category. Words such as “chapter,” “quiz,” and “notes” become evidence for study. Words such as “dinner,” “store,” and “laundry” become evidence for everyday.</p>\n<p data-paragraph=\"17\">The classifier uses a simple method called <span class=\"notation auto-notation\" data-term=\"multinomial naive Bayes\" data-note=\"A probabilistic classifier based on feature counts within labeled categories.\" title=\"A probabilistic classifier based on feature counts within labeled categories.\"><span class=\"term-anchor\" tabindex=\"0\" role=\"link\" aria-label=\"查看“multinomial naive Bayes”的词典解释\">multinomial naive Bayes</span></span>. For a new message, it combines many small pieces of evidence from the words it recognizes. Smoothing prevents an unseen word from reducing a category’s probability to zero. The category with the higher score becomes the prediction.</p>\n<p data-paragraph=\"18\">The program separates training examples from test examples. This matters because evaluation on new messages is essential. Testing only on the examples used for training would tell us whether the model remembered its lessons, not whether it can generalize.</p>\n<p data-paragraph=\"19\">You can run the project with the command “python3 tiny_text_classifier.py.” It prints predictions for several new messages and reports the held-out <span class=\"notation auto-notation\" data-term=\"test accuracy\" data-note=\"The proportion of held-out test examples classified correctly.\" title=\"The proportion of held-out test examples classified correctly.\"><span class=\"term-anchor\" tabindex=\"0\" role=\"link\" aria-label=\"查看“test accuracy”的词典解释\">test accuracy</span></span>. No external Python packages are required.</p>\n<p data-paragraph=\"20\">This model is intentionally tiny. Its dataset is too small for real deployment, its categories are simplified, and individual words can mislead it. Its value is educational: every count and score is visible, so the path from examples to prediction can be inspected.</p>\n<p data-paragraph=\"21\">Quick check: Why does the program keep test examples separate from training? Because testing on unseen examples provides a more honest measure of generalization.</p>\n<p data-paragraph=\"22\">Your turn: Add two study messages and two everyday messages to the training data. Before running the program, predict which words will most influence the model and where it might still make mistakes.</p>\n<p data-paragraph=\"23\">Языковая модель предсказывает текст по одному токену, учитывая доступный контекст. Небольшой классификатор работает похожим образом: он учится на размеченных примерах и объединяет признаки, чтобы выбрать категорию. Однако правдоподобный ответ необходимо проверять, потому что языковая плавность не гарантирует фактическую точность.<sup class=\"footnote-ref\" data-note-id=\"clean-footnote-1\" contenteditable=\"false\" title=\"Editor’s note: The Russian paragraph summarizes token prediction, contextual evidence, supervised classification, and the difference between fluency and factual reliability.\" aria-label=\"脚注 2\">〔2〕</sup></p>",
+  "terms": [
+    {
+      "term": "language model",
+      "pinyin": "",
+      "type": "concept",
+      "annotation": "A model trained to recognize and predict patterns in sequences of language."
+    },
+    {
+      "term": "token",
+      "pinyin": "",
+      "type": "concept",
+      "annotation": "A unit of text processed by a language model."
+    },
+    {
+      "term": "tokenization",
+      "pinyin": "",
+      "type": "concept",
+      "annotation": "The process of dividing text into tokens and representing them numerically."
+    },
+    {
+      "term": "next-token prediction",
+      "pinyin": "",
+      "type": "concept",
+      "annotation": "Estimating which token is likely to follow the preceding context."
+    },
+    {
+      "term": "context window",
+      "pinyin": "",
+      "type": "concept",
+      "annotation": "The amount of text a model can consider at one time."
+    },
+    {
+      "term": "transformer",
+      "pinyin": "",
+      "type": "concept",
+      "annotation": "A neural-network architecture designed to process relationships within sequences."
+    },
+    {
+      "term": "attention mechanism",
+      "pinyin": "",
+      "type": "concept",
+      "annotation": "A method that lets a model weigh relationships among parts of its context."
+    },
+    {
+      "term": "probability distribution",
+      "pinyin": "",
+      "type": "concept",
+      "annotation": "A set of possible outcomes paired with their estimated probabilities."
+    },
+    {
+      "term": "sampling",
+      "pinyin": "",
+      "type": "concept",
+      "annotation": "Choosing an output from a model’s probability distribution."
+    },
+    {
+      "term": "hallucination",
+      "pinyin": "",
+      "type": "concept",
+      "annotation": "A generated claim that is unsupported or false despite sounding plausible. （幻觉）"
+    },
+    {
+      "term": "classifier",
+      "pinyin": "",
+      "type": "concept",
+      "annotation": "A model that assigns an input to one of several categories."
+    },
+    {
+      "term": "multinomial naive Bayes",
+      "pinyin": "",
+      "type": "concept",
+      "annotation": "A probabilistic classifier based on feature counts within labeled categories."
+    },
+    {
+      "term": "smoothing",
+      "pinyin": "",
+      "type": "concept",
+      "annotation": "A technique preventing unseen features from forcing a probability to zero."
+    },
+    {
+      "term": "test accuracy",
+      "pinyin": "",
+      "type": "concept",
+      "annotation": "The proportion of held-out test examples classified correctly."
+    }
+  ],
+  "footnotes": [
+    {
+      "id": "84f25e71-20d8-493b-a340-f5fe4518d748",
+      "note": "Tokenization, when applied to data security, is the process of substituting a sensitive data element with a non-sensitive equivalent, referred to as a token, that has no intrinsic or exploitable meaning or value. The token is a reference that maps back to the sensitive data through a tokenization system. The mapping from original data to a token uses methods that render tokens infeasible to reverse in the absence of the tokenization system, for example using tokens created from random numbers."
+    },
+    {
+      "id": "clean-footnote-1",
+      "note": "Editor’s note: The Russian paragraph summarizes token prediction, contextual evidence, supervised classification, and the difference between fluency and factual reliability."
+    }
+  ],
+  "notes": [
+    {
+      "time": "2026-08-05T03:31:50.873Z",
+      "text": "2nd edition"
+    },
+    {
+      "time": "2026-08-05T02:38:51.382Z",
+      "text": "5-6 预测下一个单元 微模型"
+    },
+    {
+      "time": "2026-08-04T22:35:00.000Z",
+      "text": "Lesson 6 note: The tiny classifier is useful because its training counts and prediction scores can be inspected directly."
+    },
+    {
+      "time": "2026-08-04T22:30:00.000Z",
+      "text": "Lesson 5 note: Next-token prediction is repeated generation, while context and attention influence the probability distribution at each step."
+    }
+  ],
+  "log": [
+    {
+      "time": "2026-08-05T03:38:42.011Z",
+      "action": "设置Purple 高亮",
+      "detail": "Next-Token Prediction"
+    },
+    {
+      "time": "2026-08-05T03:31:50.873Z",
+      "action": "添加用户札记",
+      "detail": ""
+    },
+    {
+      "time": "2026-08-05T03:31:30.603Z",
+      "action": "导出编辑日志",
+      "detail": ""
+    },
+    {
+      "time": "2026-08-05T02:38:51.382Z",
+      "action": "添加用户札记",
+      "detail": ""
+    },
+    {
+      "time": "2026-08-05T02:34:55.835Z",
+      "action": "设置清除高亮",
+      "detail": "evaluation on new messages is essential"
+    },
+    {
+      "time": "2026-08-05T02:33:35.345Z",
+      "action": "设置清除高亮",
+      "detail": "combines many small pieces of evidence"
+    },
+    {
+      "time": "2026-08-05T02:32:34.764Z",
+      "action": "设置清除高亮",
+      "detail": "counts how often each word appears in each category"
+    },
+    {
+      "time": "2026-08-05T02:32:02.075Z",
+      "action": "设置清除高亮",
+      "detail": "small labeled collection of example messages"
+    },
+    {
+      "time": "2026-08-05T02:29:47.992Z",
+      "action": "编辑本篇词典",
+      "detail": "hallucination"
+    },
+    {
+      "time": "2026-08-05T02:28:30.944Z",
+      "action": "设置清除高亮",
+      "detail": "p"
+    },
+    {
+      "time": "2026-08-05T02:28:25.128Z",
+      "action": "设置清除高亮",
+      "detail": "lausible language is not the same as verified truth"
+    },
+    {
+      "time": "2026-08-05T02:27:02.840Z",
+      "action": "设置清除高亮",
+      "detail": "Context changes which continuation is likely"
+    },
+    {
+      "time": "2026-08-05T02:26:18.846Z",
+      "action": "删除待核",
+      "detail": "high probability"
+    },
+    {
+      "time": "2026-08-05T02:26:13.596Z",
+      "action": "删除待核",
+      "detail": "many examples"
+    },
+    {
+      "time": "2026-08-05T02:25:33.816Z",
+      "action": "删除行间注",
+      "detail": ""
+    },
+    {
+      "time": "2026-08-05T02:25:29.516Z",
+      "action": "删除行间注",
+      "detail": ""
+    },
+    {
+      "time": "2026-08-05T02:25:26.816Z",
+      "action": "删除行间注",
+      "detail": ""
+    },
+    {
+      "time": "2026-08-05T02:25:25.215Z",
+      "action": "删除行间注",
+      "detail": ""
+    },
+    {
+      "time": "2026-08-05T02:25:22.816Z",
+      "action": "删除行间注",
+      "detail": ""
+    },
+    {
+      "time": "2026-08-05T02:25:21.682Z",
+      "action": "删除行间注",
+      "detail": ""
+    },
+    {
+      "time": "2026-08-05T02:24:00.016Z",
+      "action": "设置清除高亮",
+      "detail": "high probability"
+    },
+    {
+      "time": "2026-08-05T02:23:41.594Z",
+      "action": "设置粗体",
+      "detail": "a language model predicts one token at a time"
+    },
+    {
+      "time": "2026-08-05T02:23:26.747Z",
+      "action": "设置清除高亮",
+      "detail": " predicts one token at a time"
+    },
+    {
+      "time": "2026-08-05T02:21:23.703Z",
+      "action": "添加编者注",
+      "detail": "okenization, when applied to data security, is the process of substituting a sensitive data element with a non-sensitive equivalent, referred to as a token, that has no intrinsic or exploitable meaning or value. The token is a reference that maps back to the sensitive data through a tokenization system. The mapping from original data to a token uses methods that render tokens infeasible to reverse in the absence of the tokenization system, for example using tokens created from random numbers."
+    },
+    {
+      "time": "2026-08-05T02:18:38.785Z",
+      "action": "设置清除高亮",
+      "detail": "many examples"
+    }
+  ]
+}

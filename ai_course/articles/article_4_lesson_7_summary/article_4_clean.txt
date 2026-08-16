@@ -1,0 +1,56 @@
+Using AI Responsibly—and Reviewing the Journey
+
+The first six lessons explained how AI systems learn patterns, improve through training, process information in neural networks, generate language, and classify new examples. The final lesson asks how people should evaluate and use those capabilities responsibly.
+
+Lesson 7: Bias, Privacy, Reliability, and Responsible Use〔1〕
+
+An AI model learns from data selected and shaped by people. If some groups, situations, or viewpoints are missing or misrepresented, the model can learn an incomplete pattern. Bias can enter through data collection, labels, objectives, evaluation methods, or the way a system is deployed.
+
+Suppose a hiring model is trained mainly on the history of one company. If past hiring decisions favored a narrow group, the model may reproduce that pattern even when nobody writes an explicitly discriminatory rule. Fairness therefore requires examining outcomes, not merely checking whether the program contains forbidden words.
+
+Privacy is another concern because prompts and training examples may contain personal, confidential, or copyrighted information. Before sending information to an AI service, a user should ask whether the material is necessary, whether identifying details can be removed, and whether the service is appropriate for that data.
+
+Reliability depends on the task. A harmless brainstorming suggestion and a medical dosage recommendation do not require the same level of evidence. The higher the possible harm, the stronger the verification should be. Important claims should be checked against trustworthy sources, calculations, tests, or qualified experts.
+
+Language models can produce fluent errors, omit context, or follow misleading instructions. Other AI systems can fail when real-world inputs differ from their training data. Confidence in the wording is not evidence of correctness. A responsible user separates what the model generated from what has been independently verified.
+
+Human oversight is most useful when it is specific. A person should know what to inspect, what standard to apply, and what action to take when the system fails. Simply placing a human near an automated decision does not guarantee meaningful review.
+
+Responsible design also includes security and misuse prevention. Developers should consider who can access a system, what harmful actions it might enable, how abuse can be detected, and how incidents can be reported and corrected. Monitoring after release matters because not every failure can be predicted in advance.
+
+A practical responsible-use checklist is straightforward: define the task, limit sensitive data, examine likely biases, test on relevant examples, verify important outputs, preserve human accountability, and record significant limitations. Responsible use is a continuing process, not a one-time approval.
+
+Quick check: Should every AI answer receive the same amount of verification? No. Verification should increase with uncertainty, consequence, and the difficulty of correcting an error.
+
+Your turn: Choose an AI use such as homework feedback, résumé screening, medical information, or travel planning. Identify one possible bias, one privacy risk, one reliability check, and the person who should remain accountable.
+
+Course Summary: Seven Lessons in One View
+
+Lesson 1 distinguished artificial intelligence from ordinary fixed-rule software. AI is a broad field; machine learning is one way to build systems that discover patterns from examples.
+
+Lesson 2 introduced examples, features, labels, training sets, and test sets. A model must generalize to new data rather than merely remember its training examples.
+
+Lesson 3 followed the training loop: predict, measure loss, calculate useful adjustments, and update parameters. Gradient descent, learning rates, epochs, and validation help control this process.
+
+Lesson 4 opened the neural network. Artificial neurons combine numbers, hidden layers build internal representations, and backpropagation connects prediction errors to parameter updates.
+
+Lesson 5 explained language models as next-token predictors. Tokens, context windows, transformers, attention, and sampling shape generation, while fluent output can still contain hallucinations.
+
+Lesson 6 turned the ideas into a small Python classifier. Labeled examples supplied evidence, naive Bayes combined word counts, and held-out testing measured generalization.
+
+Lesson 7 placed the technology inside human decisions. Bias, privacy, reliability, security, verification, and accountability determine whether a technically capable system is used wisely.
+
+The central lesson is that AI is neither magic nor an independent human mind. It is engineered pattern-processing technology. Understanding its training and limitations helps people use it creatively without surrendering judgment.
+
+Ответственное использование ИИ требует проверки важных утверждений, защиты личных данных и внимания к возможной предвзятости. Чем серьёзнее последствия решения, тем важнее независимые источники, человеческий контроль и ясная ответственность. Понимание ограничений модели помогает использовать её возможности без отказа от собственного суждения.〔2〕
+
+脚注
+
+〔1〕Systematic distortion can arise from data, objectives, evaluation, or deployment.
+
+Protecting sensitive information and controlling how it is used.
+
+Dependable performance under the conditions that matter for a task.
+
+It means being accountable and thinking about the effects of your actions before you act.
+〔2〕马克思的比喻是蜜蜂筑巢与工程师盖房。

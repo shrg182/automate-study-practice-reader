@@ -1,0 +1,15 @@
+term,pinyin,type,annotation
+language model,,concept,A model trained to recognize and predict patterns in sequences of language.
+token,,concept,A unit of text processed by a language model.
+tokenization,,concept,The process of dividing text into tokens and representing them numerically.
+next-token prediction,,concept,Estimating which token is likely to follow the preceding context.
+context window,,concept,The amount of text a model can consider at one time.
+transformer,,concept,A neural-network architecture designed to process relationships within sequences.
+attention mechanism,,concept,A method that lets a model weigh relationships among parts of its context.
+probability distribution,,concept,A set of possible outcomes paired with their estimated probabilities.
+sampling,,concept,Choosing an output from a model’s probability distribution.
+hallucination,,concept,A generated claim that is unsupported or false despite sounding plausible. （幻觉）
+classifier,,concept,A model that assigns an input to one of several categories.
+multinomial naive Bayes,,concept,A probabilistic classifier based on feature counts within labeled categories.
+smoothing,,concept,A technique preventing unseen features from forcing a probability to zero.
+test accuracy,,concept,The proportion of held-out test examples classified correctly.

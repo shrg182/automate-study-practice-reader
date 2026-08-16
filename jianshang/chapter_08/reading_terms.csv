@@ -1,0 +1,65 @@
+term,pinyin,type,annotation
+盘龙城,pán lóng chéng,site_or_culture,湖北武汉附近早商城址，文中作为商朝南方据点。
+黄陂,huáng pí,place,今武汉市黄陂区，盘龙城遗址所在地。
+硬陶,yìng táo,artifact,高温烧成、质地坚硬的陶器。
+原始瓷器,yuán shǐ cí qì,artifact,早期具有瓷器特征的高温陶瓷器。
+长窑,cháng yáo,artifact,长条形陶窑，可一次烧制较多陶器。
+冶铜,yě tóng,concept,从铜矿石中冶炼铜料的技术。
+冶铸,yě zhù,concept,冶炼和铸造金属器物的工艺。
+铜锭,tóng dìng,artifact,冶炼后铸成块状以便运输或再加工的铜料。
+铜渣,tóng zhā,artifact,冶炼或铸造铜器后留下的残渣。
+孔雀石,kǒng què shí,artifact,绿色含铜矿物，可作为铜矿石线索。
+绿松石,lǜ sōng shí,artifact,蓝绿色矿物，古代常作饰物。
+枢纽,shū niǔ,concept,交通或联系的关键节点。
+集散地,jí sàn dì,concept,物资集中和转运的地点。
+江汉,jiāng hàn,place,长江与汉水流域一带。
+长江流域,cháng jiāng liú yù,place,长江水系覆盖的广大地区。
+夯土城池,hāng tǔ chéng chí,concept,用夯土技术修筑的城墙和城邑。
+版筑,bǎn zhù,concept,夹板填土后层层夯实的筑墙方法。
+城壕,chéng háo,concept,城墙外的壕沟或护城河。
+夯土台基,hāng tǔ tái jī,concept,用夯土筑成的建筑台基。
+木骨泥墙,mù gǔ ní qiáng,concept,以木材为骨架并涂泥形成的墙体。
+稻秸泥,dào jiē ní,artifact,掺入稻秸的泥料，常用于墙体。
+廊檐,láng yán,concept,建筑外围的廊和屋檐结构。
+陶缸,táo gāng,artifact,大型陶制缸器，文中兼具储藏和炼铜功能。
+侈口斜腹陶缸,chǐ kǒu xié fù táo gāng,artifact,口部外侈、腹部倾斜的大型陶缸。
+铜鼓山,tóng gǔ shān,site_or_culture,湖南岳阳商代相关遗址。
+铜岭,tóng lǐng,site_or_culture,江西瑞昌古代铜矿冶遗址。
+铜绿山,tóng lǜ shān,site_or_culture,湖北大冶古代铜矿遗址。
+二里冈文化,èr lǐ gāng wén huà,site_or_culture,早商时期中原考古文化。
+腰坑殉狗,yāo kēng xùn gǒu,concept,墓穴腰部小坑中埋狗的商人葬俗。
+李家嘴,lǐ jiā zuǐ,site_or_culture,盘龙城遗址中的墓葬地点。
+二层台,èr céng tái,concept,墓室内用于放置随葬品或殉人的台阶状结构。
+殉人,xùn rén,concept,陪葬或随葬的人。
+饕餮纹,tāo tiè wén,artifact,青铜器上常见的兽面纹饰。
+夔龙,kuí lóng,artifact,青铜纹饰中常见的龙形神兽。
+铜钩刀,tóng gōu dāo,bronze_item,带钩状刃部的青铜砍刀。
+人祭,rén jì,concept,以人作为祭品的祭祀行为。
+人奠基,rén diàn jī,concept,建筑奠基时以人作为牺牲的行为。
+人殉,rén xùn,concept,以人随葬或陪葬的行为。
+土著,tǔ zhù,concept,本地原有居民或族群。
+商裔,shāng yì,concept,商族后裔或商人族群成员。
+屈家岭文化,qū jiā lǐng wén huà,site_or_culture,长江中游新石器时代文化。
+石家河文化,shí jiā hé wén huà,site_or_culture,长江中游新石器时代晚期文化。
+筒形器,tǒng xíng qì,artifact,筒状陶器，文中涉及祭祀埋藏。
+埋祭,mái jì,concept,将祭品埋入地下的祭祀方式。
+祭祀坑,jì sì kēng,concept,用于祭祀或埋藏祭品的坑穴。
+卜骨,bǔ gǔ,artifact,用于占卜的兽骨。
+朱砂,zhū shā,artifact,红色矿物颜料，常见于礼仪和墓葬。
+铜钺,tóng yuè,bronze_item,青铜钺，常象征军事权力。
+铜爵,tóng jué,bronze_item,青铜酒器爵。
+铜觚,tóng gū,bronze_item,青铜酒器觚。
+铜罍,tóng léi,bronze_item,青铜罍，古代盛酒器。
+铜瓿,tóng bù,bronze_item,青铜瓿，古代盛酒器或容器。
+铜锛,tóng bēn,bronze_item,青铜锛，古代工具或兵器。
+铜镞,tóng zú,bronze_item,青铜箭头。
+玉戈,yù gē,artifact,玉制戈，多为礼仪性器物。
+铜甑,tóng zèng,bronze_item,青铜甑，古代蒸煮器。
+新干大洋洲,xīn gān dà yáng zhōu,site_or_culture,江西商代晚期大型墓葬遗址。
+犁铧,lí huá,artifact,犁的金属刃部。
+耜,sì,rare_word,古代翻土农具。
+锸,chā,rare_word,古代掘土农具。
+四羊方尊,sì yáng fāng zūn,bronze_item,湖南出土的商代著名青铜方尊。
+虎食人卣,hǔ shí rén yǒu,bronze_item,湖南出土的商代著名青铜卣。
+三星堆,sān xīng duī,site_or_culture,四川广汉青铜时代遗址。
+张煜珧,zhāng yù yáo,person,《夏商周祭祀遗存研究》作者；“煜”读 yù，意为光耀、照耀；“珧”读 yáo，指江珧等贝类及其有光泽的贝壳；旧文本误作“张煜跳”或“张煜珠”。

@@ -1,0 +1,3 @@
+How AI Works: Lessons 1–2
+
+This is the stable published edition of the first AI-course article. Its working text is stored in article_1_clean.txt.

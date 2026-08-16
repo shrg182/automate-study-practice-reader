@@ -1,0 +1,986 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>《翦商》第十四章 西土拉锯战：老牛坡 OCR 手工校订</title>
+  <script src="../shared/editor_header.js"></script>
+  <script src="../shared/editor_toc.js"></script>
+  <style>
+    :root { --bg:#f7f5ef; --paper:#fffdfa; --ink:#222; --muted:#666; --line:#d8d3c7; --soft:#eee8dc; --accent:#8a1f1f; --accent-ink:#fff; --warn:#9b5d00; --ok:#1f6b40; --shadow:0 8px 24px rgba(30,24,16,.08); }
+    * { box-sizing:border-box; }
+    html { scroll-behavior:smooth; }
+    body { margin:0; background:var(--bg); color:var(--ink); font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Noto Sans SC","PingFang SC","Microsoft YaHei",sans-serif; line-height:1.5; }
+    jianshang-editor-header, jianshang-editor-toc { display:contents; }
+    button, textarea, input, select, .rich-editor { font:inherit; }
+    header { position:sticky; top:0; z-index:20; background:rgba(255,253,250,.96); border-bottom:1px solid var(--line); backdrop-filter:blur(10px); }
+    .topbar { display:grid; grid-template-columns:minmax(260px,1fr) auto; gap:16px; width:min(1440px,calc(100% - 28px)); margin:0 auto; padding:12px 0; align-items:center; }
+    h1 { margin:0; font-size:1.2rem; line-height:1.2; letter-spacing:0; }
+    .subtitle { margin-top:3px; color:var(--muted); font-size:.88rem; }
+    .actions { display:flex; flex-wrap:wrap; gap:8px; justify-content:flex-end; align-items:center; }
+    button { border:1px solid var(--line); background:#fff; color:var(--ink); min-height:34px; padding:6px 10px; border-radius:6px; cursor:pointer; }
+    .import-label, .action-link { border:1px solid var(--line); background:#fff; color:var(--ink); min-height:34px; padding:6px 10px; border-radius:6px; cursor:pointer; display:inline-flex; align-items:center; text-decoration:none; }
+    button.primary { background:var(--accent); color:var(--accent-ink); border-color:var(--accent); }
+    button:focus-visible, textarea:focus-visible, input:focus-visible, select:focus-visible, .rich-editor:focus-visible { outline:2px solid var(--accent); outline-offset:2px; }
+    .format-menu { position:relative; }
+    .format-menu-trigger { display:flex; min-width:45px; align-items:center; justify-content:center; gap:7px; }
+    .marker-icon { display:inline-block; width:17px; height:8px; border-bottom:6px solid #f4c542; transform:skew(-12deg); }
+    .format-menu-trigger::after { content:"▾"; font-size:10px; color:var(--muted); }
+    .format-popover { position:absolute; top:calc(100% + 6px); left:0; z-index:40; display:none; width:178px; padding:5px; background:#fff; border:1px solid #cfc8ba; border-radius:8px; box-shadow:0 10px 30px #2927202e; }
+    .format-menu.open .format-popover { display:block; }
+    .format-option { display:flex; width:100%; gap:10px; align-items:center; border:0; background:#fff; padding:7px 9px; text-align:left; }
+    .format-option:hover,.format-option:focus { background:#edf2f5; color:var(--ink); }
+    .format-dot { width:15px; height:15px; flex:0 0 auto; border-radius:50%; box-shadow:inset 0 0 0 1px #00000018; }
+    .format-symbol { width:15px; text-align:center; font:600 15px/1 Georgia,serif; }
+    .format-divider { height:1px; margin:5px 4px; background:#ddd7cb; }
+    .status { color:var(--muted); font-size:.86rem; min-width:132px; text-align:right; }
+    main { width:min(1440px,calc(100% - 28px)); margin:18px auto 48px; }
+    .layout { display:grid; grid-template-columns:280px minmax(0,1fr); gap:18px; align-items:start; }
+    aside { position:sticky; top:calc(var(--editor-header-height, 75px) + 12px); display:grid; gap:14px; max-height:calc(100vh - var(--editor-header-height, 75px) - 24px); overflow:auto; }
+    .panel, .page, .toc-page, .reference-panel, .notes-dock, .export-dock { background:var(--paper); border:1px solid var(--line); box-shadow:var(--shadow); }
+    .panel h2, .reference-panel h2, .notes-dock h2, .export-dock h2 { margin:0; padding:10px 12px; font-size:.95rem; border-bottom:1px solid var(--line); background:var(--soft); }
+    .page-number-legend { padding:8px 11px; font-size:.82rem; color:var(--muted); }
+    .page-number-legend p { margin:3px 0; }
+    .page-number-legend strong { color:var(--ink); }
+    .nav-list, .term-list { padding:8px; display:grid; gap:6px; }
+    .nav-button { width:100%; display:flex; justify-content:space-between; gap:8px; text-align:left; }
+    .nav-button span:last-child, .term span:last-child { color:var(--muted); font-variant-numeric:tabular-nums; }
+    .term { display:flex; justify-content:space-between; gap:8px; border-bottom:1px solid var(--line); padding:4px 0; font-size:.9rem; }
+    button.term { width:100%; min-height:0; border-width:0 0 1px; border-radius:0; background:transparent; text-align:left; }
+    button.term:hover { color:var(--accent); background:#fff8ec; }
+    .pages { display:grid; gap:18px; }
+    .toc-page, .reference-panel, .page { scroll-margin-top:86px; }
+    .toc-head { display:flex; justify-content:space-between; gap:14px; align-items:baseline; padding:14px 16px; border-bottom:1px solid var(--line); background:#fff; }
+    .toc-head h2 { margin:0; font-size:1.15rem; }
+    .toc-body { display:grid; grid-template-columns:minmax(0,1fr) minmax(280px,.72fr); gap:18px; padding:14px 16px 16px; }
+    .toc-body h3 { margin:0 0 8px; font-size:.95rem; }
+    .toc-links { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:6px; }
+    .toc-link { display:flex; justify-content:space-between; gap:10px; border:1px solid var(--line); border-radius:6px; background:#fff; color:var(--ink); text-decoration:none; padding:7px 9px; min-height:34px; align-items:center; }
+    .toc-link.available { border-left:4px solid var(--ok); background:#f4fbf6; }
+    .toc-link.current { border:2px solid var(--accent); background:#fff0ec; color:var(--accent); font-weight:700; }
+    .toc-link.unavailable { background:#f1f0ed; color:#999; cursor:not-allowed; opacity:.72; }
+    .toc-legend { display:flex; flex-wrap:wrap; gap:10px; margin:0 0 8px; color:var(--muted); font-size:.8rem; }
+    .toc-legend span::before { content:""; display:inline-block; width:10px; height:10px; border-radius:2px; margin-right:4px; }
+    .legend-current::before { background:var(--accent); } .legend-available::before { background:var(--ok); } .legend-unavailable::before { background:#aaa; }
+    .toc-link span:first-child { overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+    .toc-link span:last-child { color:var(--muted); font-size:.86rem; font-variant-numeric:tabular-nums; white-space:nowrap; }
+    .reference-grid { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:14px; margin:18px 0; align-items:start; }
+    #user-notes { grid-column:1 / -1; }
+    #user-notes .table-scroll { max-height:440px; }
+    #user-notes table { table-layout:fixed; }
+    #user-notes th:nth-child(1), #user-notes td:nth-child(1) { width:110px; }
+    #user-notes th:nth-child(2), #user-notes td:nth-child(2) { width:110px; }
+    #user-notes td:nth-child(3) { overflow-wrap:anywhere; }
+    .table-scroll { overflow:auto; max-height:360px; }
+    #yueducibiao .table-scroll { max-height:none; overflow:visible; }
+    .data-table { width:100%; border-collapse:collapse; background:#fff; font-size:.9rem; }
+    .data-table th, .data-table td { border-bottom:1px solid var(--line); border-right:1px solid var(--line); padding:7px 8px; text-align:left; vertical-align:top; }
+    .data-table th:last-child, .data-table td:last-child { border-right:0; }
+    .data-table th { position:sticky; top:0; background:#fff8ec; z-index:1; font-weight:700; }
+    .data-table td { white-space:pre-wrap; }
+    .note-table td:first-child { min-width:150px; font-weight:650; }
+    .chapter-note-entry { display:grid; gap:10px; padding:12px; border-bottom:1px solid var(--line); background:#fffdf8; }
+    .chapter-note-entry label { display:grid; gap:5px; color:var(--muted); font-size:.88rem; }
+    .chapter-note-entry input, .chapter-note-entry textarea { width:100%; border:1px solid var(--line); background:#fff; color:var(--ink); border-radius:6px; padding:8px; font:inherit; }
+    .chapter-note-entry textarea { min-height:100px; resize:vertical; }
+    .page-head { display:flex; justify-content:space-between; gap:12px; align-items:center; padding:10px 12px; border-bottom:1px solid var(--line); background:#fff; }
+    .page-title { font-weight:700; }
+    .page-title span { color:var(--muted); font-weight:500; margin-left:8px; }
+    .page-tools { display:flex; gap:8px; flex-wrap:wrap; }
+    .workbench { display:grid; grid-template-columns:minmax(340px,1fr) minmax(300px,.82fr); gap:0; align-items:stretch; }
+    .editor-wrap { padding:12px; border-right:1px solid var(--line); display:flex; min-height:560px; }
+    textarea { width:100%; min-height:0; border:1px solid var(--line); background:#fff; color:var(--ink); padding:14px; border-radius:6px; line-height:1.85; font-size:1.02rem; letter-spacing:0; overflow:auto; }
+    .rich-editor { width:100%; min-height:536px; border:1px solid var(--line); background:#fff; color:var(--ink); padding:14px; border-radius:6px; line-height:1.85; font-size:1.02rem; letter-spacing:0; overflow:auto; white-space:pre-wrap; overflow-wrap:anywhere; }
+    .rich-editor.annotated-view { background:#fff9e8; color:#5b481f; }
+    .rich-editor u,.rich-editor [style*="underline"] { text-underline-offset:.2em; text-decoration-thickness:1px; }
+    .mode-badge { border-radius:999px; padding:5px 9px; background:var(--soft); color:var(--muted); font-size:.82rem; white-space:nowrap; }
+    .mode-badge.annotated { background:#fff0b8; color:#76500e; }
+    .speech-rate { display:flex; align-items:center; gap:4px; color:var(--muted); font-size:.82rem; }
+    #speechRate { width:82px; }
+    .hidden { display:none !important; }
+    .scan { padding:12px; background:#fbfaf6; display:flex; }
+    .scan img { width:100%; height:auto; display:block; border:1px solid var(--line); background:#fff; align-self:flex-start; }
+    .notes-dock { margin-top:18px; scroll-margin-top:86px; }
+    .note-grid { display:grid; grid-template-columns:minmax(240px,.75fr) minmax(320px,1fr); gap:12px; padding:12px; }
+    .note-controls { display:grid; gap:10px; align-content:start; }
+    .note-controls label { display:grid; gap:5px; color:var(--muted); font-size:.88rem; }
+    .note-controls select, .note-controls input { width:100%; border:1px solid var(--line); background:#fff; color:var(--ink); border-radius:6px; min-height:34px; padding:6px 8px; }
+    .marker-composer { border:1px solid var(--line); border-radius:7px; background:#fffaf0; padding:10px; display:grid; gap:8px; }
+    .marker-composer h3 { margin:0; font-size:.92rem; }
+    .marker-help { margin:0; color:var(--muted); font-size:.8rem; line-height:1.5; }
+    .note-actions { display:flex; gap:8px; flex-wrap:wrap; }
+    #noteText { min-height:150px; resize:vertical; }
+    .log-list { max-height:260px; overflow:auto; border:1px solid var(--line); background:#fff; border-radius:6px; padding:8px; display:grid; gap:8px; }
+    .log-item { border-bottom:1px solid var(--line); padding:0 0 8px; }
+    .log-item:last-child { border-bottom:0; padding-bottom:0; }
+    .log-meta { color:var(--muted); font-size:.82rem; font-variant-numeric:tabular-nums; }
+    .log-note { margin-top:3px; white-space:pre-wrap; }
+    .export-dock { margin-top:18px; }
+    #exportText { min-height:240px; border:0; border-radius:0; }
+    .quick-note-jump { position:fixed; right:18px; bottom:18px; z-index:25; background:var(--accent); color:var(--accent-ink); border-color:var(--accent); box-shadow:0 8px 24px rgba(30,24,16,.18); }
+    @media (max-width:980px) { .topbar { grid-template-columns:1fr; } .actions { justify-content:flex-start; } .status { text-align:left; } .layout { grid-template-columns:1fr; } aside { position:static; max-height:none; } .toc-body, .note-grid { grid-template-columns:1fr; } .toc-links { grid-template-columns:1fr; } .reference-grid { grid-template-columns:1fr; } .workbench { grid-template-columns:1fr; } .editor-wrap { border-right:0; border-bottom:1px solid var(--line); } .rich-editor { min-height:520px; } .quick-note-jump { right:12px; bottom:12px; } }
+  </style>
+</head>
+<body>
+  <jianshang-editor-header
+    page-title="《翦商》OCR 手工校订：第十四章 西土拉锯战：老牛坡"
+    page-subtitle="原书阅读器页 283-300 · 原书物理 PDF 页 281-298 · 印刷页 269-286 · 输出 chapter_14_clean_edited.txt"
+    reference-href="../reference_tables.html">
+    <noscript>此编辑器需要启用 JavaScript。</noscript>
+  </jianshang-editor-header>
+  <main>
+    <div class="layout">
+      <aside>
+        <section class="panel"><h2>页码说明</h2><div class="page-number-legend"><p><strong>原阅</strong> 283-300：原书在阅读器中显示的页码</p><p><strong>原PDF</strong> 281-298：原书文件的物理页码</p><p><strong>印</strong> 269-286：书页印刷页码</p><p><strong>注音PDF</strong> 1-13：独立重排页码，不与原书逐页对应</p></div></section>
+        <section class="panel"><h2>页</h2><div class="nav-list"><button type="button" class="nav-button" data-target="toc"><span>目录</span><span>top</span></button><button type="button" class="nav-button" data-target="notes"><span>编辑札记</span><span>log</span></button><button type="button" class="nav-button" data-target="page-283"><span>原阅 283 · 原PDF 281</span><span>印 269</span></button><button type="button" class="nav-button" data-target="page-284"><span>原阅 284 · 原PDF 282</span><span>印 270</span></button><button type="button" class="nav-button" data-target="page-285"><span>原阅 285 · 原PDF 283</span><span>印 271</span></button><button type="button" class="nav-button" data-target="page-286"><span>原阅 286 · 原PDF 284</span><span>印 272</span></button><button type="button" class="nav-button" data-target="page-287"><span>原阅 287 · 原PDF 285</span><span>印 273</span></button><button type="button" class="nav-button" data-target="page-288"><span>原阅 288 · 原PDF 286</span><span>印 274</span></button><button type="button" class="nav-button" data-target="page-289"><span>原阅 289 · 原PDF 287</span><span>印 275</span></button><button type="button" class="nav-button" data-target="page-290"><span>原阅 290 · 原PDF 288</span><span>印 276</span></button><button type="button" class="nav-button" data-target="page-291"><span>原阅 291 · 原PDF 289</span><span>印 277</span></button><button type="button" class="nav-button" data-target="page-292"><span>原阅 292 · 原PDF 290</span><span>印 278</span></button><button type="button" class="nav-button" data-target="page-293"><span>原阅 293 · 原PDF 291</span><span>印 279</span></button><button type="button" class="nav-button" data-target="page-294"><span>原阅 294 · 原PDF 292</span><span>印 280</span></button><button type="button" class="nav-button" data-target="page-295"><span>原阅 295 · 原PDF 293</span><span>印 281</span></button><button type="button" class="nav-button" data-target="page-296"><span>原阅 296 · 原PDF 294</span><span>印 282</span></button><button type="button" class="nav-button" data-target="page-297"><span>原阅 297 · 原PDF 295</span><span>印 283</span></button><button type="button" class="nav-button" data-target="page-298"><span>原阅 298 · 原PDF 296</span><span>印 284</span></button><button type="button" class="nav-button" data-target="page-299"><span>原阅 299 · 原PDF 297</span><span>印 285</span></button><button type="button" class="nav-button" data-target="page-300"><span>原阅 300 · 原PDF 298</span><span>印 286</span></button></div></section>
+        <section class="panel"><h2>参考表</h2><div class="nav-list"><button type="button" class="nav-button" data-target="yueducibiao"><span>阅读词表</span><span>表</span></button><button type="button" class="nav-button" data-target="qingtongqicibiao"><span>青铜器词表</span><span>表</span></button><button type="button" class="nav-button" data-target="dushuzhaji"><span>章节导读札记</span><span>表</span></button><button type="button" class="nav-button" data-target="user-notes"><span>用户札记</span><span>注</span></button></div></section>
+        <section class="panel"><h2>术语</h2><div class="term-list"><button type="button" class="term" data-term="灰坑" data-pinyin="huī kēng" data-difficulty="3" data-domain="general"><span>灰坑</span><span>huī kēng</span></button><button type="button" class="term" data-term="髳" data-pinyin="máo" data-difficulty="4" data-domain="general"><span>髳</span><span>máo</span></button><button type="button" class="term" data-term="殷墟" data-pinyin="yīn xū" data-difficulty="5" data-domain="archaeology"><span>殷墟</span><span>yīn xū</span></button><button type="button" class="term" data-term="铜镞" data-pinyin="tóng zú" data-difficulty="5" data-domain="bronze_vessel"><span>铜镞</span><span>tóng zú</span></button><button type="button" class="term" data-term="妲" data-pinyin="dā" data-difficulty="4" data-domain="general"><span>妲</span><span>dā</span></button><button type="button" class="term" data-term="仡仡" data-pinyin="yì yì" data-difficulty="4" data-domain="general"><span>仡仡</span><span>yì yì</span></button><button type="button" class="term" data-term="铜戈" data-pinyin="tóng gē" data-difficulty="5" data-domain="bronze_vessel"><span>铜戈</span><span>tóng gē</span></button><button type="button" class="term" data-term="人祭" data-pinyin="rén jì" data-difficulty="3" data-domain="general"><span>人祭</span><span>rén jì</span></button><button type="button" class="term" data-term="窖穴" data-pinyin="jiào xué" data-difficulty="3" data-domain="general"><span>窖穴</span><span>jiào xué</span></button><button type="button" class="term" data-term="人奠基" data-pinyin="rén diàn jī" data-difficulty="3" data-domain="general"><span>人奠基</span><span>rén diàn jī</span></button><button type="button" class="term" data-term="奠基" data-pinyin="diàn jī" data-difficulty="3" data-domain="general"><span>奠基</span><span>diàn jī</span></button><button type="button" class="term" data-term="殉人" data-pinyin="xùn rén" data-difficulty="3" data-domain="general"><span>殉人</span><span>xùn rén</span></button><button type="button" class="term" data-term="谮" data-pinyin="zèn" data-difficulty="4" data-domain="general"><span>谮</span><span>zèn</span></button><button type="button" class="term" data-term="妘" data-pinyin="yún" data-difficulty="4" data-domain="general"><span>妘</span><span>yún</span></button><button type="button" class="term" data-term="琱" data-pinyin="diāo" data-difficulty="4" data-domain="general"><span>琱</span><span>diāo</span></button><button type="button" class="term" data-term="盘庚" data-pinyin="pán gēng" data-difficulty="3" data-domain="proper_name"><span>盘庚</span><span>pán gēng</span></button><button type="button" class="term" data-term="妇好" data-pinyin="fù hǎo" data-difficulty="3" data-domain="proper_name"><span>妇好</span><span>fù hǎo</span></button><button type="button" class="term" data-term="箭镞" data-pinyin="jiàn zú" data-difficulty="5" data-domain="archaeology"><span>箭镞</span><span>jiàn zú</span></button><button type="button" class="term" data-term="铸铜范" data-pinyin="zhù tóng fàn" data-difficulty="5" data-domain="archaeology"><span>铸铜范</span><span>zhù tóng fàn</span></button><button type="button" class="term" data-term="商式陶器" data-pinyin="shāng shì táo qì" data-difficulty="5" data-domain="archaeology"><span>商式陶器</span><span>shāng shì táo qì</span></button><button type="button" class="term" data-term="陶鬲" data-pinyin="táo lì" data-difficulty="5" data-domain="archaeology"><span>陶鬲</span><span>táo lì</span></button><button type="button" class="term" data-term="祭祀坑" data-pinyin="jì sì kēng" data-difficulty="3" data-domain="general"><span>祭祀坑</span><span>jì sì kēng</span></button><button type="button" class="term" data-term="二里冈文化" data-pinyin="èr lǐ gāng wén huà" data-difficulty="5" data-domain="archaeology"><span>二里冈文化</span><span>èr lǐ gāng wén huà</span></button><button type="button" class="term" data-term="《合集》" data-pinyin="hé jí" data-difficulty="4" data-domain="general"><span>《合集》</span><span>hé jí</span></button><button type="button" class="term" data-term="九世之乱" data-pinyin="jiǔ shì zhī luàn" data-difficulty="4" data-domain="general"><span>九世之乱</span><span>jiǔ shì zhī luàn</span></button><button type="button" class="term" data-term="华夏文明" data-pinyin="huá xià wén míng" data-difficulty="3" data-domain="general"><span>华夏文明</span><span>huá xià wén míng</span></button><button type="button" class="term" data-term="夯土台基" data-pinyin="hāng tǔ tái jī" data-difficulty="3" data-domain="general"><span>夯土台基</span><span>hāng tǔ tái jī</span></button><button type="button" class="term" data-term="夯土地基" data-pinyin="hāng tǔ dì jī" data-difficulty="3" data-domain="general"><span>夯土地基</span><span>hāng tǔ dì jī</span></button><button type="button" class="term" data-term="昙花一现" data-pinyin="tán huā yī xiàn" data-difficulty="2" data-domain="phrase"><span>昙花一现</span><span>tán huā yī xiàn</span></button><button type="button" class="term" data-term="泾渭分明" data-pinyin="jīng wèi fēn míng" data-difficulty="2" data-domain="phrase"><span>泾渭分明</span><span>jīng wèi fēn míng</span></button><button type="button" class="term" data-term="甲骨卜辞" data-pinyin="jiǎ gǔ bǔ cí" data-difficulty="4" data-domain="general"><span>甲骨卜辞</span><span>jiǎ gǔ bǔ cí</span></button><button type="button" class="term" data-term="青铜礼器" data-pinyin="qīng tóng lǐ qì" data-difficulty="5" data-domain="bronze_vessel"><span>青铜礼器</span><span>qīng tóng lǐ qì</span></button><button type="button" class="term" data-term="二里冈" data-pinyin="èr lǐ gāng" data-difficulty="5" data-domain="archaeology"><span>二里冈</span><span>èr lǐ gāng</span></button><button type="button" class="term" data-term="周文王" data-pinyin="zhōu wén wáng" data-difficulty="3" data-domain="proper_name"><span>周文王</span><span>zhōu wén wáng</span></button><button type="button" class="term" data-term="周方伯" data-pinyin="zhōu fāng bó" data-difficulty="3" data-domain="general"><span>周方伯</span><span>zhōu fāng bó</span></button><button type="button" class="term" data-term="周武王" data-pinyin="zhōu wǔ wáng" data-difficulty="3" data-domain="proper_name"><span>周武王</span><span>zhōu wǔ wáng</span></button><button type="button" class="term" data-term="夔龙纹" data-pinyin="kuí lóng wén" data-difficulty="5" data-domain="archaeology"><span>夔龙纹</span><span>kuí lóng wén</span></button><button type="button" class="term" data-term="宫殿区" data-pinyin="gōng diàn qū" data-difficulty="3" data-domain="general"><span>宫殿区</span><span>gōng diàn qū</span></button><button type="button" class="term" data-term="盘龙城" data-pinyin="pán lóng chéng" data-difficulty="5" data-domain="archaeology"><span>盘龙城</span><span>pán lóng chéng</span></button><button type="button" class="term" data-term="红烧土" data-pinyin="hóng shāo tǔ" data-difficulty="3" data-domain="general"><span>红烧土</span><span>hóng shāo tǔ</span></button><button type="button" class="term" data-term="绿松石" data-pinyin="lǜ sōng shí" data-difficulty="5" data-domain="general"><span>绿松石</span><span>lǜ sōng shí</span></button><button type="button" class="term" data-term="老牛坡" data-pinyin="lǎo niú pō" data-difficulty="5" data-domain="archaeology"><span>老牛坡</span><span>lǎo niú pō</span></button><button type="button" class="term" data-term="铜礼器" data-pinyin="tóng lǐ qì" data-difficulty="5" data-domain="bronze_vessel"><span>铜礼器</span><span>tóng lǐ qì</span></button><button type="button" class="term" data-term="上帝" data-pinyin="shàng dì" data-difficulty="3" data-domain="general"><span>上帝</span><span>shàng dì</span></button><button type="button" class="term" data-term="人牲" data-pinyin="rén shēng" data-difficulty="3" data-domain="general"><span>人牲</span><span>rén shēng</span></button><button type="button" class="term" data-term="先后" data-pinyin="xiān hòu" data-difficulty="4" data-domain="general"><span>先后</span><span>xiān hòu</span></button><button type="button" class="term" data-term="冶炼" data-pinyin="yě liàn" data-difficulty="4" data-domain="general"><span>冶炼</span><span>yě liàn</span></button><button type="button" class="term" data-term="冶铜" data-pinyin="yě tóng" data-difficulty="3" data-domain="general"><span>冶铜</span><span>yě tóng</span></button><button type="button" class="term" data-term="冶铸" data-pinyin="yě zhù" data-difficulty="3" data-domain="general"><span>冶铸</span><span>yě zhù</span></button><button type="button" class="term" data-term="分封" data-pinyin="fēn fēng" data-difficulty="3" data-domain="general"><span>分封</span><span>fēn fēng</span></button><button type="button" class="term" data-term="卜辞" data-pinyin="bǔ cí" data-difficulty="4" data-domain="general"><span>卜辞</span><span>bǔ cí</span></button><button type="button" class="term" data-term="周原" data-pinyin="zhōu yuán" data-difficulty="5" data-domain="archaeology"><span>周原</span><span>zhōu yuán</span></button><button type="button" class="term" data-term="周昌" data-pinyin="zhōu chāng" data-difficulty="3" data-domain="proper_name"><span>周昌</span><span>zhōu chāng</span></button><button type="button" class="term" data-term="周易" data-pinyin="zhōu yì" data-difficulty="4" data-domain="general"><span>周易</span><span>zhōu yì</span></button><button type="button" class="term" data-term="商族" data-pinyin="shāng zú" data-difficulty="3" data-domain="general"><span>商族</span><span>shāng zú</span></button><button type="button" class="term" data-term="商王" data-pinyin="shāng wáng" data-difficulty="3" data-domain="proper_name"><span>商王</span><span>shāng wáng</span></button><button type="button" class="term" data-term="土著" data-pinyin="tǔ zhù" data-difficulty="3" data-domain="general"><span>土著</span><span>tǔ zhù</span></button><button type="button" class="term" data-term="地层" data-pinyin="dì céng" data-difficulty="3" data-domain="general"><span>地层</span><span>dì céng</span></button><button type="button" class="term" data-term="坑口" data-pinyin="kēng kǒu" data-difficulty="3" data-domain="general"><span>坑口</span><span>kēng kǒu</span></button><button type="button" class="term" data-term="坑壁" data-pinyin="kēng bì" data-difficulty="3" data-domain="general"><span>坑壁</span><span>kēng bì</span></button><button type="button" class="term" data-term="城邑" data-pinyin="chéng yì" data-difficulty="3" data-domain="general"><span>城邑</span><span>chéng yì</span></button><button type="button" class="term" data-term="基址" data-pinyin="jī zhǐ" data-difficulty="3" data-domain="general"><span>基址</span><span>jī zhǐ</span></button><button type="button" class="term" data-term="填土" data-pinyin="tián tǔ" data-difficulty="3" data-domain="general"><span>填土</span><span>tián tǔ</span></button><button type="button" class="term" data-term="夔龙" data-pinyin="kuí lóng" data-difficulty="5" data-domain="archaeology"><span>夔龙</span><span>kuí lóng</span></button><button type="button" class="term" data-term="夯土" data-pinyin="hāng tǔ" data-difficulty="3" data-domain="general"><span>夯土</span><span>hāng tǔ</span></button><button type="button" class="term" data-term="姜嫄" data-pinyin="jiāng yuán" data-difficulty="4" data-domain="general"><span>姜嫄</span><span>jiāng yuán</span></button><button type="button" class="term" data-term="尚书" data-pinyin="shàng shū" data-difficulty="4" data-domain="general"><span>尚书</span><span>shàng shū</span></button><button type="button" class="term" data-term="崇国" data-pinyin="chóng guó" data-difficulty="3" data-domain="proper_name"><span>崇国</span><span>chóng guó</span></button><button type="button" class="term" data-term="征伐" data-pinyin="zhēng fá" data-difficulty="3" data-domain="general"><span>征伐</span><span>zhēng fá</span></button><button type="button" class="term" data-term="方伯" data-pinyin="fāng bó" data-difficulty="3" data-domain="general"><span>方伯</span><span>fāng bó</span></button><button type="button" class="term" data-term="武王" data-pinyin="wǔ wáng" data-difficulty="3" data-domain="proper_name"><span>武王</span><span>wǔ wáng</span></button><button type="button" class="term" data-term="殷商" data-pinyin="yīn shāng" data-difficulty="5" data-domain="general"><span>殷商</span><span>yīn shāng</span></button><button type="button" class="term" data-term="殷都" data-pinyin="yīn dū" data-difficulty="5" data-domain="general"><span>殷都</span><span>yīn dū</span></button><button type="button" class="term" data-term="淫乱" data-pinyin="yín luàn" data-difficulty="4" data-domain="general"><span>淫乱</span><span>yín luàn</span></button><button type="button" class="term" data-term="献祭" data-pinyin="xiàn jì" data-difficulty="3" data-domain="general"><span>献祭</span><span>xiàn jì</span></button><button type="button" class="term" data-term="穿孔" data-pinyin="chuān kǒng" data-difficulty="3" data-domain="general"><span>穿孔</span><span>chuān kǒng</span></button><button type="button" class="term" data-term="窖藏" data-pinyin="jiào cáng" data-difficulty="4" data-domain="general"><span>窖藏</span><span>jiào cáng</span></button><button type="button" class="term" data-term="纣王" data-pinyin="zhòu wáng" data-difficulty="3" data-domain="proper_name"><span>纣王</span><span>zhòu wáng</span></button><button type="button" class="term" data-term="羌人" data-pinyin="qiāng rén" data-difficulty="3" data-domain="general"><span>羌人</span><span>qiāng rén</span></button><button type="button" class="term" data-term="羑里" data-pinyin="yǒu lǐ" data-difficulty="3" data-domain="proper_name"><span>羑里</span><span>yǒu lǐ</span></button><button type="button" class="term" data-term="翦商" data-pinyin="jiǎn shāng" data-difficulty="4" data-domain="general"><span>翦商</span><span>jiǎn shāng</span></button><button type="button" class="term" data-term="肋骨" data-pinyin="lèi gǔ" data-difficulty="3" data-domain="general"><span>肋骨</span><span>lèi gǔ</span></button><button type="button" class="term" data-term="股骨" data-pinyin="gǔ gǔ" data-difficulty="3" data-domain="general"><span>股骨</span><span>gǔ gǔ</span></button><button type="button" class="term" data-term="西土" data-pinyin="xī tǔ" data-difficulty="3" data-domain="proper_name"><span>西土</span><span>xī tǔ</span></button><button type="button" class="term" data-term="诅咒" data-pinyin="zǔ zhòu" data-difficulty="3" data-domain="general"><span>诅咒</span><span>zǔ zhòu</span></button><button type="button" class="term" data-term="诗经" data-pinyin="shī jīng" data-difficulty="4" data-domain="general"><span>诗经</span><span>shī jīng</span></button><button type="button" class="term" data-term="迁徙" data-pinyin="qiān xǐ" data-difficulty="3" data-domain="general"><span>迁徙</span><span>qiān xǐ</span></button><button type="button" class="term" data-term="都邑" data-pinyin="dū yì" data-difficulty="3" data-domain="general"><span>都邑</span><span>dū yì</span></button><button type="button" class="term" data-term="酋长" data-pinyin="qiú zhǎng" data-difficulty="3" data-domain="general"><span>酋长</span><span>qiú zhǎng</span></button><button type="button" class="term" data-term="铜刀" data-pinyin="tóng dāo" data-difficulty="5" data-domain="bronze_vessel"><span>铜刀</span><span>tóng dāo</span></button><button type="button" class="term" data-term="铜渣" data-pinyin="tóng zhā" data-difficulty="5" data-domain="archaeology"><span>铜渣</span><span>tóng zhā</span></button><button type="button" class="term" data-term="铜锭" data-pinyin="tóng dìng" data-difficulty="5" data-domain="archaeology"><span>铜锭</span><span>tóng dìng</span></button><button type="button" class="term" data-term="陶寺" data-pinyin="táo sì" data-difficulty="5" data-domain="archaeology"><span>陶寺</span><span>táo sì</span></button><button type="button" class="term" data-term="陶缸" data-pinyin="táo gāng" data-difficulty="5" data-domain="archaeology"><span>陶缸</span><span>táo gāng</span></button><button type="button" class="term" data-term="饕餮" data-pinyin="tāo tiè" data-difficulty="4" data-domain="general"><span>饕餮</span><span>tāo tiè</span></button><button type="button" class="term" data-term="镞" data-pinyin="zú" data-difficulty="5" data-domain="bronze_vessel"><span>镞</span><span>zú</span></button><button type="button" class="term" data-term="戈" data-pinyin="gē" data-difficulty="5" data-domain="bronze_vessel"><span>戈</span><span>gē</span></button><button type="button" class="term" data-term="鬲" data-pinyin="lì" data-difficulty="5" data-domain="bronze_vessel"><span>鬲</span><span>lì</span></button><button type="button" class="term" data-term="簋" data-pinyin="guǐ" data-difficulty="5" data-domain="bronze_vessel"><span>簋</span><span>guǐ</span></button><button type="button" class="term" data-term="钺" data-pinyin="yuè" data-difficulty="5" data-domain="bronze_vessel"><span>钺</span><span>yuè</span></button></div></section>
+      </aside>
+      <section>
+        <jianshang-editor-toc current-chapter="chapter_14">
+          <noscript>目录需要启用 JavaScript。</noscript>
+        </jianshang-editor-toc>
+        <div class="reference-grid">
+        <section class="reference-panel" id="yueducibiao">
+          <h2>阅读词表</h2>
+          <div class="table-scroll">
+            <table class="data-table">
+              <thead><tr><th>词条</th><th>拼音</th><th>类型</th><th>说明</th></tr></thead>
+              <tbody><tr><td>灰坑</td><td>huī kēng</td><td>concept</td><td>遗址中含灰土、废弃物或祭祀遗存的坑穴。</td></tr><tr><td>髳</td><td>máo</td><td>manual</td><td>中国古代西南部族名；文中见髳方及《牧誓》盟军。</td></tr><tr><td>殷墟</td><td>yīn xū</td><td>site_or_culture</td><td>晚商都邑遗址，甲骨卜辞的重要出土地。</td></tr><tr><td>铜镞</td><td>tóng zú</td><td>bronze_item</td><td>青铜箭头。</td></tr><tr><td>妲</td><td>dā</td><td>manual</td><td>人名用字；文中见商纣王妃妲己。</td></tr><tr><td>仡仡</td><td>yì yì</td><td>manual</td><td>勇猛强健的样子；文中出自《诗经·皇矣》。</td></tr><tr><td>铜戈</td><td>tóng gē</td><td>bronze_item</td><td>青铜戈，商周常见兵器。</td></tr><tr><td>人祭</td><td>rén jì</td><td>concept</td><td>以人作为祭品的祭祀行为。</td></tr><tr><td>窖穴</td><td>jiào xué</td><td>concept</td><td>地下储藏坑穴。</td></tr><tr><td>人奠基</td><td>rén diàn jī</td><td>concept</td><td>建筑奠基时以人作为牺牲的行为。</td></tr><tr><td>奠基</td><td>diàn jī</td><td>concept</td><td>建筑开始时的基础工程或相关仪式。</td></tr><tr><td>殉人</td><td>xùn rén</td><td>concept</td><td>陪葬或随葬的人。</td></tr><tr><td>谮</td><td>zèn</td><td>manual</td><td>诬陷，中伤；文中指崇侯虎诬告西伯。</td></tr><tr><td>妘</td><td>yún</td><td>manual</td><td>古代姓氏，文中见金文族姓。</td></tr><tr><td>琱</td><td>diāo</td><td>manual</td><td>同“雕”，雕刻；文中见金文族姓释读。</td></tr><tr><td>盘庚</td><td>pán gēng</td><td>person</td><td>商王名，以迁都殷地著称。</td></tr><tr><td>妇好</td><td>fù hǎo</td><td>person</td><td>商王武丁配偶，甲骨文中著名女性军事人物。</td></tr><tr><td>箭镞</td><td>jiàn zú</td><td>artifact</td><td>箭头，文中有青铜、石骨材质。</td></tr><tr><td>铸铜范</td><td>zhù tóng fàn</td><td>artifact</td><td>铸造铜器所用的范模。</td></tr><tr><td>商式陶器</td><td>shāng shì táo qì</td><td>artifact</td><td>具有商文化风格的陶器。</td></tr><tr><td>陶鬲</td><td>táo lì</td><td>artifact</td><td>三足陶炊器。</td></tr><tr><td>祭祀坑</td><td>jì sì kēng</td><td>concept</td><td>用于祭祀或埋藏祭品的坑穴。</td></tr><tr><td>二里冈文化</td><td>èr lǐ gāng wén huà</td><td>项目词典</td><td>早商时期中原考古文化。</td></tr><tr><td>《合集》</td><td>hé jí</td><td>项目词典</td><td>《甲骨文合集》的简称。</td></tr><tr><td>九世之乱</td><td>jiǔ shì zhī luàn</td><td>项目词典</td><td>《史记》所记商代中期王室长期内乱。</td></tr><tr><td>华夏文明</td><td>huá xià wén míng</td><td>项目词典</td><td>在中国早期历史中逐渐形成和发展的文明传统。</td></tr><tr><td>夯土台基</td><td>hāng tǔ tái jī</td><td>项目词典</td><td>用夯土筑成的高台式建筑基础。 | 用夯土筑成的建筑台基。</td></tr><tr><td>夯土地基</td><td>hāng tǔ dì jī</td><td>项目词典</td><td>夯土筑成的建筑基础。</td></tr><tr><td>昙花一现</td><td>tán huā yī xiàn</td><td>项目词典</td><td>比喻事物短暂出现后很快消失。</td></tr><tr><td>泾渭分明</td><td>jīng wèi fēn míng</td><td>项目词典</td><td>界限清楚，差别明显。</td></tr><tr><td>甲骨卜辞</td><td>jiǎ gǔ bǔ cí</td><td>项目词典</td><td>商代刻写在甲骨上的占卜文字。 | 刻写在龟甲兽骨上的占卜文字。 | 刻写在甲骨上的占卜记录。 | 刻写在龟甲兽骨上的占卜辞句。</td></tr><tr><td>青铜礼器</td><td>qīng tóng lǐ qì</td><td>项目词典</td><td>用于礼仪或祭祀的青铜器。</td></tr><tr><td>二里冈</td><td>èr lǐ gāng</td><td>项目词典</td><td>郑州一带早商文化的重要遗址和文化命名地。</td></tr><tr><td>周文王</td><td>zhōu wén wáng</td><td>项目词典</td><td>周族领袖姬昌。</td></tr><tr><td>周方伯</td><td>zhōu fāng bó</td><td>项目词典</td><td>商王册封周族首领为方伯的身份。</td></tr><tr><td>周武王</td><td>zhōu wǔ wáng</td><td>项目词典</td><td>周发，灭商之君。</td></tr><tr><td>夔龙纹</td><td>kuí lóng wén</td><td>项目词典</td><td>青铜器常见的夔龙形纹饰。</td></tr><tr><td>宫殿区</td><td>gōng diàn qū</td><td>项目词典</td><td>都邑中宫殿和王室活动集中的区域。</td></tr><tr><td>盘龙城</td><td>pán lóng chéng</td><td>项目词典</td><td>湖北武汉附近早商城址，是商朝南方重要据点。 | 湖北武汉附近早商城址，文中作为商朝南方据点。</td></tr><tr><td>红烧土</td><td>hóng shāo tǔ</td><td>项目词典</td><td>经火烧后变红变硬的土，常见于考古遗迹。</td></tr><tr><td>绿松石</td><td>lǜ sōng shí</td><td>项目词典</td><td>一种蓝绿色矿石，常用于装饰。 | 蓝绿色矿物，古代常作装饰嵌片。 | 蓝绿色矿物，古代常作饰物。</td></tr><tr><td>老牛坡</td><td>lǎo niú pō</td><td>项目词典</td><td>西安附近商代遗址，文中涉及商人据点和人祭。 | 陕西西安商代遗址。</td></tr><tr><td>铜礼器</td><td>tóng lǐ qì</td><td>项目词典</td><td>用于礼仪或祭祀的青铜器。</td></tr><tr><td>上帝</td><td>shàng dì</td><td>项目词典</td><td>商周宗教中的最高神。</td></tr><tr><td>人牲</td><td>rén shēng</td><td>项目词典</td><td>被用于祭祀的人。 | 被用于祭祀或献祭的人。 | 被杀用于祭祀的人。</td></tr><tr><td>先后</td><td>xiān hòu</td><td>项目词典</td><td>《盘庚》引文中指已故先王。</td></tr><tr><td>冶炼</td><td>yě liàn</td><td>项目词典</td><td>用高温从矿石中提炼金属。</td></tr><tr><td>冶铜</td><td>yě tóng</td><td>项目词典</td><td>从铜矿石中冶炼铜料的技术。</td></tr><tr><td>冶铸</td><td>yě zhù</td><td>项目词典</td><td>冶炼并铸造金属器物。 | 冶炼和铸造金属器物的工艺。</td></tr><tr><td>分封</td><td>fēn fēng</td><td>项目词典</td><td>周初封邦建国制度。</td></tr><tr><td>卜辞</td><td>bǔ cí</td><td>项目词典</td><td>甲骨占卜后刻写或记录的辞句。 | 甲骨上记录占卜的文字。 | 占卜时刻写或记录的辞句。</td></tr><tr><td>周原</td><td>zhōu yuán</td><td>项目词典</td><td>关中地区周族的重要活动中心。 | 关中地区周族重要遗址和活动中心。 | 周族核心区域。</td></tr><tr><td>周昌</td><td>zhōu chāng</td><td>项目词典</td><td>周文王姬昌，书中常称周昌。 | 周文王姬昌。 | 周文王之名。</td></tr><tr><td>周易</td><td>zhōu yì</td><td>项目词典</td><td>以《易经》及其传文构成的古代经典。 | 《易经》与后世《易传》合称的经典。</td></tr><tr><td>商族</td><td>shāng zú</td><td>项目词典</td><td>商王朝建立前后的族群共同体。</td></tr><tr><td>商王</td><td>shāng wáng</td><td>项目词典</td><td>商朝王。</td></tr><tr><td>土著</td><td>tǔ zhù</td><td>项目词典</td><td>本地原有居民或族群。</td></tr><tr><td>地层</td><td>dì céng</td><td>项目词典</td><td>遗址中不同时期堆积形成的层次。</td></tr><tr><td>坑口</td><td>kēng kǒu</td><td>项目词典</td><td>坑穴在地表或开口处的形状和范围。 | 坑穴开口处的形状和范围。</td></tr><tr><td>坑壁</td><td>kēng bì</td><td>项目词典</td><td>坑穴侧壁。</td></tr><tr><td>城邑</td><td>chéng yì</td><td>项目词典</td><td>古代有人群聚居、具有一定组织和防御功能的城镇聚落。</td></tr><tr><td>基址</td><td>jī zhǐ</td><td>项目词典</td><td>建筑物遗留下来的基础位置。</td></tr><tr><td>填土</td><td>tián tǔ</td><td>项目词典</td><td>填入坑穴或遗迹中的土层。</td></tr><tr><td>夔龙</td><td>kuí lóng</td><td>项目词典</td><td>青铜纹饰中常见的龙形神兽。</td></tr><tr><td>夯土</td><td>hāng tǔ</td><td>项目词典</td><td>把土层层夯实形成建筑基础或城墙的技术。</td></tr><tr><td>姜嫄</td><td>jiāng yuán</td><td>项目词典</td><td>周族始祖传说中的女性始祖。 | 周人始祖母，传说为有邰氏之女、后稷之母。</td></tr><tr><td>尚书</td><td>shàng shū</td><td>项目词典</td><td>儒家经典之一，文中引用《盘庚》篇。 | 保存上古政治文献和诰命的儒家经典。</td></tr><tr><td>崇国</td><td>chóng guó</td><td>项目词典</td><td>商周之际西土方国。</td></tr><tr><td>征伐</td><td>zhēng fá</td><td>项目词典</td><td>出兵讨伐。</td></tr><tr><td>方伯</td><td>fāng bó</td><td>项目词典</td><td>商周时期受命统领一方的首领。 | 受命统领一方的首领。</td></tr><tr><td>武王</td><td>wǔ wáng</td><td>项目词典</td><td>周武王。</td></tr><tr><td>殷商</td><td>yīn shāng</td><td>项目词典</td><td>商朝后期文化和政权。 | 商代后期以殷墟为中心的商王朝阶段。</td></tr><tr><td>殷都</td><td>yīn dū</td><td>项目词典</td><td>商朝后期都城区域，今安阳殷墟一带。 | 商朝后期都城区域。 | 晚商都城，通常指安阳殷墟。</td></tr><tr><td>淫乱</td><td>yín luàn</td><td>项目词典</td><td>行为放纵失序。</td></tr><tr><td>献祭</td><td>xiàn jì</td><td>项目词典</td><td>把祭品奉献给神灵或祖先。 | 向神灵、祖先等奉献祭品。</td></tr><tr><td>穿孔</td><td>chuān kǒng</td><td>项目词典</td><td>贯穿形成孔洞，文中多指颅骨创口。</td></tr><tr><td>窖藏</td><td>jiào cáng</td><td>项目词典</td><td>埋藏于地下的储藏物或储藏方式。 | 将器物埋藏于地下的行为或遗迹。</td></tr><tr><td>纣王</td><td>zhòu wáng</td><td>项目词典</td><td>商朝末代王帝辛。 | 商末王，文中讨论其暴虐和人祭。</td></tr><tr><td>羌人</td><td>qiāng rén</td><td>项目词典</td><td>西方族群，常见于商代卜辞。</td></tr><tr><td>羑里</td><td>yǒu lǐ</td><td>项目词典</td><td>文王被商纣囚禁之地。 | 文王被囚之地。 | 商代囚禁周文王之地。</td></tr><tr><td>翦商</td><td>jiǎn shāng</td><td>项目词典</td><td>周人剪灭商朝的政治行动。 | 剪除商朝，文中为全书核心主题。</td></tr><tr><td>肋骨</td><td>lèi gǔ</td><td>项目词典</td><td>胸部骨骼。</td></tr><tr><td>股骨</td><td>gǔ gǔ</td><td>项目词典</td><td>大腿骨。</td></tr><tr><td>西土</td><td>xī tǔ</td><td>项目词典</td><td>周族所在的西方地区。</td></tr><tr><td>诅咒</td><td>zǔ zhòu</td><td>项目词典</td><td>以宗教方式祈求灾祸降临敌方。</td></tr><tr><td>诗经</td><td>shī jīng</td><td>项目词典</td><td>中国古代诗歌总集，儒家经典之一。</td></tr><tr><td>迁徙</td><td>qiān xǐ</td><td>项目词典</td><td>群体从一地迁移到另一地。</td></tr><tr><td>都邑</td><td>dū yì</td><td>项目词典</td><td>作为政治中心的大型聚落或城市。</td></tr><tr><td>酋长</td><td>qiú zhǎng</td><td>项目词典</td><td>部落或地方共同体的首领。</td></tr><tr><td>铜刀</td><td>tóng dāo</td><td>项目词典</td><td>青铜刀。</td></tr><tr><td>铜渣</td><td>tóng zhā</td><td>项目词典</td><td>冶炼或铸造铜器后留下的残渣。</td></tr><tr><td>铜锭</td><td>tóng dìng</td><td>项目词典</td><td>冶炼后铸成块状以便运输或再加工的铜料。</td></tr><tr><td>陶寺</td><td>táo sì</td><td>项目词典</td><td>山西襄汾一带龙山时代重要遗址。</td></tr><tr><td>陶缸</td><td>táo gāng</td><td>项目词典</td><td>大型陶制缸器，文中兼具储藏和炼铜功能。</td></tr><tr><td>饕餮</td><td>tāo tiè</td><td>项目词典</td><td>古代传说中的贪食猛兽名，常用于青铜纹饰名称。</td></tr></tbody>
+            </table>
+          </div>
+        </section>
+        <section class="reference-panel" id="qingtongqicibiao">
+          <h2>青铜器词表</h2>
+          <div class="table-scroll">
+            <table class="data-table">
+              <thead><tr><th>器名</th><th>拼音</th><th>类型</th><th>说明</th></tr></thead>
+              <tbody><tr><td>镞</td><td>zú</td><td>bronze_item</td><td>箭头。</td></tr><tr><td>戈</td><td>gē</td><td>bronze_item</td><td>古代横刃长柄兵器。</td></tr><tr><td>鬲</td><td>lì</td><td>bronze_item</td><td>古代煮食炊器。</td></tr><tr><td>簋</td><td>guǐ</td><td>bronze_item</td><td>古代盛食物的器具。</td></tr><tr><td>钺</td><td>yuè</td><td>bronze_item</td><td>大型斧形兵器或礼器。</td></tr></tbody>
+            </table>
+          </div>
+        </section>
+        <section class="reference-panel" id="dushuzhaji">
+          <h2>章节导读札记</h2>
+          <div class="chapter-note-entry">
+            <label>主题<input id="chapterNoteTitle" type="text" placeholder="例如：周公改革的沉默"></label>
+            <label>札记<textarea id="chapterNoteText" placeholder="记录对本章整体内容的理解、判断或总结"></textarea></label>
+            <div class="note-actions">
+              <button id="addChapterNoteBtn" type="button">新增章节导读札记</button>
+              <button id="downloadChapterNotesBtn" type="button">下载 Markdown</button>
+            </div>
+            <div class="log-meta">新增内容保存在本浏览器及 JSON 备份中；下载 Markdown 后可作为 reading_notes.md 导入项目。</div>
+          </div>
+          <div class="table-scroll">
+            <table class="data-table note-table">
+              <thead><tr><th>主题</th><th>札记</th><th>操作</th></tr></thead>
+              <tbody id="chapterNotesBody"><tr><td colspan="3">暂无章节导读札记</td></tr></tbody>
+            </table>
+          </div>
+        </section>
+        <section class="reference-panel" id="user-notes">
+          <h2>用户札记</h2>
+          <div class="table-scroll">
+            <table class="data-table note-table">
+              <thead><tr><th>类型</th><th>页</th><th>内容</th></tr></thead>
+              <tbody id="userNotesBody"><tr><td colspan="3">暂无用户札记</td></tr></tbody>
+            </table>
+          </div>
+        </section></div>
+        <div class="pages">
+        <section class="page" id="page-283">
+          <div class="page-head">
+            <div class="page-title">原书阅读器页 283<span>原书物理 PDF 页 281</span><span>印刷页 269</span></div>
+            <div class="page-tools">
+              <button type="button" data-copy-page="283">复制本页</button>
+              <button type="button" data-export-page="283">导出本页</button>
+            </div>
+          </div>
+          <div class="workbench">
+            <div class="editor-wrap">
+              <div class="rich-editor" data-page="283" contenteditable="true" role="textbox" aria-multiline="true" spellcheck="false">第十四章西土拉锯战：老牛坡
+
+关中盆地在群山环抱之中，犹如一片东西狭长的柳叶，渭河从盆地中央流过，沿途接受洋河、濡河、泾河和北洛河等支流汇入，最终注入黄河大拐弯处。
+
+在漫长的新石器时代，关中盆地内一直有众多繁荣的小村落，但到了四千多年前的龙山时代，华北各地开始进入普遍的动荡和战乱。关中也不例外。今西安市西郊的客省庄（二期）就出现了大量杀戮、冲突甚至人祭的迹象。
+
+但不知何故，关中的新石器人群未能“进化”到早期国家。龙山动荡期过去之后，这里又回归仰韶时代那种与世无争的社会状态。在关中之外，南佐、石郎和陶寺等古国兴废倏忽，夏、商文明迅速迭代升级，却都没影响到关中的宁静生活。
+
+这是上古时代的常态：并非所有的人类社群都会自动进化成更大的共同体和国家；事实是，多数会一直停滞无为，直到被强大的古国或王朝吞并，被强行裹挟进人类的“发展”大潮中。
+
+王朝扩张也会引发土著的反抗。关中是商王朝的“西土”边疆，也是献祭人牲的重要来源。商朝的势力虽在这里活跃数百年，但从未占领整个盆地。西安市东郊潘桥区老牛坡村的黄土地层，记录着商朝对关中数百年的经营史。
+
+商朝通过设立城邑或侯国管理外地和边疆，本质上，这是一种分封建国的制度。后来的西周也同样实行封建制，但不同的是，商朝的城邑或侯国很重视商文化的独特性，与土著人群泾渭分明，很难出现文化和民族融合现象。当然，对于商朝来说，湖北盘龙城是特例，也是一个教训。</div>
+            </div>
+            <div class="scan"><img src="pdf_pages/page-281.jpg" alt="PDF page 283"></div>
+          </div>
+        </section>
+        <section class="page" id="page-284">
+          <div class="page-head">
+            <div class="page-title">原书阅读器页 284<span>原书物理 PDF 页 282</span><span>印刷页 270</span></div>
+            <div class="page-tools">
+              <button type="button" data-copy-page="284">复制本页</button>
+              <button type="button" data-export-page="284">导出本页</button>
+            </div>
+          </div>
+          <div class="workbench">
+            <div class="editor-wrap">
+              <div class="rich-editor" data-page="284" contenteditable="true" role="textbox" aria-multiline="true" spellcheck="false">老牛坡是商朝设在外地侯国的典型个案，显示了商族人祭文化和土著部族文化之间的激烈冲突。
+
+早商的入侵者
+
+20世纪，老牛坡的村民耕作时还偶尔会挖出商代青铜器，这引起了考古工作者的注意。1985—1989年，考古队对这里进行了多次发掘，由此，一个从新石器时代发端、跨越整个商代的聚落逐渐露出部分真容。[[fn:1]]
+
+老牛坡村接近关中盆地中心，背靠骊山，面对满河。在商人到来之前，本地土著还生活在石器时代。他们在黄土坡地上开垦出农田，用石刀和石镰收割谷物，在濯河中用网捕鱼，留下了很多拇指粗的石制渔网坠。他们也做些艺术工作，比如，在陶罐的口沿捏出花边，用石头磨制成巴掌大的环形“石璧”。
+
+土著墓葬的随葬品很少，没有任何兵器，说明他们的生活中少有暴力冲突，也几乎没有权力组织和社会分化。那么，又是什么引来了商人征服者？
+
+墓葬里埋藏着答案：发掘的七座墓中，四座随葬有绿松石。也就是说，附近的山中有铜矿，这正是商人搜寻的目标，而且也只有在能生产铜器的地方，商人才能建立稳固的据点。
+
+可能在刚刚灭亡夏朝一二里头古城之后，新兴的商族人就乘胜进入了关中。他们沿着黄河南岸古道而上，穿越豫西的山涧和密林。这一路虽颇为艰辛，但并不缺少人烟。在仰韶时代，农业聚落已经遍布这里山间的各处台地。
+
+关中盆地虽然开阔，但尚未进入古国时代，并没有值得掳掠的繁荣邑聚，所以这批商人并未把关中视作久留之地。直到开国百年，郑洛地区开始面临人口增长的压力，关中地区这才成为商朝扩张的新大陆，一批又一批商人进入潼关，在盆地东部扩散开，建起一系列大大小小的据点。其中，老牛坡规模最大，延续时间也最长。</div>
+            </div>
+            <div class="scan"><img src="pdf_pages/page-282.jpg" alt="PDF page 284"></div>
+          </div>
+        </section>
+        <section class="page" id="page-285">
+          <div class="page-head">
+            <div class="page-title">原书阅读器页 285<span>原书物理 PDF 页 283</span><span>印刷页 271</span></div>
+            <div class="page-tools">
+              <button type="button" data-copy-page="285">复制本页</button>
+              <button type="button" data-export-page="285">导出本页</button>
+            </div>
+          </div>
+          <div class="workbench">
+            <div class="editor-wrap">
+              <div class="rich-editor" data-page="285" contenteditable="true" role="textbox" aria-multiline="true" spellcheck="false">老牛坡商代地层分为四期。一期还是本地土著的生活世界，到二期，开始出现冶铸青铜的遗迹，并伴随着大量早商式（二里冈文化）陶器碎片。这是商朝人入侵和定居的证据，湖北的盘龙城也在这一时期形成。关中周边的铜矿少而零散，虽难以形成盘龙城那种规模的青铜产业，但已经足够征服者自用。
+
+老牛坡二期的生活-作坊区布满了大大小小的灰坑，考古工作者在里面发现了两块铜炼渣、两枚铜镞和一枚铜锥，还有铸造铜镞和铜戈的陶质残范各一块——是铸造小件铜器用的“双面范”，两块范拼合，可以多次使用。在半块砖头大小的镞范上，五枚箭镞呈扇形分布，其中四枚完整，无倒刺，两翼三角形；戈范刃部平直，锋利。这都是早商时代青铜器的特征。
+
+没有发现任何稍大的铜器和铸铜范，比如商族人常见的铜酒器。由此可见：一，这批征服者地位不太高；二，军事需求最为迫切，必须用有限的铜资源巩固新据点。不过，他们还是仿照铜器的饕餮花纹制造了陶器，试图效仿故乡显贵们的生活。
+
+商人常见的杀人献祭自然不会缺席。一座边长约半米的三角形小坑，里面埋着三枚完整的幼儿头骨，但没有任何躯干骨和肢骨。填土经过夯打，头骨非常破碎，无法分辨性别，只能判断他们的年龄在两岁左右。这些幼儿可能是用来向铸铜设施献祭的，因为人头坑紧挨着一座大灰坑（88XL12H6），从中发现了两块铜炼渣，说明铜炉应该在不远处。
+
+老牛坡商代二期的陶制铸范和铜器（图）</div>
+            </div>
+            <div class="scan"><img src="pdf_pages/page-283.jpg" alt="PDF page 285"></div>
+          </div>
+        </section>
+        <section class="page" id="page-286">
+          <div class="page-head">
+            <div class="page-title">原书阅读器页 286<span>原书物理 PDF 页 284</span><span>印刷页 272</span></div>
+            <div class="page-tools">
+              <button type="button" data-copy-page="286">复制本页</button>
+              <button type="button" data-export-page="286">导出本页</button>
+            </div>
+          </div>
+          <div class="workbench">
+            <div class="editor-wrap">
+              <div class="rich-editor" data-page="286" contenteditable="true" role="textbox" aria-multiline="true" spellcheck="false">二期仿铜陶簋，有商代铜器常见的饕餮夔龙纹饰带（图）
+
+在出土了铜镞和铜锥的88XL12H18灰坑，还发现了两片由人头骨磨制成的椭圆形“骨饼”，直径约3.5厘米，比硬币略大，没有穿孔和纹饰，不知有何用处。
+
+由于发掘范围有限，没有发现商人的房屋和墓葬，只有一些灰坑。从这些信息看，在二期，商人征服者数量不多，生活也不算奢华。
+
+综上，老牛坡二期只发现有铸造工具，但没有冶炼铜的迹象，比如大量的铜炼渣。那么，用于冶铸的铜料又来自哪里？
+
+沿浦河向上游20公里，蓝田县的怀珍坊村有这一时期堆积的铜渣、木炭屑以及冶铜炉的残迹。比如，有草拌泥的红烧土块，一面粘有一层绿色凝结铜汁，发掘者推测，这可能是炼铜炉的炉壁碎块。
+
+和同期的老牛坡一样，怀珍坊没有发现大件铜容器（礼器），但出土有早商式陶器，以及一些小件铜器，如铜戈、小铜刀、铜锥、铜钻、铜镞和铜环等。此外，还有一块重三斤的铜圆饼（用于铸造的铜锭）。
+
+也没有发现铸铜设备，比如铸造用的范。看来，这里和老牛坡正好互补，冶炼出的铜锭会被送到老牛坡投入铸造。只是本来可以整合在一起的冶铸工作，为何要分在相隔20公里的两地？</div>
+            </div>
+            <div class="scan"><img src="pdf_pages/page-284.jpg" alt="PDF page 286"></div>
+          </div>
+        </section>
+        <section class="page" id="page-287">
+          <div class="page-head">
+            <div class="page-title">原书阅读器页 287<span>原书物理 PDF 页 285</span><span>印刷页 273</span></div>
+            <div class="page-tools">
+              <button type="button" data-copy-page="287">复制本页</button>
+              <button type="button" data-export-page="287">导出本页</button>
+            </div>
+          </div>
+          <div class="workbench">
+            <div class="editor-wrap">
+              <div class="rich-editor" data-page="287" contenteditable="true" role="textbox" aria-multiline="true" spellcheck="false">其一，可能是铜矿石不易运输，且冶炼场地离铜矿越近，则成本越低；其二，这两种工序都有很特殊的条件，冶铜需要有矿石来源，铸铜则还需要铅和锡，以及合金配比技术。两种工序分离背后的原因可能是，这是两个不同的商人部族各自拥有的产业，怀珍坊这家有矿山，老牛坡则有铅和锡以及铸造技术，他们可以分工合作，却不愿合并成一'家。
+
+和冶铜设施同期，怀珍坊遗址还发掘出五座低等级墓葬，尸骨大多残缺，下葬时应该已被砍去肢体。M1墓主缺头骨和右半身骨骼，有右小腿骨。从骨架观察，头骨及右半身骨骼应该在埋葬时就缺了，足骨有明显截断的痕迹。M2墓主是一名儿童，“坑内仅有两根小腿骨，有明显的截痕”。M3墓主的骨架缺上肢骨和肋骨等，发掘报告认为，下葬时尸体就已经不完整了。M4墓主的骨架缺右上肢骨、左股骨及其他小件。[[fn:2]]
+
+这是伴随商人而来的征服和残酷统治，自给自足的土著村落成为商人统治下的奴隶庄园。一方面，开采和运输铜矿石需要较多劳动力，怀珍坊的这些死者可能是被奴役和虐杀的本地劳工。另一方面，这些人仍然拥有比较正规的墓葬，墓穴里有几件简陋的随葬品，说明他们还生活在自己的村落和家庭环境中，死后也由亲人安葬。
+
+怀珍坊的早商文化层很薄，没有更晚的（殷商时期）陶器和铜器，说明这个据点只是昙花一现，然后被永远废弃。</div>
+            </div>
+            <div class="scan"><img src="pdf_pages/page-285.jpg" alt="PDF page 287"></div>
+          </div>
+        </section>
+        <section class="page" id="page-288">
+          <div class="page-head">
+            <div class="page-title">原书阅读器页 288<span>原书物理 PDF 页 286</span><span>印刷页 274</span></div>
+            <div class="page-tools">
+              <button type="button" data-copy-page="288">复制本页</button>
+              <button type="button" data-export-page="288">导出本页</button>
+            </div>
+          </div>
+          <div class="workbench">
+            <div class="editor-wrap">
+              <div class="rich-editor" data-page="288" contenteditable="true" role="textbox" aria-multiline="true" spellcheck="false">第二轮西进运动
+
+不止怀珍坊聚落，甚至不止关中，在商朝中叶，商人在各方向的扩张潮都在冻结和收缩。此时，并未出现强有力的外敌，正如前文所述，商人的挫折来自内部的九世之乱，这造成了王朝近百年的停滞。
+
+然后是盘庚王迁殷。之后，殷商终于稳定了下来。经过几十年休养，王朝实力逐渐恢复，到长寿的武丁王在位时期，又开始了对四方的征伐。而且，殷商已经有马拉战车，王宫和上千里外的战线的联络得以解决，征伐已不再是盲人摸象般的自发扩张，而是由商王统一指挥的军事行动。
+
+第二轮“西进运动”是武丁开启的，重点指向晋南和关中盆地。商人入侵者持续向关中西部推进，与各种土著部落频繁发生激战。这是上一轮自发扩张潮从未能抵达的地区。
+
+关中西部有一个叫“周”的羌人部族。有一条甲骨卜辞的内容，就是武丁占卜要不要亲自去征讨周方：“丙辰卜，宾贞，王惟周方征。” （《合集》6657正）此外，武丁还多次占卜需要派哪些武装去“寇周”，寇也释读成“扑”，都有征伐之意。这种卜辞多达九条，预备动用的武装则有“多子族”：“己卯卜，允，贞：令多子族从犬侯寇周，叶王事。”还有犬侯、尹侯、崇侯虎以及一些字形无法释读的侯和人名。[[fn:3]] 可见，武丁动用的兵力非常强大，尤其是“多子族”，它是商王族的武装，陈梦家将其比作清代的八旗军队。</div>
+            </div>
+            <div class="scan"><img src="pdf_pages/page-286.jpg" alt="PDF page 288"></div>
+          </div>
+        </section>
+        <section class="page" id="page-289">
+          <div class="page-head">
+            <div class="page-title">原书阅读器页 289<span>原书物理 PDF 页 287</span><span>印刷页 275</span></div>
+            <div class="page-tools">
+              <button type="button" data-copy-page="289">复制本页</button>
+              <button type="button" data-export-page="289">导出本页</button>
+            </div>
+          </div>
+          <div class="workbench">
+            <div class="editor-wrap">
+              <div class="rich-editor" data-page="289" contenteditable="true" role="textbox" aria-multiline="true" spellcheck="false">需要特别强调的是，武丁这里讨伐的羌人周族（姜姓周族），和后来周文王的姬姓周族不一样。[[fn:4]] 武丁王时期，周文王的先祖姬姓周族还生活在偏远的陕北山地，而非关中盆地，商朝还不可能知道他们。当然，羌人周族和姬姓周族还有血缘上的联系，后面我们会对此详细介绍。
+
+商人军队消灭姜姓周族后，占据了岐山之南、渭水之北的周原地区。然后，武丁王册封了一名王族显贵统治周原，在甲骨文里，他被称为“周侯”。注意，这是商人建立的周原侯国。
+
+周原地区出土过几次商代青铜器，[[fn:5]] 有窖藏，也有墓葬。多数铜器造型属于殷墟前期，恰和武丁时期的西进运动吻合，但也有少数铜器时代更早，属于迁殷之前的商前期。这少数的商前期铜器可能是被主人从商朝核心区带到新征服的周原的，保存和使用了好几代，最后被随葬埋入地下。
+
+这些铜器表明，占领周原后，商朝便试图在此建立稳定的据点和扩张基地。显然，新册封的这位周侯和王室关系密切，武丁时期的卜辞里有很多关于他的内容，比如，“令周侯今生月亡祸”（《合集》20074），意思是，武丁祈祷周侯这个月没有灾祸。
+
+再到几代人之后，商朝授予周文王的封号则是“周方伯”。[[fn:6]] 伯是异族酋长，商朝是不会给异族头领“侯”的称号的。
+
+武丁曾占卜一位“妇周”的病情会不会延续。[[fn:7]] “妇某”的称呼专用于商族血统的后妃，比如著名的妇好。倘若是异族女子，哪怕成为商王宠妃，也不会享有这种称呼，比如末代商纣王宠爱的妲己，她来自“己”姓的苏国，而非“子”姓的商族，所以不能称“妇妲”。</div>
+            </div>
+            <div class="scan"><img src="pdf_pages/page-287.jpg" alt="PDF page 289"></div>
+          </div>
+        </section>
+        <section class="page" id="page-290">
+          <div class="page-head">
+            <div class="page-title">原书阅读器页 290<span>原书物理 PDF 页 288</span><span>印刷页 276</span></div>
+            <div class="page-tools">
+              <button type="button" data-copy-page="290">复制本页</button>
+              <button type="button" data-export-page="290">导出本页</button>
+            </div>
+          </div>
+          <div class="workbench">
+            <div class="editor-wrap">
+              <div class="rich-editor" data-page="290" contenteditable="true" role="textbox" aria-multiline="true" spellcheck="false">武丁死后，西进运动再次式微。结果，西部土著羌人和商人的冲突日益频繁，关中西部的商人据点还没来得及稳固就纷纷沦陷。在周原，虽然发现过多组武丁时期的青铜礼器，但没有发现任何高等级建筑。这说明，这个商人侯国可能立国不久就被消灭，或者被迫离开了。
+
+1972年，在周原范围内的岐山县京当村出土了五件有“目”形纹饰的商式铜器。它们被保存在一个“用圆石头砌成的窖穴”中，村民挖掘时没有发现人骨，说明这批铜器不是随葬品，而是战乱来临时埋藏的，很可能是主人发现自己遭到羌人围困，来不及带走财宝，只好在突围之前先埋了起来。
+
+商人对待异族过于残忍，俘获的羌人被一批批送到殷都献祭，故而许多羌人宁愿战死或逃亡，也不愿在商人的统治下苟活。所以，仅靠武力，商人一直难以统治整个关中盆地。
+
+更复杂的是，动荡甚至形成了一种虹吸效应，更遥远的西北方土著部族，正在缓慢而持续地翻过陇山和六盘山朝关中迁徙。他们可能是被商人新奇的青铜产品吸引，同时试图占据因战争而荒芜的土地。比如，以“分裆袋足”陶鬲为特征的刘家文化，有学者认为，它是从西北方进入关中的，属于甲骨文中的羌人群体。[[fn:8]]
+
+武丁死后，他的儿子祖庚和祖甲相继为王。《史记•殷本纪》记载，祖甲“淫乱，殷复衰”，周侯之国遂被废弃。自此，商人势力撤出关中西部，这里彻底萧条，连青铜器也很少被发现。但商人还是固守住了关中东部的老牛坡，在这里，武丁王新册封了一位商人贵族，他就是《史记》和《封神演义》里鼎鼎大名的崇侯虎。</div>
+            </div>
+            <div class="scan"><img src="pdf_pages/page-288.jpg" alt="PDF page 290"></div>
+          </div>
+        </section>
+        <section class="page" id="page-291">
+          <div class="page-head">
+            <div class="page-title">原书阅读器页 291<span>原书物理 PDF 页 289</span><span>印刷页 277</span></div>
+            <div class="page-tools">
+              <button type="button" data-copy-page="291">复制本页</button>
+              <button type="button" data-export-page="291">导出本页</button>
+            </div>
+          </div>
+          <div class="workbench">
+            <div class="editor-wrap">
+              <div class="rich-editor" data-page="291" contenteditable="true" role="textbox" aria-multiline="true" spellcheck="false">崇侯虎早生了二百年
+
+据《史记•周本纪》，文王周昌被商纣王囚禁羑里的起因是：
+
+崇侯虎谮（诬告）西伯于殷曰：“西伯积善累德，诸侯皆向之，将不利于帝。” 帝纣乃囚西伯羑里。
+
+〔按语：西伯利亚〕
+
+从此，周昌经历了一系列遭遇和幸运。获释后，他开始积蓄力量，密谋翦商，并在其去世前一年，穷周族之全力向崇国发动进攻，终于攻灭了这个仇敌之国。
+
+《诗经•大雅•皇矣》对崇国的灭亡有生动描写。“帝谓文王：询尔仇方，同尔兄弟；以尔钩援，与尔临冲，以伐崇墉！”翻译成白话就是，上帝命令文王：“召集你的同盟，集合你的族人，带上你攻城的钩梯和冲车，去攻打崇国的城墙”。
+
+那么，让文王如此咬牙切齿，以至动用上帝来诅咒的崇国，究竟在哪里？对此，史书却语焉不详。
+
+其实，在比周文王早二百年的商王武丁时代，甲骨卜辞中就已经出现了崇侯虎。（《合集》6554）
+
+1 .贞：令从崇侯虎伐髳方，受有佑。
+
+2 .贞：勿从崇侯。[[fn:9]]
+
+武丁让崇国伐髳方，说明它们之间比较近。后来，周武王灭商,
+
+《合集》6554【图】：1.贞：令从崇侯虎伐髳方，受有佑。2.贞：勿从崇侯。
+
+盟军之中也有“髳”（《尚书•牧誓》）可见，周原和髳方距离不远。据此推测，崇国和周原之间也不会太远。</div>
+            </div>
+            <div class="scan"><img src="pdf_pages/page-289.jpg" alt="PDF page 291"></div>
+          </div>
+        </section>
+        <section class="page" id="page-292">
+          <div class="page-head">
+            <div class="page-title">原书阅读器页 292<span>原书物理 PDF 页 290</span><span>印刷页 278</span></div>
+            <div class="page-tools">
+              <button type="button" data-copy-page="292">复制本页</button>
+              <button type="button" data-export-page="292">导出本页</button>
+            </div>
+          </div>
+          <div class="workbench">
+            <div class="editor-wrap">
+              <div class="rich-editor" data-page="292" contenteditable="true" role="textbox" aria-multiline="true" spellcheck="false">从甲骨文字形看，崇字中间是一张树立的床，上下各有一个类似方括号的符号，“床”可能是音旁，和“崇”发音接近。在卜辞中，这个崇字经常被写得非常瘦高，超过正常的两个字的高度，可能用来表示它有“高”的含义。从音和意来看，它都很接近“崇”字。
+
+崇侯虎为何会出现在文王之前二百年？很可能是因为，作为崇国的开国之君，他在武丁王时期就非常活跃且显赫。胡厚宣先生就总结说，武丁时有捍卫商王朝的鼎足三大将，崇侯虎就在其中。这可能导致名人效应，使得后人在讲述文王经历时，把晚近的“崇侯”误记成了“崇侯虎”。
+
+此外，开国之君的名字也可能成为后世历代国君的代称。比如，西周建立后，周文王的两位弟弟虢仲和虢叔的后人的封国皆名为虢，这两国后世的国君便也继续分别被称为虢仲和虢叔。按这种逻辑，崇国历代国君也都可以被称为崇侯虎。
+
+至于崇国在何地，老牛坡遗址提供了答案。
+
+《诗经》和《史记》有记载，攻灭崇国之后，文王立刻把驻地从周原迁到了丰地：“文王受命，有此武功。既伐于崇，作邑于丰。”[[fn:10]] 古代已有学者猜测，崇国应该离丰地不远：”崇国盖在丰镐之间。”（《史记正义・周本纪》）丰地，在今西安市西郊，而老牛坡在东郊，两地相距仅约50公里。所以，发掘报告推测，老牛坡可能就是崇国都城：
+
+若老牛坡遗址所在地果为崇国都邑旧址，则丰、镐一带地属崇国势力范围或政治辖区，是完全可能的。[[fn:11]]</div>
+            </div>
+            <div class="scan"><img src="pdf_pages/page-290.jpg" alt="PDF page 292"></div>
+          </div>
+        </section>
+        <section class="page" id="page-293">
+          <div class="page-head">
+            <div class="page-title">原书阅读器页 293<span>原书物理 PDF 页 291</span><span>印刷页 279</span></div>
+            <div class="page-tools">
+              <button type="button" data-copy-page="293">复制本页</button>
+              <button type="button" data-export-page="293">导出本页</button>
+            </div>
+          </div>
+          <div class="workbench">
+            <div class="editor-wrap">
+              <div class="rich-editor" data-page="293" contenteditable="true" role="textbox" aria-multiline="true" spellcheck="false">考古发掘显示，在老牛坡三期（相当于殷墟前半期，武丁王的西部扩张开启之时），一批身份更高的商人来到这里定居，兴建起高等级建筑，老牛坡因此从普通据点扩大为城邑和侯国。这可能是崇侯虎建国的开端。
+
+商朝需要在关中建立稳定的前进基地，而老牛坡位居关中盆地中心，有铜矿资源，还有商人征服者上百年的经营史，各方面条件都最合适。
+
+崇国食人者
+
+大约在武丁时代，老牛坡出现了两座大型建筑。
+
+一号基址东西长30米，南北宽15米多，夯土地基厚1米，上面曾有多座分体建筑。能识别出三座建筑痕迹，其中的F3相对完整，长11米多，宽近6米，是“一座面阔四间、进深二间、面东二门、前有走廊、屋顶为两面坡式的中型房屋建筑”。它很可能是崇侯虎家族成员的住宅。
+
+一号基址F3房基发掘绘图（图）
+
+二号基址发掘绘图（图）
+
+二号基址与一号相距100米，被雨水冲毁了一部分，南北长23米，东西宽12米，夯土地基厚1.3米，复原出的柱子，有南北五排，东西八行，是一座大型单体殿堂建筑。这里可能是崇侯办公理事的朝堂。
+
+为保护房屋遗迹，考古队没有发掘夯土地基，所以无法确定是否有人奠基。但在发掘之前，村民曾在这里修建一座砖窑，留下的土崖断面上恰好有“小儿骨架一具”，被压在室内地面之下。如此偶然的机会都能发现尸骨，看来用人奠基的数量应当不少。</div>
+            </div>
+            <div class="scan"><img src="pdf_pages/page-291.jpg" alt="PDF page 293"></div>
+          </div>
+        </section>
+        <section class="page" id="page-294">
+          <div class="page-head">
+            <div class="page-title">原书阅读器页 294<span>原书物理 PDF 页 292</span><span>印刷页 280</span></div>
+            <div class="page-tools">
+              <button type="button" data-copy-page="294">复制本页</button>
+              <button type="button" data-export-page="294">导出本页</button>
+            </div>
+          </div>
+          <div class="workbench">
+            <div class="editor-wrap">
+              <div class="rich-editor" data-page="294" contenteditable="true" role="textbox" aria-multiline="true" spellcheck="false">在夯土台基宫殿区的东侧，是土著农夫的房屋，还延续着制造花边陶罐和石璧等传统。武丁大扩张时期，因到老牛坡定居的商人越来越多，一些农夫遂被驱逐，供新来的商族人营建新居。而土著们的房屋，则正好用来做垃圾坑。这是黄土地带特有的“地窖”式房屋：地上挖一出近圆形坑（直径3—5米，深1.5—2.5米），坑口搭草棚遮挡风雨，坑壁上挖出供上下出入的阶梯。
+
+从关中到伊洛和晋南是黄土分布带，而黄土有较好的垂直层理，不容易倒塌，适合挖掘地窖，而且保温性好，比较宜居。这种地窖式房屋使用了上千年，从仰韶文化晚期直到商周。
+
+但自商人大量来到老牛坡后，这种地窖灰坑就不仅埋有陶片等生活垃圾，更还有人骨。比如：
+
+H5底部有人骨架两具，人骨很不完整，且和猪、狗的骨骼混杂在一起。发掘报告推测，“显然是死者被砍杀后而随意扔入的”。
+
+H19底部有人骨架一具，“除头骨外，骨骼亦残缺不全，显系非正常的死亡现象……同时还发现有鹿角、碎骨、大小不等的河卵石、已经成堆的烧土灰烬”。
+
+H17底部”紧靠坑壁发现一个完整的人头骨，近头骨处有大量草木灰，在草木灰烬中还有烧过的动物骨骼、鹿角和红烧土块”。
+
+H19平面及剖面图（图）
+
+H8平面及剖面图（图）
+
+上述三座灰坑，人骨都在底部，显然是垃圾坑刚使用时扔进去的。坑内有大量家畜骨头和人骨混在一起，还有灰烬和烧土块。所以，它们也可能是祭祀坑，但发掘报告中的信息较少，难以确证。</div>
+            </div>
+            <div class="scan"><img src="pdf_pages/page-292.jpg" alt="PDF page 294"></div>
+          </div>
+        </section>
+        <section class="page" id="page-295">
+          <div class="page-head">
+            <div class="page-title">原书阅读器页 295<span>原书物理 PDF 页 293</span><span>印刷页 281</span></div>
+            <div class="page-tools">
+              <button type="button" data-copy-page="295">复制本页</button>
+              <button type="button" data-export-page="295">导出本页</button>
+            </div>
+          </div>
+          <div class="workbench">
+            <div class="editor-wrap">
+              <div class="rich-editor" data-page="295" contenteditable="true" role="textbox" aria-multiline="true" spellcheck="false">H8更特殊，是一座连体大灰坑。它不是窖穴改建的，而是先挖了一座专用垃圾坑乙（长2.6米，宽2.3米，深1.1米），当快被填满时，又紧挨着它挖了一座更大更深的垃圾坑甲（长3.7米，宽2.9米，最深处有2.4米），最后，甲坑也被填满。
+
+甲乙两坑内埋有各种生活垃圾，还有“许多人骨和牛、狗、猪等动物骨骼混杂在一起”。和其他灰坑不同的是：一，这两座灰坑不止底层有人骨，而是各层都有，说明杀人行为伴随着垃圾坑的使用全程；二，人骨都是零碎的，且和其他家畜骨骼混杂在一起，应该是吃完以后被遗弃的特征。或许H8周边的人家有吃人肉的习惯，而且持续了很多年，否则难以形成这种遍布垃圾坑的人骨堆积。
+
+但另一方面，往H8里倾倒垃圾的，应该不仅有贵族肉食者，还有本地土著居民，因为坑中还出土有石刀、石镰、石凿以及本地传统的花边口沿陶罐。
+
+这个居住区共发掘三期灰坑19座，有人骨的只有上述四座，并不占多数。这说明商人统治者的杀人行为还是有所区别，嗜杀和吃人肉的应该只属于少数人，或者特定场合。
+
+崇侯的青铜产业
+
+建立崇国，是商朝向西扩张的保障，由此，武丁先后灭亡羌人周族和分封商人周国。但武丁去世后，周原的商人侯国未能保住。在武丁王的儿子祖庚或祖甲时期，一片关于“周”的甲骨卜辞中又出现了“崇侯”等人。[[fn:12]]</div>
+            </div>
+            <div class="scan"><img src="pdf_pages/page-293.jpg" alt="PDF page 295"></div>
+          </div>
+        </section>
+        <section class="page" id="page-296">
+          <div class="page-head">
+            <div class="page-title">原书阅读器页 296<span>原书物理 PDF 页 294</span><span>印刷页 282</span></div>
+            <div class="page-tools">
+              <button type="button" data-copy-page="296">复制本页</button>
+              <button type="button" data-export-page="296">导出本页</button>
+            </div>
+          </div>
+          <div class="workbench">
+            <div class="editor-wrap">
+              <div class="rich-editor" data-page="296" contenteditable="true" role="textbox" aria-multiline="true" spellcheck="false">甲骨磨损过于严重，难以判断商王到底让他们做什么。从时间看，祖庚和祖甲时期，商朝势力衰退，商人的周侯正遭受土著的威胁，为此，商朝很可能要调动周边诸侯救援。但此举无效，土著势力又淹没了关中西部。
+
+商人的周国灭亡后，老牛坡对于商朝的重要性得到了进一步提升，功能布局也随之发生了变化：殷墟前期的大型夯土建筑被废弃，改建为冶炼铸造区；崇侯的新宫殿区可能移到了遗址西北侧，也就是考古划出的第四发掘区。目前，这个区的发掘还比较少。
+
+到殷墟末期（老牛坡四期），崇国更加繁荣，青铜产业的规模也更大了：有很多冶铜的炼渣堆积，填满了一条至少长18米，最深处可达2米的土沟。距离铜矿渣不远的山坡上，有四期铸铜作坊的垃圾堆积，里面埋有很多熔铜陶缸碎片和残陶范。
+
+与二期那种铸造小件铜器以及可以多次使用的双面陶范不同，四期的陶范多用来铸造相对较大的器物，且只能一次性使用。目前发现的铸范可以制造各种容器和兵器，如鬲、戈、钺、皮角上缀的圆铜泡，还有类似面具的所谓牛面和人面形饰，但尺寸略小，不适合戴在脸上，可能是系在皮质头盔的额顶部位，起威吓敌军之用。[[fn:13]]
+
+从老牛坡二期的冶铸设施分离、规模很小，到四期的冶铸一体、规模增大，意味着权力结构已经发生重组：原来分散且互不统属的商人据点，以及基于自然资源和商业交换的产业布局，被整合到更大的政权体系中，形成了方国政治体。</div>
+            </div>
+            <div class="scan"><img src="pdf_pages/page-294.jpg" alt="PDF page 296"></div>
+          </div>
+        </section>
+        <section class="page" id="page-297">
+          <div class="page-head">
+            <div class="page-title">原书阅读器页 297<span>原书物理 PDF 页 295</span><span>印刷页 283</span></div>
+            <div class="page-tools">
+              <button type="button" data-copy-page="297">复制本页</button>
+              <button type="button" data-export-page="297">导出本页</button>
+            </div>
+          </div>
+          <div class="workbench">
+            <div class="editor-wrap">
+              <div class="rich-editor" data-page="297" contenteditable="true" role="textbox" aria-multiline="true" spellcheck="false">怀珍坊相对偏僻、封闭，而老牛坡更接近关中盆地中心，控扼渭河南岸的交通干道。因此，把铜的冶铸设施集中到老牛坡，更便于军事防御，避免被对手分割击破。虽然铜矿石的运输里程要多20公里，但冶铜和铸铜两道工序却可以无缝衔接，免去了再次熔化铜锭的成本。
+
+虽然尚未发现殷商晚期的宫殿区，但从铸铜业的兴盛程度看，这一时期肯定有更大的核心建筑群，甚至还可能有夯土城墙。后来的周人史诗说，攻打崇国时，他们面对的就是牢固的城墙，正所谓“崇墉仡仡”。[[fn:14]]
+
+崇国商人的墓葬还使用大量殉人，等级稍高的殉人数量更是要十人左右，比多数商人侯国和据点都要“奢侈”。只是在商朝末期周文王灭崇国后，这些墓葬被严重破坏，相关细节我们会在后文商周易代的部分介绍。
+
+崇国-老牛坡后期的安定繁荣，和商人招降了一支北方山地部族有关，这便是周文王祖父一代的姬姓周族。他们被安置在土著和商朝反复拉锯的周原地区，而改变上古华夏文明历程的大转折，也自此开启。
+
+注释
+
+1刘士莪：《老牛坡》，陕西人民出版社，2001年。以下有关老牛坡考古的基本信息及图片未注明出处的，皆出自该书，不再详注。
+
+2西安半坡博物馆、蓝田县文化馆：《陕西蓝田怀珍坊商代遗址试掘简报》，《考古与文物》1981年第3期。
+
+3《合集》6812正，以及《合集》6813、6814、6815、6816、6817、6821、6822。</div>
+            </div>
+            <div class="scan"><img src="pdf_pages/page-295.jpg" alt="PDF page 297"></div>
+          </div>
+        </section>
+        <section class="page" id="page-298">
+          <div class="page-head">
+            <div class="page-title">原书阅读器页 298<span>原书物理 PDF 页 296</span><span>印刷页 284</span></div>
+            <div class="page-tools">
+              <button type="button" data-copy-page="298">复制本页</button>
+              <button type="button" data-export-page="298">导出本页</button>
+            </div>
+          </div>
+          <div class="workbench">
+            <div class="editor-wrap">
+              <div class="rich-editor" data-page="298" contenteditable="true" role="textbox" aria-multiline="true" spellcheck="false">4徐中舒先生认为这里的周方是姜姓所建的女国，即母系社会的姜嫄国。参见徐中舒《周原甲骨初论》，载《徐中舒历史论文选辑》（下册），中华书局，1998年，第1423页。另可参见俞绍宏等《甲骨文“周”笺识》，《大连大学学报》2015年第1期。另外，董珊先生认为，周原这个地域在不同的时代有不同姓的族群进入并建立国家政权，这些先后成立的国家可以使用同一国名“周二并用此国名来命名自己的国族。参见董珊《试论殷墟卜辞之“周”为金文中的妘姓之琱（雕）》，《中国国家博物馆馆刊》2013年第7期。
+
+5王光永：《陕西省岐山县发现商代铜器》，《文物》1977年第12期；罗西章：《扶风美阳发现商周铜器》，《文物》1978年第10期；齐浩、张天宇：《周原遗址新见京当型铜器墓浅识》，《中国国家博物馆馆刊》2015年第11期。
+
+6周原甲骨H11：84有“册周方伯”。
+
+7《合集》2816。《乙》8894 : “贞：妇周。”
+
+8尹盛平：《周文化考古研究论集》，文物出版社，2012年，第H页。
+
+9古文字学家对该字有不同的释读，有人释读为“蒙”字，但胡厚宣认为是“崇侯虎”，见胡厚宣《卜辞中所见之殷代农业》，《甲骨学商史论丛二集》上，台北大通书局，1972年影印本上册，第52页。韩江苏、江林昌：《〈殷本纪〉 订补与商史人物徵》，第478页。</div>
+            </div>
+            <div class="scan"><img src="pdf_pages/page-296.jpg" alt="PDF page 298"></div>
+          </div>
+        </section>
+        <section class="page" id="page-299">
+          <div class="page-head">
+            <div class="page-title">原书阅读器页 299<span>原书物理 PDF 页 297</span><span>印刷页 285</span></div>
+            <div class="page-tools">
+              <button type="button" data-copy-page="299">复制本页</button>
+              <button type="button" data-export-page="299">导出本页</button>
+            </div>
+          </div>
+          <div class="workbench">
+            <div class="editor-wrap">
+              <div class="rich-editor" data-page="299" contenteditable="true" role="textbox" aria-multiline="true" spellcheck="false">10《诗经•大雅•文王有声》。《史记•周本纪》：“明年，伐崇侯虎。而作丰邑，自岐下而徙都丰。”
+
+11《老牛坡》，第359页。
+
+12《合集》23560的这片甲骨图片模糊，多数字难以辨认，此释文来自胡厚宣《甲骨文合集释文》。
+
+13汉中地区发现的这类面饰更多，属于当地土著发展起来的青铜文化。
+
+14《诗经•大雅・皇矣》：“以尔钩援，与尔临冲，以伐崇墉。临冲闲闲，崇墉言言。执讯连连，攸就安安o是类是襦，是致是附，四方以无侮。临冲菟萌，崇墉仡仡”。</div>
+            </div>
+            <div class="scan"><img src="pdf_pages/page-297.jpg" alt="PDF page 299"></div>
+          </div>
+        </section>
+        <section class="page" id="page-300">
+          <div class="page-head">
+            <div class="page-title">原书阅读器页 300<span>原书物理 PDF 页 298</span><span>印刷页 286</span></div>
+            <div class="page-tools">
+              <button type="button" data-copy-page="300">复制本页</button>
+              <button type="button" data-export-page="300">导出本页</button>
+            </div>
+          </div>
+          <div class="workbench">
+            <div class="editor-wrap">
+              <div class="rich-editor" data-page="300" contenteditable="true" role="textbox" aria-multiline="true" spellcheck="false"></div>
+            </div>
+            <div class="scan"><img src="pdf_pages/page-298.jpg" alt="PDF page 300"></div>
+          </div>
+        </section></div>
+        <section class="notes-dock" id="notes">
+          <h2>编辑札记</h2>
+          <div class="note-grid">
+            <div class="note-controls">
+              <label>页<select id="notePage"></select></label>
+              <div class="marker-composer" id="markerComposer">
+                <h3>标记</h3>
+                <label>类型<select id="markerType">
+                  <option value="pinyin">注音</option>
+                  <option value="editor-note">编者注／脚注</option>
+                  <option value="inline-note">按语</option>
+                  <option value="pending">待核</option>
+                  <option value="user-note">用户札记</option>
+                </select></label>
+                <label>内容<input id="markerText" type="text" autocomplete="off" placeholder="输入拼音或笔记内容"></label>
+                <p class="marker-help" id="markerHelp">先在正文中选择文字，再输入拼音；可用“拼音；简注”。</p>
+                <div class="note-actions"><button id="applyMarkerBtn" type="button">应用标记</button></div>
+              </div>
+              <label>工作日志标签<input id="noteTag" type="text" value="校订" autocomplete="off"></label>
+              <textarea id="noteText" spellcheck="false"></textarea>
+              <div class="note-actions">
+                <button id="addNoteBtn" type="button">记录到编辑日志</button>
+                <button id="exportLogBtn" type="button">导出日志</button>
+                <button id="downloadLogBtn" type="button">下载日志</button>
+                <button id="clearLogBtn" type="button">清空日志</button>
+              </div>
+            </div>
+            <div><div id="logList" class="log-list"></div></div>
+          </div>
+        </section>
+        <section class="export-dock"><h2>导出文本</h2><textarea id="exportText" spellcheck="false"></textarea></section>
+      </section>
+    </div>
+  </main>
+  <button class="quick-note-jump" type="button" data-target="notes">札记</button>
+  <script>
+    const STORAGE_KEY = "jianshang:chapter_14:editor:v3:5c53c9f290b1";
+    const LOG_KEY = "jianshang:chapter_14:editor-log:v1";
+    const OUTPUT_NAME = "chapter_14_clean_edited.txt";
+    const LOG_NAME = "chapter_14_edit_log.txt";
+    const BACKUP_NAME = "chapter_14_editor_backup.json";
+    const CHAPTER_NOTES_NAME = "chapter_14_reading_notes.md";
+    const CHAPTER_NOTES_KEY = `${STORAGE_KEY}:chapter-notes`;
+    const DICTIONARY_SETTINGS_KEY = 'jianshang:dictionary-settings:v1';
+    const PROJECT_DICTIONARY_OVERRIDES_KEY = 'reading-lexicon-entry-overrides-v1';
+    const STATIC_CHAPTER_NOTES = [["老牛坡与西土拉锯", "本章把视线转向西土，说明商周关系并非突然从臣服变成革命，而是长期拉锯、渗透和试探。老牛坡一类遗址的重要性，在于它们让西部边缘地带成为理解商周更替的前线，而不是中原叙事的附属背景。\n\n状态：个人理解, Codex。\n记录者：Codex\n记录日期：2026-07-03\n处理者：Codex\n处理日期：2026-07-03\n关联原文：chapter_14_clean.txt 第 1 行及全章。\n来源线索：本章原文。"]];
+    const TERMS = [{"term": "灰坑", "pinyin": "huī kēng", "type": "concept", "annotation": "遗址中含灰土、废弃物或祭祀遗存的坑穴。", "difficulty": 3, "unit_type": "word", "domain": "general"}, {"term": "髳", "pinyin": "máo", "type": "manual", "annotation": "中国古代西南部族名；文中见髳方及《牧誓》盟军。", "difficulty": 4, "unit_type": "classical_word", "domain": "general"}, {"term": "殷墟", "pinyin": "yīn xū", "type": "site_or_culture", "annotation": "晚商都邑遗址，甲骨卜辞的重要出土地。", "difficulty": 5, "unit_type": "specialist_term", "domain": "archaeology"}, {"term": "铜镞", "pinyin": "tóng zú", "type": "bronze_item", "annotation": "青铜箭头。", "difficulty": 5, "unit_type": "specialist_term", "domain": "bronze_vessel"}, {"term": "妲", "pinyin": "dā", "type": "manual", "annotation": "人名用字；文中见商纣王妃妲己。", "difficulty": 4, "unit_type": "classical_word", "domain": "general"}, {"term": "仡仡", "pinyin": "yì yì", "type": "manual", "annotation": "勇猛强健的样子；文中出自《诗经·皇矣》。", "difficulty": 4, "unit_type": "classical_word", "domain": "general"}, {"term": "铜戈", "pinyin": "tóng gē", "type": "bronze_item", "annotation": "青铜戈，商周常见兵器。", "difficulty": 5, "unit_type": "specialist_term", "domain": "bronze_vessel"}, {"term": "人祭", "pinyin": "rén jì", "type": "concept", "annotation": "以人作为祭品的祭祀行为。", "difficulty": 3, "unit_type": "word", "domain": "general"}, {"term": "窖穴", "pinyin": "jiào xué", "type": "concept", "annotation": "地下储藏坑穴。", "difficulty": 3, "unit_type": "word", "domain": "general"}, {"term": "人奠基", "pinyin": "rén diàn jī", "type": "concept", "annotation": "建筑奠基时以人作为牺牲的行为。", "difficulty": 3, "unit_type": "word", "domain": "general"}, {"term": "奠基", "pinyin": "diàn jī", "type": "concept", "annotation": "建筑开始时的基础工程或相关仪式。", "difficulty": 3, "unit_type": "word", "domain": "general"}, {"term": "殉人", "pinyin": "xùn rén", "type": "concept", "annotation": "陪葬或随葬的人。", "difficulty": 3, "unit_type": "word", "domain": "general"}, {"term": "谮", "pinyin": "zèn", "type": "manual", "annotation": "诬陷，中伤；文中指崇侯虎诬告西伯。", "difficulty": 4, "unit_type": "classical_word", "domain": "general"}, {"term": "妘", "pinyin": "yún", "type": "manual", "annotation": "古代姓氏，文中见金文族姓。", "difficulty": 4, "unit_type": "classical_word", "domain": "general"}, {"term": "琱", "pinyin": "diāo", "type": "manual", "annotation": "同“雕”，雕刻；文中见金文族姓释读。", "difficulty": 4, "unit_type": "classical_word", "domain": "general"}, {"term": "盘庚", "pinyin": "pán gēng", "type": "person", "annotation": "商王名，以迁都殷地著称。", "difficulty": 3, "unit_type": "proper_name", "domain": "proper_name"}, {"term": "妇好", "pinyin": "fù hǎo", "type": "person", "annotation": "商王武丁配偶，甲骨文中著名女性军事人物。", "difficulty": 3, "unit_type": "proper_name", "domain": "proper_name"}, {"term": "箭镞", "pinyin": "jiàn zú", "type": "artifact", "annotation": "箭头，文中有青铜、石骨材质。", "difficulty": 5, "unit_type": "specialist_term", "domain": "archaeology"}, {"term": "铸铜范", "pinyin": "zhù tóng fàn", "type": "artifact", "annotation": "铸造铜器所用的范模。", "difficulty": 5, "unit_type": "specialist_term", "domain": "archaeology"}, {"term": "商式陶器", "pinyin": "shāng shì táo qì", "type": "artifact", "annotation": "具有商文化风格的陶器。", "difficulty": 5, "unit_type": "specialist_term", "domain": "archaeology"}, {"term": "陶鬲", "pinyin": "táo lì", "type": "artifact", "annotation": "三足陶炊器。", "difficulty": 5, "unit_type": "specialist_term", "domain": "archaeology"}, {"term": "祭祀坑", "pinyin": "jì sì kēng", "type": "concept", "annotation": "用于祭祀或埋藏祭品的坑穴。", "difficulty": 3, "unit_type": "word", "domain": "general"}, {"term": "二里冈文化", "pinyin": "èr lǐ gāng wén huà", "type": "项目词典", "annotation": "早商时期中原考古文化。", "difficulty": 5, "unit_type": "specialist_term", "domain": "archaeology"}, {"term": "《合集》", "pinyin": "hé jí", "type": "项目词典", "annotation": "《甲骨文合集》的简称。", "difficulty": 4, "unit_type": "classical_word", "domain": "general"}, {"term": "九世之乱", "pinyin": "jiǔ shì zhī luàn", "type": "项目词典", "annotation": "《史记》所记商代中期王室长期内乱。", "difficulty": 4, "unit_type": "classical_word", "domain": "general"}, {"term": "华夏文明", "pinyin": "huá xià wén míng", "type": "项目词典", "annotation": "在中国早期历史中逐渐形成和发展的文明传统。", "difficulty": 3, "unit_type": "word", "domain": "general"}, {"term": "夯土台基", "pinyin": "hāng tǔ tái jī", "type": "项目词典", "annotation": "用夯土筑成的高台式建筑基础。 | 用夯土筑成的建筑台基。", "difficulty": 3, "unit_type": "word", "domain": "general"}, {"term": "夯土地基", "pinyin": "hāng tǔ dì jī", "type": "项目词典", "annotation": "夯土筑成的建筑基础。", "difficulty": 3, "unit_type": "word", "domain": "general"}, {"term": "昙花一现", "pinyin": "tán huā yī xiàn", "type": "项目词典", "annotation": "比喻事物短暂出现后很快消失。", "difficulty": 2, "unit_type": "idiom", "domain": "phrase"}, {"term": "泾渭分明", "pinyin": "jīng wèi fēn míng", "type": "项目词典", "annotation": "界限清楚，差别明显。", "difficulty": 2, "unit_type": "idiom", "domain": "phrase"}, {"term": "甲骨卜辞", "pinyin": "jiǎ gǔ bǔ cí", "type": "项目词典", "annotation": "商代刻写在甲骨上的占卜文字。 | 刻写在龟甲兽骨上的占卜文字。 | 刻写在甲骨上的占卜记录。 | 刻写在龟甲兽骨上的占卜辞句。", "difficulty": 4, "unit_type": "classical_word", "domain": "general"}, {"term": "青铜礼器", "pinyin": "qīng tóng lǐ qì", "type": "项目词典", "annotation": "用于礼仪或祭祀的青铜器。", "difficulty": 5, "unit_type": "specialist_term", "domain": "bronze_vessel"}, {"term": "二里冈", "pinyin": "èr lǐ gāng", "type": "项目词典", "annotation": "郑州一带早商文化的重要遗址和文化命名地。", "difficulty": 5, "unit_type": "specialist_term", "domain": "archaeology"}, {"term": "周文王", "pinyin": "zhōu wén wáng", "type": "项目词典", "annotation": "周族领袖姬昌。", "difficulty": 3, "unit_type": "proper_name", "domain": "proper_name"}, {"term": "周方伯", "pinyin": "zhōu fāng bó", "type": "项目词典", "annotation": "商王册封周族首领为方伯的身份。", "difficulty": 3, "unit_type": "word", "domain": "general"}, {"term": "周武王", "pinyin": "zhōu wǔ wáng", "type": "项目词典", "annotation": "周发，灭商之君。", "difficulty": 3, "unit_type": "proper_name", "domain": "proper_name"}, {"term": "夔龙纹", "pinyin": "kuí lóng wén", "type": "项目词典", "annotation": "青铜器常见的夔龙形纹饰。", "difficulty": 5, "unit_type": "specialist_term", "domain": "archaeology"}, {"term": "宫殿区", "pinyin": "gōng diàn qū", "type": "项目词典", "annotation": "都邑中宫殿和王室活动集中的区域。", "difficulty": 3, "unit_type": "word", "domain": "general"}, {"term": "盘龙城", "pinyin": "pán lóng chéng", "type": "项目词典", "annotation": "湖北武汉附近早商城址，是商朝南方重要据点。 | 湖北武汉附近早商城址，文中作为商朝南方据点。", "difficulty": 5, "unit_type": "specialist_term", "domain": "archaeology"}, {"term": "红烧土", "pinyin": "hóng shāo tǔ", "type": "项目词典", "annotation": "经火烧后变红变硬的土，常见于考古遗迹。", "difficulty": 3, "unit_type": "word", "domain": "general"}, {"term": "绿松石", "pinyin": "lǜ sōng shí", "type": "项目词典", "annotation": "一种蓝绿色矿石，常用于装饰。 | 蓝绿色矿物，古代常作装饰嵌片。 | 蓝绿色矿物，古代常作饰物。", "difficulty": 5, "unit_type": "classical_word", "domain": "general"}, {"term": "老牛坡", "pinyin": "lǎo niú pō", "type": "项目词典", "annotation": "西安附近商代遗址，文中涉及商人据点和人祭。 | 陕西西安商代遗址。", "difficulty": 5, "unit_type": "specialist_term", "domain": "archaeology"}, {"term": "铜礼器", "pinyin": "tóng lǐ qì", "type": "项目词典", "annotation": "用于礼仪或祭祀的青铜器。", "difficulty": 5, "unit_type": "specialist_term", "domain": "bronze_vessel"}, {"term": "上帝", "pinyin": "shàng dì", "type": "项目词典", "annotation": "商周宗教中的最高神。", "difficulty": 3, "unit_type": "word", "domain": "general"}, {"term": "人牲", "pinyin": "rén shēng", "type": "项目词典", "annotation": "被用于祭祀的人。 | 被用于祭祀或献祭的人。 | 被杀用于祭祀的人。", "difficulty": 3, "unit_type": "word", "domain": "general"}, {"term": "先后", "pinyin": "xiān hòu", "type": "项目词典", "annotation": "《盘庚》引文中指已故先王。", "difficulty": 4, "unit_type": "classical_word", "domain": "general"}, {"term": "冶炼", "pinyin": "yě liàn", "type": "项目词典", "annotation": "用高温从矿石中提炼金属。", "difficulty": 4, "unit_type": "classical_word", "domain": "general"}, {"term": "冶铜", "pinyin": "yě tóng", "type": "项目词典", "annotation": "从铜矿石中冶炼铜料的技术。", "difficulty": 3, "unit_type": "word", "domain": "general"}, {"term": "冶铸", "pinyin": "yě zhù", "type": "项目词典", "annotation": "冶炼并铸造金属器物。 | 冶炼和铸造金属器物的工艺。", "difficulty": 3, "unit_type": "word", "domain": "general"}, {"term": "分封", "pinyin": "fēn fēng", "type": "项目词典", "annotation": "周初封邦建国制度。", "difficulty": 3, "unit_type": "word", "domain": "general"}, {"term": "卜辞", "pinyin": "bǔ cí", "type": "项目词典", "annotation": "甲骨占卜后刻写或记录的辞句。 | 甲骨上记录占卜的文字。 | 占卜时刻写或记录的辞句。", "difficulty": 4, "unit_type": "classical_word", "domain": "general"}, {"term": "周原", "pinyin": "zhōu yuán", "type": "项目词典", "annotation": "关中地区周族的重要活动中心。 | 关中地区周族重要遗址和活动中心。 | 周族核心区域。", "difficulty": 5, "unit_type": "specialist_term", "domain": "archaeology"}, {"term": "周昌", "pinyin": "zhōu chāng", "type": "项目词典", "annotation": "周文王姬昌，书中常称周昌。 | 周文王姬昌。 | 周文王之名。", "difficulty": 3, "unit_type": "proper_name", "domain": "proper_name"}, {"term": "周易", "pinyin": "zhōu yì", "type": "项目词典", "annotation": "以《易经》及其传文构成的古代经典。 | 《易经》与后世《易传》合称的经典。", "difficulty": 4, "unit_type": "classical_word", "domain": "general"}, {"term": "商族", "pinyin": "shāng zú", "type": "项目词典", "annotation": "商王朝建立前后的族群共同体。", "difficulty": 3, "unit_type": "word", "domain": "general"}, {"term": "商王", "pinyin": "shāng wáng", "type": "项目词典", "annotation": "商朝王。", "difficulty": 3, "unit_type": "proper_name", "domain": "proper_name"}, {"term": "土著", "pinyin": "tǔ zhù", "type": "项目词典", "annotation": "本地原有居民或族群。", "difficulty": 3, "unit_type": "word", "domain": "general"}, {"term": "地层", "pinyin": "dì céng", "type": "项目词典", "annotation": "遗址中不同时期堆积形成的层次。", "difficulty": 3, "unit_type": "word", "domain": "general"}, {"term": "坑口", "pinyin": "kēng kǒu", "type": "项目词典", "annotation": "坑穴在地表或开口处的形状和范围。 | 坑穴开口处的形状和范围。", "difficulty": 3, "unit_type": "word", "domain": "general"}, {"term": "坑壁", "pinyin": "kēng bì", "type": "项目词典", "annotation": "坑穴侧壁。", "difficulty": 3, "unit_type": "word", "domain": "general"}, {"term": "城邑", "pinyin": "chéng yì", "type": "项目词典", "annotation": "古代有人群聚居、具有一定组织和防御功能的城镇聚落。", "difficulty": 3, "unit_type": "word", "domain": "general"}, {"term": "基址", "pinyin": "jī zhǐ", "type": "项目词典", "annotation": "建筑物遗留下来的基础位置。", "difficulty": 3, "unit_type": "word", "domain": "general"}, {"term": "填土", "pinyin": "tián tǔ", "type": "项目词典", "annotation": "填入坑穴或遗迹中的土层。", "difficulty": 3, "unit_type": "word", "domain": "general"}, {"term": "夔龙", "pinyin": "kuí lóng", "type": "项目词典", "annotation": "青铜纹饰中常见的龙形神兽。", "difficulty": 5, "unit_type": "specialist_term", "domain": "archaeology"}, {"term": "夯土", "pinyin": "hāng tǔ", "type": "项目词典", "annotation": "把土层层夯实形成建筑基础或城墙的技术。", "difficulty": 3, "unit_type": "word", "domain": "general"}, {"term": "姜嫄", "pinyin": "jiāng yuán", "type": "项目词典", "annotation": "周族始祖传说中的女性始祖。 | 周人始祖母，传说为有邰氏之女、后稷之母。", "difficulty": 4, "unit_type": "classical_word", "domain": "general"}, {"term": "尚书", "pinyin": "shàng shū", "type": "项目词典", "annotation": "儒家经典之一，文中引用《盘庚》篇。 | 保存上古政治文献和诰命的儒家经典。", "difficulty": 4, "unit_type": "classical_word", "domain": "general"}, {"term": "崇国", "pinyin": "chóng guó", "type": "项目词典", "annotation": "商周之际西土方国。", "difficulty": 3, "unit_type": "proper_name", "domain": "proper_name"}, {"term": "征伐", "pinyin": "zhēng fá", "type": "项目词典", "annotation": "出兵讨伐。", "difficulty": 3, "unit_type": "word", "domain": "general"}, {"term": "方伯", "pinyin": "fāng bó", "type": "项目词典", "annotation": "商周时期受命统领一方的首领。 | 受命统领一方的首领。", "difficulty": 3, "unit_type": "word", "domain": "general"}, {"term": "武王", "pinyin": "wǔ wáng", "type": "项目词典", "annotation": "周武王。", "difficulty": 3, "unit_type": "proper_name", "domain": "proper_name"}, {"term": "殷商", "pinyin": "yīn shāng", "type": "项目词典", "annotation": "商朝后期文化和政权。 | 商代后期以殷墟为中心的商王朝阶段。", "difficulty": 5, "unit_type": "classical_word", "domain": "general"}, {"term": "殷都", "pinyin": "yīn dū", "type": "项目词典", "annotation": "商朝后期都城区域，今安阳殷墟一带。 | 商朝后期都城区域。 | 晚商都城，通常指安阳殷墟。", "difficulty": 5, "unit_type": "classical_word", "domain": "general"}, {"term": "淫乱", "pinyin": "yín luàn", "type": "项目词典", "annotation": "行为放纵失序。", "difficulty": 4, "unit_type": "classical_word", "domain": "general"}, {"term": "献祭", "pinyin": "xiàn jì", "type": "项目词典", "annotation": "把祭品奉献给神灵或祖先。 | 向神灵、祖先等奉献祭品。", "difficulty": 3, "unit_type": "word", "domain": "general"}, {"term": "穿孔", "pinyin": "chuān kǒng", "type": "项目词典", "annotation": "贯穿形成孔洞，文中多指颅骨创口。", "difficulty": 3, "unit_type": "word", "domain": "general"}, {"term": "窖藏", "pinyin": "jiào cáng", "type": "项目词典", "annotation": "埋藏于地下的储藏物或储藏方式。 | 将器物埋藏于地下的行为或遗迹。", "difficulty": 4, "unit_type": "classical_word", "domain": "general"}, {"term": "纣王", "pinyin": "zhòu wáng", "type": "项目词典", "annotation": "商朝末代王帝辛。 | 商末王，文中讨论其暴虐和人祭。", "difficulty": 3, "unit_type": "proper_name", "domain": "proper_name"}, {"term": "羌人", "pinyin": "qiāng rén", "type": "项目词典", "annotation": "西方族群，常见于商代卜辞。", "difficulty": 3, "unit_type": "word", "domain": "general"}, {"term": "羑里", "pinyin": "yǒu lǐ", "type": "项目词典", "annotation": "文王被商纣囚禁之地。 | 文王被囚之地。 | 商代囚禁周文王之地。", "difficulty": 3, "unit_type": "proper_name", "domain": "proper_name"}, {"term": "翦商", "pinyin": "jiǎn shāng", "type": "项目词典", "annotation": "周人剪灭商朝的政治行动。 | 剪除商朝，文中为全书核心主题。", "difficulty": 4, "unit_type": "classical_word", "domain": "general"}, {"term": "肋骨", "pinyin": "lèi gǔ", "type": "项目词典", "annotation": "胸部骨骼。", "difficulty": 3, "unit_type": "word", "domain": "general"}, {"term": "股骨", "pinyin": "gǔ gǔ", "type": "项目词典", "annotation": "大腿骨。", "difficulty": 3, "unit_type": "word", "domain": "general"}, {"term": "西土", "pinyin": "xī tǔ", "type": "项目词典", "annotation": "周族所在的西方地区。", "difficulty": 3, "unit_type": "proper_name", "domain": "proper_name"}, {"term": "诅咒", "pinyin": "zǔ zhòu", "type": "项目词典", "annotation": "以宗教方式祈求灾祸降临敌方。", "difficulty": 3, "unit_type": "word", "domain": "general"}, {"term": "诗经", "pinyin": "shī jīng", "type": "项目词典", "annotation": "中国古代诗歌总集，儒家经典之一。", "difficulty": 4, "unit_type": "classical_word", "domain": "general"}, {"term": "迁徙", "pinyin": "qiān xǐ", "type": "项目词典", "annotation": "群体从一地迁移到另一地。", "difficulty": 3, "unit_type": "word", "domain": "general"}, {"term": "都邑", "pinyin": "dū yì", "type": "项目词典", "annotation": "作为政治中心的大型聚落或城市。", "difficulty": 3, "unit_type": "word", "domain": "general"}, {"term": "酋长", "pinyin": "qiú zhǎng", "type": "项目词典", "annotation": "部落或地方共同体的首领。", "difficulty": 3, "unit_type": "word", "domain": "general"}, {"term": "铜刀", "pinyin": "tóng dāo", "type": "项目词典", "annotation": "青铜刀。", "difficulty": 5, "unit_type": "specialist_term", "domain": "bronze_vessel"}, {"term": "铜渣", "pinyin": "tóng zhā", "type": "项目词典", "annotation": "冶炼或铸造铜器后留下的残渣。", "difficulty": 5, "unit_type": "specialist_term", "domain": "archaeology"}, {"term": "铜锭", "pinyin": "tóng dìng", "type": "项目词典", "annotation": "冶炼后铸成块状以便运输或再加工的铜料。", "difficulty": 5, "unit_type": "specialist_term", "domain": "archaeology"}, {"term": "陶寺", "pinyin": "táo sì", "type": "项目词典", "annotation": "山西襄汾一带龙山时代重要遗址。", "difficulty": 5, "unit_type": "specialist_term", "domain": "archaeology"}, {"term": "陶缸", "pinyin": "táo gāng", "type": "项目词典", "annotation": "大型陶制缸器，文中兼具储藏和炼铜功能。", "difficulty": 5, "unit_type": "specialist_term", "domain": "archaeology"}, {"term": "饕餮", "pinyin": "tāo tiè", "type": "项目词典", "annotation": "古代传说中的贪食猛兽名，常用于青铜纹饰名称。", "difficulty": 4, "unit_type": "classical_word", "domain": "general"}, {"term": "镞", "pinyin": "zú", "type": "bronze_item", "annotation": "箭头。", "difficulty": 5, "unit_type": "specialist_term", "domain": "bronze_vessel"}, {"term": "戈", "pinyin": "gē", "type": "bronze_item", "annotation": "古代横刃长柄兵器。", "difficulty": 5, "unit_type": "specialist_term", "domain": "bronze_vessel"}, {"term": "鬲", "pinyin": "lì", "type": "bronze_item", "annotation": "古代煮食炊器。", "difficulty": 5, "unit_type": "specialist_term", "domain": "bronze_vessel"}, {"term": "簋", "pinyin": "guǐ", "type": "bronze_item", "annotation": "古代盛食物的器具。", "difficulty": 5, "unit_type": "specialist_term", "domain": "bronze_vessel"}, {"term": "钺", "pinyin": "yuè", "type": "bronze_item", "annotation": "大型斧形兵器或礼器。", "difficulty": 5, "unit_type": "specialist_term", "domain": "bronze_vessel"}];
+    const ORIGINAL_TEXTS = {"283": "===== PDF page 283 / printed page 269 =====\n\n第十四章西土拉锯战：老牛坡\n\n关中盆地在群山环抱之中，犹如一片东西狭长的柳叶，渭河从盆地中央流过，沿途接受洋河、濡河、泾河和北洛河等支流汇入，最终注入黄河大拐弯处。\n\n在漫长的新石器时代，关中盆地内一直有众多繁荣的小村落，但到了四千多年前的龙山时代，华北各地开始进入普遍的动荡和战乱。关中也不例外。今西安市西郊的客省庄（二期）就出现了大量杀戮、冲突甚至人祭的迹象。\n\n但不知何故，关中的新石器人群未能“进化”到早期国家。龙山动荡期过去之后，这里又回归仰韶时代那种与世无争的社会状态。在关中之外，南佐、石郎和陶寺等古国兴废倏忽，夏、商文明迅速迭代升级，却都没影响到关中的宁静生活。\n\n这是上古时代的常态：并非所有的人类社群都会自动进化成更大的共同体和国家；事实是，多数会一直停滞无为，直到被强大的古国或王朝吞并，被强行裹挟进人类的“发展”大潮中。\n\n王朝扩张也会引发土著的反抗。关中是商王朝的“西土”边疆，也是献祭人牲的重要来源。商朝的势力虽在这里活跃数百年，但从未占领整个盆地。西安市东郊潘桥区老牛坡村的黄土地层，记录着商朝对关中数百年的经营史。\n\n商朝通过设立城邑或侯国管理外地和边疆，本质上，这是一种分封建国的制度。后来的西周也同样实行封建制，但不同的是，商朝的城邑或侯国很重视商文化的独特性，与土著人群泾渭分明，很难出现文化和民族融合现象。当然，对于商朝来说，湖北盘龙城是特例，也是一个教训。", "284": "===== PDF page 284 / printed page 270 =====\n\n老牛坡是商朝设在外地侯国的典型个案，显示了商族人祭文化和土著部族文化之间的激烈冲突。\n\n早商的入侵者\n\n20世纪，老牛坡的村民耕作时还偶尔会挖出商代青铜器，这引起了考古工作者的注意。1985—1989年，考古队对这里进行了多次发掘，由此，一个从新石器时代发端、跨越整个商代的聚落逐渐露出部分真容。[[fn:1]]\n\n老牛坡村接近关中盆地中心，背靠骊山，面对满河。在商人到来之前，本地土著还生活在石器时代。他们在黄土坡地上开垦出农田，用石刀和石镰收割谷物，在濯河中用网捕鱼，留下了很多拇指粗的石制渔网坠。他们也做些艺术工作，比如，在陶罐的口沿捏出花边，用石头磨制成巴掌大的环形“石璧”。\n\n土著墓葬的随葬品很少，没有任何兵器，说明他们的生活中少有暴力冲突，也几乎没有权力组织和社会分化。那么，又是什么引来了商人征服者？\n\n墓葬里埋藏着答案：发掘的七座墓中，四座随葬有绿松石。也就是说，附近的山中有铜矿，这正是商人搜寻的目标，而且也只有在能生产铜器的地方，商人才能建立稳固的据点。\n\n可能在刚刚灭亡夏朝一二里头古城之后，新兴的商族人就乘胜进入了关中。他们沿着黄河南岸古道而上，穿越豫西的山涧和密林。这一路虽颇为艰辛，但并不缺少人烟。在仰韶时代，农业聚落已经遍布这里山间的各处台地。\n\n关中盆地虽然开阔，但尚未进入古国时代，并没有值得掳掠的繁荣邑聚，所以这批商人并未把关中视作久留之地。直到开国百年，郑洛地区开始面临人口增长的压力，关中地区这才成为商朝扩张的新大陆，一批又一批商人进入潼关，在盆地东部扩散开，建起一系列大大小小的据点。其中，老牛坡规模最大，延续时间也最长。", "285": "===== PDF page 285 / printed page 271 =====\n\n老牛坡商代地层分为四期。一期还是本地土著的生活世界，到二期，开始出现冶铸青铜的遗迹，并伴随着大量早商式（二里冈文化）陶器碎片。这是商朝人入侵和定居的证据，湖北的盘龙城也在这一时期形成。关中周边的铜矿少而零散，虽难以形成盘龙城那种规模的青铜产业，但已经足够征服者自用。\n\n老牛坡二期的生活-作坊区布满了大大小小的灰坑，考古工作者在里面发现了两块铜炼渣、两枚铜镞和一枚铜锥，还有铸造铜镞和铜戈的陶质残范各一块——是铸造小件铜器用的“双面范”，两块范拼合，可以多次使用。在半块砖头大小的镞范上，五枚箭镞呈扇形分布，其中四枚完整，无倒刺，两翼三角形；戈范刃部平直，锋利。这都是早商时代青铜器的特征。\n\n没有发现任何稍大的铜器和铸铜范，比如商族人常见的铜酒器。由此可见：一，这批征服者地位不太高；二，军事需求最为迫切，必须用有限的铜资源巩固新据点。不过，他们还是仿照铜器的饕餮花纹制造了陶器，试图效仿故乡显贵们的生活。\n\n商人常见的杀人献祭自然不会缺席。一座边长约半米的三角形小坑，里面埋着三枚完整的幼儿头骨，但没有任何躯干骨和肢骨。填土经过夯打，头骨非常破碎，无法分辨性别，只能判断他们的年龄在两岁左右。这些幼儿可能是用来向铸铜设施献祭的，因为人头坑紧挨着一座大灰坑（88XL12H6），从中发现了两块铜炼渣，说明铜炉应该在不远处。", "286": "老牛坡商代二期的陶制铸范和铜器（图）\n\n===== PDF page 286 / printed page 272 =====\n\n二期仿铜陶簋，有商代铜器常见的饕餮夔龙纹饰带（图）\n\n在出土了铜镞和铜锥的88XL12H18灰坑，还发现了两片由人头骨磨制成的椭圆形“骨饼”，直径约3.5厘米，比硬币略大，没有穿孔和纹饰，不知有何用处。\n\n由于发掘范围有限，没有发现商人的房屋和墓葬，只有一些灰坑。从这些信息看，在二期，商人征服者数量不多，生活也不算奢华。\n\n综上，老牛坡二期只发现有铸造工具，但没有冶炼铜的迹象，比如大量的铜炼渣。那么，用于冶铸的铜料又来自哪里？\n\n沿浦河向上游20公里，蓝田县的怀珍坊村有这一时期堆积的铜渣、木炭屑以及冶铜炉的残迹。比如，有草拌泥的红烧土块，一面粘有一层绿色凝结铜汁，发掘者推测，这可能是炼铜炉的炉壁碎块。\n\n和同期的老牛坡一样，怀珍坊没有发现大件铜容器（礼器），但出土有早商式陶器，以及一些小件铜器，如铜戈、小铜刀、铜锥、铜钻、铜镞和铜环等。此外，还有一块重三斤的铜圆饼（用于铸造的铜锭）。\n\n也没有发现铸铜设备，比如铸造用的范。看来，这里和老牛坡正好互补，冶炼出的铜锭会被送到老牛坡投入铸造。只是本来可以整合在一起的冶铸工作，为何要分在相隔20公里的两地？\n\n===== PDF page 287 / printed page 273 =====", "287": "其一，可能是铜矿石不易运输，且冶炼场地离铜矿越近，则成本越低；其二，这两种工序都有很特殊的条件，冶铜需要有矿石来源，铸铜则还需要铅和锡，以及合金配比技术。两种工序分离背后的原因可能是，这是两个不同的商人部族各自拥有的产业，怀珍坊这家有矿山，老牛坡则有铅和锡以及铸造技术，他们可以分工合作，却不愿合并成一'家。\n\n和冶铜设施同期，怀珍坊遗址还发掘出五座低等级墓葬，尸骨大多残缺，下葬时应该已被砍去肢体。M1墓主缺头骨和右半身骨骼，有右小腿骨。从骨架观察，头骨及右半身骨骼应该在埋葬时就缺了，足骨有明显截断的痕迹。M2墓主是一名儿童，“坑内仅有两根小腿骨，有明显的截痕”。M3墓主的骨架缺上肢骨和肋骨等，发掘报告认为，下葬时尸体就已经不完整了。M4墓主的骨架缺右上肢骨、左股骨及其他小件。[[fn:2]]\n\n这是伴随商人而来的征服和残酷统治，自给自足的土著村落成为商人统治下的奴隶庄园。一方面，开采和运输铜矿石需要较多劳动力，怀珍坊的这些死者可能是被奴役和虐杀的本地劳工。另一方面，这些人仍然拥有比较正规的墓葬，墓穴里有几件简陋的随葬品，说明他们还生活在自己的村落和家庭环境中，死后也由亲人安葬。\n\n怀珍坊的早商文化层很薄，没有更晚的（殷商时期）陶器和铜器，说明这个据点只是昙花一现，然后被永远废弃。\n\n===== PDF page 288 / printed page 274 =====", "288": "第二轮西进运动\n\n不止怀珍坊聚落，甚至不止关中，在商朝中叶，商人在各方向的扩张潮都在冻结和收缩。此时，并未出现强有力的外敌，正如前文所述，商人的挫折来自内部的九世之乱，这造成了王朝近百年的停滞。\n\n然后是盘庚王迁殷。之后，殷商终于稳定了下来。经过几十年休养，王朝实力逐渐恢复，到长寿的武丁王在位时期，又开始了对四方的征伐。而且，殷商已经有马拉战车，王宫和上千里外的战线的联络得以解决，征伐已不再是盲人摸象般的自发扩张，而是由商王统一指挥的军事行动。\n\n第二轮“西进运动”是武丁开启的，重点指向晋南和关中盆地。商人入侵者持续向关中西部推进，与各种土著部落频繁发生激战。这是上一轮自发扩张潮从未能抵达的地区。\n\n关中西部有一个叫“周”的羌人部族。有一条甲骨卜辞的内容，就是武丁占卜要不要亲自去征讨周方：“丙辰卜，宾贞，王惟周方征。” （《合集》6657正）此外，武丁还多次占卜需要派哪些武装去“寇周”，寇也释读成“扑”，都有征伐之意。这种卜辞多达九条，预备动用的武装则有“多子族”：“己卯卜，允，贞：令多子族从犬侯寇周，叶王事。”还有犬侯、尹侯、崇侯虎以及一些字形无法释读的侯和人名。[[fn:3]] 可见，武丁动用的兵力非常强大，尤其是“多子族”，它是商王族的武装，陈梦家将其比作清代的八旗军队。\n\n===== PDF page 289 / printed page 275 =====", "289": "需要特别强调的是，武丁这里讨伐的羌人周族（姜姓周族），和后来周文王的姬姓周族不一样。[[fn:4]] 武丁王时期，周文王的先祖姬姓周族还生活在偏远的陕北山地，而非关中盆地，商朝还不可能知道他们。当然，羌人周族和姬姓周族还有血缘上的联系，后面我们会对此详细介绍。\n\n商人军队消灭姜姓周族后，占据了岐山之南、渭水之北的周原地区。然后，武丁王册封了一名王族显贵统治周原，在甲骨文里，他被称为“周侯”。注意，这是商人建立的周原侯国。\n\n周原地区出土过几次商代青铜器，[[fn:5]] 有窖藏，也有墓葬。多数铜器造型属于殷墟前期，恰和武丁时期的西进运动吻合，但也有少数铜器时代更早，属于迁殷之前的商前期。这少数的商前期铜器可能是被主人从商朝核心区带到新征服的周原的，保存和使用了好几代，最后被随葬埋入地下。\n\n这些铜器表明，占领周原后，商朝便试图在此建立稳定的据点和扩张基地。显然，新册封的这位周侯和王室关系密切，武丁时期的卜辞里有很多关于他的内容，比如，“令周侯今生月亡祸”（《合集》20074），意思是，武丁祈祷周侯这个月没有灾祸。\n\n再到几代人之后，商朝授予周文王的封号则是“周方伯”。[[fn:6]] 伯是异族酋长，商朝是不会给异族头领“侯”的称号的。\n\n武丁曾占卜一位“妇周”的病情会不会延续。[[fn:7]] “妇某”的称呼专用于商族血统的后妃，比如著名的妇好。倘若是异族女子，哪怕成为商王宠妃，也不会享有这种称呼，比如末代商纣王宠爱的妲己，她来自“己”姓的苏国，而非“子”姓的商族，所以不能称“妇妲”。", "290": "===== PDF page 290 / printed page 276 =====\n\n武丁死后，西进运动再次式微。结果，西部土著羌人和商人的冲突日益频繁，关中西部的商人据点还没来得及稳固就纷纷沦陷。在周原，虽然发现过多组武丁时期的青铜礼器，但没有发现任何高等级建筑。这说明，这个商人侯国可能立国不久就被消灭，或者被迫离开了。\n\n1972年，在周原范围内的岐山县京当村出土了五件有“目”形纹饰的商式铜器。它们被保存在一个“用圆石头砌成的窖穴”中，村民挖掘时没有发现人骨，说明这批铜器不是随葬品，而是战乱来临时埋藏的，很可能是主人发现自己遭到羌人围困，来不及带走财宝，只好在突围之前先埋了起来。\n\n商人对待异族过于残忍，俘获的羌人被一批批送到殷都献祭，故而许多羌人宁愿战死或逃亡，也不愿在商人的统治下苟活。所以，仅靠武力，商人一直难以统治整个关中盆地。\n\n更复杂的是，动荡甚至形成了一种虹吸效应，更遥远的西北方土著部族，正在缓慢而持续地翻过陇山和六盘山朝关中迁徙。他们可能是被商人新奇的青铜产品吸引，同时试图占据因战争而荒芜的土地。比如，以“分裆袋足”陶鬲为特征的刘家文化，有学者认为，它是从西北方进入关中的，属于甲骨文中的羌人群体。[[fn:8]]\n\n武丁死后，他的儿子祖庚和祖甲相继为王。《史记•殷本纪》记载，祖甲“淫乱，殷复衰”，周侯之国遂被废弃。自此，商人势力撤出关中西部，这里彻底萧条，连青铜器也很少被发现。但商人还是固守住了关中东部的老牛坡，在这里，武丁王新册封了一位商人贵族，他就是《史记》和《封神演义》里鼎鼎大名的崇侯虎。", "291": "===== PDF page 291 / printed page 277 =====\n\n崇侯虎早生了二百年\n\n据《史记•周本纪》，文王周昌被商纣王囚禁羑里的起因是：\n\n崇侯虎谮（诬告）西伯于殷曰：“西伯积善累德，诸侯皆向之，将不利于帝。” 帝纣乃囚西伯羑里。\n\n〔按语：西伯利亚〕\n\n从此，周昌经历了一系列遭遇和幸运。获释后，他开始积蓄力量，密谋翦商，并在其去世前一年，穷周族之全力向崇国发动进攻，终于攻灭了这个仇敌之国。\n\n《诗经•大雅•皇矣》对崇国的灭亡有生动描写。“帝谓文王：询尔仇方，同尔兄弟；以尔钩援，与尔临冲，以伐崇墉！”翻译成白话就是，上帝命令文王：“召集你的同盟，集合你的族人，带上你攻城的钩梯和冲车，去攻打崇国的城墙”。\n\n那么，让文王如此咬牙切齿，以至动用上帝来诅咒的崇国，究竟在哪里？对此，史书却语焉不详。\n\n其实，在比周文王早二百年的商王武丁时代，甲骨卜辞中就已经出现了崇侯虎。（《合集》6554）\n\n1 .贞：令从崇侯虎伐髳方，受有佑。\n\n2 .贞：勿从崇侯。[[fn:9]]\n\n武丁让崇国伐髳方，说明它们之间比较近。后来，周武王灭商,\n\n《合集》6554【图】：1.贞：令从崇侯虎伐髳方，受有佑。2.贞：勿从崇侯。\n\n盟军之中也有“髳”（《尚书•牧誓》）可见，周原和髳方距离不远。据此推测，崇国和周原之间也不会太远。\n\n===== PDF page 292 / printed page 278 =====", "292": "从甲骨文字形看，崇字中间是一张树立的床，上下各有一个类似方括号的符号，“床”可能是音旁，和“崇”发音接近。在卜辞中，这个崇字经常被写得非常瘦高，超过正常的两个字的高度，可能用来表示它有“高”的含义。从音和意来看，它都很接近“崇”字。\n\n崇侯虎为何会出现在文王之前二百年？很可能是因为，作为崇国的开国之君，他在武丁王时期就非常活跃且显赫。胡厚宣先生就总结说，武丁时有捍卫商王朝的鼎足三大将，崇侯虎就在其中。这可能导致名人效应，使得后人在讲述文王经历时，把晚近的“崇侯”误记成了“崇侯虎”。\n\n此外，开国之君的名字也可能成为后世历代国君的代称。比如，西周建立后，周文王的两位弟弟虢仲和虢叔的后人的封国皆名为虢，这两国后世的国君便也继续分别被称为虢仲和虢叔。按这种逻辑，崇国历代国君也都可以被称为崇侯虎。\n\n至于崇国在何地，老牛坡遗址提供了答案。\n\n《诗经》和《史记》有记载，攻灭崇国之后，文王立刻把驻地从周原迁到了丰地：“文王受命，有此武功。既伐于崇，作邑于丰。”[[fn:10]] 古代已有学者猜测，崇国应该离丰地不远：”崇国盖在丰镐之间。”（《史记正义・周本纪》）丰地，在今西安市西郊，而老牛坡在东郊，两地相距仅约50公里。所以，发掘报告推测，老牛坡可能就是崇国都城：\n\n若老牛坡遗址所在地果为崇国都邑旧址，则丰、镐一带地属崇国势力范围或政治辖区，是完全可能的。[[fn:11]]", "293": "===== PDF page 293 / printed page 279 =====\n\n考古发掘显示，在老牛坡三期（相当于殷墟前半期，武丁王的西部扩张开启之时），一批身份更高的商人来到这里定居，兴建起高等级建筑，老牛坡因此从普通据点扩大为城邑和侯国。这可能是崇侯虎建国的开端。\n\n商朝需要在关中建立稳定的前进基地，而老牛坡位居关中盆地中心，有铜矿资源，还有商人征服者上百年的经营史，各方面条件都最合适。\n\n崇国食人者\n\n大约在武丁时代，老牛坡出现了两座大型建筑。\n\n一号基址东西长30米，南北宽15米多，夯土地基厚1米，上面曾有多座分体建筑。能识别出三座建筑痕迹，其中的F3相对完整，长11米多，宽近6米，是“一座面阔四间、进深二间、面东二门、前有走廊、屋顶为两面坡式的中型房屋建筑”。它很可能是崇侯虎家族成员的住宅。\n\n一号基址F3房基发掘绘图（图）\n\n二号基址发掘绘图（图）\n\n二号基址与一号相距100米，被雨水冲毁了一部分，南北长23米，东西宽12米，夯土地基厚1.3米，复原出的柱子，有南北五排，东西八行，是一座大型单体殿堂建筑。这里可能是崇侯办公理事的朝堂。\n\n为保护房屋遗迹，考古队没有发掘夯土地基，所以无法确定是否有人奠基。但在发掘之前，村民曾在这里修建一座砖窑，留下的土崖断面上恰好有“小儿骨架一具”，被压在室内地面之下。如此偶然的机会都能发现尸骨，看来用人奠基的数量应当不少。", "294": "===== PDF page 294 / printed page 280 =====\n\n在夯土台基宫殿区的东侧，是土著农夫的房屋，还延续着制造花边陶罐和石璧等传统。武丁大扩张时期，因到老牛坡定居的商人越来越多，一些农夫遂被驱逐，供新来的商族人营建新居。而土著们的房屋，则正好用来做垃圾坑。这是黄土地带特有的“地窖”式房屋：地上挖一出近圆形坑（直径3—5米，深1.5—2.5米），坑口搭草棚遮挡风雨，坑壁上挖出供上下出入的阶梯。\n\n从关中到伊洛和晋南是黄土分布带，而黄土有较好的垂直层理，不容易倒塌，适合挖掘地窖，而且保温性好，比较宜居。这种地窖式房屋使用了上千年，从仰韶文化晚期直到商周。\n\n但自商人大量来到老牛坡后，这种地窖灰坑就不仅埋有陶片等生活垃圾，更还有人骨。比如：\n\nH5底部有人骨架两具，人骨很不完整，且和猪、狗的骨骼混杂在一起。发掘报告推测，“显然是死者被砍杀后而随意扔入的”。\n\nH19底部有人骨架一具，“除头骨外，骨骼亦残缺不全，显系非正常的死亡现象……同时还发现有鹿角、碎骨、大小不等的河卵石、已经成堆的烧土灰烬”。\n\nH17底部”紧靠坑壁发现一个完整的人头骨，近头骨处有大量草木灰，在草木灰烬中还有烧过的动物骨骼、鹿角和红烧土块”。\n\nH19平面及剖面图（图）\n\nH8平面及剖面图（图）\n\n上述三座灰坑，人骨都在底部，显然是垃圾坑刚使用时扔进去的。坑内有大量家畜骨头和人骨混在一起，还有灰烬和烧土块。所以，它们也可能是祭祀坑，但发掘报告中的信息较少，难以确证。", "295": "===== PDF page 295 / printed page 281 =====\n\nH8更特殊，是一座连体大灰坑。它不是窖穴改建的，而是先挖了一座专用垃圾坑乙（长2.6米，宽2.3米，深1.1米），当快被填满时，又紧挨着它挖了一座更大更深的垃圾坑甲（长3.7米，宽2.9米，最深处有2.4米），最后，甲坑也被填满。\n\n甲乙两坑内埋有各种生活垃圾，还有“许多人骨和牛、狗、猪等动物骨骼混杂在一起”。和其他灰坑不同的是：一，这两座灰坑不止底层有人骨，而是各层都有，说明杀人行为伴随着垃圾坑的使用全程；二，人骨都是零碎的，且和其他家畜骨骼混杂在一起，应该是吃完以后被遗弃的特征。或许H8周边的人家有吃人肉的习惯，而且持续了很多年，否则难以形成这种遍布垃圾坑的人骨堆积。\n\n但另一方面，往H8里倾倒垃圾的，应该不仅有贵族肉食者，还有本地土著居民，因为坑中还出土有石刀、石镰、石凿以及本地传统的花边口沿陶罐。\n\n这个居住区共发掘三期灰坑19座，有人骨的只有上述四座，并不占多数。这说明商人统治者的杀人行为还是有所区别，嗜杀和吃人肉的应该只属于少数人，或者特定场合。\n\n崇侯的青铜产业\n\n建立崇国，是商朝向西扩张的保障，由此，武丁先后灭亡羌人周族和分封商人周国。但武丁去世后，周原的商人侯国未能保住。在武丁王的儿子祖庚或祖甲时期，一片关于“周”的甲骨卜辞中又出现了“崇侯”等人。[[fn:12]]", "296": "===== PDF page 296 / printed page 282 =====\n\n甲骨磨损过于严重，难以判断商王到底让他们做什么。从时间看，祖庚和祖甲时期，商朝势力衰退，商人的周侯正遭受土著的威胁，为此，商朝很可能要调动周边诸侯救援。但此举无效，土著势力又淹没了关中西部。\n\n商人的周国灭亡后，老牛坡对于商朝的重要性得到了进一步提升，功能布局也随之发生了变化：殷墟前期的大型夯土建筑被废弃，改建为冶炼铸造区；崇侯的新宫殿区可能移到了遗址西北侧，也就是考古划出的第四发掘区。目前，这个区的发掘还比较少。\n\n到殷墟末期（老牛坡四期），崇国更加繁荣，青铜产业的规模也更大了：有很多冶铜的炼渣堆积，填满了一条至少长18米，最深处可达2米的土沟。距离铜矿渣不远的山坡上，有四期铸铜作坊的垃圾堆积，里面埋有很多熔铜陶缸碎片和残陶范。\n\n与二期那种铸造小件铜器以及可以多次使用的双面陶范不同，四期的陶范多用来铸造相对较大的器物，且只能一次性使用。目前发现的铸范可以制造各种容器和兵器，如鬲、戈、钺、皮角上缀的圆铜泡，还有类似面具的所谓牛面和人面形饰，但尺寸略小，不适合戴在脸上，可能是系在皮质头盔的额顶部位，起威吓敌军之用。[[fn:13]]\n\n从老牛坡二期的冶铸设施分离、规模很小，到四期的冶铸一体、规模增大，意味着权力结构已经发生重组：原来分散且互不统属的商人据点，以及基于自然资源和商业交换的产业布局，被整合到更大的政权体系中，形成了方国政治体。", "297": "===== PDF page 297 / printed page 283 =====\n\n怀珍坊相对偏僻、封闭，而老牛坡更接近关中盆地中心，控扼渭河南岸的交通干道。因此，把铜的冶铸设施集中到老牛坡，更便于军事防御，避免被对手分割击破。虽然铜矿石的运输里程要多20公里，但冶铜和铸铜两道工序却可以无缝衔接，免去了再次熔化铜锭的成本。\n\n虽然尚未发现殷商晚期的宫殿区，但从铸铜业的兴盛程度看，这一时期肯定有更大的核心建筑群，甚至还可能有夯土城墙。后来的周人史诗说，攻打崇国时，他们面对的就是牢固的城墙，正所谓“崇墉仡仡”。[[fn:14]]\n\n崇国商人的墓葬还使用大量殉人，等级稍高的殉人数量更是要十人左右，比多数商人侯国和据点都要“奢侈”。只是在商朝末期周文王灭崇国后，这些墓葬被严重破坏，相关细节我们会在后文商周易代的部分介绍。\n\n崇国-老牛坡后期的安定繁荣，和商人招降了一支北方山地部族有关，这便是周文王祖父一代的姬姓周族。他们被安置在土著和商朝反复拉锯的周原地区，而改变上古华夏文明历程的大转折，也自此开启。\n\n注释\n\n1刘士莪：《老牛坡》，陕西人民出版社，2001年。以下有关老牛坡考古的基本信息及图片未注明出处的，皆出自该书，不再详注。\n\n2西安半坡博物馆、蓝田县文化馆：《陕西蓝田怀珍坊商代遗址试掘简报》，《考古与文物》1981年第3期。\n\n3《合集》6812正，以及《合集》6813、6814、6815、6816、6817、6821、6822。", "298": "===== PDF page 298 / printed page 284 =====\n\n4徐中舒先生认为这里的周方是姜姓所建的女国，即母系社会的姜嫄国。参见徐中舒《周原甲骨初论》，载《徐中舒历史论文选辑》（下册），中华书局，1998年，第1423页。另可参见俞绍宏等《甲骨文“周”笺识》，《大连大学学报》2015年第1期。另外，董珊先生认为，周原这个地域在不同的时代有不同姓的族群进入并建立国家政权，这些先后成立的国家可以使用同一国名“周二并用此国名来命名自己的国族。参见董珊《试论殷墟卜辞之“周”为金文中的妘姓之琱（雕）》，《中国国家博物馆馆刊》2013年第7期。\n\n5王光永：《陕西省岐山县发现商代铜器》，《文物》1977年第12期；罗西章：《扶风美阳发现商周铜器》，《文物》1978年第10期；齐浩、张天宇：《周原遗址新见京当型铜器墓浅识》，《中国国家博物馆馆刊》2015年第11期。\n\n6周原甲骨H11：84有“册周方伯”。\n\n7《合集》2816。《乙》8894 : “贞：妇周。”\n\n8尹盛平：《周文化考古研究论集》，文物出版社，2012年，第H页。\n\n9古文字学家对该字有不同的释读，有人释读为“蒙”字，但胡厚宣认为是“崇侯虎”，见胡厚宣《卜辞中所见之殷代农业》，《甲骨学商史论丛二集》上，台北大通书局，1972年影印本上册，第52页。韩江苏、江林昌：《〈殷本纪〉 订补与商史人物徵》，第478页。", "299": "===== PDF page 299 / printed page 285 =====\n\n10《诗经•大雅•文王有声》。《史记•周本纪》：“明年，伐崇侯虎。而作丰邑，自岐下而徙都丰。”\n\n11《老牛坡》，第359页。\n\n12《合集》23560的这片甲骨图片模糊，多数字难以辨认，此释文来自胡厚宣《甲骨文合集释文》。\n\n13汉中地区发现的这类面饰更多，属于当地土著发展起来的青铜文化。\n\n14《诗经•大雅・皇矣》：“以尔钩援，与尔临冲，以伐崇墉。临冲闲闲，崇墉言言。执讯连连，攸就安安o是类是襦，是致是附，四方以无侮。临冲菟萌，崇墉仡仡”。\n\n===== PDF page 300 / printed page 286 =====", "300": ""};
+    const statusEl = document.getElementById('status');
+    const exportTextEl = document.getElementById('exportText');
+    const notePageEl = document.getElementById('notePage');
+    const noteTagEl = document.getElementById('noteTag');
+    const noteTextEl = document.getElementById('noteText');
+    const markerTypeEl = document.getElementById('markerType');
+    const markerTextEl = document.getElementById('markerText');
+    const markerHelpEl = document.getElementById('markerHelp');
+    const logListEl = document.getElementById('logList');
+    const userNotesBodyEl = document.getElementById('userNotesBody');
+    const modeBadgeEl = document.getElementById('modeBadge');
+    const chapterNotesBodyEl = document.getElementById('chapterNotesBody');
+    const chapterNoteTitleEl = document.getElementById('chapterNoteTitle');
+    const chapterNoteTextEl = document.getElementById('chapterNoteText');
+    let activeArea = null;
+    let viewMode = 'clean';
+    let cleanViewTexts = {};
+    let cleanViewHtml = {};
+    let voices = [];
+    let allowSave = true;
+    let savedFormatRange = null;
+    function setStatus(text, tone = '') { statusEl.textContent = text; statusEl.style.color = tone === 'ok' ? 'var(--ok)' : tone === 'warn' ? 'var(--warn)' : 'var(--muted)'; }
+    function textareas() { return Array.from(document.querySelectorAll('.rich-editor[data-page]')); }
+    function editorText(area) { return area.innerText.replace(/ /g, ' ').replace(/\n$/, ''); }
+    function nodeAtOffset(root, wanted) {
+      const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT);
+      let node = walker.nextNode(), remaining = Math.max(0, wanted);
+      while (node) { if (remaining <= node.data.length) return [node, remaining]; remaining -= node.data.length; node = walker.nextNode(); }
+      return [root, root.childNodes.length];
+    }
+    function setEditorSelection(area, start, end = start) {
+      const range = document.createRange();
+      const [startNode,startOffset] = nodeAtOffset(area,start), [endNode,endOffset] = nodeAtOffset(area,end);
+      range.setStart(startNode,startOffset); range.setEnd(endNode,endOffset);
+      const selection = getSelection(); selection.removeAllRanges(); selection.addRange(range);
+      area._selectionStart = start; area._selectionEnd = end; savedFormatRange = range.cloneRange();
+    }
+    function captureEditorSelection(area) {
+      const selection = getSelection();
+      if (!selection?.rangeCount || !area.contains(selection.anchorNode)) return;
+      const range = selection.getRangeAt(0), before = range.cloneRange();
+      before.selectNodeContents(area); before.setEnd(range.startContainer,range.startOffset);
+      area._selectionStart = before.toString().length;
+      area._selectionEnd = area._selectionStart + range.toString().length;
+      savedFormatRange = range.cloneRange(); activeArea = area; notePageEl.value = area.dataset.page;
+    }
+    function initializeRichEditor(area) {
+      area._selectionStart = area._selectionEnd = 0;
+      Object.defineProperty(area,'value',{get:()=>editorText(area),set:value=>{const projection=area._imageProjection?.items||[];area._imageProjection=null;area.textContent=String(value);[...projection].reverse().forEach(item=>{const [node,offset]=nodeAtOffset(area,Math.min(item.offset,area.innerText.length)),range=document.createRange();range.setStart(node,offset);range.collapse(true);range.insertNode(item.figure)});}});
+      Object.defineProperty(area,'selectionStart',{get:()=>area._selectionStart||0});
+      Object.defineProperty(area,'selectionEnd',{get:()=>area._selectionEnd||0});
+      Object.defineProperty(area,'readOnly',{get:()=>area.contentEditable==='false',set:value=>{area.contentEditable=value?'false':'true';}});
+      area.setSelectionRange=(start,end=start)=>setEditorSelection(area,start,end);
+      area.setRangeText=(replacement,start=area.selectionStart,end=area.selectionEnd,mode='end')=>{setEditorSelection(area,start,end);const range=getSelection().getRangeAt(0);range.deleteContents();const node=document.createTextNode(replacement);range.insertNode(node);const position=mode==='select'?start:start+replacement.length;setEditorSelection(area,mode==='select'?start:position,mode==='select'?start+replacement.length:position);};
+    }
+    function getLog() { try { return JSON.parse(localStorage.getItem(LOG_KEY) || '[]'); } catch { return []; } }
+    function setLog(items) { localStorage.setItem(LOG_KEY, JSON.stringify(items.slice(0, 300))); renderLog(); }
+    function getChapterNotes() { try { const notes = JSON.parse(localStorage.getItem(CHAPTER_NOTES_KEY) || '[]'); return Array.isArray(notes) ? notes : []; } catch { return []; } }
+    function setChapterNotes(notes) { localStorage.setItem(CHAPTER_NOTES_KEY, JSON.stringify(notes)); renderChapterNotes(); }
+    function allChapterNotes() { return [...STATIC_CHAPTER_NOTES.map(([title,note]) => ({title,note,source:'file'})), ...getChapterNotes().map(item => ({...item,source:'browser'}))]; }
+    function renderChapterNotes() {
+      const notes = allChapterNotes();
+      if (!notes.length) { chapterNotesBodyEl.innerHTML = '<tr><td colspan="3">暂无章节导读札记</td></tr>'; return; }
+      chapterNotesBodyEl.innerHTML = notes.map((item,index) => `<tr><td>${escapeHtml(item.title)}</td><td>${escapeHtml(item.note)}</td><td>${item.source === 'browser' ? `<button type="button" data-delete-chapter-note="${index - STATIC_CHAPTER_NOTES.length}">删除</button>` : '<span class="log-meta">文件</span>'}</td></tr>`).join('');
+      chapterNotesBodyEl.querySelectorAll('[data-delete-chapter-note]').forEach(button => button.addEventListener('click', () => {
+        if (!confirm('删除这条浏览器札记？')) return;
+        const notes = getChapterNotes();
+        notes.splice(Number(button.dataset.deleteChapterNote), 1);
+        setChapterNotes(notes);
+        addLog('删除章节导读札记', '', currentPage());
+      }));
+    }
+    function chapterNotesMarkdown() { return allChapterNotes().map(item => `## ${item.title}\n\n${item.note}`).join('\n\n') + '\n'; }
+    function countChars() { return textareas().reduce((sum, area) => sum + area.value.length, 0); }
+    function currentPage() { const selected = textareas().find(area => { const rect = area.getBoundingClientRect(); return rect.top >= 0 && rect.top < window.innerHeight * .65; }); return selected?.dataset.page || notePageEl.value || "283"; }
+    function addLog(action, detail = '', page = currentPage()) { const items = getLog(); items.unshift({ at: new Date().toISOString(), action, page, detail, chars: countChars(), pages: textareas().length }); setLog(items); }
+    function escapeHtml(text) { return String(text).replace(/[&<>"']/g, ch => ({ '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;' }[ch])); }
+    function renderLog() { const items = getLog(); if (!items.length) { logListEl.innerHTML = '<div class="log-meta">暂无记录</div>'; return; } logListEl.innerHTML = items.map(item => { const time = new Date(item.at).toLocaleString(); const page = item.page ? `PDF ${item.page}` : '全章'; const detail = item.detail ? `<div class="log-note">${escapeHtml(item.detail)}</div>` : ''; return `<div class="log-item"><div class="log-meta">${time} · ${escapeHtml(item.action)} · ${page} · ${item.chars || 0}字</div>${detail}</div>`; }).join(''); }
+    function populateNotePages() { notePageEl.innerHTML = textareas().map(area => `<option value="${area.dataset.page}">PDF ${area.dataset.page}</option>`).join(''); }
+    function cleanValueFor(area) { if(viewMode==='annotated')return cleanViewTexts[area.dataset.page]??area.value;const clone=area.cloneNode(true);clone.querySelectorAll('.editorial-image').forEach(image=>image.remove());return clone.innerText.replace(/\n$/,''); }
+    function editorText(area) { const figures=[...area.querySelectorAll('.editorial-image')],projection=[];figures.forEach(figure=>{const range=document.createRange();range.selectNodeContents(area);range.setEndBefore(figure);const clone=figure.cloneNode(true);clone.querySelector('.editorial-image-tools')?.remove();projection.push({offset:range.toString().length,figure:clone})});const token={items:projection};area._imageProjection=token;queueMicrotask(()=>{if(area._imageProjection===token)area._imageProjection=null});const clone=area.cloneNode(true);clone.querySelectorAll('.editorial-image').forEach(image=>image.remove());return clone.innerText.replace(/\n$/,''); }
+    function collectUserNotes() {
+      const notes = [];
+      textareas().forEach(area => {
+        const source = cleanValueFor(area);
+        const patterns = [
+          ['编者注', /^〔编者注(\d+)〕\s*(.*)$/gm, match => `编者注${match[1]}`, match => match[2]],
+          ['按语', /〔按语：([^〕]*)〕/g, () => '按语', match => match[1]],
+          ['待核', /〔待核：([^〕]*)〕/g, () => '待核', match => match[1]],
+          ['札记', /〔札记：([^〕]*)〕/g, () => '札记', match => match[1]],
+        ];
+        patterns.forEach(([_kind, pattern, label, content]) => {
+          for (const match of source.matchAll(pattern)) notes.push({ page:area.dataset.page, index:match.index, type:label(match), content:content(match).trim() });
+        });
+      });
+      return notes.sort((a,b) => Number(a.page) - Number(b.page) || a.index - b.index);
+    }
+    function renderUserNotes() {
+      const notes = collectUserNotes();
+      if (!notes.length) { userNotesBodyEl.innerHTML = '<tr><td colspan="3">暂无用户札记</td></tr>'; return; }
+      userNotesBodyEl.innerHTML = notes.map(note => `<tr><td>${escapeHtml(note.type)}</td><td><button type="button" class="user-note-jump" data-note-page="${note.page}">PDF ${note.page}</button></td><td>${escapeHtml(note.content)}</td></tr>`).join('');
+      userNotesBodyEl.querySelectorAll('[data-note-page]').forEach(button => button.addEventListener('click', () => {
+        const area = document.querySelector(`.rich-editor[data-page="${button.dataset.notePage}"]`);
+        document.getElementById(`page-${button.dataset.notePage}`)?.scrollIntoView({ behavior:'smooth', block:'start' });
+        if (area) { activeArea = area; setTimeout(() => area.focus(), 350); }
+      }));
+    }
+    function saveNow(record = true) { if (!allowSave) return; const texts = {}, html = {}; textareas().forEach(area => { const page=area.dataset.page;texts[page]=cleanValueFor(area);html[page]=viewMode==='clean'?area.innerHTML:(cleanViewHtml[page]??''); }); localStorage.setItem(STORAGE_KEY, JSON.stringify({ version:4, savedAt:new Date().toISOString(), texts, html })); setStatus('已保存 ' + new Date().toLocaleTimeString(), 'ok'); if (record) addLog('保存', '', currentPage()); }
+    function loadSaved() { try { const saved = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}'); if (!saved.texts && !saved.html) return; textareas().forEach(area => { const page=area.dataset.page;if(saved.version>=4&&saved.html?.[page]!==undefined)area.innerHTML=saved.html[page];else if(saved.texts?.[page]!==undefined)area.value=saved.texts[page]; }); setStatus(saved.version>=4?'已载入富文本保存稿':'已迁移旧版保存稿', 'ok'); } catch {} }
+    let timer = null; function queueSave() { setStatus('正在编辑', 'warn'); clearTimeout(timer); timer = setTimeout(() => saveNow(false), 900); }
+    function blockFor(area) { return `===== PDF page ${area.dataset.page} / printed page ${Number(area.dataset.page) - 14} =====\n\n${cleanValueFor(area).trim()}`; }
+    function buildText() { return textareas().map(blockFor).join('\n\n'); }
+    function downloadText(filename, text) { const blob = new Blob([text + '\n'], { type: 'text/plain;charset=utf-8' }); const url = URL.createObjectURL(blob); const a = document.createElement('a'); a.href = url; a.download = filename; document.body.appendChild(a); a.click(); a.remove(); URL.revokeObjectURL(url); }
+    function downloadJson(filename, data) { const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json;charset=utf-8' }); const url = URL.createObjectURL(blob); const a = document.createElement('a'); a.href = url; a.download = filename; document.body.appendChild(a); a.click(); a.remove(); URL.revokeObjectURL(url); }
+    function requireCleanArea() { if (viewMode !== 'clean') { setStatus('请先切换回清稿再编辑', 'warn'); return null; } const area = activeArea || textareas()[0]; if (!area) return null; area.focus(); return area; }
+    function replaceSelection(replacement) { const area = requireCleanArea(); if (!area) return; const start = area.selectionStart, end = area.selectionEnd; area.setRangeText(replacement, start, end, 'end'); area.dispatchEvent(new Event('input', { bubbles:true })); }
+    function selectedText(area) { return area.value.slice(area.selectionStart, area.selectionEnd); }
+    function nextFootnoteNumber() { const matches = buildText().match(/\[\[editor-fn:(\d+)\]\]/g) || []; return matches.reduce((max, marker) => Math.max(max, Number(marker.match(/\d+/)[0])), 0) + 1; }
+    function locateTerm(term) { const ordered = activeArea ? [activeArea, ...textareas().filter(area => area !== activeArea)] : textareas(); for (const area of ordered) { let index = area.value.indexOf(term, area === activeArea ? area.selectionEnd : 0); if (index < 0) index = area.value.indexOf(term); if (index >= 0) { activeArea = area; area.focus(); area.setSelectionRange(index, index + term.length); area.scrollIntoView({ behavior:'smooth', block:'center' }); return area; } } return null; }
+    function addNotation(term = '', pinyin = '') { let area = requireCleanArea(); if (!area) return; if (term) area = locateTerm(term); const selected = area ? selectedText(area) : ''; if (!selected) { setStatus(term ? `正文中找不到“${term}”` : '请先选择要注音的文字', 'warn'); return; } const start = area.selectionStart, end = area.selectionEnd; const reading = pinyin || prompt(`“${selected}”的拼音：`, '') || ''; if (!reading) return; const note = prompt('简注（可留空）：', '') || ''; area.setRangeText(`${selected}（${reading}${note ? '；' + note : ''}）`, start, end, 'end'); area.dispatchEvent(new Event('input', { bubbles:true })); addLog('添加注音', selected, area.dataset.page); }
+    function addFootnote() { const area = requireCleanArea(); if (!area) return; const number = nextFootnoteNumber(); const note = prompt(`编者注 ${number} 内容：`, ''); if (!note) return; const selected = selectedText(area); replaceSelection(`${selected}[[editor-fn:${number}]]`); area.insertAdjacentText('beforeend', `
+
+〔编者注${number}〕${note}`); area.dispatchEvent(new Event('input', { bubbles:true })); addLog('添加编者注', note, area.dataset.page); }
+    function addComment() { const area = requireCleanArea(); if (!area) return; const note = prompt('按语或评论：', ''); if (!note) return; const selected = selectedText(area); replaceSelection(selected ? `${selected}
+
+〔按语：${note}〕` : `
+
+〔按语：${note}〕`); addLog('插入按语', note, area.dataset.page); }
+    function markDoubt() { const area = requireCleanArea(); if (!area) return; const selected = selectedText(area); if (!selected) { setStatus('请先选择待核文字', 'warn'); return; } const reason = prompt('待核原因（可留空）：', '') || ''; replaceSelection(`〔待核：${selected}${reason ? '；' + reason : ''}〕`); addLog('标为待核', `${selected} ${reason}`.trim(), area.dataset.page); }
+    function addUserNote() { const area = requireCleanArea(); if (!area) return; const note = prompt('用户札记：', ''); if (!note) return; const selected = selectedText(area); replaceSelection(`${selected}${selected ? '\n\n' : ''}〔札记：${note}〕`); addLog('添加札记', note, area.dataset.page); }
+    const markerGuidance = {
+      'pinyin': ['先在正文中选择文字，再输入拼音；可用“拼音；简注”。', '输入拼音或“拼音；简注”'],
+      'editor-note': ['选择关联文字（可选），输入编者注内容；系统会自动编号并建立脚注标记。', '输入编者注内容'],
+      'inline-note': ['选择关联文字（可选），输入随文按语。', '输入按语内容'],
+      'pending': ['先选择待核文字；内容可填写待核原因。', '输入待核原因（可留空）'],
+      'user-note': ['选择关联文字（可选），输入个人札记；札记会出现在“用户札记”表。', '输入用户札记'],
+    };
+    function updateMarkerGuidance() { const [help, placeholder] = markerGuidance[markerTypeEl.value]; markerHelpEl.textContent = help; markerTextEl.placeholder = placeholder; }
+    function markerArea() { const chosen = document.querySelector(`.rich-editor[data-page="${notePageEl.value}"]`); return activeArea || chosen || textareas()[0]; }
+    function applyMarker() {
+      const area = markerArea();
+      if (!area || viewMode !== 'clean') { setStatus('请先切换回清稿再添加标记', 'warn'); return; }
+      activeArea = area;
+      const type = markerTypeEl.value;
+      const content = markerTextEl.value.trim();
+      const selected = selectedText(area);
+      const start = area.selectionStart;
+      const end = area.selectionEnd;
+      let replacement = selected;
+      let action = '';
+      let detail = content;
+      if (type === 'pinyin') {
+        if (!selected) { setStatus('请先选择要注音的文字', 'warn'); return; }
+        if (!content) { setStatus('请输入拼音', 'warn'); return; }
+        const [reading, ...noteParts] = content.split('；');
+        const note = noteParts.join('；').trim();
+        replacement = `${selected}（${reading.trim()}${note ? '；' + note : ''}）`;
+        action = '添加注音';
+        detail = selected;
+      } else if (type === 'editor-note') {
+        if (!content) { setStatus('请输入编者注内容', 'warn'); return; }
+        const number = nextFootnoteNumber();
+        replacement = `${selected}[[editor-fn:${number}]]`;
+        area.setRangeText(replacement, start, end, 'end');
+        area.insertAdjacentText('beforeend', `
+
+〔编者注${number}〕${content}`);
+        action = '添加编者注';
+      } else if (type === 'inline-note') {
+        if (!content) { setStatus('请输入按语内容', 'warn'); return; }
+        replacement = `${selected}${selected ? '\n\n' : ''}〔按语：${content}〕`;
+        action = '插入按语';
+      } else if (type === 'pending') {
+        if (!selected) { setStatus('请先选择待核文字', 'warn'); return; }
+        replacement = `〔待核：${selected}${content ? '；' + content : ''}〕`;
+        action = '标为待核';
+        detail = `${selected} ${content}`.trim();
+      } else {
+        if (!content) { setStatus('请输入用户札记', 'warn'); return; }
+        replacement = `${selected}${selected ? '\n\n' : ''}〔札记：${content}〕`;
+        action = '添加札记';
+      }
+      if (type !== 'editor-note') area.setRangeText(replacement, start, end, 'end');
+      area.dispatchEvent(new Event('input', { bubbles:true }));
+      addLog(action, detail, area.dataset.page);
+      markerTextEl.value = '';
+      setStatus(`${action}完成`, 'ok');
+      area.focus();
+    }
+    function escapeRegExp(text) { const specials = new Set([36,40,41,42,43,46,63,91,92,93,94,123,124,125]); return [...text].map(ch => specials.has(ch.charCodeAt(0)) ? String.fromCharCode(92) + ch : ch).join(''); }
+    function dictionarySettings() { try { return { enabled:true, difficulty:3, domain:'all', ...JSON.parse(localStorage.getItem(DICTIONARY_SETTINGS_KEY) || '{}') }; } catch { return { enabled:true, difficulty:3, domain:'all' }; } }
+    function termIsVisible(item, settings=dictionarySettings()) { return settings.enabled && (Number(item.difficulty) || 3) >= Number(settings.difficulty) && (settings.domain === 'all' || item.domain === settings.domain); }
+    function applyDictionarySettings() { const settings=dictionarySettings(), button=document.getElementById('dictionaryHintsBtn'), difficulty=document.getElementById('dictionaryDifficulty'), domain=document.getElementById('dictionaryDomain'); button.textContent=settings.enabled?'词典提示：开':'词典提示：关'; button.classList.toggle('active',settings.enabled); button.setAttribute('aria-pressed',String(settings.enabled)); difficulty.value=String(settings.difficulty); domain.value=settings.domain; document.querySelectorAll('button.term').forEach(term=>{ term.hidden=!termIsVisible({difficulty:Number(term.dataset.difficulty),domain:term.dataset.domain},settings); }); }
+    function saveDictionarySettings(changes) { localStorage.setItem(DICTIONARY_SETTINGS_KEY,JSON.stringify({...dictionarySettings(),...changes})); applyDictionarySettings(); if(viewMode==='annotated')setView('clean'); }
+    function applyProjectDictionaryOverrides(overrides) { TERMS.forEach(item=>{const saved=overrides[`zh ${item.term}`];if(!saved)return;if(saved.pinyin!==undefined)item.pinyin=String(saved.pinyin);if(saved.difficulty!==undefined)item.difficulty=Number(saved.difficulty)||3;if(saved.definition!==undefined)item.annotation=String(saved.definition)});document.querySelectorAll('button.term').forEach(button=>{const item=TERMS.find(entry=>entry.term===button.dataset.term);if(!item)return;button.dataset.pinyin=item.pinyin||'';button.dataset.difficulty=String(item.difficulty||3);const parts=button.querySelectorAll('span');if(parts[1])parts[1].textContent=item.pinyin||''});localStorage.setItem(PROJECT_DICTIONARY_OVERRIDES_KEY,JSON.stringify(overrides));applyDictionarySettings(); }
+    function loadProjectDictionaryOverrides() {try{const value=JSON.parse(localStorage.getItem(PROJECT_DICTIONARY_OVERRIDES_KEY)||'{}');if(value&&typeof value==='object'&&!Array.isArray(value))applyProjectDictionaryOverrides(value)}catch{}}
+    function annotatedTexts() { const result = { ...cleanViewTexts }; const used = new Set(); [...TERMS].filter(item=>termIsVisible(item)).sort((a,b) => (b.term || '').length - (a.term || '').length).forEach(item => { const term = (item.term || '').trim(), pinyin = (item.pinyin || '').trim(); if (!term || !pinyin || used.has(term)) return; for (const area of textareas()) { const page = area.dataset.page; const pattern = new RegExp(escapeRegExp(term) + '(?:[（(][A-Za-züÜvV:]+[1-5][）)])?'); if (pattern.test(result[page])) { result[page] = result[page].replace(pattern, `${term}（${pinyin}）`); used.add(term); break; } } }); return result; }
+    function setView(mode) { if (mode === 'annotated') { saveNow(false); cleanViewTexts = Object.fromEntries(textareas().map(area => [area.dataset.page, area.value])); cleanViewHtml = Object.fromEntries(textareas().map(area => [area.dataset.page, area.innerHTML])); const projected = annotatedTexts(); textareas().forEach(area => { area.value = projected[area.dataset.page]; area.readOnly = true; area.classList.add('annotated-view'); }); viewMode = 'annotated'; document.getElementById('viewToggleBtn').textContent = '切换为清稿'; modeBadgeEl.textContent = '当前：注音稿（只读）'; modeBadgeEl.classList.add('annotated'); } else { if (viewMode === 'annotated') textareas().forEach(area => area.innerHTML = cleanViewHtml[area.dataset.page] ?? escapeHtml(cleanViewTexts[area.dataset.page] ?? area.value)); textareas().forEach(area => { area.readOnly = false; area.classList.remove('annotated-view'); }); viewMode = 'clean'; document.getElementById('viewToggleBtn').textContent = '切换为注音稿'; modeBadgeEl.textContent = '当前：清稿'; modeBadgeEl.classList.remove('annotated'); } sessionStorage.setItem(`${STORAGE_KEY}:view`, mode); setStatus(mode === 'annotated' ? '注音稿仅供查看' : '已返回清稿', 'ok'); }
+    function loadVoices() { const priority = lang => { const code = lang.toLowerCase(); return code.startsWith('en') ? 0 : code.startsWith('zh') ? 1 : code.startsWith('ru') ? 2 : code.startsWith('fr') ? 3 : 4; }; voices = speechSynthesis.getVoices().sort((a,b) => priority(a.lang) - priority(b.lang) || a.lang.localeCompare(b.lang) || a.name.localeCompare(b.name)); const select = document.getElementById('voiceSelect'); select.innerHTML = '<option value="">系统默认声音</option>' + voices.map((voice,index) => { const name = voice.name.length > 24 ? voice.name.slice(0,23) + '…' : voice.name; return `<option value="${index}">${escapeHtml(name)} — ${escapeHtml(voice.lang)}</option>`; }).join(''); }
+    function speakText() { speechSynthesis.cancel(); const area = activeArea || textareas()[0]; if (!area) return; const selection = selectedText(area).trim(); const utterance = new SpeechSynthesisUtterance(selection || area.value); utterance.lang = 'zh-CN'; utterance.rate = Number(document.getElementById('speechRate').value); const index = document.getElementById('voiceSelect').value; if (index !== '') utterance.voice = voices[Number(index)]; utterance.onstart = () => { document.getElementById('pauseSpeechBtn').disabled = false; document.getElementById('stopSpeechBtn').disabled = false; setStatus(selection ? '正在朗读所选文字' : `正在朗读 PDF ${area.dataset.page}`); }; utterance.onend = utterance.onerror = () => { document.getElementById('pauseSpeechBtn').disabled = true; document.getElementById('stopSpeechBtn').disabled = true; document.getElementById('pauseSpeechBtn').textContent = '暂停'; }; speechSynthesis.speak(utterance); }
+    function backupState() { return { version:4, chapter:"chapter_14", savedAt:new Date().toISOString(), texts:Object.fromEntries(textareas().map(area => [area.dataset.page, viewMode === 'clean' ? area.value : cleanViewTexts[area.dataset.page]])), html:Object.fromEntries(textareas().map(area => [area.dataset.page, viewMode === 'clean' ? area.innerHTML : cleanViewHtml[area.dataset.page]])), log:getLog(), chapterNotes:getChapterNotes() }; }
+    function restoreFormatSelection() { if (!savedFormatRange) return false; const selection=getSelection();selection.removeAllRanges();selection.addRange(savedFormatRange);return true; }
+    function applyTextStyle(command,value,label) { if(viewMode!=='clean'){setStatus('请先切换回清稿再设置格式','warn');return}if(!activeArea||!restoreFormatSelection()||getSelection().isCollapsed){setStatus('请先选择正文中的文字','warn');return}document.execCommand('styleWithCSS',false,true);if(!document.execCommand(command,false,value||null)){setStatus(`浏览器未能应用${label}`,'warn');return}activeArea.dispatchEvent(new Event('input',{bubbles:true}));captureEditorSelection(activeArea);addLog(`设置${label}`,getSelection().toString(),activeArea.dataset.page);setStatus(`${label}已应用`,'ok'); }
+    function prepareImage(file) { return new Promise((resolve,reject)=>{const reader=new FileReader();reader.onerror=()=>reject(new Error('无法读取图片'));reader.onload=()=>{const image=new Image();image.onerror=()=>reject(new Error('图片格式无法识别'));image.onload=()=>{const scale=Math.min(1,1800/Math.max(image.width,image.height)),canvas=document.createElement('canvas');canvas.width=Math.max(1,Math.round(image.width*scale));canvas.height=Math.max(1,Math.round(image.height*scale));canvas.getContext('2d').drawImage(image,0,0,canvas.width,canvas.height);const data=canvas.toDataURL('image/jpeg',.86);data.length>2600000?reject(new Error('压缩后的图片仍过大，请选择较小图片')):resolve(data)};image.src=reader.result};reader.readAsDataURL(file)}); }
+    function insertEditorialImage(data,fileName,caption) { if(viewMode!=='clean'||!activeArea){setStatus('请先在清稿正文中放置光标','warn');return}const figure=document.createElement('figure');figure.className='editorial-image';figure.dataset.size='medium';figure.contentEditable='false';const image=document.createElement('img');image.src=data;image.alt=caption||fileName;const figcaption=document.createElement('figcaption');figcaption.contentEditable='true';figcaption.textContent=caption||fileName;const tools=document.createElement('div');tools.className='editorial-image-tools';tools.innerHTML='<button type="button" data-image-size="small">小</button><button type="button" data-image-size="medium">中</button><button type="button" data-image-size="large">大</button><button type="button" data-image-size="full">通栏</button><button type="button" data-image-remove>删除</button>';figure.append(image,figcaption,tools);let range=savedFormatRange;try{if(!range||!activeArea.contains(range.commonAncestorContainer))range=null}catch{range=null}if(range){range.collapse(false);range.insertNode(figure)}else activeArea.append(figure);activeArea.append(document.createElement('br'));activeArea.dispatchEvent(new Event('input',{bubbles:true}));addLog('插入图片',caption||fileName,activeArea.dataset.page);setStatus('图片已插入；可编辑图注并调整大小','ok');}
+    const formatMenu=document.getElementById('formatMenu'),formatMenuBtn=document.getElementById('formatMenuBtn');
+    function closeFormatMenu(){formatMenu.classList.remove('open');formatMenuBtn.setAttribute('aria-expanded','false')}
+    formatMenuBtn.addEventListener('click',event=>{event.stopPropagation();const opening=!formatMenu.classList.contains('open');closeFormatMenu();if(opening){formatMenu.classList.add('open');formatMenuBtn.setAttribute('aria-expanded','true')}});
+    document.getElementById('formatPopover').addEventListener('click',event=>{const option=event.target.closest('.format-option');if(!option)return;applyTextStyle(option.dataset.command,option.dataset.value||null,option.dataset.label);closeFormatMenu()});
+    document.addEventListener('click',event=>{if(!formatMenu.contains(event.target))closeFormatMenu()});
+    document.addEventListener('keydown',event=>{if(event.key==='Escape')closeFormatMenu()});
+    document.getElementById('boldBtn').addEventListener('click',()=>applyTextStyle('bold',null,'粗体'));
+    document.getElementById('insertImageBtn').addEventListener('click',()=>{if(viewMode!=='clean'){setStatus('请先切换回清稿再插入图片','warn');return}if(!activeArea){setStatus('请先在正文中放置光标','warn');return}document.getElementById('editorImageInput').click();});
+    document.getElementById('editorImageInput').addEventListener('change',async event=>{const file=event.target.files[0];if(!file)return;try{const caption=prompt('请输入图片说明和来源（可稍后在正文中修改）：',file.name)||file.name;insertEditorialImage(await prepareImage(file),file.name,caption)}catch(error){setStatus(error.message,'warn')}finally{event.target.value=''}});
+    document.addEventListener('click',event=>{const size=event.target.closest('[data-image-size]'),remove=event.target.closest('[data-image-remove]'),figure=event.target.closest('.editorial-image');if(size&&figure){figure.dataset.size=size.dataset.imageSize;figure.closest('.rich-editor')?.dispatchEvent(new Event('input',{bubbles:true}))}else if(remove&&figure&&confirm('删除这张插图？')){const area=figure.closest('.rich-editor'),page=area?.dataset.page;figure.remove();area?.dispatchEvent(new Event('input',{bubbles:true}));addLog('删除图片','',page)}});
+    document.querySelectorAll('[data-target]').forEach(button => button.addEventListener('click', () => document.getElementById(button.dataset.target)?.scrollIntoView({ behavior: 'smooth', block: 'start' })));
+    textareas().forEach(initializeRichEditor);
+    textareas().forEach(area => { area.addEventListener('input', () => { queueSave(); renderUserNotes(); }); area.addEventListener('focus', () => { activeArea = area; notePageEl.value = area.dataset.page; }); area.addEventListener('click', () => captureEditorSelection(area)); area.addEventListener('keyup', () => captureEditorSelection(area)); area.addEventListener('mouseup', () => captureEditorSelection(area)); area.addEventListener('keydown',event=>{if(event.key==='Enter'&&viewMode==='clean'){event.preventDefault();captureEditorSelection(area);area.setRangeText('\n');area.dispatchEvent(new Event('input',{bubbles:true}));}}); area.addEventListener('paste',event=>{if(viewMode!=='clean')return;event.preventDefault();captureEditorSelection(area);area.setRangeText(event.clipboardData.getData('text/plain'));area.dispatchEvent(new Event('input',{bubbles:true}));}); });
+    document.querySelectorAll('button.term').forEach(button => button.addEventListener('click', () => addNotation(button.dataset.term, button.dataset.pinyin)));
+    document.getElementById('viewToggleBtn').addEventListener('click', () => setView(viewMode === 'clean' ? 'annotated' : 'clean'));
+    document.getElementById('dictionaryHintsBtn').addEventListener('click', () => saveDictionarySettings({enabled:!dictionarySettings().enabled}));
+    document.getElementById('dictionaryDifficulty').addEventListener('change', event => saveDictionarySettings({difficulty:Number(event.target.value)}));
+    document.getElementById('dictionaryDomain').addEventListener('change', event => saveDictionarySettings({domain:event.target.value}));
+    document.getElementById('dictionaryOverridesInput').addEventListener('change',async event=>{const file=event.target.files[0];if(!file)return;try{const data=JSON.parse(await file.text()),overrides=data.overrides||data;if(!overrides||typeof overrides!=='object'||Array.isArray(overrides))throw new Error('修订文件格式不正确');applyProjectDictionaryOverrides(overrides);setStatus('共享项目词典修订已导入','ok')}catch(error){setStatus('无法导入词典修订：'+error.message,'warn')}finally{event.target.value=''}});
+    document.getElementById('addNotationBtn').addEventListener('click', () => addNotation());
+    document.getElementById('addFootnoteBtn').addEventListener('click', addFootnote);
+    document.getElementById('addCommentBtn').addEventListener('click', addComment);
+    document.getElementById('markDoubtBtn').addEventListener('click', markDoubt);
+    document.getElementById('addUserNoteBtn').addEventListener('click', addUserNote);
+    document.getElementById('addChapterNoteBtn').addEventListener('click', () => {
+      const title = chapterNoteTitleEl.value.trim();
+      const note = chapterNoteTextEl.value.trim();
+      if (!title || !note) { setStatus('请填写章节札记的主题和内容', 'warn'); return; }
+      const notes = getChapterNotes();
+      notes.push({ title, note, at:new Date().toISOString() });
+      setChapterNotes(notes);
+      chapterNoteTitleEl.value = '';
+      chapterNoteTextEl.value = '';
+      setStatus('章节导读札记已保存', 'ok');
+      addLog('新增章节导读札记', title, currentPage());
+    });
+    document.getElementById('downloadChapterNotesBtn').addEventListener('click', () => {
+      downloadText(CHAPTER_NOTES_NAME, chapterNotesMarkdown());
+      setStatus('章节导读札记 Markdown 已下载', 'ok');
+      addLog('下载章节导读札记', '', currentPage());
+    });
+    markerTypeEl.addEventListener('change', updateMarkerGuidance);
+    notePageEl.addEventListener('change', () => {
+      const area = document.querySelector(`.rich-editor[data-page="${notePageEl.value}"]`);
+      if (area) activeArea = area;
+    });
+    document.getElementById('applyMarkerBtn').addEventListener('click', applyMarker);
+    document.getElementById('speakBtn').addEventListener('click', speakText);
+    document.getElementById('pauseSpeechBtn').addEventListener('click', event => { if (speechSynthesis.paused) { speechSynthesis.resume(); event.currentTarget.textContent = '暂停'; } else { speechSynthesis.pause(); event.currentTarget.textContent = '继续'; } });
+    document.getElementById('stopSpeechBtn').addEventListener('click', () => { speechSynthesis.cancel(); document.getElementById('pauseSpeechBtn').textContent = '暂停'; });
+    document.getElementById('speechRate').addEventListener('input', event => document.getElementById('speechRateValue').textContent = Number(event.target.value).toFixed(1) + '×');
+    document.getElementById('backupBtn').addEventListener('click', () => { downloadJson(BACKUP_NAME, backupState()); setStatus('JSON 备份已下载', 'ok'); addLog('导出备份', '', currentPage()); });
+    document.getElementById('importBackup').addEventListener('change', async event => { const file = event.target.files[0]; if (!file) return; try { const data = JSON.parse(await file.text()); if (!data.texts && !data.html) throw new Error('备份缺少 texts/html'); if (viewMode === 'annotated') setView('clean'); textareas().forEach(area => { const page=area.dataset.page;if(data.version>=4&&data.html?.[page]!==undefined)area.innerHTML=data.html[page];else if(data.texts?.[page]!==undefined)area.value=data.texts[page]; }); if (Array.isArray(data.log)) setLog(data.log); if (Array.isArray(data.chapterNotes)) setChapterNotes(data.chapterNotes); saveNow(false); setStatus(data.version>=4?'富文本备份已导入':'旧版备份已迁移', 'ok'); addLog('导入备份', file.name, currentPage()); } catch (error) { setStatus('无法导入备份：' + error.message, 'warn'); } finally { event.target.value = ''; } });
+    document.querySelectorAll('[data-copy-page]').forEach(button => button.addEventListener('click', async () => { const area = document.querySelector(`.rich-editor[data-page="${button.dataset.copyPage}"]`); await navigator.clipboard.writeText(area.value); setStatus('本页已复制', 'ok'); }));
+    document.querySelectorAll('[data-export-page]').forEach(button => button.addEventListener('click', () => { const area = document.querySelector(`.rich-editor[data-page="${button.dataset.exportPage}"]`); exportTextEl.value = blockFor(area); exportTextEl.scrollIntoView({ behavior: 'smooth', block: 'center' }); }));
+    document.getElementById('saveBtn').addEventListener('click', saveNow);
+    document.getElementById('exportBtn').addEventListener('click', () => { exportTextEl.value = buildText(); exportTextEl.scrollIntoView({ behavior: 'smooth', block: 'center' }); setStatus('文本已生成', 'ok'); addLog('生成文本', '', currentPage()); });
+    document.getElementById('downloadBtn').addEventListener('click', () => { downloadText(OUTPUT_NAME, buildText()); setStatus('TXT 已下载', 'ok'); addLog('下载TXT', '', currentPage()); });
+    document.getElementById('addNoteBtn').addEventListener('click', () => { const note = noteTextEl.value.trim(); if (!note) { setStatus('笔记为空', 'warn'); return; } const tag = noteTagEl.value.trim() || '校订'; addLog(tag, note, notePageEl.value); noteTextEl.value = ''; setStatus('笔记已记录', 'ok'); });
+    function buildLogText() { return getLog().map(item => { const time = new Date(item.at).toLocaleString(); const page = item.page ? `PDF ${item.page}` : '全章'; return `[${time}] ${item.action} · ${page} · ${item.chars || 0}字\n${item.detail || ''}`.trim(); }).join('\n\n'); }
+    document.getElementById('exportLogBtn').addEventListener('click', () => { exportTextEl.value = buildLogText(); exportTextEl.scrollIntoView({ behavior: 'smooth', block: 'center' }); setStatus('日志已导出', 'ok'); });
+    document.getElementById('downloadLogBtn').addEventListener('click', () => { downloadText(LOG_NAME, buildLogText()); setStatus('日志已下载', 'ok'); });
+    document.getElementById('clearLogBtn').addEventListener('click', () => { if (!confirm('清空本浏览器保存的编辑日志？')) return; localStorage.removeItem(LOG_KEY); renderLog(); setStatus('日志已清空', 'ok'); });
+    document.getElementById('resetBtn').addEventListener('click', () => { if (!confirm('恢复 chapter clean 原稿会清除本浏览器保存的编辑内容。继续？')) return; clearTimeout(timer); allowSave = false; if (viewMode === 'annotated') setView('clean'); textareas().forEach(area => area.value = ORIGINAL_TEXTS[area.dataset.page] ?? ''); cleanViewTexts = { ...ORIGINAL_TEXTS }; cleanViewHtml = {}; localStorage.removeItem(STORAGE_KEY); sessionStorage.removeItem(`${STORAGE_KEY}:view`); viewMode = 'clean'; textareas().forEach(area => { area.readOnly = false; area.classList.remove('annotated-view'); }); document.getElementById('viewToggleBtn').textContent = '切换为注音稿'; modeBadgeEl.textContent = '当前：清稿'; modeBadgeEl.classList.remove('annotated'); allowSave = true; setStatus('已恢复 chapter clean 原稿', 'ok'); addLog('恢复 clean 原稿', '', currentPage()); });
+    window.addEventListener('beforeunload', () => { if (allowSave) saveNow(false); });
+    populateNotePages();
+    updateMarkerGuidance();
+    loadSaved();
+    renderUserNotes();
+    renderChapterNotes();
+    activeArea = textareas()[0] || null;
+    applyDictionarySettings();
+    loadProjectDictionaryOverrides();
+    loadVoices();
+    if ('onvoiceschanged' in speechSynthesis) speechSynthesis.onvoiceschanged = loadVoices;
+    if (sessionStorage.getItem(`${STORAGE_KEY}:view`) === 'annotated') setView('annotated');
+    renderLog();
+  </script>
+</body>
+</html>

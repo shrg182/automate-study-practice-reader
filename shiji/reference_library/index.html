@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="description" content="所有《史记》阅读篇章共用的参考资料库。">
+  <title>史记参考资料库</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="masthead">
+    <a class="brand" href="../README.md"><span>史</span><div><strong>史记参考资料库</strong><small>Shared Shiji Reference Library</small></div></a>
+    <div class="header-actions"><button id="addReference" class="primary" type="button">添加资料</button><button id="exportCsv" type="button">导出 CSV</button></div>
+  </header>
+  <main>
+    <section class="hero">
+      <div><p class="eyebrow">跨篇共享 · 一处维护</p><h1>读《史记》，<em>资料不必重寻。</em></h1><p>集中保存原文、译注、研究页面与标准引用。浏览器中的修改可导出后合并回项目 CSV。</p></div>
+      <div class="count"><strong id="entryCount">0</strong><span>references</span></div>
+    </section>
+    <section class="library">
+      <div class="controls">
+        <label class="search"><span>搜索资料</span><input id="search" type="search" placeholder="标题、说明、标签或网址…" autocomplete="off"></label>
+        <label>排序<select id="sort"><option value="title">标题</option><option value="added">添加来源</option></select></label>
+      </div>
+      <div class="tag-filters" id="tagFilters" aria-label="按标签筛选"></div>
+      <p class="summary" id="summary" aria-live="polite"></p>
+      <div class="reference-grid" id="referenceGrid"></div>
+      <div class="empty" id="empty" hidden>没有匹配的资料。</div>
+    </section>
+  </main>
+  <dialog id="editorDialog">
+    <form id="referenceForm" method="dialog">
+      <div class="dialog-heading"><div><small id="formMode">编辑浏览器副本</small><h2 id="dialogTitle">参考资料</h2></div><button id="closeDialog" class="icon" type="button" aria-label="关闭">×</button></div>
+      <input name="id" type="hidden">
+      <label>标题<input name="title" required></label>
+      <label>网址<input name="url" type="url" required placeholder="https://…"></label>
+      <label>说明<textarea name="description" rows="3"></textarea></label>
+      <label>标签<input name="tags" placeholder="原文; 注释; 研究"></label>
+      <label>标准引用<textarea name="citation" rows="3"></textarea></label>
+      <label>添加来源<input name="added_from"></label>
+      <p class="storage-note">修改保存在本浏览器中，不会直接改写 <code>shared_references.csv</code>。请用“导出 CSV”带回项目。</p>
+      <div class="dialog-actions"><button class="primary" type="submit">保存</button><button id="cancelDialog" type="button">取消</button><button id="resetReference" class="danger" type="button">恢复原值</button></div>
+    </form>
+  </dialog>
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  <footer>Canonical source: <code>practice/shiji/shared_references.csv</code></footer>
+  <script src="references_data.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

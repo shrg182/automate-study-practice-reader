@@ -1,0 +1,1051 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>《翦商》第十三章 大学与王子 OCR 手工校订</title>
+  <script src="../shared/editor_header.js"></script>
+  <script src="../shared/editor_toc.js"></script>
+  <style>
+    :root { --bg:#f7f5ef; --paper:#fffdfa; --ink:#222; --muted:#666; --line:#d8d3c7; --soft:#eee8dc; --accent:#8a1f1f; --accent-ink:#fff; --warn:#9b5d00; --ok:#1f6b40; --shadow:0 8px 24px rgba(30,24,16,.08); }
+    * { box-sizing:border-box; }
+    html { scroll-behavior:smooth; }
+    body { margin:0; background:var(--bg); color:var(--ink); font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Noto Sans SC","PingFang SC","Microsoft YaHei",sans-serif; line-height:1.5; }
+    jianshang-editor-header, jianshang-editor-toc { display:contents; }
+    button, textarea, input, select, .rich-editor { font:inherit; }
+    header { position:sticky; top:0; z-index:20; background:rgba(255,253,250,.96); border-bottom:1px solid var(--line); backdrop-filter:blur(10px); }
+    .topbar { display:grid; grid-template-columns:minmax(260px,1fr) auto; gap:16px; width:min(1440px,calc(100% - 28px)); margin:0 auto; padding:12px 0; align-items:center; }
+    h1 { margin:0; font-size:1.2rem; line-height:1.2; letter-spacing:0; }
+    .subtitle { margin-top:3px; color:var(--muted); font-size:.88rem; }
+    .actions { display:flex; flex-wrap:wrap; gap:8px; justify-content:flex-end; align-items:center; }
+    button { border:1px solid var(--line); background:#fff; color:var(--ink); min-height:34px; padding:6px 10px; border-radius:6px; cursor:pointer; }
+    .import-label, .action-link { border:1px solid var(--line); background:#fff; color:var(--ink); min-height:34px; padding:6px 10px; border-radius:6px; cursor:pointer; display:inline-flex; align-items:center; text-decoration:none; }
+    button.primary { background:var(--accent); color:var(--accent-ink); border-color:var(--accent); }
+    button:focus-visible, textarea:focus-visible, input:focus-visible, select:focus-visible, .rich-editor:focus-visible { outline:2px solid var(--accent); outline-offset:2px; }
+    .format-menu { position:relative; }
+    .format-menu-trigger { display:flex; min-width:45px; align-items:center; justify-content:center; gap:7px; }
+    .marker-icon { display:inline-block; width:17px; height:8px; border-bottom:6px solid #f4c542; transform:skew(-12deg); }
+    .format-menu-trigger::after { content:"▾"; font-size:10px; color:var(--muted); }
+    .format-popover { position:absolute; top:calc(100% + 6px); left:0; z-index:40; display:none; width:178px; padding:5px; background:#fff; border:1px solid #cfc8ba; border-radius:8px; box-shadow:0 10px 30px #2927202e; }
+    .format-menu.open .format-popover { display:block; }
+    .format-option { display:flex; width:100%; gap:10px; align-items:center; border:0; background:#fff; padding:7px 9px; text-align:left; }
+    .format-option:hover,.format-option:focus { background:#edf2f5; color:var(--ink); }
+    .format-dot { width:15px; height:15px; flex:0 0 auto; border-radius:50%; box-shadow:inset 0 0 0 1px #00000018; }
+    .format-symbol { width:15px; text-align:center; font:600 15px/1 Georgia,serif; }
+    .format-divider { height:1px; margin:5px 4px; background:#ddd7cb; }
+    .status { color:var(--muted); font-size:.86rem; min-width:132px; text-align:right; }
+    main { width:min(1440px,calc(100% - 28px)); margin:18px auto 48px; }
+    .layout { display:grid; grid-template-columns:280px minmax(0,1fr); gap:18px; align-items:start; }
+    aside { position:sticky; top:calc(var(--editor-header-height, 75px) + 12px); display:grid; gap:14px; max-height:calc(100vh - var(--editor-header-height, 75px) - 24px); overflow:auto; }
+    .panel, .page, .toc-page, .reference-panel, .notes-dock, .export-dock { background:var(--paper); border:1px solid var(--line); box-shadow:var(--shadow); }
+    .panel h2, .reference-panel h2, .notes-dock h2, .export-dock h2 { margin:0; padding:10px 12px; font-size:.95rem; border-bottom:1px solid var(--line); background:var(--soft); }
+    .page-number-legend { padding:8px 11px; font-size:.82rem; color:var(--muted); }
+    .page-number-legend p { margin:3px 0; }
+    .page-number-legend strong { color:var(--ink); }
+    .nav-list, .term-list { padding:8px; display:grid; gap:6px; }
+    .nav-button { width:100%; display:flex; justify-content:space-between; gap:8px; text-align:left; }
+    .nav-button span:last-child, .term span:last-child { color:var(--muted); font-variant-numeric:tabular-nums; }
+    .term { display:flex; justify-content:space-between; gap:8px; border-bottom:1px solid var(--line); padding:4px 0; font-size:.9rem; }
+    button.term { width:100%; min-height:0; border-width:0 0 1px; border-radius:0; background:transparent; text-align:left; }
+    button.term:hover { color:var(--accent); background:#fff8ec; }
+    .pages { display:grid; gap:18px; }
+    .toc-page, .reference-panel, .page { scroll-margin-top:86px; }
+    .toc-head { display:flex; justify-content:space-between; gap:14px; align-items:baseline; padding:14px 16px; border-bottom:1px solid var(--line); background:#fff; }
+    .toc-head h2 { margin:0; font-size:1.15rem; }
+    .toc-body { display:grid; grid-template-columns:minmax(0,1fr) minmax(280px,.72fr); gap:18px; padding:14px 16px 16px; }
+    .toc-body h3 { margin:0 0 8px; font-size:.95rem; }
+    .toc-links { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:6px; }
+    .toc-link { display:flex; justify-content:space-between; gap:10px; border:1px solid var(--line); border-radius:6px; background:#fff; color:var(--ink); text-decoration:none; padding:7px 9px; min-height:34px; align-items:center; }
+    .toc-link.available { border-left:4px solid var(--ok); background:#f4fbf6; }
+    .toc-link.current { border:2px solid var(--accent); background:#fff0ec; color:var(--accent); font-weight:700; }
+    .toc-link.unavailable { background:#f1f0ed; color:#999; cursor:not-allowed; opacity:.72; }
+    .toc-legend { display:flex; flex-wrap:wrap; gap:10px; margin:0 0 8px; color:var(--muted); font-size:.8rem; }
+    .toc-legend span::before { content:""; display:inline-block; width:10px; height:10px; border-radius:2px; margin-right:4px; }
+    .legend-current::before { background:var(--accent); } .legend-available::before { background:var(--ok); } .legend-unavailable::before { background:#aaa; }
+    .toc-link span:first-child { overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+    .toc-link span:last-child { color:var(--muted); font-size:.86rem; font-variant-numeric:tabular-nums; white-space:nowrap; }
+    .reference-grid { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:14px; margin:18px 0; align-items:start; }
+    #user-notes { grid-column:1 / -1; }
+    #user-notes .table-scroll { max-height:440px; }
+    #user-notes table { table-layout:fixed; }
+    #user-notes th:nth-child(1), #user-notes td:nth-child(1) { width:110px; }
+    #user-notes th:nth-child(2), #user-notes td:nth-child(2) { width:110px; }
+    #user-notes td:nth-child(3) { overflow-wrap:anywhere; }
+    .table-scroll { overflow:auto; max-height:360px; }
+    #yueducibiao .table-scroll { max-height:none; overflow:visible; }
+    .data-table { width:100%; border-collapse:collapse; background:#fff; font-size:.9rem; }
+    .data-table th, .data-table td { border-bottom:1px solid var(--line); border-right:1px solid var(--line); padding:7px 8px; text-align:left; vertical-align:top; }
+    .data-table th:last-child, .data-table td:last-child { border-right:0; }
+    .data-table th { position:sticky; top:0; background:#fff8ec; z-index:1; font-weight:700; }
+    .data-table td { white-space:pre-wrap; }
+    .note-table td:first-child { min-width:150px; font-weight:650; }
+    .chapter-note-entry { display:grid; gap:10px; padding:12px; border-bottom:1px solid var(--line); background:#fffdf8; }
+    .chapter-note-entry label { display:grid; gap:5px; color:var(--muted); font-size:.88rem; }
+    .chapter-note-entry input, .chapter-note-entry textarea { width:100%; border:1px solid var(--line); background:#fff; color:var(--ink); border-radius:6px; padding:8px; font:inherit; }
+    .chapter-note-entry textarea { min-height:100px; resize:vertical; }
+    .page-head { display:flex; justify-content:space-between; gap:12px; align-items:center; padding:10px 12px; border-bottom:1px solid var(--line); background:#fff; }
+    .page-title { font-weight:700; }
+    .page-title span { color:var(--muted); font-weight:500; margin-left:8px; }
+    .page-tools { display:flex; gap:8px; flex-wrap:wrap; }
+    .workbench { display:grid; grid-template-columns:minmax(340px,1fr) minmax(300px,.82fr); gap:0; align-items:stretch; }
+    .editor-wrap { padding:12px; border-right:1px solid var(--line); display:flex; min-height:560px; }
+    textarea { width:100%; min-height:0; border:1px solid var(--line); background:#fff; color:var(--ink); padding:14px; border-radius:6px; line-height:1.85; font-size:1.02rem; letter-spacing:0; overflow:auto; }
+    .rich-editor { width:100%; min-height:536px; border:1px solid var(--line); background:#fff; color:var(--ink); padding:14px; border-radius:6px; line-height:1.85; font-size:1.02rem; letter-spacing:0; overflow:auto; white-space:pre-wrap; overflow-wrap:anywhere; }
+    .rich-editor.annotated-view { background:#fff9e8; color:#5b481f; }
+    .rich-editor u,.rich-editor [style*="underline"] { text-underline-offset:.2em; text-decoration-thickness:1px; }
+    .mode-badge { border-radius:999px; padding:5px 9px; background:var(--soft); color:var(--muted); font-size:.82rem; white-space:nowrap; }
+    .mode-badge.annotated { background:#fff0b8; color:#76500e; }
+    .speech-rate { display:flex; align-items:center; gap:4px; color:var(--muted); font-size:.82rem; }
+    #speechRate { width:82px; }
+    .hidden { display:none !important; }
+    .scan { padding:12px; background:#fbfaf6; display:flex; }
+    .scan img { width:100%; height:auto; display:block; border:1px solid var(--line); background:#fff; align-self:flex-start; }
+    .notes-dock { margin-top:18px; scroll-margin-top:86px; }
+    .note-grid { display:grid; grid-template-columns:minmax(240px,.75fr) minmax(320px,1fr); gap:12px; padding:12px; }
+    .note-controls { display:grid; gap:10px; align-content:start; }
+    .note-controls label { display:grid; gap:5px; color:var(--muted); font-size:.88rem; }
+    .note-controls select, .note-controls input { width:100%; border:1px solid var(--line); background:#fff; color:var(--ink); border-radius:6px; min-height:34px; padding:6px 8px; }
+    .marker-composer { border:1px solid var(--line); border-radius:7px; background:#fffaf0; padding:10px; display:grid; gap:8px; }
+    .marker-composer h3 { margin:0; font-size:.92rem; }
+    .marker-help { margin:0; color:var(--muted); font-size:.8rem; line-height:1.5; }
+    .note-actions { display:flex; gap:8px; flex-wrap:wrap; }
+    #noteText { min-height:150px; resize:vertical; }
+    .log-list { max-height:260px; overflow:auto; border:1px solid var(--line); background:#fff; border-radius:6px; padding:8px; display:grid; gap:8px; }
+    .log-item { border-bottom:1px solid var(--line); padding:0 0 8px; }
+    .log-item:last-child { border-bottom:0; padding-bottom:0; }
+    .log-meta { color:var(--muted); font-size:.82rem; font-variant-numeric:tabular-nums; }
+    .log-note { margin-top:3px; white-space:pre-wrap; }
+    .export-dock { margin-top:18px; }
+    #exportText { min-height:240px; border:0; border-radius:0; }
+    .quick-note-jump { position:fixed; right:18px; bottom:18px; z-index:25; background:var(--accent); color:var(--accent-ink); border-color:var(--accent); box-shadow:0 8px 24px rgba(30,24,16,.18); }
+    @media (max-width:980px) { .topbar { grid-template-columns:1fr; } .actions { justify-content:flex-start; } .status { text-align:left; } .layout { grid-template-columns:1fr; } aside { position:static; max-height:none; } .toc-body, .note-grid { grid-template-columns:1fr; } .toc-links { grid-template-columns:1fr; } .reference-grid { grid-template-columns:1fr; } .workbench { grid-template-columns:1fr; } .editor-wrap { border-right:0; border-bottom:1px solid var(--line); } .rich-editor { min-height:520px; } .quick-note-jump { right:12px; bottom:12px; } }
+  </style>
+</head>
+<body>
+  <jianshang-editor-header
+    page-title="《翦商》OCR 手工校订：第十三章 大学与王子"
+    page-subtitle="原书阅读器页 263-282 · 原书物理 PDF 页 261-280 · 印刷页 249-268 · 输出 chapter_13_clean_edited.txt"
+    reference-href="../reference_tables.html">
+    <noscript>此编辑器需要启用 JavaScript。</noscript>
+  </jianshang-editor-header>
+  <main>
+    <div class="layout">
+      <aside>
+        <section class="panel"><h2>页码说明</h2><div class="page-number-legend"><p><strong>原阅</strong> 263-282：原书在阅读器中显示的页码</p><p><strong>原PDF</strong> 261-280：原书文件的物理页码</p><p><strong>印</strong> 249-268：书页印刷页码</p><p><strong>注音PDF</strong> 1-15：独立重排页码，不与原书逐页对应</p></div></section>
+        <section class="panel"><h2>页</h2><div class="nav-list"><button type="button" class="nav-button" data-target="toc"><span>目录</span><span>top</span></button><button type="button" class="nav-button" data-target="notes"><span>编辑札记</span><span>log</span></button><button type="button" class="nav-button" data-target="page-263"><span>原阅 263 · 原PDF 261</span><span>印 249</span></button><button type="button" class="nav-button" data-target="page-264"><span>原阅 264 · 原PDF 262</span><span>印 250</span></button><button type="button" class="nav-button" data-target="page-265"><span>原阅 265 · 原PDF 263</span><span>印 251</span></button><button type="button" class="nav-button" data-target="page-266"><span>原阅 266 · 原PDF 264</span><span>印 252</span></button><button type="button" class="nav-button" data-target="page-267"><span>原阅 267 · 原PDF 265</span><span>印 253</span></button><button type="button" class="nav-button" data-target="page-268"><span>原阅 268 · 原PDF 266</span><span>印 254</span></button><button type="button" class="nav-button" data-target="page-269"><span>原阅 269 · 原PDF 267</span><span>印 255</span></button><button type="button" class="nav-button" data-target="page-270"><span>原阅 270 · 原PDF 268</span><span>印 256</span></button><button type="button" class="nav-button" data-target="page-271"><span>原阅 271 · 原PDF 269</span><span>印 257</span></button><button type="button" class="nav-button" data-target="page-272"><span>原阅 272 · 原PDF 270</span><span>印 258</span></button><button type="button" class="nav-button" data-target="page-273"><span>原阅 273 · 原PDF 271</span><span>印 259</span></button><button type="button" class="nav-button" data-target="page-274"><span>原阅 274 · 原PDF 272</span><span>印 260</span></button><button type="button" class="nav-button" data-target="page-275"><span>原阅 275 · 原PDF 273</span><span>印 261</span></button><button type="button" class="nav-button" data-target="page-276"><span>原阅 276 · 原PDF 274</span><span>印 262</span></button><button type="button" class="nav-button" data-target="page-277"><span>原阅 277 · 原PDF 275</span><span>印 263</span></button><button type="button" class="nav-button" data-target="page-278"><span>原阅 278 · 原PDF 276</span><span>印 264</span></button><button type="button" class="nav-button" data-target="page-279"><span>原阅 279 · 原PDF 277</span><span>印 265</span></button><button type="button" class="nav-button" data-target="page-280"><span>原阅 280 · 原PDF 278</span><span>印 266</span></button><button type="button" class="nav-button" data-target="page-281"><span>原阅 281 · 原PDF 279</span><span>印 267</span></button><button type="button" class="nav-button" data-target="page-282"><span>原阅 282 · 原PDF 280</span><span>印 268</span></button></div></section>
+        <section class="panel"><h2>参考表</h2><div class="nav-list"><button type="button" class="nav-button" data-target="yueducibiao"><span>阅读词表</span><span>表</span></button><button type="button" class="nav-button" data-target="qingtongqicibiao"><span>青铜器词表</span><span>表</span></button><button type="button" class="nav-button" data-target="dushuzhaji"><span>章节导读札记</span><span>表</span></button><button type="button" class="nav-button" data-target="user-notes"><span>用户札记</span><span>注</span></button></div></section>
+        <section class="panel"><h2>术语</h2><div class="term-list"><button type="button" class="term" data-term="殷墟" data-pinyin="yīn xū" data-difficulty="5" data-domain="archaeology"><span>殷墟</span><span>yīn xū</span></button><button type="button" class="term" data-term="妇好" data-pinyin="fù hǎo" data-difficulty="3" data-domain="proper_name"><span>妇好</span><span>fù hǎo</span></button><button type="button" class="term" data-term="祭祀坑" data-pinyin="jì sì kēng" data-difficulty="3" data-domain="general"><span>祭祀坑</span><span>jì sì kēng</span></button><button type="button" class="term" data-term="二层台" data-pinyin="èr céng tái" data-difficulty="3" data-domain="general"><span>二层台</span><span>èr céng tái</span></button><button type="button" class="term" data-term="箭镞" data-pinyin="jiàn zú" data-difficulty="5" data-domain="archaeology"><span>箭镞</span><span>jiàn zú</span></button><button type="button" class="term" data-term="盘庚" data-pinyin="pán gēng" data-difficulty="3" data-domain="proper_name"><span>盘庚</span><span>pán gēng</span></button><button type="button" class="term" data-term="殉人" data-pinyin="xùn rén" data-difficulty="3" data-domain="general"><span>殉人</span><span>xùn rén</span></button><button type="button" class="term" data-term="銎" data-pinyin="qióng" data-difficulty="4" data-domain="general"><span>銎</span><span>qióng</span></button><button type="button" class="term" data-term="铜镞" data-pinyin="tóng zú" data-difficulty="5" data-domain="bronze_vessel"><span>铜镞</span><span>tóng zú</span></button><button type="button" class="term" data-term="窖穴" data-pinyin="jiào xué" data-difficulty="3" data-domain="general"><span>窖穴</span><span>jiào xué</span></button><button type="button" class="term" data-term="夯筑" data-pinyin="hāng zhù" data-difficulty="3" data-domain="general"><span>夯筑</span><span>hāng zhù</span></button><button type="button" class="term" data-term="铜钺" data-pinyin="tóng yuè" data-difficulty="5" data-domain="bronze_vessel"><span>铜钺</span><span>tóng yuè</span></button><button type="button" class="term" data-term="羽箭" data-pinyin="yǔ jiàn" data-difficulty="5" data-domain="archaeology"><span>羽箭</span><span>yǔ jiàn</span></button><button type="button" class="term" data-term="人祭" data-pinyin="rén jì" data-difficulty="3" data-domain="general"><span>人祭</span><span>rén jì</span></button><button type="button" class="term" data-term="汭" data-pinyin="ruì" data-difficulty="4" data-domain="general"><span>汭</span><span>ruì</span></button><button type="button" class="term" data-term="鬯" data-pinyin="chàng" data-difficulty="4" data-domain="general"><span>鬯</span><span>chàng</span></button><button type="button" class="term" data-term="跽" data-pinyin="jì" data-difficulty="4" data-domain="general"><span>跽</span><span>jì</span></button><button type="button" class="term" data-term="禳" data-pinyin="ráng" data-difficulty="4" data-domain="general"><span>禳</span><span>ráng</span></button><button type="button" class="term" data-term="卜骨" data-pinyin="bǔ gǔ" data-difficulty="5" data-domain="archaeology"><span>卜骨</span><span>bǔ gǔ</span></button><button type="button" class="term" data-term="铜戈" data-pinyin="tóng gē" data-difficulty="5" data-domain="bronze_vessel"><span>铜戈</span><span>tóng gē</span></button><button type="button" class="term" data-term="人奠基" data-pinyin="rén diàn jī" data-difficulty="3" data-domain="general"><span>人奠基</span><span>rén diàn jī</span></button><button type="button" class="term" data-term="奠基" data-pinyin="diàn jī" data-difficulty="3" data-domain="general"><span>奠基</span><span>diàn jī</span></button><button type="button" class="term" data-term="巫医" data-pinyin="wū yī" data-difficulty="3" data-domain="general"><span>巫医</span><span>wū yī</span></button><button type="button" class="term" data-term="水牛" data-pinyin="shuǐ niú" data-difficulty="3" data-domain="general"><span>水牛</span><span>shuǐ niú</span></button><button type="button" class="term" data-term="腰坑殉狗" data-pinyin="yāo kēng xùn gǒu" data-difficulty="3" data-domain="general"><span>腰坑殉狗</span><span>yāo kēng xùn gǒu</span></button><button type="button" class="term" data-term="《合集》" data-pinyin="hé jí" data-difficulty="4" data-domain="general"><span>《合集》</span><span>hé jí</span></button><button type="button" class="term" data-term="夯土台基" data-pinyin="hāng tǔ tái jī" data-difficulty="3" data-domain="general"><span>夯土台基</span><span>hāng tǔ tái jī</span></button><button type="button" class="term" data-term="甲骨卜辞" data-pinyin="jiǎ gǔ bǔ cí" data-difficulty="4" data-domain="general"><span>甲骨卜辞</span><span>jiǎ gǔ bǔ cí</span></button><button type="button" class="term" data-term="夔龙纹" data-pinyin="kuí lóng wén" data-difficulty="5" data-domain="archaeology"><span>夔龙纹</span><span>kuí lóng wén</span></button><button type="button" class="term" data-term="宫殿区" data-pinyin="gōng diàn qū" data-difficulty="3" data-domain="general"><span>宫殿区</span><span>gōng diàn qū</span></button><button type="button" class="term" data-term="王陵区" data-pinyin="wáng líng qū" data-difficulty="3" data-domain="general"><span>王陵区</span><span>wáng líng qū</span></button><button type="button" class="term" data-term="绿松石" data-pinyin="lǜ sōng shí" data-difficulty="5" data-domain="general"><span>绿松石</span><span>lǜ sōng shí</span></button><button type="button" class="term" data-term="角斗士" data-pinyin="jué dòu shì" data-difficulty="3" data-domain="general"><span>角斗士</span><span>jué dòu shì</span></button><button type="button" class="term" data-term="铜礼器" data-pinyin="tóng lǐ qì" data-difficulty="5" data-domain="bronze_vessel"><span>铜礼器</span><span>tóng lǐ qì</span></button><button type="button" class="term" data-term="亚长" data-pinyin="yà zhǎng" data-difficulty="3" data-domain="proper_name"><span>亚长</span><span>yà zhǎng</span></button><button type="button" class="term" data-term="人牲" data-pinyin="rén shēng" data-difficulty="3" data-domain="general"><span>人牲</span><span>rén shēng</span></button><button type="button" class="term" data-term="从容" data-pinyin="cóng róng" data-difficulty="4" data-domain="general"><span>从容</span><span>cóng róng</span></button><button type="button" class="term" data-term="俯身" data-pinyin="fǔ shēn" data-difficulty="3" data-domain="general"><span>俯身</span><span>fǔ shēn</span></button><button type="button" class="term" data-term="先妣" data-pinyin="xiān bǐ" data-difficulty="5" data-domain="proper_name"><span>先妣</span><span>xiān bǐ</span></button><button type="button" class="term" data-term="卜辞" data-pinyin="bǔ cí" data-difficulty="4" data-domain="general"><span>卜辞</span><span>bǔ cí</span></button><button type="button" class="term" data-term="受业" data-pinyin="shòu yè" data-difficulty="4" data-domain="general"><span>受业</span><span>shòu yè</span></button><button type="button" class="term" data-term="商族" data-pinyin="shāng zú" data-difficulty="3" data-domain="general"><span>商族</span><span>shāng zú</span></button><button type="button" class="term" data-term="商王" data-pinyin="shāng wáng" data-difficulty="3" data-domain="proper_name"><span>商王</span><span>shāng wáng</span></button><button type="button" class="term" data-term="地层" data-pinyin="dì céng" data-difficulty="3" data-domain="general"><span>地层</span><span>dì céng</span></button><button type="button" class="term" data-term="坑壁" data-pinyin="kēng bì" data-difficulty="3" data-domain="general"><span>坑壁</span><span>kēng bì</span></button><button type="button" class="term" data-term="坑底" data-pinyin="kēng dǐ" data-difficulty="3" data-domain="general"><span>坑底</span><span>kēng dǐ</span></button><button type="button" class="term" data-term="基址" data-pinyin="jī zhǐ" data-difficulty="3" data-domain="general"><span>基址</span><span>jī zhǐ</span></button><button type="button" class="term" data-term="填土" data-pinyin="tián tǔ" data-difficulty="3" data-domain="general"><span>填土</span><span>tián tǔ</span></button><button type="button" class="term" data-term="壁龛" data-pinyin="bì kān" data-difficulty="2" data-domain="general"><span>壁龛</span><span>bì kān</span></button><button type="button" class="term" data-term="夔龙" data-pinyin="kuí lóng" data-difficulty="5" data-domain="archaeology"><span>夔龙</span><span>kuí lóng</span></button><button type="button" class="term" data-term="夯土" data-pinyin="hāng tǔ" data-difficulty="3" data-domain="general"><span>夯土</span><span>hāng tǔ</span></button><button type="button" class="term" data-term="始祖" data-pinyin="shǐ zǔ" data-difficulty="3" data-domain="general"><span>始祖</span><span>shǐ zǔ</span></button><button type="button" class="term" data-term="宋国" data-pinyin="sòng guó" data-difficulty="3" data-domain="proper_name"><span>宋国</span><span>sòng guó</span></button><button type="button" class="term" data-term="征伐" data-pinyin="zhēng fá" data-difficulty="3" data-domain="general"><span>征伐</span><span>zhēng fá</span></button><button type="button" class="term" data-term="战俘" data-pinyin="zhàn fú" data-difficulty="3" data-domain="general"><span>战俘</span><span>zhàn fú</span></button><button type="button" class="term" data-term="捆绑" data-pinyin="kǔn bǎng" data-difficulty="3" data-domain="general"><span>捆绑</span><span>kǔn bǎng</span></button><button type="button" class="term" data-term="族徽" data-pinyin="zú huī" data-difficulty="4" data-domain="general"><span>族徽</span><span>zú huī</span></button><button type="button" class="term" data-term="杀祭" data-pinyin="shā jì" data-difficulty="3" data-domain="general"><span>杀祭</span><span>shā jì</span></button><button type="button" class="term" data-term="柱洞" data-pinyin="zhù dòng" data-difficulty="3" data-domain="general"><span>柱洞</span><span>zhù dòng</span></button><button type="button" class="term" data-term="椁室" data-pinyin="guǒ shì" data-difficulty="5" data-domain="archaeology"><span>椁室</span><span>guǒ shì</span></button><button type="button" class="term" data-term="殷商" data-pinyin="yīn shāng" data-difficulty="5" data-domain="general"><span>殷商</span><span>yīn shāng</span></button><button type="button" class="term" data-term="殷都" data-pinyin="yīn dū" data-difficulty="5" data-domain="general"><span>殷都</span><span>yīn dū</span></button><button type="button" class="term" data-term="海贝" data-pinyin="hǎi bèi" data-difficulty="5" data-domain="archaeology"><span>海贝</span><span>hǎi bèi</span></button><button type="button" class="term" data-term="版筑" data-pinyin="bǎn zhù" data-difficulty="3" data-domain="general"><span>版筑</span><span>bǎn zhù</span></button><button type="button" class="term" data-term="献祭" data-pinyin="xiàn jì" data-difficulty="3" data-domain="general"><span>献祭</span><span>xiàn jì</span></button><button type="button" class="term" data-term="玄鸟" data-pinyin="xuán niǎo" data-difficulty="3" data-domain="general"><span>玄鸟</span><span>xuán niǎo</span></button><button type="button" class="term" data-term="玉戈" data-pinyin="yù gē" data-difficulty="5" data-domain="archaeology"><span>玉戈</span><span>yù gē</span></button><button type="button" class="term" data-term="穿孔" data-pinyin="chuān kǒng" data-difficulty="3" data-domain="general"><span>穿孔</span><span>chuān kǒng</span></button><button type="button" class="term" data-term="繁衍" data-pinyin="fán yǎn" data-difficulty="4" data-domain="general"><span>繁衍</span><span>fán yǎn</span></button><button type="button" class="term" data-term="羌人" data-pinyin="qiāng rén" data-difficulty="3" data-domain="general"><span>羌人</span><span>qiāng rén</span></button><button type="button" class="term" data-term="肋骨" data-pinyin="lèi gǔ" data-difficulty="3" data-domain="general"><span>肋骨</span><span>lèi gǔ</span></button><button type="button" class="term" data-term="股骨" data-pinyin="gǔ gǔ" data-difficulty="3" data-domain="general"><span>股骨</span><span>gǔ gǔ</span></button><button type="button" class="term" data-term="肱骨" data-pinyin="gōng gǔ" data-difficulty="3" data-domain="general"><span>肱骨</span><span>gōng gǔ</span></button><button type="button" class="term" data-term="货贝" data-pinyin="huò bèi" data-difficulty="5" data-domain="archaeology"><span>货贝</span><span>huò bèi</span></button><button type="button" class="term" data-term="遗存" data-pinyin="yí cún" data-difficulty="3" data-domain="general"><span>遗存</span><span>yí cún</span></button><button type="button" class="term" data-term="铜刀" data-pinyin="tóng dāo" data-difficulty="5" data-domain="bronze_vessel"><span>铜刀</span><span>tóng dāo</span></button><button type="button" class="term" data-term="铜矛" data-pinyin="tóng máo" data-difficulty="5" data-domain="bronze_vessel"><span>铜矛</span><span>tóng máo</span></button><button type="button" class="term" data-term="铭文" data-pinyin="míng wén" data-difficulty="4" data-domain="general"><span>铭文</span><span>míng wén</span></button><button type="button" class="term" data-term="锐器" data-pinyin="ruì qì" data-difficulty="3" data-domain="general"><span>锐器</span><span>ruì qì</span></button><button type="button" class="term" data-term="长发" data-pinyin="cháng fā" data-difficulty="4" data-domain="general"><span>长发</span><span>cháng fā</span></button><button type="button" class="term" data-term="陶缸" data-pinyin="táo gāng" data-difficulty="5" data-domain="archaeology"><span>陶缸</span><span>táo gāng</span></button><button type="button" class="term" data-term="镞" data-pinyin="zú" data-difficulty="5" data-domain="bronze_vessel"><span>镞</span><span>zú</span></button><button type="button" class="term" data-term="钺" data-pinyin="yuè" data-difficulty="5" data-domain="bronze_vessel"><span>钺</span><span>yuè</span></button><button type="button" class="term" data-term="戈" data-pinyin="gē" data-difficulty="5" data-domain="bronze_vessel"><span>戈</span><span>gē</span></button><button type="button" class="term" data-term="盉" data-pinyin="hé" data-difficulty="5" data-domain="bronze_vessel"><span>盉</span><span>hé</span></button><button type="button" class="term" data-term="戚" data-pinyin="qī" data-difficulty="5" data-domain="bronze_vessel"><span>戚</span><span>qī</span></button><button type="button" class="term" data-term="豆" data-pinyin="dòu" data-difficulty="5" data-domain="bronze_vessel"><span>豆</span><span>dòu</span></button><button type="button" class="term" data-term="觚" data-pinyin="gū" data-difficulty="5" data-domain="bronze_vessel"><span>觚</span><span>gū</span></button><button type="button" class="term" data-term="爵" data-pinyin="jué" data-difficulty="5" data-domain="bronze_vessel"><span>爵</span><span>jué</span></button></div></section>
+      </aside>
+      <section>
+        <jianshang-editor-toc current-chapter="chapter_13">
+          <noscript>目录需要启用 JavaScript。</noscript>
+        </jianshang-editor-toc>
+        <div class="reference-grid">
+        <section class="reference-panel" id="yueducibiao">
+          <h2>阅读词表</h2>
+          <div class="table-scroll">
+            <table class="data-table">
+              <thead><tr><th>词条</th><th>拼音</th><th>类型</th><th>说明</th></tr></thead>
+              <tbody><tr><td>殷墟</td><td>yīn xū</td><td>site_or_culture</td><td>晚商都邑遗址，甲骨卜辞的重要出土地。</td></tr><tr><td>妇好</td><td>fù hǎo</td><td>person</td><td>商王武丁配偶，甲骨文中著名女性军事人物。</td></tr><tr><td>祭祀坑</td><td>jì sì kēng</td><td>concept</td><td>用于祭祀或埋藏祭品的坑穴。</td></tr><tr><td>二层台</td><td>èr céng tái</td><td>concept</td><td>墓室内用于放置随葬品或殉人的台阶状结构。</td></tr><tr><td>箭镞</td><td>jiàn zú</td><td>artifact</td><td>箭头，文中有青铜、石骨材质。</td></tr><tr><td>盘庚</td><td>pán gēng</td><td>person</td><td>商王名，以迁都殷地著称。</td></tr><tr><td>殉人</td><td>xùn rén</td><td>concept</td><td>陪葬或随葬的人。</td></tr><tr><td>銎</td><td>qióng</td><td>manual</td><td>斧、锄等器具安柄的孔；文中见“管銎斧”。</td></tr><tr><td>铜镞</td><td>tóng zú</td><td>bronze_item</td><td>青铜箭头。</td></tr><tr><td>窖穴</td><td>jiào xué</td><td>concept</td><td>地下储藏坑穴。</td></tr><tr><td>夯筑</td><td>hāng zhù</td><td>concept</td><td>用夯打方式筑成墙体或台基。</td></tr><tr><td>铜钺</td><td>tóng yuè</td><td>bronze_item</td><td>青铜钺，常象征军事权力。</td></tr><tr><td>羽箭</td><td>yǔ jiàn</td><td>artifact</td><td>带尾羽的箭。</td></tr><tr><td>人祭</td><td>rén jì</td><td>concept</td><td>以人作为祭品的祭祀行为。</td></tr><tr><td>汭</td><td>ruì</td><td>manual</td><td>河流汇合或弯曲处；文中解释殷都大学所在地“入”的可能含义。</td></tr><tr><td>鬯</td><td>chàng</td><td>manual</td><td>古代祭祀用的香酒。</td></tr><tr><td>跽</td><td>jì</td><td>manual</td><td>长跪，臀部离开脚跟而挺身；文中见“跽坐”。</td></tr><tr><td>禳</td><td>ráng</td><td>manual</td><td>祭祷消除灾祸；文中见“禳解”。</td></tr><tr><td>卜骨</td><td>bǔ gǔ</td><td>artifact</td><td>用于占卜的兽骨。</td></tr><tr><td>铜戈</td><td>tóng gē</td><td>bronze_item</td><td>青铜戈，商周常见兵器。</td></tr><tr><td>人奠基</td><td>rén diàn jī</td><td>concept</td><td>建筑奠基时以人作为牺牲的行为。</td></tr><tr><td>奠基</td><td>diàn jī</td><td>concept</td><td>建筑开始时的基础工程或相关仪式。</td></tr><tr><td>巫医</td><td>wū yī</td><td>concept</td><td>兼具巫术占卜和治疗职能的人。</td></tr><tr><td>水牛</td><td>shuǐ niú</td><td>concept</td><td>商人畜牧和祭祀中涉及的家畜。</td></tr><tr><td>腰坑殉狗</td><td>yāo kēng xùn gǒu</td><td>concept</td><td>墓穴腰部小坑中埋狗的商人葬俗。</td></tr><tr><td>《合集》</td><td>hé jí</td><td>项目词典</td><td>《甲骨文合集》的简称。</td></tr><tr><td>夯土台基</td><td>hāng tǔ tái jī</td><td>项目词典</td><td>用夯土筑成的高台式建筑基础。 | 用夯土筑成的建筑台基。</td></tr><tr><td>甲骨卜辞</td><td>jiǎ gǔ bǔ cí</td><td>项目词典</td><td>商代刻写在甲骨上的占卜文字。 | 刻写在龟甲兽骨上的占卜文字。 | 刻写在甲骨上的占卜记录。 | 刻写在龟甲兽骨上的占卜辞句。</td></tr><tr><td>夔龙纹</td><td>kuí lóng wén</td><td>项目词典</td><td>青铜器常见的夔龙形纹饰。</td></tr><tr><td>宫殿区</td><td>gōng diàn qū</td><td>项目词典</td><td>都邑中宫殿和王室活动集中的区域。</td></tr><tr><td>王陵区</td><td>wáng líng qū</td><td>项目词典</td><td>王室墓葬集中的区域。 | 王室墓葬和祭祀坑集中的区域。</td></tr><tr><td>绿松石</td><td>lǜ sōng shí</td><td>项目词典</td><td>一种蓝绿色矿石，常用于装饰。 | 蓝绿色矿物，古代常作装饰嵌片。 | 蓝绿色矿物，古代常作饰物。</td></tr><tr><td>角斗士</td><td>jué dòu shì</td><td>项目词典</td><td>古罗马竞技表演中的搏斗者。</td></tr><tr><td>铜礼器</td><td>tóng lǐ qì</td><td>项目词典</td><td>用于礼仪或祭祀的青铜器。</td></tr><tr><td>亚长</td><td>yà zhǎng</td><td>项目词典</td><td>殷墟花园庄东M54墓主。</td></tr><tr><td>人牲</td><td>rén shēng</td><td>项目词典</td><td>被用于祭祀的人。 | 被用于祭祀或献祭的人。 | 被杀用于祭祀的人。</td></tr><tr><td>从容</td><td>cóng róng</td><td>项目词典</td><td>不慌不忙。</td></tr><tr><td>俯身</td><td>fǔ shēn</td><td>项目词典</td><td>身体向前伏下。</td></tr><tr><td>先妣</td><td>xiān bǐ</td><td>项目词典</td><td>已故女性祖先。</td></tr><tr><td>卜辞</td><td>bǔ cí</td><td>项目词典</td><td>甲骨占卜后刻写或记录的辞句。 | 甲骨上记录占卜的文字。 | 占卜时刻写或记录的辞句。</td></tr><tr><td>受业</td><td>shòu yè</td><td>项目词典</td><td>从师学习。</td></tr><tr><td>商族</td><td>shāng zú</td><td>项目词典</td><td>商王朝建立前后的族群共同体。</td></tr><tr><td>商王</td><td>shāng wáng</td><td>项目词典</td><td>商朝王。</td></tr><tr><td>地层</td><td>dì céng</td><td>项目词典</td><td>遗址中不同时期堆积形成的层次。</td></tr><tr><td>坑壁</td><td>kēng bì</td><td>项目词典</td><td>坑穴侧壁。</td></tr><tr><td>坑底</td><td>kēng dǐ</td><td>项目词典</td><td>坑穴底部，常用于描述考古遗迹。 | 坑穴底部。</td></tr><tr><td>基址</td><td>jī zhǐ</td><td>项目词典</td><td>建筑物遗留下来的基础位置。</td></tr><tr><td>填土</td><td>tián tǔ</td><td>项目词典</td><td>填入坑穴或遗迹中的土层。</td></tr><tr><td>壁龛</td><td>bì kān</td><td>项目词典</td><td>墙壁或坑壁上凿出的供放置物品的小龛。</td></tr><tr><td>夔龙</td><td>kuí lóng</td><td>项目词典</td><td>青铜纹饰中常见的龙形神兽。</td></tr><tr><td>夯土</td><td>hāng tǔ</td><td>项目词典</td><td>把土层层夯实形成建筑基础或城墙的技术。</td></tr><tr><td>始祖</td><td>shǐ zǔ</td><td>项目词典</td><td>一个族群传说中的最早祖先。</td></tr><tr><td>宋国</td><td>sòng guó</td><td>项目词典</td><td>周初分封商王族后裔之国。</td></tr><tr><td>征伐</td><td>zhēng fá</td><td>项目词典</td><td>出兵讨伐。</td></tr><tr><td>战俘</td><td>zhàn fú</td><td>项目词典</td><td>战争中捕获的人。</td></tr><tr><td>捆绑</td><td>kǔn bǎng</td><td>项目词典</td><td>用绳索等束缚身体。</td></tr><tr><td>族徽</td><td>zú huī</td><td>项目词典</td><td>族群标识，常见于商周青铜器铭文。</td></tr><tr><td>杀祭</td><td>shā jì</td><td>项目词典</td><td>以杀牲或杀人作为祭祀的仪式。 | 通过杀牲或杀人进行的祭祀。 | 通过杀人或杀牲举行的祭祀。</td></tr><tr><td>柱洞</td><td>zhù dòng</td><td>项目词典</td><td>考古遗迹中柱子留下的洞穴痕迹。</td></tr><tr><td>椁室</td><td>guǒ shì</td><td>项目词典</td><td>墓葬中放置棺木的木构外室。</td></tr><tr><td>殷商</td><td>yīn shāng</td><td>项目词典</td><td>商朝后期文化和政权。 | 商代后期以殷墟为中心的商王朝阶段。</td></tr><tr><td>殷都</td><td>yīn dū</td><td>项目词典</td><td>商朝后期都城区域，今安阳殷墟一带。 | 商朝后期都城区域。 | 晚商都城，通常指安阳殷墟。</td></tr><tr><td>海贝</td><td>hǎi bèi</td><td>项目词典</td><td>贝壳，古代可作装饰、随葬品或货币。</td></tr><tr><td>版筑</td><td>bǎn zhù</td><td>项目词典</td><td>夹板填土后层层夯实的筑墙方法。</td></tr><tr><td>献祭</td><td>xiàn jì</td><td>项目词典</td><td>把祭品奉献给神灵或祖先。 | 向神灵、祖先等奉献祭品。</td></tr><tr><td>玄鸟</td><td>xuán niǎo</td><td>项目词典</td><td>商族起源神话中的神鸟或天命媒介。</td></tr><tr><td>玉戈</td><td>yù gē</td><td>项目词典</td><td>玉制戈，多为礼仪性器物。</td></tr><tr><td>穿孔</td><td>chuān kǒng</td><td>项目词典</td><td>贯穿形成孔洞，文中多指颅骨创口。</td></tr><tr><td>繁衍</td><td>fán yǎn</td><td>项目词典</td><td>逐渐增多、传续后代。</td></tr><tr><td>羌人</td><td>qiāng rén</td><td>项目词典</td><td>西方族群，常见于商代卜辞。</td></tr><tr><td>肋骨</td><td>lèi gǔ</td><td>项目词典</td><td>胸部骨骼。</td></tr><tr><td>股骨</td><td>gǔ gǔ</td><td>项目词典</td><td>大腿骨。</td></tr><tr><td>肱骨</td><td>gōng gǔ</td><td>项目词典</td><td>上臂骨。</td></tr><tr><td>货贝</td><td>huò bèi</td><td>项目词典</td><td>作为货币使用的贝。</td></tr><tr><td>遗存</td><td>yí cún</td><td>项目词典</td><td>古代活动留下的遗物、遗迹或现象。</td></tr><tr><td>铜刀</td><td>tóng dāo</td><td>项目词典</td><td>青铜刀。</td></tr><tr><td>铜矛</td><td>tóng máo</td><td>项目词典</td><td>青铜矛，刺击兵器。</td></tr><tr><td>铭文</td><td>míng wén</td><td>项目词典</td><td>铸刻在青铜器等器物上的文字。 | 器物上铸刻或刻写的文字。</td></tr><tr><td>锐器</td><td>ruì qì</td><td>项目词典</td><td>带尖刃或锋利边缘的器物。</td></tr><tr><td>长发</td><td>cháng fā</td><td>项目词典</td><td>《诗经・商颂》篇名，歌颂商族祖先和商汤功业。</td></tr><tr><td>陶缸</td><td>táo gāng</td><td>项目词典</td><td>大型陶制缸器，文中兼具储藏和炼铜功能。</td></tr></tbody>
+            </table>
+          </div>
+        </section>
+        <section class="reference-panel" id="qingtongqicibiao">
+          <h2>青铜器词表</h2>
+          <div class="table-scroll">
+            <table class="data-table">
+              <thead><tr><th>器名</th><th>拼音</th><th>类型</th><th>说明</th></tr></thead>
+              <tbody><tr><td>镞</td><td>zú</td><td>bronze_item</td><td>箭头。</td></tr><tr><td>钺</td><td>yuè</td><td>bronze_item</td><td>大型斧形兵器或礼器。</td></tr><tr><td>戈</td><td>gē</td><td>bronze_item</td><td>古代横刃长柄兵器。</td></tr><tr><td>銎</td><td>qióng</td><td>bronze_item</td><td>兵器或工具上安装柄把的孔。</td></tr><tr><td>盉</td><td>hé</td><td>bronze_item</td><td>盛酒或盛水器，也用于调和酒味浓淡。</td></tr><tr><td>戚</td><td>qī</td><td>bronze_item</td><td>古代斧形兵器或礼器。</td></tr><tr><td>豆</td><td>dòu</td><td>bronze_item</td><td>古代盛肉或食品的高足盘形器。</td></tr><tr><td>觚</td><td>gū</td><td>bronze_item</td><td>古代饮酒器。</td></tr><tr><td>爵</td><td>jué</td><td>bronze_item</td><td>古代酒器，也引申为爵位。</td></tr></tbody>
+            </table>
+          </div>
+        </section>
+        <section class="reference-panel" id="dushuzhaji">
+          <h2>章节导读札记</h2>
+          <div class="chapter-note-entry">
+            <label>主题<input id="chapterNoteTitle" type="text" placeholder="例如：周公改革的沉默"></label>
+            <label>札记<textarea id="chapterNoteText" placeholder="记录对本章整体内容的理解、判断或总结"></textarea></label>
+            <div class="note-actions">
+              <button id="addChapterNoteBtn" type="button">新增章节导读札记</button>
+              <button id="downloadChapterNotesBtn" type="button">下载 Markdown</button>
+            </div>
+            <div class="log-meta">新增内容保存在本浏览器及 JSON 备份中；下载 Markdown 后可作为 reading_notes.md 导入项目。</div>
+          </div>
+          <div class="table-scroll">
+            <table class="data-table note-table">
+              <thead><tr><th>主题</th><th>札记</th><th>操作</th></tr></thead>
+              <tbody id="chapterNotesBody"><tr><td colspan="3">暂无章节导读札记</td></tr></tbody>
+            </table>
+          </div>
+        </section>
+        <section class="reference-panel" id="user-notes">
+          <h2>用户札记</h2>
+          <div class="table-scroll">
+            <table class="data-table note-table">
+              <thead><tr><th>类型</th><th>页</th><th>内容</th></tr></thead>
+              <tbody id="userNotesBody"><tr><td colspan="3">暂无用户札记</td></tr></tbody>
+            </table>
+          </div>
+        </section></div>
+        <div class="pages">
+        <section class="page" id="page-263">
+          <div class="page-head">
+            <div class="page-title">原书阅读器页 263<span>原书物理 PDF 页 261</span><span>印刷页 249</span></div>
+            <div class="page-tools">
+              <button type="button" data-copy-page="263">复制本页</button>
+              <button type="button" data-export-page="263">导出本页</button>
+            </div>
+          </div>
+          <div class="workbench">
+            <div class="editor-wrap">
+              <div class="rich-editor" data-page="263" contenteditable="true" role="textbox" aria-multiline="true" spellcheck="false">第十三章大学与王子
+
+1991年，在商王宫殿区不远处，今花园庄东侧的农田里，发掘出一座填满甲骨的窖穴，编号H3。[[fn:1]] 这些甲骨的主人，是一位名“子”的年轻王族，生活在殷都格局初定的武丁王前期，家宅位于王宫以南400多米处。
+
+H3的甲骨卜辞记录了“子”不算长的一生：从他开始接受教育和严格而残酷的战争训练，到长大后征伐异族，为王朝兴盛而东征西战的过程。这是商代王族最常见的人生轨迹。
+
+而且，他受教的大学[[fn:2]] 的建筑也被发掘出土。
+
+王族学生的训练课
+
+殷墟出土的甲骨卜辞绝大多数属于商王，很少记录其他王族成员和高级贵族的生活，而且，由贵族自家占卜的更少，可见，花园庄东地的这位“子”的身份比较特殊，可能是武丁王的弟弟或堂弟。[[fn:3]]
+
+在他年幼的时候，父亲已经去世。我们也不知道他的真实名字，“子”可能是他在卜辞里的自称，或是占卜师对他的称呼。
+
+“子”自少年时代“入学”，在王室大学里学习各种贵族技能，比如“舞戊”。商人的“舞”并非后世意义上的表演性舞蹈，而是团体实兵演练，甚至有伤亡的可能。
+
+有一条卜辞显示，“子”这次不应该去参加舞钺，因为队员们会遇到灾害：“子弼（勿）更（惠）舞戊，于之？若用，多万有灾……”[[fn:4]]
+
+商人称团队舞钺为“万”，各位队员就是“多万”。为避免在操练铜钺的万舞中伤亡，“子”或其他人可能都曾占卜应站在队列的哪个位置，是左边，还是中间或是右边？</div>
+            </div>
+            <div class="scan"><img src="pdf_pages/page-261.jpg" alt="PDF page 263"></div>
+          </div>
+        </section>
+        <section class="page" id="page-264">
+          <div class="page-head">
+            <div class="page-title">原书阅读器页 264<span>原书物理 PDF 页 262</span><span>印刷页 250</span></div>
+            <div class="page-tools">
+              <button type="button" data-copy-page="264">复制本页</button>
+              <button type="button" data-export-page="264">导出本页</button>
+            </div>
+          </div>
+          <div class="workbench">
+            <div class="editor-wrap">
+              <div class="rich-editor" data-page="264" contenteditable="true" role="textbox" aria-multiline="true" spellcheck="false">丁亥卜，子立于左。[[fn:5]]
+
+甲午卜，召（勿）立中，或（惠）学，弓弓（勿）示伐。[[fn:6]]
+
+第二条是其他人的卜辞，显示的是，这次不应当立在队列中部，也不适合砍杀。至于万舞操练为何会有危险，后文会有答案。
+
+除了舞钺，“子”还学习射箭。在成长的过程中，他曾使用不同力度的弓，如“二弓”和“三弓”。后世的《红楼梦》中，也有这种数字划分的弓力：
+
+贾母笑问道：“这两日你宝兄弟的箭如何了？ ”贾珍忙起身笑道：“大长进了，不但样式好，而且弓也长了一个力气。”贾母道：“这也够了，且别贪力，仔细努伤。”
+
+某天，“子”有生病，曾占卜：今天不用上学了吧？不过，这可能是管家替他占卜的。
+
+己卜：子其（疫？），强（勿）往学？（《花东》181）
+
+甲骨文中的“疫”字，字形是一个人躺在床上，身下正在出汗，有人手拿锤子打击其腹部，象征病痛的状态。另有一种解释则为手拿廷石为患者做按摩治疗。无论哪种，它反映的都是卧床生病。
+
+卜辞里的“往学”两字很重要，它表明“子”是去家外面的“大学”学习，而非在家中接受私教。此外，卜辞里还曾多次出现过“学商”，以及出现过一次“学羌”，这可能是模拟羌人和商人之间的战斗，当然，两方战士都由学生扮演。
+
+甲骨文的“学”字，写作（甲骨文，形近似「累」），上面是两手在摆放计数的草棍（爻），下面是一所房子，意为“学习算数的地方”。
+
+上面的两只手有时会被省略，写作（甲骨文，形似「爻」），也可以从两组省略为一组，写作（甲骨文，形似「爻」） ，但下面的房子不能省，它代表学习的场所。不过，在卜辞里，殷都的“大学”似乎没有教过算数。也许因为这是很初级的学习内容，不值得用占卜来记录。至于殷都的大学都有哪些建筑，课程又是怎么开设的，“子”的卜辞里并没有太多信息。</div>
+            </div>
+            <div class="scan"><img src="pdf_pages/page-262.jpg" alt="PDF page 264"></div>
+          </div>
+        </section>
+        <section class="page" id="page-265">
+          <div class="page-head">
+            <div class="page-title">原书阅读器页 265<span>原书物理 PDF 页 263</span><span>印刷页 251</span></div>
+            <div class="page-tools">
+              <button type="button" data-copy-page="265">复制本页</button>
+              <button type="button" data-export-page="265">导出本页</button>
+            </div>
+          </div>
+          <div class="workbench">
+            <div class="editor-wrap">
+              <div class="rich-editor" data-page="265" contenteditable="true" role="textbox" aria-multiline="true" spellcheck="false">1973年，在“子”的甲骨窖穴西北400米（今小屯村南）发现了大量刻字甲骨，其中的一片牛骨卜辞（《屯南》662）上有关于大学的课程安排，是大学的总教官留下的。而总教官很可能就是商王本人
+
+第一条卜辞是：丁酉日占卜，今天是丁日，（学生们）是否应该学习万舞呢？第二条卜辞是：还是应该在下个丁日学习？
+
+后面的两条卜辞是关于万舞学习场地的占卜：在“右（甲骨文， 宝盖+束）”学？还是在“内”学？[[fn:7]] 看来，大学的建筑分左右大厅，还有位居中后部的“内”。
+
+1 .丁酉卜，今日丁，万其学？
+
+2 .于来丁乃学？
+
+3 .于右秉学？
+
+4 .若内学？
+
+《屯南》662（图）
+
+商王会亲自关注大学的课程，这也很正常，因为里面的学生都是王的亲戚。另一条王室卜辞显示，商王曾在“入”地建设大学：“乍（作）学于入，若。”（《合集》16406）这个“入”，有学者解释为“内”，王宫之内。不过，它可能还有“汭”之意，即水滨。
+
+1996年，在王宫区南侧，紧邻洹河边，考古队发掘出一处大型建筑基址，它很可能就是殷商时期的王族大学。
+
+如果参观殷墟博物苑的宫殿区，朝北走进大门之后，右手边是一组“54号”建筑基址。它是一座凹字形大型建筑，发掘时被命名为“丁组”。这里是王宫区地势最低的地方，东边紧邻海河，所处环境和建筑构造很接近甲骨卜辞中描述的“子”曾经学习舞钺的大学。它的北面紧邻着王室宗庙乙区和祭祀自然神的丙区；向南400米，是“子”的家宅，花园村东甲骨出土地；向西南200米，是发现安排大学课程甲骨的地方。</div>
+            </div>
+            <div class="scan"><img src="pdf_pages/page-263.jpg" alt="PDF page 265"></div>
+          </div>
+        </section>
+        <section class="page" id="page-266">
+          <div class="page-head">
+            <div class="page-title">原书阅读器页 266<span>原书物理 PDF 页 264</span><span>印刷页 252</span></div>
+            <div class="page-tools">
+              <button type="button" data-copy-page="266">复制本页</button>
+              <button type="button" data-export-page="266">导出本页</button>
+            </div>
+          </div>
+          <div class="workbench">
+            <div class="editor-wrap">
+              <div class="rich-editor" data-page="266" contenteditable="true" role="textbox" aria-multiline="true" spellcheck="false">考古发掘的地层显示，在武丁王即位初年，也就是他准备在洹河南岸建设新王宫的时候，先在丁组这里建设了一组中小型房舍，而且没有用人奠基。对于商人来说，这意味着它并非长期项目，只是过渡性的临时校舍而已。
+
+大概二十年之后，武丁的新王宫相继落成，丁组大学区也进行了大规模的改扩建：南北各新建了一排平行的殿堂（丁二和丁一），长度分别为75米和65米，连接和贯通它们的是西端的一列厅堂（丁三），从而形成一组“凹”字型建筑，并围起一片庭院，对着东边的洹河。
+
+丁组建筑平面图，比例尺数字应为“50米”（图）[[fn:8]]
+
+按照那片安排大学课程的甲骨的描述，丁三就是“内”，在这里朝东望，右侧的丁二就是“右（异体字，宝盖+束）”。而在甲骨文中，（异体字，宝盖+束）字的造型，上面是屋顶，下面是捆束起来的羽箭。所以，它有可能指的是室内射箭场馆。射箭是大学的重要课程之一，而且射箭馆空间大，还可以用以练习“万舞”。
+
+丁组建筑面对着洹河，周边环境是河滩的芦苇湿地，可能还有水沟环绕在建筑的西面、南面和北面，甚至还会有码头供大学生们练习驾船和水战。“子”的卜辞里，就有命令下属准备船的内容（《花东》183），或者说，这所贵族大学也是商人对祖先生活的南国水乡环境的再现。发掘报告对它的描绘是：
+
+三座建筑之间有较宽阔的活动空间，建筑群的整体轮廓呈长方形，东面是由北向南流去的洹水……如果我们认真体验这一古老的建筑群，就会感到它既要给人以宏伟壮观之感，又给人以环境优美、富于生活情趣的感受。</div>
+            </div>
+            <div class="scan"><img src="pdf_pages/page-264.jpg" alt="PDF page 266"></div>
+          </div>
+        </section>
+        <section class="page" id="page-267">
+          <div class="page-head">
+            <div class="page-title">原书阅读器页 267<span>原书物理 PDF 页 265</span><span>印刷页 253</span></div>
+            <div class="page-tools">
+              <button type="button" data-copy-page="267">复制本页</button>
+              <button type="button" data-export-page="267">导出本页</button>
+            </div>
+          </div>
+          <div class="workbench">
+            <div class="editor-wrap">
+              <div class="rich-editor" data-page="267" contenteditable="true" role="textbox" aria-multiline="true" spellcheck="false">这片地区低洼临河，土质多沙，并不适合营建大型建筑。但武丁王却不惜工本，工程之初就先挖下2米多深的基坑，填入黄土，逐层夯实，然后才开始埋设木柱和版筑墙体。从柱洞看，最粗的柱子，直径接近1米。
+
+北面的丁一体量最大，是主体建筑，室内出土了一件铜盉，上面有铭文“武父乙”，发掘者推测，它是武丁给自己的父亲小乙王制作的祭器。这件铜盉被装入陶缸埋进了一个挖在地基上的小坑，看来武丁王对这座建筑很是重视，希望父王的灵魂能保佑它。[[fn:9]]
+
+发掘报告称这座建筑为供奉武丁“三父”的宗庙，很可能，里面还供奉着小乙王的两位兄弟（盘庚王和小辛王）的灵位。花园庄东地的那位“子”的卜辞显示，学生们会带着人牲或畜牲到这里献祭。这很好理解，这三位先王也是这些贵族学生的先辈。
+
+武父乙铜盉及铭文（图）[[fn:10]]
+
+陪练角斗士
+
+丁一有一系列朝南的门，门的两侧皆挖有祭祀坑，共十座，发掘者用墓葬M编号。目前已发掘其中八座，每座埋有斩首的三四人，多为俯卧，人头在死者肩部。能够辨识的死者，皆为青壮年男性。
+
+一个比较特殊的现象是，有一半的祭祀坑发现骨制的箭镞，其中两坑分别埋有一枚和三枚，另两坑则各埋有两枚。
+
+以M18为例，共埋有四人。坑底埋有三人，俯卧，头骨被夯碎，颈部朝东；后又在其脚端的坑壁上挖出一个壁龛，里面是呈跪坐姿势的一人，但头骨没有夯碎，而是放在了壁龛里。该坑埋有三枚骨镞，其中一枚在北侧俯卧之人的腿部，另外两枚分别在中间人的上臂和肋骨部位，肋骨上的已经残断。其他三座坑中的骨镞，有的在人牲的腿部（M3和M2），也有的在腰部和前臂（M15）。</div>
+            </div>
+            <div class="scan"><img src="pdf_pages/page-265.jpg" alt="PDF page 267"></div>
+          </div>
+        </section>
+        <section class="page" id="page-268">
+          <div class="page-head">
+            <div class="page-title">原书阅读器页 268<span>原书物理 PDF 页 266</span><span>印刷页 254</span></div>
+            <div class="page-tools">
+              <button type="button" data-copy-page="268">复制本页</button>
+              <button type="button" data-export-page="268">导出本页</button>
+            </div>
+          </div>
+          <div class="workbench">
+            <div class="editor-wrap">
+              <div class="rich-editor" data-page="268" contenteditable="true" role="textbox" aria-multiline="true" spellcheck="false">这些骨镞的出现颇难解释，并非每座坑都有，也并非每个人牲都有。
+
+箭的木杆会因腐朽而消失，那么，这些镞最初是带着箭杆埋下去的吗？M2北侧人牲的腿部有两枚箭镞，其中一枚横在小腿部位，尾端朝坑壁，说明它没有连着箭杆，不然，杆会触及坑壁而改变方向。这些箭镞应当是射到人牲身体上的，只是有些还能被主人完整地拔出来再利用，而另一些因嵌入人骨或筋肉，主人只能把箭杆拔出，箭镞则随着人牲被埋进了坑中。
+
+由此可以推论：可能多数人牲都中过箭，只是有些被拔掉了而已。那些带箭镞的尸骨很多也是被射在腿部或胳膊等非致命部位，说明他们生前并不是在静态而是在奔跑逃命中被射中的，也正因此，中箭的才会是非要害部位。
+
+历史学者李竞恒曾注意到殷墟人牲带箭的现象，他的推论是，这是商人为活捉羌人等俘虏而故意射击其非致命部位所致。[[fn:11]] 本书认为，这种推测难以成立，在真实的战斗中，没有哪一方可以如此从容地选择命中部位，而且中箭之后，俘虏也很难身着箭头被带回殷都，在传统时代，外伤往往会引发致命的感染。
+
+因此，这只能是发生在祭祀场附近。而且，这四座祭祀坑中的箭镞是同种规格，骨质三棱形锋，形制较大，长度超过10厘米，发掘者称之为“大三棱”，其特点是，没有倒锋，容易拔出来继续使用。故而，这些人牲应当是大学生们练习射箭和搏杀的陪练。
+
+商朝王室和“大学”不会缺乏青铜箭镞，但为何不对人牲使用铜镞呢？这可能是基于“训练”的考虑，毕竟锋利的铜镞更容易致命，而骨镞则致死率较低。另外，出土骨镞的锋刃多有磨损也说明，它们是被多次使用的练习品。</div>
+            </div>
+            <div class="scan"><img src="pdf_pages/page-266.jpg" alt="PDF page 268"></div>
+          </div>
+        </section>
+        <section class="page" id="page-269">
+          <div class="page-head">
+            <div class="page-title">原书阅读器页 269<span>原书物理 PDF 页 267</span><span>印刷页 255</span></div>
+            <div class="page-tools">
+              <button type="button" data-copy-page="269">复制本页</button>
+              <button type="button" data-export-page="269">导出本页</button>
+            </div>
+          </div>
+          <div class="workbench">
+            <div class="editor-wrap">
+              <div class="rich-editor" data-page="269" contenteditable="true" role="textbox" aria-multiline="true" spellcheck="false">丁一南檐下的祭祀坑是统一制作和填埋的。先是挖掘坚硬的夯土，有2米多深后，放进人牲的尸体，有些还会打碎几件陶器放进去，象征人牲在地下也会有些生活用品，以让其灵魂更安心地守卫殿堂。然后，填土夯打。人牲的头骨应该就是这么被夯碎的。填满土后，为使祭祀坑不那么容易被发现，又在地面整体铺了一层20厘米厚的黄土。
+
+后经钻探发现，南檐下并不止十座祭祀坑，但为保存房基的完整性，考古队没有继续发掘。据推测，人牲不会少于40人。
+
+丁组建筑全部完成并投入使用后，大学生们还要反复用人牲练习射击和搏杀，这样便会不断地出现新的祭祀坑。这些后期坑建在丁一东南方的空地上，目前已发现成排的六座。其中，M10埋有三具俯身的尸体，没有被砍头，其中一人缺失了手和脚。此外，坑角还发现了两处散落的牙齿，发掘者推测，这应该是“当时被打掉的”。
+
+这座坑最特殊之处在于，不仅有陶器碎片，还有四件小巧的青铜斧、三件环首铜小刀以及两块不及巴掌大的长方形磨刀石。铜斧的整体长度在7—14厘米之间，铜刀长20厘米左右，刀斧基本完整，刃部略有残缺，是使用过的。两块磨刀石上有穿孔，当是为系绳之用，便于随身携带。
+
+与前述M18不同，M10中的这三名人牲的身上没有箭镞，但携带了近战用的刀斧。他们可能是大学生们练习万舞（短兵近战）的陪练，这种高度仿真的肉搏战训练也可以看作一种角斗，比赛规则自然对人牲不利。卜辞中，用钺的“万舞”练习者要分左、中、右站立，可能是众多的学生列队围拢对付少数几名陪练角斗士。</div>
+            </div>
+            <div class="scan"><img src="pdf_pages/page-267.jpg" alt="PDF page 269"></div>
+          </div>
+        </section>
+        <section class="page" id="page-270">
+          <div class="page-head">
+            <div class="page-title">原书阅读器页 270<span>原书物理 PDF 页 268</span><span>印刷页 256</span></div>
+            <div class="page-tools">
+              <button type="button" data-copy-page="270">复制本页</button>
+              <button type="button" data-export-page="270">导出本页</button>
+            </div>
+          </div>
+          <div class="workbench">
+            <div class="editor-wrap">
+              <div class="rich-editor" data-page="270" contenteditable="true" role="textbox" aria-multiline="true" spellcheck="false">另外，这四件铜斧的形制比较特殊，并不是商式风格，而是燕山以北草原地带流行的“管銎斧”：顶端铸造出圆管形的銎，銎管上还有一个小孔，将木柄插进去，钉入一枚钉子固定木柄。商式钺则是整体片状，在木柄顶端开槽，把钺上端的凸起部分插入槽中，再捆绑固定。
+
+殷墟地区较少发现这种管銎斧。发掘报告推测，坑中三人可能是来自北方草原的战俘。
+
+M10出土的四把管銎斧线图（图）
+
+倘若丁组建筑是王族大学，那么这些北方战俘就是贵族学生们的陪练。花园庄东地的“子”的卜辞里的“学商”和“学羌”也表明，大学里经常组织对抗性演练，有时甚至要靠商人学生来扮演假想敌。
+
+后期的这些祭祀坑中没有发现骨镞，尸骨也大都有砍伤痕迹，可见人牲皆被砍杀而死。比如，M11中的无左手，M13中的左手和左腿被砍断，M12中的无右手。无手者可能是用胳膊抵挡刀斧所致，这说明人牲可能没有装备盾牌。
+
+人牲几乎都被砍头，但也有相对完整的尸骨的，如M9中的甲，双腿被从膝盖部位捆在一起，双手亦被反缚，而且是该坑三名人牲中第二个被扔进坑的。只是我们已经不知道为何偏偏是他被活埋而不是被砍杀。
+
+如前所述，殷都大学所在地称为“入”，这里也是大学生们祭祀其先祖（先王）的地方。在“子”的卜辞里，有两次提及在“入”祭祖：第一次，是剁一头牛，再“伐”一人（夷）；第二次，是伐羌一人。
+
+甲午：宜一牢，伐一夷？在入。一二三。（《花东》340）
+己酉夕：伐羌一？在入。庚戌，宜一牢，弹。一。（《花东》178、376）</div>
+            </div>
+            <div class="scan"><img src="pdf_pages/page-268.jpg" alt="PDF page 270"></div>
+          </div>
+        </section>
+        <section class="page" id="page-271">
+          <div class="page-head">
+            <div class="page-title">原书阅读器页 271<span>原书物理 PDF 页 269</span><span>印刷页 257</span></div>
+            <div class="page-tools">
+              <button type="button" data-copy-page="271">复制本页</button>
+              <button type="button" data-export-page="271">导出本页</button>
+            </div>
+          </div>
+          <div class="workbench">
+            <div class="editor-wrap">
+              <div class="rich-editor" data-page="271" contenteditable="true" role="textbox" aria-multiline="true" spellcheck="false">从“子”的卜辞可见，有些人牲并非学校提供的，而是学生自备，可能先进行搏斗训练，最后把处死的人牲奉献给祖先。在殷都大学长达二百余年的历程中，因作陪练角斗士而死的人牲肯定不止已发掘的六座坑中的这些，许多尸体可能另有处理，或者只有具有特殊纪念意义的才会被葬人祭祀坑。
+
+“子”的贵族人生
+
+在“子”的众多卜辞里，他最日常的工作是向先祖先妣献祭。多数是用猪牛羊和酒（鬯），也有少数是用人，如为了祭祀祖庚和祖辛，“子”分别“册羌一人”（《花东》56）。在甲骨文里，册，是剁成块的意思。此外，他还祭祀过与商族始祖有关的“玄鸟”。（《花东》1557）祭祀经常在一个名为“来鹿”的地方举行，这应是“子”的庄园领地。
+
+他的射猎活动也很多，主要在“品鹿”，这应该是私家猎场。马车是“子”的生活中一项很重要的内容，他曾多次占卜左马或者右马有没有灾病。看来拉车的马各司左右，一般不混用。
+
+“子”很关心自己的健康，多次因为耳鸣、做梦、心疾、首疾、目疾占卜。他经常有头疼症状。
+
+“子”和武丁的夫人妇好关系密切，他们应当是亲属，后来成为妇好的侍卫官。在他的卜辞里，“王”只出现过两次，而妇好出现过几十次。“子”经常占卜是否应该到某地见妇好，是否应该和妇好一起举行祭祀。他常向妇好贡献礼物，有一次贡献了六人（《花东》288），还贡献过一名“磬妾”，应当是擅长演奏磬的女子。（《花东》265）</div>
+            </div>
+            <div class="scan"><img src="pdf_pages/page-269.jpg" alt="PDF page 271"></div>
+          </div>
+        </section>
+        <section class="page" id="page-272">
+          <div class="page-head">
+            <div class="page-title">原书阅读器页 272<span>原书物理 PDF 页 270</span><span>印刷页 258</span></div>
+            <div class="page-tools">
+              <button type="button" data-copy-page="272">复制本页</button>
+              <button type="button" data-export-page="272">导出本页</button>
+            </div>
+          </div>
+          <div class="workbench">
+            <div class="editor-wrap">
+              <div class="rich-editor" data-page="272" contenteditable="true" role="textbox" aria-multiline="true" spellcheck="false">妇好应该曾负责为商王采购马，因为有些马贩子（多御正、多贾）多次通过“子”向妇好送礼，希望得到参见的机会。“子”安排过不止一次集体参见，每次都由马贩子拿出十捆丝绸作为觐见礼物。
+
+有一个叫“弹”的马贩子，经常到“子”的家里奔走服务，想通过“子”送给妇好三捆丝绸，以获得单独接见的机会。“子”就占卜问：是否应该转达这个礼物？占卜结果是“用”，也就是可以。“子”又占卜：是否应该向妇好引荐“弹”呢？占卜结果是“不用”。（《花东》63）
+
+“子”自家也经常买马，他常到马贩子处看“新马”。看来他相马的技术不佳，卜辞里记载说：“自贾马其又死。”意思是说，有一次，马刚买来不久就又死了。
+
+武丁王时期，商朝对外战争频繁，“子”曾经考虑是不是应该跟随一位叫“白”的将领去征伐“邵”地。他还曾试图通过妇好和“白”拉近关系，向“白”赠送过占卜用的龟壳。但最终他应该还是没去，因为卜辞里没有进一步的信息。（《花东》220、237）
+
+在卜辞里，“子”的妻子被称为“妇”，妻子的母亲被称为“妇母”。看来这位岳母喜欢对“子”的事务发表意见，比如“子”在卜辞里曾询问：“妇母让我和某甲在一起，不要和某乙在一起，是否应该听从？ ” （《花东》290）卜辞里没有出现“子”的子女信息。
+
+“子”的寿命可能不长，毕竟当时成年人的平均寿命只有三十岁左右。在他死后，他占卜过的甲骨被埋入了2米多深的窖穴之中。1991年，因修筑通往殷墟博物苑正门的公路，考古队决定对工程用地进行考古调查，这才发现“子”的甲骨坑（编号H3）。其中，有龟甲一千五百多片，刻辞的五百多片，还有少量卜骨。</div>
+            </div>
+            <div class="scan"><img src="pdf_pages/page-270.jpg" alt="PDF page 272"></div>
+          </div>
+        </section>
+        <section class="page" id="page-273">
+          <div class="page-head">
+            <div class="page-title">原书阅读器页 273<span>原书物理 PDF 页 271</span><span>印刷页 259</span></div>
+            <div class="page-tools">
+              <button type="button" data-copy-page="273">复制本页</button>
+              <button type="button" data-export-page="273">导出本页</button>
+            </div>
+          </div>
+          <div class="workbench">
+            <div class="editor-wrap">
+              <div class="rich-editor" data-page="273" contenteditable="true" role="textbox" aria-multiline="true" spellcheck="false">由于从未被盗掘者发现，坑内甲骨保存得非常完整。许多整版的龟甲虽然遍布裂纹，非常脆弱，但经过技术处理，基本保持了原貌。倘若是被非法盗掘，绝大部分甲骨都将变成碎片，无法识别。历代商王留下的甲骨卜辞虽然数量多，但大都是盗掘出土，非常凌乱，很多同属一王或同一批次的卜辞都丧失了联系。考古学者们希望通过字体和占卜师的名字对零散的卜辞进行分组、划分年代，但结论往往充满争议。这是盗掘带来的无法挽回的信息损失。
+
+五年之后的1996年，“子”曾经受业的大学所在地丁组基址也被发掘出土，这位殷商王子的生平这才展现在了世人面前。这是殷商时代关于一个人的独家而完全的记录文献。
+
+“子”的住宅和坟墓没有被发现；但一般来说，他使用过的甲骨不会被丢弃到远处，应该是在自家院内挖坑埋藏。很可能，他的宅院基址已经被后世破坏。
+
+战死的族长“亚长”
+
+“子”的甲骨坑（H3）被发掘十年后，在它的西北侧数十米处又发现了一片墓葬，其中有一座比“子”晚两三代人（殷墟二期末）的贵族墓，编号M54。商人都是聚族而居，居葬相邻，所以M54的主人很可能是“子”的后裔。
+
+2000年冬季，在花园庄东的农田里，考古工作者用洛阳铲进行钻探调查，初步确定了M54的位置。由于1991年这里出土过“子”的甲骨坑，人们判断可能会有高等级大墓，计划2001年开春解冻后发掘。结果盗墓者一直追踪着考古队的进展，趁夜间找到了墓穴位置，好在有村民发现异常，将此事报告给了考古工作站。于是，考古队决定赶在盗墓贼之前进行发掘。就这样，在2001年初的大雪中，墓穴内的椁室得以揭开。由于从来没被盗墓贼光顾过，大量随葬器物和殉人还保持着下葬时的布局。[[fn:12]]</div>
+            </div>
+            <div class="scan"><img src="pdf_pages/page-271.jpg" alt="PDF page 273"></div>
+          </div>
+        </section>
+        <section class="page" id="page-274">
+          <div class="page-head">
+            <div class="page-title">原书阅读器页 274<span>原书物理 PDF 页 272</span><span>印刷页 260</span></div>
+            <div class="page-tools">
+              <button type="button" data-copy-page="274">复制本页</button>
+              <button type="button" data-export-page="274">导出本页</button>
+            </div>
+          </div>
+          <div class="workbench">
+            <div class="editor-wrap">
+              <div class="rich-editor" data-page="274" contenteditable="true" role="textbox" aria-multiline="true" spellcheck="false">这座墓穴，口部南北长5米，宽3米多，向下逐渐扩大，深约6米。墓底四壁有高约1.8米的夯筑二层台，中央是黑漆木板搭成的椁室，里面放着雕花夔龙纹、镶金箔的红漆棺木。
+
+很多随葬铜器铸有“亚长”族徽。“亚”，表示主人有军事首长身份；“长”，是家族的族徽，字形是一个人侧面站立，脑后有很长的头发，手中扶杖，像是个老人。可能是“子”的后人繁衍出了“亚长”氏族。
+
+墓主是一名三十五岁左右的男子，头骨面部略有女性特征，俯身直肢而卧，右脚掌骨有长期跽坐（臀部坐在脚上）形成的磨痕。这是上古人习惯的坐姿。在殷墟发掘的贵族墓葬中，M54主人的死因比较特殊，尸骨上有多处伤痕：一，左上臂肱骨上有三条锐器砍痕，长度都在1厘米左右。“这三处砍痕均未见骨骼自我修复痕迹，说明砍痕形成于墓主人死亡之前的时间很短，即墓主人遭受连续打击后不久即死亡。” 二，一根左肋骨的中前部位，有明显的锐器砍痕。三，骨盆中部靠右侧被刺穿一孔，深约2厘米，宽1.15厘米，”……内部呈圆孔洞。从创口形状推测，应是矛戈类刺兵形成”。四，大腿骨后方也有很深的砍痕。
+
+这位“亚长”氏的族长很明显是在战争中受伤而死的。敌人未能对其头部一击致命，可能是因为他戴了铜盔（胄）。打斗的时间可能非常短暂，其左臂被连续砍伤，说明此时他尚能站立，但已无力格挡或逃避。
+
+“亚长”族徽铭文（图）
+
+我们可以对当时的现场稍作复原：在战斗过程中，他应该是冲在前方，又因为其服饰属于贵族长官，所以受到多名敌人的攻击。首先是被迎面敌人的铜矛刺入右下腹，矛锋深入骨盆。虽穿戴半身铠甲，但这个部位很难防护，而且矛锋也足以贯穿常用皮甲。他被迫用双手抓握矛杆，以防对手再刺，但铜矛已嵌入人骨，不容易拔出。此时，又有敌人从左方靠近，挥刀连续砍杀，在他的左上臂和左肋造成多处伤口，致使左臂肌肉断裂失能。从股骨上的伤痕看，应该还有一支戈至少两次砍或勾在其左大腿和臀部。</div>
+            </div>
+            <div class="scan"><img src="pdf_pages/page-272.jpg" alt="PDF page 274"></div>
+          </div>
+        </section>
+        <section class="page" id="page-275">
+          <div class="page-head">
+            <div class="page-title">原书阅读器页 275<span>原书物理 PDF 页 273</span><span>印刷页 261</span></div>
+            <div class="page-tools">
+              <button type="button" data-copy-page="275">复制本页</button>
+              <button type="button" data-export-page="275">导出本页</button>
+            </div>
+          </div>
+          <div class="workbench">
+            <div class="editor-wrap">
+              <div class="rich-editor" data-page="275" contenteditable="true" role="textbox" aria-multiline="true" spellcheck="false">他之所以未被敌人斩首，应该是己方士兵上前把他救了下来。但在随后不到一天的时间里，“亚长”会因失血和创口感染而昏迷，这时，军中巫医会对他进行急救，但也无力回天。最终，他的尸体被马车拉回了殷都丧葬。为了减轻腐烂的气味，他的尸体被撒上了大量花椒粒。对他的战死，商王也可能会表示慰问，并赏赐一些钱物。
+
+在王陵区之外的商代贵族墓葬中，花园庄东M54的随葬品比较丰厚。首先是有大量的铜礼器。知名度比较高的是一件重达14斤多的“亚长牛尊”。这是一头站立的水牛，造型圆润可爱，嘴微张，全身布满龙、虎、鸟形花纹，尤其牛背上还有一个带把手的盖子，可能是为了便于在牛腹中存放货贝。
+
+墓中共有40件铜礼器和铜容器，有些稍薄的铜器在入葬时被打碎了，出土后，考古工作者尽量把它们拼贴复原了起来。这头著名的“亚长牛尊”就是复原的产物。
+
+复原后的"亚长牛尊”（图）
+
+大件的铜兵器有161件，其中，钺七件，矛78件，戈73件，卷头大刀三件。除了主人自己使用的钺，其余的戈、矛和刀能装备超过150人的部队，而这肯定还不是主人家的全部兵器。考虑到氏族成员自家的装备，亚长氏族的兵力应该会有上千人。
+
+较厚重的一件铜钺重12斤左右，其他的较薄，多在1.4斤左右。多数的戈和矛都连接着一段木柄（秘），只有十几厘米，但最长的一件却有38厘米。这可能是为了节约空间，入葬时把木柄锯断了。</div>
+            </div>
+            <div class="scan"><img src="pdf_pages/page-273.jpg" alt="PDF page 275"></div>
+          </div>
+        </section>
+        <section class="page" id="page-276">
+          <div class="page-head">
+            <div class="page-title">原书阅读器页 276<span>原书物理 PDF 页 274</span><span>印刷页 262</span></div>
+            <div class="page-tools">
+              <button type="button" data-copy-page="276">复制本页</button>
+              <button type="button" data-export-page="276">导出本页</button>
+            </div>
+          </div>
+          <div class="workbench">
+            <div class="editor-wrap">
+              <div class="rich-editor" data-page="276" contenteditable="true" role="textbox" aria-multiline="true" spellcheck="false">铜镞有881枚，分好几处成束摆放。从残留痕迹看，有些下葬时带有木杆，是完整的羽箭。墓中还有些盾牌和弓的遗迹。
+
+车马器有铜策（马鞭杆）两件和弓形器六件，说明主人拥有至少六辆马车。弓形器上铸有繁复的花纹，有的还用绿松石镞嵌。考虑到其他氏族成员，亚长氏族应该拥有不少于十辆战车。
+
+乐器有铜镜一套。铜钱是军事首长发布命令的工具之一，所谓“鸣金收兵”。此外，还有各种铜工具和杂物，其中，圆形铜泡有149件，可能是缀在皮甲上的。
+
+比较特殊的是主人棺内的一件铜“手形器”，比正常的右手略小，长13厘米，呈微弯曲的半握姿势，上面铸有目形纹饰，甚至有指甲的纹理。它的小臂部分中空，用来容纳插入的木柄，但木柄已经腐蚀消失，无法确知其具体长度。
+
+和其他的青铜器不同，这件手形器被放在主人的棺内，靠近左小腿处。墓主的两手基本完整，手形器也不在主人右手处，所以并不是义肢。有学者推测，它是用来在鼎内捞取食物用的，类似餐叉。但餐具似乎并不需要单独放入主人棺内。从它与墓主的亲密程度看，应当经常被主人握在手里，有点类似权杖。
+
+亚长铜手形器线图（图）
+
+铜工具中有小刀五件。有两件的手柄末端铸造的分别是马头和鹿头，刀柄的纹饰则类似长脖子。还有一件整体呈虎形（发掘报告认为像狗），长尾延伸成刀的刃部，有完整的四腿，可以站立在桌面上。
+
+随葬的玉石器，除了小件的玉饰和玉雕，还有些玉兵器，但实用价值不高，主要作为军事首长身份之象征：玉钺一件，玉戚六件，玉矛两件，玉戈八件；此外，还有玉质刃部和铜质装柄结合的“铜骰玉援矛”两件和“铜内玉援戈”三件。</div>
+            </div>
+            <div class="scan"><img src="pdf_pages/page-274.jpg" alt="PDF page 276"></div>
+          </div>
+        </section>
+        <section class="page" id="page-277">
+          <div class="page-head">
+            <div class="page-title">原书阅读器页 277<span>原书物理 PDF 页 275</span><span>印刷页 263</span></div>
+            <div class="page-tools">
+              <button type="button" data-copy-page="277">复制本页</button>
+              <button type="button" data-export-page="277">导出本页</button>
+            </div>
+          </div>
+          <div class="workbench">
+            <div class="editor-wrap">
+              <div class="rich-editor" data-page="277" contenteditable="true" role="textbox" aria-multiline="true" spellcheck="false">亚长墓铜小刀线图（图）
+
+随葬的骨镞有43枚，没有锋刃，前端平整。发掘者推测，这是为了射猎时不损伤猎物的皮毛。本书认为，这也可能是训练品，非致命箭镞可以减低人牲的致死率，士兵可以获得更多的训练机会。
+
+在墓室二层台上，有大量木棍，共47根，长度在1.3—3.6米之间，直径约3厘米。有些木棍刷红或黑色漆。发掘者推测，这是部分铜戈和铜矛的木柄，因为太长难以放进椁室，就被截断放在了二层台上。
+
+发掘出海贝1472枚，几乎都是经过研磨的货贝。
+
+陶器不多。有些陶器内部有大量梅子核，可能是熬制的果羹；还有的里面有较多碎骨，发掘者推测是肉羹。
+
+墓穴内用了15名殉人和15只狗随葬，其中一只狗在墓室底部正中的腰坑内，这是商人“腰坑殉狗”的传统礼仪。离墓主最近的六名殉人，在椁室内的棺材外，左右各三人，全尸，但骨骼保存较差，可能是椁内的某些随葬品有较强的腐蚀作用。这些人应是先被处死，然后用草席包裹身体放入椁室之内的。椁室外的墓底有四名殉人，能鉴定性别的有三人，全是男性，只有一人在二十五岁左右，其余都是十几岁。
+
+上述所有全躯的人牲，姿势和墓主一样，都是俯身直肢。在殷墟的墓葬中，这颇为奇特。可能是因为墓主死于兵灾，颇不吉利，所以用这种方式来禳解。
+
+二层台内有三颗人头，[[fn:13]] 一颗是一名二十岁左右的男性的；其余两颗则都是女性的，年龄分别为三十岁和四十岁左右。值得注意的是，三十岁左右的这名女性，应该自幼就拔掉了下牙的两颗门齿。这属于“东夷”习俗，自大汶口文化以来，在山东及胶东某些地区一直存在。墓主生前很可能参加过征讨东夷的战争，并从当地带回了一些俘虏。</div>
+            </div>
+            <div class="scan"><img src="pdf_pages/page-275.jpg" alt="PDF page 277"></div>
+          </div>
+        </section>
+        <section class="page" id="page-278">
+          <div class="page-head">
+            <div class="page-title">原书阅读器页 278<span>原书物理 PDF 页 276</span><span>印刷页 264</span></div>
+            <div class="page-tools">
+              <button type="button" data-copy-page="278">复制本页</button>
+              <button type="button" data-export-page="278">导出本页</button>
+            </div>
+          </div>
+          <div class="workbench">
+            <div class="editor-wrap">
+              <div class="rich-editor" data-page="278" contenteditable="true" role="textbox" aria-multiline="true" spellcheck="false">和人头同一层面的二层台内，还有牛腿和羊腿，以及陶制的豆、觚、爵，它们应当是用来盛放食品和酒的。
+
+放置完随葬品和人牲后，开始往墓穴里填土夯筑。夯填的过程中，还会埋入殉人和殉狗：到一半深度时，杀了一名两三岁的幼儿，将其头颅面朝下扣在了土中。到距离地面1米左右时，又杀了一名二十五岁左右的女子，将其头颅侧放在了填土内。对头骨和牙齿的鉴定表明，这名女子生前应该营养较好，属于物质生活比较丰富的人群。根据发掘报告，共埋入四名成人和一名幼儿的头骨，但没有发现他们的身体，而且该墓周边也没有发现人祭坑或者无头尸坑。
+
+〔按语：使用高等级人牲〕
+
+在墓葬填埋数年后，墓主的家人为其建造了一座墓上“享堂”：先是在墓穴正上方筑起1米多厚的夯土台基，并筑进一枚成年人头骨和一名全躯的少年，然后在台基上建造亭子式享堂。
+
+若干年后，享堂塌毁，有人便在它的基础上挖了一座近方形坑，坑底埋入一名被砍头的仰身直肢的男子，人头放在身体的左侧，右侧则是两具儿童的尸体。这座祭祀坑，可能出自“亚长”的后人。
+
+在M54附近，考古队共发掘出40座竖穴墓，大多数是随葬品较少的小墓，有殉人的只有两座，其中一座殉二人（M82）。这些墓葬可能多是亚长氏族的成员或者属民的，看来他们多数人并不富裕。
+
+“子”和亚长的后人应该繁衍了很多代。周灭商后，其后人和其他王族被迁到了商族人的起源地——商丘，并在那里建立宋国，继续传承商王家族的血脉。至于他们能否放弃血腥的杀祭宗教，这就是一百多年后的故事了。</div>
+            </div>
+            <div class="scan"><img src="pdf_pages/page-276.jpg" alt="PDF page 278"></div>
+          </div>
+        </section>
+        <section class="page" id="page-279">
+          <div class="page-head">
+            <div class="page-title">原书阅读器页 279<span>原书物理 PDF 页 277</span><span>印刷页 265</span></div>
+            <div class="page-tools">
+              <button type="button" data-copy-page="279">复制本页</button>
+              <button type="button" data-export-page="279">导出本页</button>
+            </div>
+          </div>
+          <div class="workbench">
+            <div class="editor-wrap">
+              <div class="rich-editor" data-page="279" contenteditable="true" role="textbox" aria-multiline="true" spellcheck="false">注释
+
+1中国社科院考古所：《殷墟花园庄东地甲骨》，云南人民出版社，2003年。以下简称《花东》。殷墟有两个花园庄，一个在洹河北岸的洹北商城内，一个在洹河南岸的宫殿区南侧（已整体搬迁），出土H3甲骨坑的在洹河南。
+
+2商代已有大学，如《合集》3510：“右学。”《合集》20101：“丁巳卜，右学。” 《礼记•王制》记载：“殷人养国老于右学。”郑玄解释说：“右学，大学也。”《屯南》60：“于大学寻”。
+
+3关于这位“子”的具体身份，学者们有不同的解释。有人认为是王室近亲，但又认为“子”没有祭祀盘庚王的卜辞，说明他是盘庚之前的王繁衍出的旁支。本书认为，这种推测方式可能有问题，因为盘庚一代有四位兄弟当过王（阳甲、盘庚、小辛、小乙），盘庚之外三王的后裔不当王自然就不会祭祀盘庚，但这不影响其作为王子的尊贵地位。花园庄东地“子”的卜辞里从未提及“父”，很难确定他的父亲是谁。
+
+4《花东》206。
+
+5《花东》50。
+
+6中国社科院考古所：《殷墟小屯村中村南甲骨》，云南人民出版社，2012年，489条。
+
+7《屯南》662O另可参见宋镇豪《甲骨文中的乐舞补说》，《海南大学学报》（人文社会科学版）2020年第4期。
+
+8中国社科院考古所：《安阳殷墟小屯建筑遗存》，文物出版社，2010年。以下有关小屯建筑丁组遗存的基本信息、数据及图片未注明出处的，皆出自该书，不再详注。</div>
+            </div>
+            <div class="scan"><img src="pdf_pages/page-277.jpg" alt="PDF page 279"></div>
+          </div>
+        </section>
+        <section class="page" id="page-280">
+          <div class="page-head">
+            <div class="page-title">原书阅读器页 280<span>原书物理 PDF 页 278</span><span>印刷页 266</span></div>
+            <div class="page-tools">
+              <button type="button" data-copy-page="280">复制本页</button>
+              <button type="button" data-export-page="280">导出本页</button>
+            </div>
+          </div>
+          <div class="workbench">
+            <div class="editor-wrap">
+              <div class="rich-editor" data-page="280" contenteditable="true" role="textbox" aria-multiline="true" spellcheck="false">9按照发掘报告的描述，这种器物坑有对称的两座，但另一座已经被后世破坏，只剩了一些陶片。
+
+10王恩田：《武父乙孟与殷墟大型宗庙基址F1复原》，《中原文物》2006年第1期。
+
+11李竞恒：《干戈之影：商代的战争观念、武装者与武器装备研究》，四川师范大学电子出版社，2011年。
+
+12中国社科院考古所：《安阳殷墟花园庄东地商代墓葬》，科学出版社，2007年。以下凡有关M54的基本信息及图片，未注明出处的，皆出自该书，不再详注。
+
+13《安阳殷墟花园庄东地商代墓葬》发掘报告称，这三个人头“并未放置在二层台上，而是放置在二层台内”。此描述有些难以理解，“二层台内”有两种可能，一种是夯筑在二层台的土内；另一种是在二层台侧面掏出壁龛、放置人头。</div>
+            </div>
+            <div class="scan"><img src="pdf_pages/page-278.jpg" alt="PDF page 280"></div>
+          </div>
+        </section>
+        <section class="page" id="page-281">
+          <div class="page-head">
+            <div class="page-title">原书阅读器页 281<span>原书物理 PDF 页 279</span><span>印刷页 267</span></div>
+            <div class="page-tools">
+              <button type="button" data-copy-page="281">复制本页</button>
+              <button type="button" data-export-page="281">导出本页</button>
+            </div>
+          </div>
+          <div class="workbench">
+            <div class="editor-wrap">
+              <div class="rich-editor" data-page="281" contenteditable="true" role="textbox" aria-multiline="true" spellcheck="false"></div>
+            </div>
+            <div class="scan"><img src="pdf_pages/page-279.jpg" alt="PDF page 281"></div>
+          </div>
+        </section>
+        <section class="page" id="page-282">
+          <div class="page-head">
+            <div class="page-title">原书阅读器页 282<span>原书物理 PDF 页 280</span><span>印刷页 268</span></div>
+            <div class="page-tools">
+              <button type="button" data-copy-page="282">复制本页</button>
+              <button type="button" data-export-page="282">导出本页</button>
+            </div>
+          </div>
+          <div class="workbench">
+            <div class="editor-wrap">
+              <div class="rich-editor" data-page="282" contenteditable="true" role="textbox" aria-multiline="true" spellcheck="false"></div>
+            </div>
+            <div class="scan"><img src="pdf_pages/page-280.jpg" alt="PDF page 282"></div>
+          </div>
+        </section></div>
+        <section class="notes-dock" id="notes">
+          <h2>编辑札记</h2>
+          <div class="note-grid">
+            <div class="note-controls">
+              <label>页<select id="notePage"></select></label>
+              <div class="marker-composer" id="markerComposer">
+                <h3>标记</h3>
+                <label>类型<select id="markerType">
+                  <option value="pinyin">注音</option>
+                  <option value="editor-note">编者注／脚注</option>
+                  <option value="inline-note">按语</option>
+                  <option value="pending">待核</option>
+                  <option value="user-note">用户札记</option>
+                </select></label>
+                <label>内容<input id="markerText" type="text" autocomplete="off" placeholder="输入拼音或笔记内容"></label>
+                <p class="marker-help" id="markerHelp">先在正文中选择文字，再输入拼音；可用“拼音；简注”。</p>
+                <div class="note-actions"><button id="applyMarkerBtn" type="button">应用标记</button></div>
+              </div>
+              <label>工作日志标签<input id="noteTag" type="text" value="校订" autocomplete="off"></label>
+              <textarea id="noteText" spellcheck="false"></textarea>
+              <div class="note-actions">
+                <button id="addNoteBtn" type="button">记录到编辑日志</button>
+                <button id="exportLogBtn" type="button">导出日志</button>
+                <button id="downloadLogBtn" type="button">下载日志</button>
+                <button id="clearLogBtn" type="button">清空日志</button>
+              </div>
+            </div>
+            <div><div id="logList" class="log-list"></div></div>
+          </div>
+        </section>
+        <section class="export-dock"><h2>导出文本</h2><textarea id="exportText" spellcheck="false"></textarea></section>
+      </section>
+    </div>
+  </main>
+  <button class="quick-note-jump" type="button" data-target="notes">札记</button>
+  <script>
+    const STORAGE_KEY = "jianshang:chapter_13:editor:v3:9b6abfa13b4a";
+    const LOG_KEY = "jianshang:chapter_13:editor-log:v1";
+    const OUTPUT_NAME = "chapter_13_clean_edited.txt";
+    const LOG_NAME = "chapter_13_edit_log.txt";
+    const BACKUP_NAME = "chapter_13_editor_backup.json";
+    const CHAPTER_NOTES_NAME = "chapter_13_reading_notes.md";
+    const CHAPTER_NOTES_KEY = `${STORAGE_KEY}:chapter-notes`;
+    const DICTIONARY_SETTINGS_KEY = 'jianshang:dictionary-settings:v1';
+    const PROJECT_DICTIONARY_OVERRIDES_KEY = 'reading-lexicon-entry-overrides-v1';
+    const STATIC_CHAPTER_NOTES = [["大学与王子的训育", "“大学与王子”这一章可读作商代精英再生产的线索：王子不只是血缘继承人，也需要在知识、礼仪、占卜、战争和贵族交往中被塑造成统治者。学校或教育空间因此不是现代意义的课堂，而是王权延续的训练场。\n\n状态：个人理解, Codex。\n记录者：Codex\n记录日期：2026-07-03\n处理者：Codex\n处理日期：2026-07-03\n关联原文：chapter_13_clean.txt 第 1 行及全章。\n来源线索：本章原文。"]];
+    const TERMS = [{"term": "殷墟", "pinyin": "yīn xū", "type": "site_or_culture", "annotation": "晚商都邑遗址，甲骨卜辞的重要出土地。", "difficulty": 5, "unit_type": "specialist_term", "domain": "archaeology"}, {"term": "妇好", "pinyin": "fù hǎo", "type": "person", "annotation": "商王武丁配偶，甲骨文中著名女性军事人物。", "difficulty": 3, "unit_type": "proper_name", "domain": "proper_name"}, {"term": "祭祀坑", "pinyin": "jì sì kēng", "type": "concept", "annotation": "用于祭祀或埋藏祭品的坑穴。", "difficulty": 3, "unit_type": "word", "domain": "general"}, {"term": "二层台", "pinyin": "èr céng tái", "type": "concept", "annotation": "墓室内用于放置随葬品或殉人的台阶状结构。", "difficulty": 3, "unit_type": "word", "domain": "general"}, {"term": "箭镞", "pinyin": "jiàn zú", "type": "artifact", "annotation": "箭头，文中有青铜、石骨材质。", "difficulty": 5, "unit_type": "specialist_term", "domain": "archaeology"}, {"term": "盘庚", "pinyin": "pán gēng", "type": "person", "annotation": "商王名，以迁都殷地著称。", "difficulty": 3, "unit_type": "proper_name", "domain": "proper_name"}, {"term": "殉人", "pinyin": "xùn rén", "type": "concept", "annotation": "陪葬或随葬的人。", "difficulty": 3, "unit_type": "word", "domain": "general"}, {"term": "銎", "pinyin": "qióng", "type": "manual", "annotation": "斧、锄等器具安柄的孔；文中见“管銎斧”。", "difficulty": 4, "unit_type": "classical_word", "domain": "general"}, {"term": "铜镞", "pinyin": "tóng zú", "type": "bronze_item", "annotation": "青铜箭头。", "difficulty": 5, "unit_type": "specialist_term", "domain": "bronze_vessel"}, {"term": "窖穴", "pinyin": "jiào xué", "type": "concept", "annotation": "地下储藏坑穴。", "difficulty": 3, "unit_type": "word", "domain": "general"}, {"term": "夯筑", "pinyin": "hāng zhù", "type": "concept", "annotation": "用夯打方式筑成墙体或台基。", "difficulty": 3, "unit_type": "word", "domain": "general"}, {"term": "铜钺", "pinyin": "tóng yuè", "type": "bronze_item", "annotation": "青铜钺，常象征军事权力。", "difficulty": 5, "unit_type": "specialist_term", "domain": "bronze_vessel"}, {"term": "羽箭", "pinyin": "yǔ jiàn", "type": "artifact", "annotation": "带尾羽的箭。", "difficulty": 5, "unit_type": "specialist_term", "domain": "archaeology"}, {"term": "人祭", "pinyin": "rén jì", "type": "concept", "annotation": "以人作为祭品的祭祀行为。", "difficulty": 3, "unit_type": "word", "domain": "general"}, {"term": "汭", "pinyin": "ruì", "type": "manual", "annotation": "河流汇合或弯曲处；文中解释殷都大学所在地“入”的可能含义。", "difficulty": 4, "unit_type": "classical_word", "domain": "general"}, {"term": "鬯", "pinyin": "chàng", "type": "manual", "annotation": "古代祭祀用的香酒。", "difficulty": 4, "unit_type": "classical_word", "domain": "general"}, {"term": "跽", "pinyin": "jì", "type": "manual", "annotation": "长跪，臀部离开脚跟而挺身；文中见“跽坐”。", "difficulty": 4, "unit_type": "classical_word", "domain": "general"}, {"term": "禳", "pinyin": "ráng", "type": "manual", "annotation": "祭祷消除灾祸；文中见“禳解”。", "difficulty": 4, "unit_type": "classical_word", "domain": "general"}, {"term": "卜骨", "pinyin": "bǔ gǔ", "type": "artifact", "annotation": "用于占卜的兽骨。", "difficulty": 5, "unit_type": "specialist_term", "domain": "archaeology"}, {"term": "铜戈", "pinyin": "tóng gē", "type": "bronze_item", "annotation": "青铜戈，商周常见兵器。", "difficulty": 5, "unit_type": "specialist_term", "domain": "bronze_vessel"}, {"term": "人奠基", "pinyin": "rén diàn jī", "type": "concept", "annotation": "建筑奠基时以人作为牺牲的行为。", "difficulty": 3, "unit_type": "word", "domain": "general"}, {"term": "奠基", "pinyin": "diàn jī", "type": "concept", "annotation": "建筑开始时的基础工程或相关仪式。", "difficulty": 3, "unit_type": "word", "domain": "general"}, {"term": "巫医", "pinyin": "wū yī", "type": "concept", "annotation": "兼具巫术占卜和治疗职能的人。", "difficulty": 3, "unit_type": "word", "domain": "general"}, {"term": "水牛", "pinyin": "shuǐ niú", "type": "concept", "annotation": "商人畜牧和祭祀中涉及的家畜。", "difficulty": 3, "unit_type": "word", "domain": "general"}, {"term": "腰坑殉狗", "pinyin": "yāo kēng xùn gǒu", "type": "concept", "annotation": "墓穴腰部小坑中埋狗的商人葬俗。", "difficulty": 3, "unit_type": "word", "domain": "general"}, {"term": "《合集》", "pinyin": "hé jí", "type": "项目词典", "annotation": "《甲骨文合集》的简称。", "difficulty": 4, "unit_type": "classical_word", "domain": "general"}, {"term": "夯土台基", "pinyin": "hāng tǔ tái jī", "type": "项目词典", "annotation": "用夯土筑成的高台式建筑基础。 | 用夯土筑成的建筑台基。", "difficulty": 3, "unit_type": "word", "domain": "general"}, {"term": "甲骨卜辞", "pinyin": "jiǎ gǔ bǔ cí", "type": "项目词典", "annotation": "商代刻写在甲骨上的占卜文字。 | 刻写在龟甲兽骨上的占卜文字。 | 刻写在甲骨上的占卜记录。 | 刻写在龟甲兽骨上的占卜辞句。", "difficulty": 4, "unit_type": "classical_word", "domain": "general"}, {"term": "夔龙纹", "pinyin": "kuí lóng wén", "type": "项目词典", "annotation": "青铜器常见的夔龙形纹饰。", "difficulty": 5, "unit_type": "specialist_term", "domain": "archaeology"}, {"term": "宫殿区", "pinyin": "gōng diàn qū", "type": "项目词典", "annotation": "都邑中宫殿和王室活动集中的区域。", "difficulty": 3, "unit_type": "word", "domain": "general"}, {"term": "王陵区", "pinyin": "wáng líng qū", "type": "项目词典", "annotation": "王室墓葬集中的区域。 | 王室墓葬和祭祀坑集中的区域。", "difficulty": 3, "unit_type": "word", "domain": "general"}, {"term": "绿松石", "pinyin": "lǜ sōng shí", "type": "项目词典", "annotation": "一种蓝绿色矿石，常用于装饰。 | 蓝绿色矿物，古代常作装饰嵌片。 | 蓝绿色矿物，古代常作饰物。", "difficulty": 5, "unit_type": "classical_word", "domain": "general"}, {"term": "角斗士", "pinyin": "jué dòu shì", "type": "项目词典", "annotation": "古罗马竞技表演中的搏斗者。", "difficulty": 3, "unit_type": "word", "domain": "general"}, {"term": "铜礼器", "pinyin": "tóng lǐ qì", "type": "项目词典", "annotation": "用于礼仪或祭祀的青铜器。", "difficulty": 5, "unit_type": "specialist_term", "domain": "bronze_vessel"}, {"term": "亚长", "pinyin": "yà zhǎng", "type": "项目词典", "annotation": "殷墟花园庄东M54墓主。", "difficulty": 3, "unit_type": "proper_name", "domain": "proper_name"}, {"term": "人牲", "pinyin": "rén shēng", "type": "项目词典", "annotation": "被用于祭祀的人。 | 被用于祭祀或献祭的人。 | 被杀用于祭祀的人。", "difficulty": 3, "unit_type": "word", "domain": "general"}, {"term": "从容", "pinyin": "cóng róng", "type": "项目词典", "annotation": "不慌不忙。", "difficulty": 4, "unit_type": "classical_word", "domain": "general"}, {"term": "俯身", "pinyin": "fǔ shēn", "type": "项目词典", "annotation": "身体向前伏下。", "difficulty": 3, "unit_type": "word", "domain": "general"}, {"term": "先妣", "pinyin": "xiān bǐ", "type": "项目词典", "annotation": "已故女性祖先。", "difficulty": 5, "unit_type": "proper_name", "domain": "proper_name"}, {"term": "卜辞", "pinyin": "bǔ cí", "type": "项目词典", "annotation": "甲骨占卜后刻写或记录的辞句。 | 甲骨上记录占卜的文字。 | 占卜时刻写或记录的辞句。", "difficulty": 4, "unit_type": "classical_word", "domain": "general"}, {"term": "受业", "pinyin": "shòu yè", "type": "项目词典", "annotation": "从师学习。", "difficulty": 4, "unit_type": "classical_word", "domain": "general"}, {"term": "商族", "pinyin": "shāng zú", "type": "项目词典", "annotation": "商王朝建立前后的族群共同体。", "difficulty": 3, "unit_type": "word", "domain": "general"}, {"term": "商王", "pinyin": "shāng wáng", "type": "项目词典", "annotation": "商朝王。", "difficulty": 3, "unit_type": "proper_name", "domain": "proper_name"}, {"term": "地层", "pinyin": "dì céng", "type": "项目词典", "annotation": "遗址中不同时期堆积形成的层次。", "difficulty": 3, "unit_type": "word", "domain": "general"}, {"term": "坑壁", "pinyin": "kēng bì", "type": "项目词典", "annotation": "坑穴侧壁。", "difficulty": 3, "unit_type": "word", "domain": "general"}, {"term": "坑底", "pinyin": "kēng dǐ", "type": "项目词典", "annotation": "坑穴底部，常用于描述考古遗迹。 | 坑穴底部。", "difficulty": 3, "unit_type": "word", "domain": "general"}, {"term": "基址", "pinyin": "jī zhǐ", "type": "项目词典", "annotation": "建筑物遗留下来的基础位置。", "difficulty": 3, "unit_type": "word", "domain": "general"}, {"term": "填土", "pinyin": "tián tǔ", "type": "项目词典", "annotation": "填入坑穴或遗迹中的土层。", "difficulty": 3, "unit_type": "word", "domain": "general"}, {"term": "壁龛", "pinyin": "bì kān", "type": "项目词典", "annotation": "墙壁或坑壁上凿出的供放置物品的小龛。", "difficulty": 2, "unit_type": "word", "domain": "general"}, {"term": "夔龙", "pinyin": "kuí lóng", "type": "项目词典", "annotation": "青铜纹饰中常见的龙形神兽。", "difficulty": 5, "unit_type": "specialist_term", "domain": "archaeology"}, {"term": "夯土", "pinyin": "hāng tǔ", "type": "项目词典", "annotation": "把土层层夯实形成建筑基础或城墙的技术。", "difficulty": 3, "unit_type": "word", "domain": "general"}, {"term": "始祖", "pinyin": "shǐ zǔ", "type": "项目词典", "annotation": "一个族群传说中的最早祖先。", "difficulty": 3, "unit_type": "word", "domain": "general"}, {"term": "宋国", "pinyin": "sòng guó", "type": "项目词典", "annotation": "周初分封商王族后裔之国。", "difficulty": 3, "unit_type": "proper_name", "domain": "proper_name"}, {"term": "征伐", "pinyin": "zhēng fá", "type": "项目词典", "annotation": "出兵讨伐。", "difficulty": 3, "unit_type": "word", "domain": "general"}, {"term": "战俘", "pinyin": "zhàn fú", "type": "项目词典", "annotation": "战争中捕获的人。", "difficulty": 3, "unit_type": "word", "domain": "general"}, {"term": "捆绑", "pinyin": "kǔn bǎng", "type": "项目词典", "annotation": "用绳索等束缚身体。", "difficulty": 3, "unit_type": "word", "domain": "general"}, {"term": "族徽", "pinyin": "zú huī", "type": "项目词典", "annotation": "族群标识，常见于商周青铜器铭文。", "difficulty": 4, "unit_type": "classical_word", "domain": "general"}, {"term": "杀祭", "pinyin": "shā jì", "type": "项目词典", "annotation": "以杀牲或杀人作为祭祀的仪式。 | 通过杀牲或杀人进行的祭祀。 | 通过杀人或杀牲举行的祭祀。", "difficulty": 3, "unit_type": "word", "domain": "general"}, {"term": "柱洞", "pinyin": "zhù dòng", "type": "项目词典", "annotation": "考古遗迹中柱子留下的洞穴痕迹。", "difficulty": 3, "unit_type": "word", "domain": "general"}, {"term": "椁室", "pinyin": "guǒ shì", "type": "项目词典", "annotation": "墓葬中放置棺木的木构外室。", "difficulty": 5, "unit_type": "specialist_term", "domain": "archaeology"}, {"term": "殷商", "pinyin": "yīn shāng", "type": "项目词典", "annotation": "商朝后期文化和政权。 | 商代后期以殷墟为中心的商王朝阶段。", "difficulty": 5, "unit_type": "classical_word", "domain": "general"}, {"term": "殷都", "pinyin": "yīn dū", "type": "项目词典", "annotation": "商朝后期都城区域，今安阳殷墟一带。 | 商朝后期都城区域。 | 晚商都城，通常指安阳殷墟。", "difficulty": 5, "unit_type": "classical_word", "domain": "general"}, {"term": "海贝", "pinyin": "hǎi bèi", "type": "项目词典", "annotation": "贝壳，古代可作装饰、随葬品或货币。", "difficulty": 5, "unit_type": "specialist_term", "domain": "archaeology"}, {"term": "版筑", "pinyin": "bǎn zhù", "type": "项目词典", "annotation": "夹板填土后层层夯实的筑墙方法。", "difficulty": 3, "unit_type": "word", "domain": "general"}, {"term": "献祭", "pinyin": "xiàn jì", "type": "项目词典", "annotation": "把祭品奉献给神灵或祖先。 | 向神灵、祖先等奉献祭品。", "difficulty": 3, "unit_type": "word", "domain": "general"}, {"term": "玄鸟", "pinyin": "xuán niǎo", "type": "项目词典", "annotation": "商族起源神话中的神鸟或天命媒介。", "difficulty": 3, "unit_type": "word", "domain": "general"}, {"term": "玉戈", "pinyin": "yù gē", "type": "项目词典", "annotation": "玉制戈，多为礼仪性器物。", "difficulty": 5, "unit_type": "specialist_term", "domain": "archaeology"}, {"term": "穿孔", "pinyin": "chuān kǒng", "type": "项目词典", "annotation": "贯穿形成孔洞，文中多指颅骨创口。", "difficulty": 3, "unit_type": "word", "domain": "general"}, {"term": "繁衍", "pinyin": "fán yǎn", "type": "项目词典", "annotation": "逐渐增多、传续后代。", "difficulty": 4, "unit_type": "classical_word", "domain": "general"}, {"term": "羌人", "pinyin": "qiāng rén", "type": "项目词典", "annotation": "西方族群，常见于商代卜辞。", "difficulty": 3, "unit_type": "word", "domain": "general"}, {"term": "肋骨", "pinyin": "lèi gǔ", "type": "项目词典", "annotation": "胸部骨骼。", "difficulty": 3, "unit_type": "word", "domain": "general"}, {"term": "股骨", "pinyin": "gǔ gǔ", "type": "项目词典", "annotation": "大腿骨。", "difficulty": 3, "unit_type": "word", "domain": "general"}, {"term": "肱骨", "pinyin": "gōng gǔ", "type": "项目词典", "annotation": "上臂骨。", "difficulty": 3, "unit_type": "word", "domain": "general"}, {"term": "货贝", "pinyin": "huò bèi", "type": "项目词典", "annotation": "作为货币使用的贝。", "difficulty": 5, "unit_type": "specialist_term", "domain": "archaeology"}, {"term": "遗存", "pinyin": "yí cún", "type": "项目词典", "annotation": "古代活动留下的遗物、遗迹或现象。", "difficulty": 3, "unit_type": "word", "domain": "general"}, {"term": "铜刀", "pinyin": "tóng dāo", "type": "项目词典", "annotation": "青铜刀。", "difficulty": 5, "unit_type": "specialist_term", "domain": "bronze_vessel"}, {"term": "铜矛", "pinyin": "tóng máo", "type": "项目词典", "annotation": "青铜矛，刺击兵器。", "difficulty": 5, "unit_type": "specialist_term", "domain": "bronze_vessel"}, {"term": "铭文", "pinyin": "míng wén", "type": "项目词典", "annotation": "铸刻在青铜器等器物上的文字。 | 器物上铸刻或刻写的文字。", "difficulty": 4, "unit_type": "classical_word", "domain": "general"}, {"term": "锐器", "pinyin": "ruì qì", "type": "项目词典", "annotation": "带尖刃或锋利边缘的器物。", "difficulty": 3, "unit_type": "word", "domain": "general"}, {"term": "长发", "pinyin": "cháng fā", "type": "项目词典", "annotation": "《诗经・商颂》篇名，歌颂商族祖先和商汤功业。", "difficulty": 4, "unit_type": "classical_word", "domain": "general"}, {"term": "陶缸", "pinyin": "táo gāng", "type": "项目词典", "annotation": "大型陶制缸器，文中兼具储藏和炼铜功能。", "difficulty": 5, "unit_type": "specialist_term", "domain": "archaeology"}, {"term": "镞", "pinyin": "zú", "type": "bronze_item", "annotation": "箭头。", "difficulty": 5, "unit_type": "specialist_term", "domain": "bronze_vessel"}, {"term": "钺", "pinyin": "yuè", "type": "bronze_item", "annotation": "大型斧形兵器或礼器。", "difficulty": 5, "unit_type": "specialist_term", "domain": "bronze_vessel"}, {"term": "戈", "pinyin": "gē", "type": "bronze_item", "annotation": "古代横刃长柄兵器。", "difficulty": 5, "unit_type": "specialist_term", "domain": "bronze_vessel"}, {"term": "盉", "pinyin": "hé", "type": "bronze_item", "annotation": "盛酒或盛水器，也用于调和酒味浓淡。", "difficulty": 5, "unit_type": "specialist_term", "domain": "bronze_vessel"}, {"term": "戚", "pinyin": "qī", "type": "bronze_item", "annotation": "古代斧形兵器或礼器。", "difficulty": 5, "unit_type": "specialist_term", "domain": "bronze_vessel"}, {"term": "豆", "pinyin": "dòu", "type": "bronze_item", "annotation": "古代盛肉或食品的高足盘形器。", "difficulty": 5, "unit_type": "specialist_term", "domain": "bronze_vessel"}, {"term": "觚", "pinyin": "gū", "type": "bronze_item", "annotation": "古代饮酒器。", "difficulty": 5, "unit_type": "specialist_term", "domain": "bronze_vessel"}, {"term": "爵", "pinyin": "jué", "type": "bronze_item", "annotation": "古代酒器，也引申为爵位。", "difficulty": 5, "unit_type": "specialist_term", "domain": "bronze_vessel"}];
+    const ORIGINAL_TEXTS = {"263": "===== PDF page 263 / printed page 249 =====\n\n第十三章大学与王子\n\n1991年，在商王宫殿区不远处，今花园庄东侧的农田里，发掘出一座填满甲骨的窖穴，编号H3。[[fn:1]] 这些甲骨的主人，是一位名“子”的年轻王族，生活在殷都格局初定的武丁王前期，家宅位于王宫以南400多米处。\n\nH3的甲骨卜辞记录了“子”不算长的一生：从他开始接受教育和严格而残酷的战争训练，到长大后征伐异族，为王朝兴盛而东征西战的过程。这是商代王族最常见的人生轨迹。\n\n而且，他受教的大学[[fn:2]] 的建筑也被发掘出土。\n\n王族学生的训练课\n\n殷墟出土的甲骨卜辞绝大多数属于商王，很少记录其他王族成员和高级贵族的生活，而且，由贵族自家占卜的更少，可见，花园庄东地的这位“子”的身份比较特殊，可能是武丁王的弟弟或堂弟。[[fn:3]]\n\n在他年幼的时候，父亲已经去世。我们也不知道他的真实名字，“子”可能是他在卜辞里的自称，或是占卜师对他的称呼。\n\n“子”自少年时代“入学”，在王室大学里学习各种贵族技能，比如“舞戊”。商人的“舞”并非后世意义上的表演性舞蹈，而是团体实兵演练，甚至有伤亡的可能。\n\n有一条卜辞显示，“子”这次不应该去参加舞钺，因为队员们会遇到灾害：“子弼（勿）更（惠）舞戊，于之？若用，多万有灾……”[[fn:4]]\n\n商人称团队舞钺为“万”，各位队员就是“多万”。为避免在操练铜钺的万舞中伤亡，“子”或其他人可能都曾占卜应站在队列的哪个位置，是左边，还是中间或是右边？", "264": "===== PDF page 264 / printed page 250 =====\n\n丁亥卜，子立于左。[[fn:5]]\n\n甲午卜，召（勿）立中，或（惠）学，弓弓（勿）示伐。[[fn:6]]\n\n第二条是其他人的卜辞，显示的是，这次不应当立在队列中部，也不适合砍杀。至于万舞操练为何会有危险，后文会有答案。\n\n除了舞钺，“子”还学习射箭。在成长的过程中，他曾使用不同力度的弓，如“二弓”和“三弓”。后世的《红楼梦》中，也有这种数字划分的弓力：\n\n贾母笑问道：“这两日你宝兄弟的箭如何了？ ”贾珍忙起身笑道：“大长进了，不但样式好，而且弓也长了一个力气。”贾母道：“这也够了，且别贪力，仔细努伤。”\n\n某天，“子”有生病，曾占卜：今天不用上学了吧？不过，这可能是管家替他占卜的。\n\n己卜：子其（疫？），强（勿）往学？（《花东》181）\n\n甲骨文中的“疫”字，字形是一个人躺在床上，身下正在出汗，有人手拿锤子打击其腹部，象征病痛的状态。另有一种解释则为手拿廷石为患者做按摩治疗。无论哪种，它反映的都是卧床生病。\n\n卜辞里的“往学”两字很重要，它表明“子”是去家外面的“大学”学习，而非在家中接受私教。此外，卜辞里还曾多次出现过“学商”，以及出现过一次“学羌”，这可能是模拟羌人和商人之间的战斗，当然，两方战士都由学生扮演。\n\n甲骨文的“学”字，写作（甲骨文，形近似「累」），上面是两手在摆放计数的草棍（爻），下面是一所房子，意为“学习算数的地方”。\n\n上面的两只手有时会被省略，写作（甲骨文，形似「爻」），也可以从两组省略为一组，写作（甲骨文，形似「爻」） ，但下面的房子不能省，它代表学习的场所。不过，在卜辞里，殷都的“大学”似乎没有教过算数。也许因为这是很初级的学习内容，不值得用占卜来记录。至于殷都的大学都有哪些建筑，课程又是怎么开设的，“子”的卜辞里并没有太多信息。", "265": "===== PDF page 265 / printed page 251 =====\n\n1973年，在“子”的甲骨窖穴西北400米（今小屯村南）发现了大量刻字甲骨，其中的一片牛骨卜辞（《屯南》662）上有关于大学的课程安排，是大学的总教官留下的。而总教官很可能就是商王本人\n\n第一条卜辞是：丁酉日占卜，今天是丁日，（学生们）是否应该学习万舞呢？第二条卜辞是：还是应该在下个丁日学习？\n\n后面的两条卜辞是关于万舞学习场地的占卜：在“右（甲骨文， 宝盖+束）”学？还是在“内”学？[[fn:7]] 看来，大学的建筑分左右大厅，还有位居中后部的“内”。\n\n1 .丁酉卜，今日丁，万其学？\n\n2 .于来丁乃学？\n\n3 .于右秉学？\n\n4 .若内学？\n\n《屯南》662（图）\n\n商王会亲自关注大学的课程，这也很正常，因为里面的学生都是王的亲戚。另一条王室卜辞显示，商王曾在“入”地建设大学：“乍（作）学于入，若。”（《合集》16406）这个“入”，有学者解释为“内”，王宫之内。不过，它可能还有“汭”之意，即水滨。\n\n1996年，在王宫区南侧，紧邻洹河边，考古队发掘出一处大型建筑基址，它很可能就是殷商时期的王族大学。\n\n如果参观殷墟博物苑的宫殿区，朝北走进大门之后，右手边是一组“54号”建筑基址。它是一座凹字形大型建筑，发掘时被命名为“丁组”。这里是王宫区地势最低的地方，东边紧邻海河，所处环境和建筑构造很接近甲骨卜辞中描述的“子”曾经学习舞钺的大学。它的北面紧邻着王室宗庙乙区和祭祀自然神的丙区；向南400米，是“子”的家宅，花园村东甲骨出土地；向西南200米，是发现安排大学课程甲骨的地方。", "266": "===== PDF page 266 / printed page 252 =====\n\n考古发掘的地层显示，在武丁王即位初年，也就是他准备在洹河南岸建设新王宫的时候，先在丁组这里建设了一组中小型房舍，而且没有用人奠基。对于商人来说，这意味着它并非长期项目，只是过渡性的临时校舍而已。\n\n大概二十年之后，武丁的新王宫相继落成，丁组大学区也进行了大规模的改扩建：南北各新建了一排平行的殿堂（丁二和丁一），长度分别为75米和65米，连接和贯通它们的是西端的一列厅堂（丁三），从而形成一组“凹”字型建筑，并围起一片庭院，对着东边的洹河。\n\n丁组建筑平面图，比例尺数字应为“50米”（图）[[fn:8]]\n\n按照那片安排大学课程的甲骨的描述，丁三就是“内”，在这里朝东望，右侧的丁二就是“右（异体字，宝盖+束）”。而在甲骨文中，（异体字，宝盖+束）字的造型，上面是屋顶，下面是捆束起来的羽箭。所以，它有可能指的是室内射箭场馆。射箭是大学的重要课程之一，而且射箭馆空间大，还可以用以练习“万舞”。\n\n丁组建筑面对着洹河，周边环境是河滩的芦苇湿地，可能还有水沟环绕在建筑的西面、南面和北面，甚至还会有码头供大学生们练习驾船和水战。“子”的卜辞里，就有命令下属准备船的内容（《花东》183），或者说，这所贵族大学也是商人对祖先生活的南国水乡环境的再现。发掘报告对它的描绘是：\n\n三座建筑之间有较宽阔的活动空间，建筑群的整体轮廓呈长方形，东面是由北向南流去的洹水……如果我们认真体验这一古老的建筑群，就会感到它既要给人以宏伟壮观之感，又给人以环境优美、富于生活情趣的感受。", "267": "===== PDF page 267 / printed page 253 =====\n\n这片地区低洼临河，土质多沙，并不适合营建大型建筑。但武丁王却不惜工本，工程之初就先挖下2米多深的基坑，填入黄土，逐层夯实，然后才开始埋设木柱和版筑墙体。从柱洞看，最粗的柱子，直径接近1米。\n\n北面的丁一体量最大，是主体建筑，室内出土了一件铜盉，上面有铭文“武父乙”，发掘者推测，它是武丁给自己的父亲小乙王制作的祭器。这件铜盉被装入陶缸埋进了一个挖在地基上的小坑，看来武丁王对这座建筑很是重视，希望父王的灵魂能保佑它。[[fn:9]]\n\n发掘报告称这座建筑为供奉武丁“三父”的宗庙，很可能，里面还供奉着小乙王的两位兄弟（盘庚王和小辛王）的灵位。花园庄东地的那位“子”的卜辞显示，学生们会带着人牲或畜牲到这里献祭。这很好理解，这三位先王也是这些贵族学生的先辈。\n\n武父乙铜盉及铭文（图）[[fn:10]]\n\n陪练角斗士\n\n丁一有一系列朝南的门，门的两侧皆挖有祭祀坑，共十座，发掘者用墓葬M编号。目前已发掘其中八座，每座埋有斩首的三四人，多为俯卧，人头在死者肩部。能够辨识的死者，皆为青壮年男性。\n\n一个比较特殊的现象是，有一半的祭祀坑发现骨制的箭镞，其中两坑分别埋有一枚和三枚，另两坑则各埋有两枚。\n\n以M18为例，共埋有四人。坑底埋有三人，俯卧，头骨被夯碎，颈部朝东；后又在其脚端的坑壁上挖出一个壁龛，里面是呈跪坐姿势的一人，但头骨没有夯碎，而是放在了壁龛里。该坑埋有三枚骨镞，其中一枚在北侧俯卧之人的腿部，另外两枚分别在中间人的上臂和肋骨部位，肋骨上的已经残断。其他三座坑中的骨镞，有的在人牲的腿部（M3和M2），也有的在腰部和前臂（M15）。", "268": "===== PDF page 268 / printed page 254 =====\n\n这些骨镞的出现颇难解释，并非每座坑都有，也并非每个人牲都有。\n\n箭的木杆会因腐朽而消失，那么，这些镞最初是带着箭杆埋下去的吗？M2北侧人牲的腿部有两枚箭镞，其中一枚横在小腿部位，尾端朝坑壁，说明它没有连着箭杆，不然，杆会触及坑壁而改变方向。这些箭镞应当是射到人牲身体上的，只是有些还能被主人完整地拔出来再利用，而另一些因嵌入人骨或筋肉，主人只能把箭杆拔出，箭镞则随着人牲被埋进了坑中。\n\n由此可以推论：可能多数人牲都中过箭，只是有些被拔掉了而已。那些带箭镞的尸骨很多也是被射在腿部或胳膊等非致命部位，说明他们生前并不是在静态而是在奔跑逃命中被射中的，也正因此，中箭的才会是非要害部位。\n\n历史学者李竞恒曾注意到殷墟人牲带箭的现象，他的推论是，这是商人为活捉羌人等俘虏而故意射击其非致命部位所致。[[fn:11]] 本书认为，这种推测难以成立，在真实的战斗中，没有哪一方可以如此从容地选择命中部位，而且中箭之后，俘虏也很难身着箭头被带回殷都，在传统时代，外伤往往会引发致命的感染。\n\n因此，这只能是发生在祭祀场附近。而且，这四座祭祀坑中的箭镞是同种规格，骨质三棱形锋，形制较大，长度超过10厘米，发掘者称之为“大三棱”，其特点是，没有倒锋，容易拔出来继续使用。故而，这些人牲应当是大学生们练习射箭和搏杀的陪练。\n\n商朝王室和“大学”不会缺乏青铜箭镞，但为何不对人牲使用铜镞呢？这可能是基于“训练”的考虑，毕竟锋利的铜镞更容易致命，而骨镞则致死率较低。另外，出土骨镞的锋刃多有磨损也说明，它们是被多次使用的练习品。", "269": "===== PDF page 269 / printed page 255 =====\n\n丁一南檐下的祭祀坑是统一制作和填埋的。先是挖掘坚硬的夯土，有2米多深后，放进人牲的尸体，有些还会打碎几件陶器放进去，象征人牲在地下也会有些生活用品，以让其灵魂更安心地守卫殿堂。然后，填土夯打。人牲的头骨应该就是这么被夯碎的。填满土后，为使祭祀坑不那么容易被发现，又在地面整体铺了一层20厘米厚的黄土。\n\n后经钻探发现，南檐下并不止十座祭祀坑，但为保存房基的完整性，考古队没有继续发掘。据推测，人牲不会少于40人。\n\n丁组建筑全部完成并投入使用后，大学生们还要反复用人牲练习射击和搏杀，这样便会不断地出现新的祭祀坑。这些后期坑建在丁一东南方的空地上，目前已发现成排的六座。其中，M10埋有三具俯身的尸体，没有被砍头，其中一人缺失了手和脚。此外，坑角还发现了两处散落的牙齿，发掘者推测，这应该是“当时被打掉的”。\n\n这座坑最特殊之处在于，不仅有陶器碎片，还有四件小巧的青铜斧、三件环首铜小刀以及两块不及巴掌大的长方形磨刀石。铜斧的整体长度在7—14厘米之间，铜刀长20厘米左右，刀斧基本完整，刃部略有残缺，是使用过的。两块磨刀石上有穿孔，当是为系绳之用，便于随身携带。\n\n与前述M18不同，M10中的这三名人牲的身上没有箭镞，但携带了近战用的刀斧。他们可能是大学生们练习万舞（短兵近战）的陪练，这种高度仿真的肉搏战训练也可以看作一种角斗，比赛规则自然对人牲不利。卜辞中，用钺的“万舞”练习者要分左、中、右站立，可能是众多的学生列队围拢对付少数几名陪练角斗士。", "270": "===== PDF page 270 / printed page 256 =====\n\n另外，这四件铜斧的形制比较特殊，并不是商式风格，而是燕山以北草原地带流行的“管銎斧”：顶端铸造出圆管形的銎，銎管上还有一个小孔，将木柄插进去，钉入一枚钉子固定木柄。商式钺则是整体片状，在木柄顶端开槽，把钺上端的凸起部分插入槽中，再捆绑固定。\n\n殷墟地区较少发现这种管銎斧。发掘报告推测，坑中三人可能是来自北方草原的战俘。\n\nM10出土的四把管銎斧线图（图）\n\n倘若丁组建筑是王族大学，那么这些北方战俘就是贵族学生们的陪练。花园庄东地的“子”的卜辞里的“学商”和“学羌”也表明，大学里经常组织对抗性演练，有时甚至要靠商人学生来扮演假想敌。\n\n后期的这些祭祀坑中没有发现骨镞，尸骨也大都有砍伤痕迹，可见人牲皆被砍杀而死。比如，M11中的无左手，M13中的左手和左腿被砍断，M12中的无右手。无手者可能是用胳膊抵挡刀斧所致，这说明人牲可能没有装备盾牌。\n\n人牲几乎都被砍头，但也有相对完整的尸骨的，如M9中的甲，双腿被从膝盖部位捆在一起，双手亦被反缚，而且是该坑三名人牲中第二个被扔进坑的。只是我们已经不知道为何偏偏是他被活埋而不是被砍杀。\n\n如前所述，殷都大学所在地称为“入”，这里也是大学生们祭祀其先祖（先王）的地方。在“子”的卜辞里，有两次提及在“入”祭祖：第一次，是剁一头牛，再“伐”一人（夷）；第二次，是伐羌一人。\n\n甲午：宜一牢，伐一夷？在入。一二三。（《花东》340）\n己酉夕：伐羌一？在入。庚戌，宜一牢，弹。一。（《花东》178、376）", "271": "===== PDF page 271 / printed page 257 =====\n\n从“子”的卜辞可见，有些人牲并非学校提供的，而是学生自备，可能先进行搏斗训练，最后把处死的人牲奉献给祖先。在殷都大学长达二百余年的历程中，因作陪练角斗士而死的人牲肯定不止已发掘的六座坑中的这些，许多尸体可能另有处理，或者只有具有特殊纪念意义的才会被葬人祭祀坑。\n\n“子”的贵族人生\n\n在“子”的众多卜辞里，他最日常的工作是向先祖先妣献祭。多数是用猪牛羊和酒（鬯），也有少数是用人，如为了祭祀祖庚和祖辛，“子”分别“册羌一人”（《花东》56）。在甲骨文里，册，是剁成块的意思。此外，他还祭祀过与商族始祖有关的“玄鸟”。（《花东》1557）祭祀经常在一个名为“来鹿”的地方举行，这应是“子”的庄园领地。\n\n他的射猎活动也很多，主要在“品鹿”，这应该是私家猎场。马车是“子”的生活中一项很重要的内容，他曾多次占卜左马或者右马有没有灾病。看来拉车的马各司左右，一般不混用。\n\n“子”很关心自己的健康，多次因为耳鸣、做梦、心疾、首疾、目疾占卜。他经常有头疼症状。\n\n“子”和武丁的夫人妇好关系密切，他们应当是亲属，后来成为妇好的侍卫官。在他的卜辞里，“王”只出现过两次，而妇好出现过几十次。“子”经常占卜是否应该到某地见妇好，是否应该和妇好一起举行祭祀。他常向妇好贡献礼物，有一次贡献了六人（《花东》288），还贡献过一名“磬妾”，应当是擅长演奏磬的女子。（《花东》265）\n\n===== PDF page 272 / printed page 258 =====", "272": "妇好应该曾负责为商王采购马，因为有些马贩子（多御正、多贾）多次通过“子”向妇好送礼，希望得到参见的机会。“子”安排过不止一次集体参见，每次都由马贩子拿出十捆丝绸作为觐见礼物。\n\n有一个叫“弹”的马贩子，经常到“子”的家里奔走服务，想通过“子”送给妇好三捆丝绸，以获得单独接见的机会。“子”就占卜问：是否应该转达这个礼物？占卜结果是“用”，也就是可以。“子”又占卜：是否应该向妇好引荐“弹”呢？占卜结果是“不用”。（《花东》63）\n\n“子”自家也经常买马，他常到马贩子处看“新马”。看来他相马的技术不佳，卜辞里记载说：“自贾马其又死。”意思是说，有一次，马刚买来不久就又死了。\n\n武丁王时期，商朝对外战争频繁，“子”曾经考虑是不是应该跟随一位叫“白”的将领去征伐“邵”地。他还曾试图通过妇好和“白”拉近关系，向“白”赠送过占卜用的龟壳。但最终他应该还是没去，因为卜辞里没有进一步的信息。（《花东》220、237）\n\n在卜辞里，“子”的妻子被称为“妇”，妻子的母亲被称为“妇母”。看来这位岳母喜欢对“子”的事务发表意见，比如“子”在卜辞里曾询问：“妇母让我和某甲在一起，不要和某乙在一起，是否应该听从？ ” （《花东》290）卜辞里没有出现“子”的子女信息。\n\n“子”的寿命可能不长，毕竟当时成年人的平均寿命只有三十岁左右。在他死后，他占卜过的甲骨被埋入了2米多深的窖穴之中。1991年，因修筑通往殷墟博物苑正门的公路，考古队决定对工程用地进行考古调查，这才发现“子”的甲骨坑（编号H3）。其中，有龟甲一千五百多片，刻辞的五百多片，还有少量卜骨。", "273": "===== PDF page 273 / printed page 259 =====\n\n由于从未被盗掘者发现，坑内甲骨保存得非常完整。许多整版的龟甲虽然遍布裂纹，非常脆弱，但经过技术处理，基本保持了原貌。倘若是被非法盗掘，绝大部分甲骨都将变成碎片，无法识别。历代商王留下的甲骨卜辞虽然数量多，但大都是盗掘出土，非常凌乱，很多同属一王或同一批次的卜辞都丧失了联系。考古学者们希望通过字体和占卜师的名字对零散的卜辞进行分组、划分年代，但结论往往充满争议。这是盗掘带来的无法挽回的信息损失。\n\n五年之后的1996年，“子”曾经受业的大学所在地丁组基址也被发掘出土，这位殷商王子的生平这才展现在了世人面前。这是殷商时代关于一个人的独家而完全的记录文献。\n\n“子”的住宅和坟墓没有被发现；但一般来说，他使用过的甲骨不会被丢弃到远处，应该是在自家院内挖坑埋藏。很可能，他的宅院基址已经被后世破坏。\n\n战死的族长“亚长”\n\n“子”的甲骨坑（H3）被发掘十年后，在它的西北侧数十米处又发现了一片墓葬，其中有一座比“子”晚两三代人（殷墟二期末）的贵族墓，编号M54。商人都是聚族而居，居葬相邻，所以M54的主人很可能是“子”的后裔。\n\n2000年冬季，在花园庄东的农田里，考古工作者用洛阳铲进行钻探调查，初步确定了M54的位置。由于1991年这里出土过“子”的甲骨坑，人们判断可能会有高等级大墓，计划2001年开春解冻后发掘。结果盗墓者一直追踪着考古队的进展，趁夜间找到了墓穴位置，好在有村民发现异常，将此事报告给了考古工作站。于是，考古队决定赶在盗墓贼之前进行发掘。就这样，在2001年初的大雪中，墓穴内的椁室得以揭开。由于从来没被盗墓贼光顾过，大量随葬器物和殉人还保持着下葬时的布局。[[fn:12]]", "274": "===== PDF page 274 / printed page 260 =====\n\n这座墓穴，口部南北长5米，宽3米多，向下逐渐扩大，深约6米。墓底四壁有高约1.8米的夯筑二层台，中央是黑漆木板搭成的椁室，里面放着雕花夔龙纹、镶金箔的红漆棺木。\n\n很多随葬铜器铸有“亚长”族徽。“亚”，表示主人有军事首长身份；“长”，是家族的族徽，字形是一个人侧面站立，脑后有很长的头发，手中扶杖，像是个老人。可能是“子”的后人繁衍出了“亚长”氏族。\n\n墓主是一名三十五岁左右的男子，头骨面部略有女性特征，俯身直肢而卧，右脚掌骨有长期跽坐（臀部坐在脚上）形成的磨痕。这是上古人习惯的坐姿。在殷墟发掘的贵族墓葬中，M54主人的死因比较特殊，尸骨上有多处伤痕：一，左上臂肱骨上有三条锐器砍痕，长度都在1厘米左右。“这三处砍痕均未见骨骼自我修复痕迹，说明砍痕形成于墓主人死亡之前的时间很短，即墓主人遭受连续打击后不久即死亡。” 二，一根左肋骨的中前部位，有明显的锐器砍痕。三，骨盆中部靠右侧被刺穿一孔，深约2厘米，宽1.15厘米，”……内部呈圆孔洞。从创口形状推测，应是矛戈类刺兵形成”。四，大腿骨后方也有很深的砍痕。\n\n这位“亚长”氏的族长很明显是在战争中受伤而死的。敌人未能对其头部一击致命，可能是因为他戴了铜盔（胄）。打斗的时间可能非常短暂，其左臂被连续砍伤，说明此时他尚能站立，但已无力格挡或逃避。\n\n“亚长”族徽铭文（图）\n\n我们可以对当时的现场稍作复原：在战斗过程中，他应该是冲在前方，又因为其服饰属于贵族长官，所以受到多名敌人的攻击。首先是被迎面敌人的铜矛刺入右下腹，矛锋深入骨盆。虽穿戴半身铠甲，但这个部位很难防护，而且矛锋也足以贯穿常用皮甲。他被迫用双手抓握矛杆，以防对手再刺，但铜矛已嵌入人骨，不容易拔出。此时，又有敌人从左方靠近，挥刀连续砍杀，在他的左上臂和左肋造成多处伤口，致使左臂肌肉断裂失能。从股骨上的伤痕看，应该还有一支戈至少两次砍或勾在其左大腿和臀部。", "275": "===== PDF page 275 / printed page 261 =====\n\n他之所以未被敌人斩首，应该是己方士兵上前把他救了下来。但在随后不到一天的时间里，“亚长”会因失血和创口感染而昏迷，这时，军中巫医会对他进行急救，但也无力回天。最终，他的尸体被马车拉回了殷都丧葬。为了减轻腐烂的气味，他的尸体被撒上了大量花椒粒。对他的战死，商王也可能会表示慰问，并赏赐一些钱物。\n\n在王陵区之外的商代贵族墓葬中，花园庄东M54的随葬品比较丰厚。首先是有大量的铜礼器。知名度比较高的是一件重达14斤多的“亚长牛尊”。这是一头站立的水牛，造型圆润可爱，嘴微张，全身布满龙、虎、鸟形花纹，尤其牛背上还有一个带把手的盖子，可能是为了便于在牛腹中存放货贝。\n\n墓中共有40件铜礼器和铜容器，有些稍薄的铜器在入葬时被打碎了，出土后，考古工作者尽量把它们拼贴复原了起来。这头著名的“亚长牛尊”就是复原的产物。\n\n复原后的\"亚长牛尊”（图）\n\n大件的铜兵器有161件，其中，钺七件，矛78件，戈73件，卷头大刀三件。除了主人自己使用的钺，其余的戈、矛和刀能装备超过150人的部队，而这肯定还不是主人家的全部兵器。考虑到氏族成员自家的装备，亚长氏族的兵力应该会有上千人。\n\n较厚重的一件铜钺重12斤左右，其他的较薄，多在1.4斤左右。多数的戈和矛都连接着一段木柄（秘），只有十几厘米，但最长的一件却有38厘米。这可能是为了节约空间，入葬时把木柄锯断了。\n\n===== PDF page 276 / printed page 262 =====", "276": "铜镞有881枚，分好几处成束摆放。从残留痕迹看，有些下葬时带有木杆，是完整的羽箭。墓中还有些盾牌和弓的遗迹。\n\n车马器有铜策（马鞭杆）两件和弓形器六件，说明主人拥有至少六辆马车。弓形器上铸有繁复的花纹，有的还用绿松石镞嵌。考虑到其他氏族成员，亚长氏族应该拥有不少于十辆战车。\n\n乐器有铜镜一套。铜钱是军事首长发布命令的工具之一，所谓“鸣金收兵”。此外，还有各种铜工具和杂物，其中，圆形铜泡有149件，可能是缀在皮甲上的。\n\n比较特殊的是主人棺内的一件铜“手形器”，比正常的右手略小，长13厘米，呈微弯曲的半握姿势，上面铸有目形纹饰，甚至有指甲的纹理。它的小臂部分中空，用来容纳插入的木柄，但木柄已经腐蚀消失，无法确知其具体长度。\n\n和其他的青铜器不同，这件手形器被放在主人的棺内，靠近左小腿处。墓主的两手基本完整，手形器也不在主人右手处，所以并不是义肢。有学者推测，它是用来在鼎内捞取食物用的，类似餐叉。但餐具似乎并不需要单独放入主人棺内。从它与墓主的亲密程度看，应当经常被主人握在手里，有点类似权杖。\n\n亚长铜手形器线图（图）\n\n铜工具中有小刀五件。有两件的手柄末端铸造的分别是马头和鹿头，刀柄的纹饰则类似长脖子。还有一件整体呈虎形（发掘报告认为像狗），长尾延伸成刀的刃部，有完整的四腿，可以站立在桌面上。\n\n随葬的玉石器，除了小件的玉饰和玉雕，还有些玉兵器，但实用价值不高，主要作为军事首长身份之象征：玉钺一件，玉戚六件，玉矛两件，玉戈八件；此外，还有玉质刃部和铜质装柄结合的“铜骰玉援矛”两件和“铜内玉援戈”三件。", "277": "===== PDF page 277 / printed page 263 =====\n\n亚长墓铜小刀线图（图）\n\n随葬的骨镞有43枚，没有锋刃，前端平整。发掘者推测，这是为了射猎时不损伤猎物的皮毛。本书认为，这也可能是训练品，非致命箭镞可以减低人牲的致死率，士兵可以获得更多的训练机会。\n\n在墓室二层台上，有大量木棍，共47根，长度在1.3—3.6米之间，直径约3厘米。有些木棍刷红或黑色漆。发掘者推测，这是部分铜戈和铜矛的木柄，因为太长难以放进椁室，就被截断放在了二层台上。\n\n发掘出海贝1472枚，几乎都是经过研磨的货贝。\n\n陶器不多。有些陶器内部有大量梅子核，可能是熬制的果羹；还有的里面有较多碎骨，发掘者推测是肉羹。\n\n墓穴内用了15名殉人和15只狗随葬，其中一只狗在墓室底部正中的腰坑内，这是商人“腰坑殉狗”的传统礼仪。离墓主最近的六名殉人，在椁室内的棺材外，左右各三人，全尸，但骨骼保存较差，可能是椁内的某些随葬品有较强的腐蚀作用。这些人应是先被处死，然后用草席包裹身体放入椁室之内的。椁室外的墓底有四名殉人，能鉴定性别的有三人，全是男性，只有一人在二十五岁左右，其余都是十几岁。\n\n上述所有全躯的人牲，姿势和墓主一样，都是俯身直肢。在殷墟的墓葬中，这颇为奇特。可能是因为墓主死于兵灾，颇不吉利，所以用这种方式来禳解。\n\n二层台内有三颗人头，[[fn:13]] 一颗是一名二十岁左右的男性的；其余两颗则都是女性的，年龄分别为三十岁和四十岁左右。值得注意的是，三十岁左右的这名女性，应该自幼就拔掉了下牙的两颗门齿。这属于“东夷”习俗，自大汶口文化以来，在山东及胶东某些地区一直存在。墓主生前很可能参加过征讨东夷的战争，并从当地带回了一些俘虏。", "278": "===== PDF page 278 / printed page 264 =====\n\n和人头同一层面的二层台内，还有牛腿和羊腿，以及陶制的豆、觚、爵，它们应当是用来盛放食品和酒的。\n\n放置完随葬品和人牲后，开始往墓穴里填土夯筑。夯填的过程中，还会埋入殉人和殉狗：到一半深度时，杀了一名两三岁的幼儿，将其头颅面朝下扣在了土中。到距离地面1米左右时，又杀了一名二十五岁左右的女子，将其头颅侧放在了填土内。对头骨和牙齿的鉴定表明，这名女子生前应该营养较好，属于物质生活比较丰富的人群。根据发掘报告，共埋入四名成人和一名幼儿的头骨，但没有发现他们的身体，而且该墓周边也没有发现人祭坑或者无头尸坑。\n\n〔按语：使用高等级人牲〕\n\n在墓葬填埋数年后，墓主的家人为其建造了一座墓上“享堂”：先是在墓穴正上方筑起1米多厚的夯土台基，并筑进一枚成年人头骨和一名全躯的少年，然后在台基上建造亭子式享堂。\n\n若干年后，享堂塌毁，有人便在它的基础上挖了一座近方形坑，坑底埋入一名被砍头的仰身直肢的男子，人头放在身体的左侧，右侧则是两具儿童的尸体。这座祭祀坑，可能出自“亚长”的后人。\n\n在M54附近，考古队共发掘出40座竖穴墓，大多数是随葬品较少的小墓，有殉人的只有两座，其中一座殉二人（M82）。这些墓葬可能多是亚长氏族的成员或者属民的，看来他们多数人并不富裕。\n\n“子”和亚长的后人应该繁衍了很多代。周灭商后，其后人和其他王族被迁到了商族人的起源地——商丘，并在那里建立宋国，继续传承商王家族的血脉。至于他们能否放弃血腥的杀祭宗教，这就是一百多年后的故事了。", "279": "===== PDF page 279 / printed page 265 =====\n\n注释\n\n1中国社科院考古所：《殷墟花园庄东地甲骨》，云南人民出版社，2003年。以下简称《花东》。殷墟有两个花园庄，一个在洹河北岸的洹北商城内，一个在洹河南岸的宫殿区南侧（已整体搬迁），出土H3甲骨坑的在洹河南。\n\n2商代已有大学，如《合集》3510：“右学。”《合集》20101：“丁巳卜，右学。” 《礼记•王制》记载：“殷人养国老于右学。”郑玄解释说：“右学，大学也。”《屯南》60：“于大学寻”。\n\n3关于这位“子”的具体身份，学者们有不同的解释。有人认为是王室近亲，但又认为“子”没有祭祀盘庚王的卜辞，说明他是盘庚之前的王繁衍出的旁支。本书认为，这种推测方式可能有问题，因为盘庚一代有四位兄弟当过王（阳甲、盘庚、小辛、小乙），盘庚之外三王的后裔不当王自然就不会祭祀盘庚，但这不影响其作为王子的尊贵地位。花园庄东地“子”的卜辞里从未提及“父”，很难确定他的父亲是谁。\n\n4《花东》206。\n\n5《花东》50。\n\n6中国社科院考古所：《殷墟小屯村中村南甲骨》，云南人民出版社，2012年，489条。\n\n7《屯南》662O另可参见宋镇豪《甲骨文中的乐舞补说》，《海南大学学报》（人文社会科学版）2020年第4期。\n\n8中国社科院考古所：《安阳殷墟小屯建筑遗存》，文物出版社，2010年。以下有关小屯建筑丁组遗存的基本信息、数据及图片未注明出处的，皆出自该书，不再详注。\n\n===== PDF page 280 / printed page 266 =====", "280": "9按照发掘报告的描述，这种器物坑有对称的两座，但另一座已经被后世破坏，只剩了一些陶片。\n\n10王恩田：《武父乙孟与殷墟大型宗庙基址F1复原》，《中原文物》2006年第1期。\n\n11李竞恒：《干戈之影：商代的战争观念、武装者与武器装备研究》，四川师范大学电子出版社，2011年。\n\n12中国社科院考古所：《安阳殷墟花园庄东地商代墓葬》，科学出版社，2007年。以下凡有关M54的基本信息及图片，未注明出处的，皆出自该书，不再详注。\n\n13《安阳殷墟花园庄东地商代墓葬》发掘报告称，这三个人头“并未放置在二层台上，而是放置在二层台内”。此描述有些难以理解，“二层台内”有两种可能，一种是夯筑在二层台的土内；另一种是在二层台侧面掏出壁龛、放置人头。\n\n===== PDF page 281 / printed page 267 =====\n\n===== PDF page 282 / printed page 268 =====", "281": "", "282": ""};
+    const statusEl = document.getElementById('status');
+    const exportTextEl = document.getElementById('exportText');
+    const notePageEl = document.getElementById('notePage');
+    const noteTagEl = document.getElementById('noteTag');
+    const noteTextEl = document.getElementById('noteText');
+    const markerTypeEl = document.getElementById('markerType');
+    const markerTextEl = document.getElementById('markerText');
+    const markerHelpEl = document.getElementById('markerHelp');
+    const logListEl = document.getElementById('logList');
+    const userNotesBodyEl = document.getElementById('userNotesBody');
+    const modeBadgeEl = document.getElementById('modeBadge');
+    const chapterNotesBodyEl = document.getElementById('chapterNotesBody');
+    const chapterNoteTitleEl = document.getElementById('chapterNoteTitle');
+    const chapterNoteTextEl = document.getElementById('chapterNoteText');
+    let activeArea = null;
+    let viewMode = 'clean';
+    let cleanViewTexts = {};
+    let cleanViewHtml = {};
+    let voices = [];
+    let allowSave = true;
+    let savedFormatRange = null;
+    function setStatus(text, tone = '') { statusEl.textContent = text; statusEl.style.color = tone === 'ok' ? 'var(--ok)' : tone === 'warn' ? 'var(--warn)' : 'var(--muted)'; }
+    function textareas() { return Array.from(document.querySelectorAll('.rich-editor[data-page]')); }
+    function editorText(area) { return area.innerText.replace(/ /g, ' ').replace(/\n$/, ''); }
+    function nodeAtOffset(root, wanted) {
+      const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT);
+      let node = walker.nextNode(), remaining = Math.max(0, wanted);
+      while (node) { if (remaining <= node.data.length) return [node, remaining]; remaining -= node.data.length; node = walker.nextNode(); }
+      return [root, root.childNodes.length];
+    }
+    function setEditorSelection(area, start, end = start) {
+      const range = document.createRange();
+      const [startNode,startOffset] = nodeAtOffset(area,start), [endNode,endOffset] = nodeAtOffset(area,end);
+      range.setStart(startNode,startOffset); range.setEnd(endNode,endOffset);
+      const selection = getSelection(); selection.removeAllRanges(); selection.addRange(range);
+      area._selectionStart = start; area._selectionEnd = end; savedFormatRange = range.cloneRange();
+    }
+    function captureEditorSelection(area) {
+      const selection = getSelection();
+      if (!selection?.rangeCount || !area.contains(selection.anchorNode)) return;
+      const range = selection.getRangeAt(0), before = range.cloneRange();
+      before.selectNodeContents(area); before.setEnd(range.startContainer,range.startOffset);
+      area._selectionStart = before.toString().length;
+      area._selectionEnd = area._selectionStart + range.toString().length;
+      savedFormatRange = range.cloneRange(); activeArea = area; notePageEl.value = area.dataset.page;
+    }
+    function initializeRichEditor(area) {
+      area._selectionStart = area._selectionEnd = 0;
+      Object.defineProperty(area,'value',{get:()=>editorText(area),set:value=>{const projection=area._imageProjection?.items||[];area._imageProjection=null;area.textContent=String(value);[...projection].reverse().forEach(item=>{const [node,offset]=nodeAtOffset(area,Math.min(item.offset,area.innerText.length)),range=document.createRange();range.setStart(node,offset);range.collapse(true);range.insertNode(item.figure)});}});
+      Object.defineProperty(area,'selectionStart',{get:()=>area._selectionStart||0});
+      Object.defineProperty(area,'selectionEnd',{get:()=>area._selectionEnd||0});
+      Object.defineProperty(area,'readOnly',{get:()=>area.contentEditable==='false',set:value=>{area.contentEditable=value?'false':'true';}});
+      area.setSelectionRange=(start,end=start)=>setEditorSelection(area,start,end);
+      area.setRangeText=(replacement,start=area.selectionStart,end=area.selectionEnd,mode='end')=>{setEditorSelection(area,start,end);const range=getSelection().getRangeAt(0);range.deleteContents();const node=document.createTextNode(replacement);range.insertNode(node);const position=mode==='select'?start:start+replacement.length;setEditorSelection(area,mode==='select'?start:position,mode==='select'?start+replacement.length:position);};
+    }
+    function getLog() { try { return JSON.parse(localStorage.getItem(LOG_KEY) || '[]'); } catch { return []; } }
+    function setLog(items) { localStorage.setItem(LOG_KEY, JSON.stringify(items.slice(0, 300))); renderLog(); }
+    function getChapterNotes() { try { const notes = JSON.parse(localStorage.getItem(CHAPTER_NOTES_KEY) || '[]'); return Array.isArray(notes) ? notes : []; } catch { return []; } }
+    function setChapterNotes(notes) { localStorage.setItem(CHAPTER_NOTES_KEY, JSON.stringify(notes)); renderChapterNotes(); }
+    function allChapterNotes() { return [...STATIC_CHAPTER_NOTES.map(([title,note]) => ({title,note,source:'file'})), ...getChapterNotes().map(item => ({...item,source:'browser'}))]; }
+    function renderChapterNotes() {
+      const notes = allChapterNotes();
+      if (!notes.length) { chapterNotesBodyEl.innerHTML = '<tr><td colspan="3">暂无章节导读札记</td></tr>'; return; }
+      chapterNotesBodyEl.innerHTML = notes.map((item,index) => `<tr><td>${escapeHtml(item.title)}</td><td>${escapeHtml(item.note)}</td><td>${item.source === 'browser' ? `<button type="button" data-delete-chapter-note="${index - STATIC_CHAPTER_NOTES.length}">删除</button>` : '<span class="log-meta">文件</span>'}</td></tr>`).join('');
+      chapterNotesBodyEl.querySelectorAll('[data-delete-chapter-note]').forEach(button => button.addEventListener('click', () => {
+        if (!confirm('删除这条浏览器札记？')) return;
+        const notes = getChapterNotes();
+        notes.splice(Number(button.dataset.deleteChapterNote), 1);
+        setChapterNotes(notes);
+        addLog('删除章节导读札记', '', currentPage());
+      }));
+    }
+    function chapterNotesMarkdown() { return allChapterNotes().map(item => `## ${item.title}\n\n${item.note}`).join('\n\n') + '\n'; }
+    function countChars() { return textareas().reduce((sum, area) => sum + area.value.length, 0); }
+    function currentPage() { const selected = textareas().find(area => { const rect = area.getBoundingClientRect(); return rect.top >= 0 && rect.top < window.innerHeight * .65; }); return selected?.dataset.page || notePageEl.value || "263"; }
+    function addLog(action, detail = '', page = currentPage()) { const items = getLog(); items.unshift({ at: new Date().toISOString(), action, page, detail, chars: countChars(), pages: textareas().length }); setLog(items); }
+    function escapeHtml(text) { return String(text).replace(/[&<>"']/g, ch => ({ '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;' }[ch])); }
+    function renderLog() { const items = getLog(); if (!items.length) { logListEl.innerHTML = '<div class="log-meta">暂无记录</div>'; return; } logListEl.innerHTML = items.map(item => { const time = new Date(item.at).toLocaleString(); const page = item.page ? `PDF ${item.page}` : '全章'; const detail = item.detail ? `<div class="log-note">${escapeHtml(item.detail)}</div>` : ''; return `<div class="log-item"><div class="log-meta">${time} · ${escapeHtml(item.action)} · ${page} · ${item.chars || 0}字</div>${detail}</div>`; }).join(''); }
+    function populateNotePages() { notePageEl.innerHTML = textareas().map(area => `<option value="${area.dataset.page}">PDF ${area.dataset.page}</option>`).join(''); }
+    function cleanValueFor(area) { if(viewMode==='annotated')return cleanViewTexts[area.dataset.page]??area.value;const clone=area.cloneNode(true);clone.querySelectorAll('.editorial-image').forEach(image=>image.remove());return clone.innerText.replace(/\n$/,''); }
+    function editorText(area) { const figures=[...area.querySelectorAll('.editorial-image')],projection=[];figures.forEach(figure=>{const range=document.createRange();range.selectNodeContents(area);range.setEndBefore(figure);const clone=figure.cloneNode(true);clone.querySelector('.editorial-image-tools')?.remove();projection.push({offset:range.toString().length,figure:clone})});const token={items:projection};area._imageProjection=token;queueMicrotask(()=>{if(area._imageProjection===token)area._imageProjection=null});const clone=area.cloneNode(true);clone.querySelectorAll('.editorial-image').forEach(image=>image.remove());return clone.innerText.replace(/\n$/,''); }
+    function collectUserNotes() {
+      const notes = [];
+      textareas().forEach(area => {
+        const source = cleanValueFor(area);
+        const patterns = [
+          ['编者注', /^〔编者注(\d+)〕\s*(.*)$/gm, match => `编者注${match[1]}`, match => match[2]],
+          ['按语', /〔按语：([^〕]*)〕/g, () => '按语', match => match[1]],
+          ['待核', /〔待核：([^〕]*)〕/g, () => '待核', match => match[1]],
+          ['札记', /〔札记：([^〕]*)〕/g, () => '札记', match => match[1]],
+        ];
+        patterns.forEach(([_kind, pattern, label, content]) => {
+          for (const match of source.matchAll(pattern)) notes.push({ page:area.dataset.page, index:match.index, type:label(match), content:content(match).trim() });
+        });
+      });
+      return notes.sort((a,b) => Number(a.page) - Number(b.page) || a.index - b.index);
+    }
+    function renderUserNotes() {
+      const notes = collectUserNotes();
+      if (!notes.length) { userNotesBodyEl.innerHTML = '<tr><td colspan="3">暂无用户札记</td></tr>'; return; }
+      userNotesBodyEl.innerHTML = notes.map(note => `<tr><td>${escapeHtml(note.type)}</td><td><button type="button" class="user-note-jump" data-note-page="${note.page}">PDF ${note.page}</button></td><td>${escapeHtml(note.content)}</td></tr>`).join('');
+      userNotesBodyEl.querySelectorAll('[data-note-page]').forEach(button => button.addEventListener('click', () => {
+        const area = document.querySelector(`.rich-editor[data-page="${button.dataset.notePage}"]`);
+        document.getElementById(`page-${button.dataset.notePage}`)?.scrollIntoView({ behavior:'smooth', block:'start' });
+        if (area) { activeArea = area; setTimeout(() => area.focus(), 350); }
+      }));
+    }
+    function saveNow(record = true) { if (!allowSave) return; const texts = {}, html = {}; textareas().forEach(area => { const page=area.dataset.page;texts[page]=cleanValueFor(area);html[page]=viewMode==='clean'?area.innerHTML:(cleanViewHtml[page]??''); }); localStorage.setItem(STORAGE_KEY, JSON.stringify({ version:4, savedAt:new Date().toISOString(), texts, html })); setStatus('已保存 ' + new Date().toLocaleTimeString(), 'ok'); if (record) addLog('保存', '', currentPage()); }
+    function loadSaved() { try { const saved = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}'); if (!saved.texts && !saved.html) return; textareas().forEach(area => { const page=area.dataset.page;if(saved.version>=4&&saved.html?.[page]!==undefined)area.innerHTML=saved.html[page];else if(saved.texts?.[page]!==undefined)area.value=saved.texts[page]; }); setStatus(saved.version>=4?'已载入富文本保存稿':'已迁移旧版保存稿', 'ok'); } catch {} }
+    let timer = null; function queueSave() { setStatus('正在编辑', 'warn'); clearTimeout(timer); timer = setTimeout(() => saveNow(false), 900); }
+    function blockFor(area) { return `===== PDF page ${area.dataset.page} / printed page ${Number(area.dataset.page) - 14} =====\n\n${cleanValueFor(area).trim()}`; }
+    function buildText() { return textareas().map(blockFor).join('\n\n'); }
+    function downloadText(filename, text) { const blob = new Blob([text + '\n'], { type: 'text/plain;charset=utf-8' }); const url = URL.createObjectURL(blob); const a = document.createElement('a'); a.href = url; a.download = filename; document.body.appendChild(a); a.click(); a.remove(); URL.revokeObjectURL(url); }
+    function downloadJson(filename, data) { const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json;charset=utf-8' }); const url = URL.createObjectURL(blob); const a = document.createElement('a'); a.href = url; a.download = filename; document.body.appendChild(a); a.click(); a.remove(); URL.revokeObjectURL(url); }
+    function requireCleanArea() { if (viewMode !== 'clean') { setStatus('请先切换回清稿再编辑', 'warn'); return null; } const area = activeArea || textareas()[0]; if (!area) return null; area.focus(); return area; }
+    function replaceSelection(replacement) { const area = requireCleanArea(); if (!area) return; const start = area.selectionStart, end = area.selectionEnd; area.setRangeText(replacement, start, end, 'end'); area.dispatchEvent(new Event('input', { bubbles:true })); }
+    function selectedText(area) { return area.value.slice(area.selectionStart, area.selectionEnd); }
+    function nextFootnoteNumber() { const matches = buildText().match(/\[\[editor-fn:(\d+)\]\]/g) || []; return matches.reduce((max, marker) => Math.max(max, Number(marker.match(/\d+/)[0])), 0) + 1; }
+    function locateTerm(term) { const ordered = activeArea ? [activeArea, ...textareas().filter(area => area !== activeArea)] : textareas(); for (const area of ordered) { let index = area.value.indexOf(term, area === activeArea ? area.selectionEnd : 0); if (index < 0) index = area.value.indexOf(term); if (index >= 0) { activeArea = area; area.focus(); area.setSelectionRange(index, index + term.length); area.scrollIntoView({ behavior:'smooth', block:'center' }); return area; } } return null; }
+    function addNotation(term = '', pinyin = '') { let area = requireCleanArea(); if (!area) return; if (term) area = locateTerm(term); const selected = area ? selectedText(area) : ''; if (!selected) { setStatus(term ? `正文中找不到“${term}”` : '请先选择要注音的文字', 'warn'); return; } const start = area.selectionStart, end = area.selectionEnd; const reading = pinyin || prompt(`“${selected}”的拼音：`, '') || ''; if (!reading) return; const note = prompt('简注（可留空）：', '') || ''; area.setRangeText(`${selected}（${reading}${note ? '；' + note : ''}）`, start, end, 'end'); area.dispatchEvent(new Event('input', { bubbles:true })); addLog('添加注音', selected, area.dataset.page); }
+    function addFootnote() { const area = requireCleanArea(); if (!area) return; const number = nextFootnoteNumber(); const note = prompt(`编者注 ${number} 内容：`, ''); if (!note) return; const selected = selectedText(area); replaceSelection(`${selected}[[editor-fn:${number}]]`); area.insertAdjacentText('beforeend', `
+
+〔编者注${number}〕${note}`); area.dispatchEvent(new Event('input', { bubbles:true })); addLog('添加编者注', note, area.dataset.page); }
+    function addComment() { const area = requireCleanArea(); if (!area) return; const note = prompt('按语或评论：', ''); if (!note) return; const selected = selectedText(area); replaceSelection(selected ? `${selected}
+
+〔按语：${note}〕` : `
+
+〔按语：${note}〕`); addLog('插入按语', note, area.dataset.page); }
+    function markDoubt() { const area = requireCleanArea(); if (!area) return; const selected = selectedText(area); if (!selected) { setStatus('请先选择待核文字', 'warn'); return; } const reason = prompt('待核原因（可留空）：', '') || ''; replaceSelection(`〔待核：${selected}${reason ? '；' + reason : ''}〕`); addLog('标为待核', `${selected} ${reason}`.trim(), area.dataset.page); }
+    function addUserNote() { const area = requireCleanArea(); if (!area) return; const note = prompt('用户札记：', ''); if (!note) return; const selected = selectedText(area); replaceSelection(`${selected}${selected ? '\n\n' : ''}〔札记：${note}〕`); addLog('添加札记', note, area.dataset.page); }
+    const markerGuidance = {
+      'pinyin': ['先在正文中选择文字，再输入拼音；可用“拼音；简注”。', '输入拼音或“拼音；简注”'],
+      'editor-note': ['选择关联文字（可选），输入编者注内容；系统会自动编号并建立脚注标记。', '输入编者注内容'],
+      'inline-note': ['选择关联文字（可选），输入随文按语。', '输入按语内容'],
+      'pending': ['先选择待核文字；内容可填写待核原因。', '输入待核原因（可留空）'],
+      'user-note': ['选择关联文字（可选），输入个人札记；札记会出现在“用户札记”表。', '输入用户札记'],
+    };
+    function updateMarkerGuidance() { const [help, placeholder] = markerGuidance[markerTypeEl.value]; markerHelpEl.textContent = help; markerTextEl.placeholder = placeholder; }
+    function markerArea() { const chosen = document.querySelector(`.rich-editor[data-page="${notePageEl.value}"]`); return activeArea || chosen || textareas()[0]; }
+    function applyMarker() {
+      const area = markerArea();
+      if (!area || viewMode !== 'clean') { setStatus('请先切换回清稿再添加标记', 'warn'); return; }
+      activeArea = area;
+      const type = markerTypeEl.value;
+      const content = markerTextEl.value.trim();
+      const selected = selectedText(area);
+      const start = area.selectionStart;
+      const end = area.selectionEnd;
+      let replacement = selected;
+      let action = '';
+      let detail = content;
+      if (type === 'pinyin') {
+        if (!selected) { setStatus('请先选择要注音的文字', 'warn'); return; }
+        if (!content) { setStatus('请输入拼音', 'warn'); return; }
+        const [reading, ...noteParts] = content.split('；');
+        const note = noteParts.join('；').trim();
+        replacement = `${selected}（${reading.trim()}${note ? '；' + note : ''}）`;
+        action = '添加注音';
+        detail = selected;
+      } else if (type === 'editor-note') {
+        if (!content) { setStatus('请输入编者注内容', 'warn'); return; }
+        const number = nextFootnoteNumber();
+        replacement = `${selected}[[editor-fn:${number}]]`;
+        area.setRangeText(replacement, start, end, 'end');
+        area.insertAdjacentText('beforeend', `
+
+〔编者注${number}〕${content}`);
+        action = '添加编者注';
+      } else if (type === 'inline-note') {
+        if (!content) { setStatus('请输入按语内容', 'warn'); return; }
+        replacement = `${selected}${selected ? '\n\n' : ''}〔按语：${content}〕`;
+        action = '插入按语';
+      } else if (type === 'pending') {
+        if (!selected) { setStatus('请先选择待核文字', 'warn'); return; }
+        replacement = `〔待核：${selected}${content ? '；' + content : ''}〕`;
+        action = '标为待核';
+        detail = `${selected} ${content}`.trim();
+      } else {
+        if (!content) { setStatus('请输入用户札记', 'warn'); return; }
+        replacement = `${selected}${selected ? '\n\n' : ''}〔札记：${content}〕`;
+        action = '添加札记';
+      }
+      if (type !== 'editor-note') area.setRangeText(replacement, start, end, 'end');
+      area.dispatchEvent(new Event('input', { bubbles:true }));
+      addLog(action, detail, area.dataset.page);
+      markerTextEl.value = '';
+      setStatus(`${action}完成`, 'ok');
+      area.focus();
+    }
+    function escapeRegExp(text) { const specials = new Set([36,40,41,42,43,46,63,91,92,93,94,123,124,125]); return [...text].map(ch => specials.has(ch.charCodeAt(0)) ? String.fromCharCode(92) + ch : ch).join(''); }
+    function dictionarySettings() { try { return { enabled:true, difficulty:3, domain:'all', ...JSON.parse(localStorage.getItem(DICTIONARY_SETTINGS_KEY) || '{}') }; } catch { return { enabled:true, difficulty:3, domain:'all' }; } }
+    function termIsVisible(item, settings=dictionarySettings()) { return settings.enabled && (Number(item.difficulty) || 3) >= Number(settings.difficulty) && (settings.domain === 'all' || item.domain === settings.domain); }
+    function applyDictionarySettings() { const settings=dictionarySettings(), button=document.getElementById('dictionaryHintsBtn'), difficulty=document.getElementById('dictionaryDifficulty'), domain=document.getElementById('dictionaryDomain'); button.textContent=settings.enabled?'词典提示：开':'词典提示：关'; button.classList.toggle('active',settings.enabled); button.setAttribute('aria-pressed',String(settings.enabled)); difficulty.value=String(settings.difficulty); domain.value=settings.domain; document.querySelectorAll('button.term').forEach(term=>{ term.hidden=!termIsVisible({difficulty:Number(term.dataset.difficulty),domain:term.dataset.domain},settings); }); }
+    function saveDictionarySettings(changes) { localStorage.setItem(DICTIONARY_SETTINGS_KEY,JSON.stringify({...dictionarySettings(),...changes})); applyDictionarySettings(); if(viewMode==='annotated')setView('clean'); }
+    function applyProjectDictionaryOverrides(overrides) { TERMS.forEach(item=>{const saved=overrides[`zh ${item.term}`];if(!saved)return;if(saved.pinyin!==undefined)item.pinyin=String(saved.pinyin);if(saved.difficulty!==undefined)item.difficulty=Number(saved.difficulty)||3;if(saved.definition!==undefined)item.annotation=String(saved.definition)});document.querySelectorAll('button.term').forEach(button=>{const item=TERMS.find(entry=>entry.term===button.dataset.term);if(!item)return;button.dataset.pinyin=item.pinyin||'';button.dataset.difficulty=String(item.difficulty||3);const parts=button.querySelectorAll('span');if(parts[1])parts[1].textContent=item.pinyin||''});localStorage.setItem(PROJECT_DICTIONARY_OVERRIDES_KEY,JSON.stringify(overrides));applyDictionarySettings(); }
+    function loadProjectDictionaryOverrides() {try{const value=JSON.parse(localStorage.getItem(PROJECT_DICTIONARY_OVERRIDES_KEY)||'{}');if(value&&typeof value==='object'&&!Array.isArray(value))applyProjectDictionaryOverrides(value)}catch{}}
+    function annotatedTexts() { const result = { ...cleanViewTexts }; const used = new Set(); [...TERMS].filter(item=>termIsVisible(item)).sort((a,b) => (b.term || '').length - (a.term || '').length).forEach(item => { const term = (item.term || '').trim(), pinyin = (item.pinyin || '').trim(); if (!term || !pinyin || used.has(term)) return; for (const area of textareas()) { const page = area.dataset.page; const pattern = new RegExp(escapeRegExp(term) + '(?:[（(][A-Za-züÜvV:]+[1-5][）)])?'); if (pattern.test(result[page])) { result[page] = result[page].replace(pattern, `${term}（${pinyin}）`); used.add(term); break; } } }); return result; }
+    function setView(mode) { if (mode === 'annotated') { saveNow(false); cleanViewTexts = Object.fromEntries(textareas().map(area => [area.dataset.page, area.value])); cleanViewHtml = Object.fromEntries(textareas().map(area => [area.dataset.page, area.innerHTML])); const projected = annotatedTexts(); textareas().forEach(area => { area.value = projected[area.dataset.page]; area.readOnly = true; area.classList.add('annotated-view'); }); viewMode = 'annotated'; document.getElementById('viewToggleBtn').textContent = '切换为清稿'; modeBadgeEl.textContent = '当前：注音稿（只读）'; modeBadgeEl.classList.add('annotated'); } else { if (viewMode === 'annotated') textareas().forEach(area => area.innerHTML = cleanViewHtml[area.dataset.page] ?? escapeHtml(cleanViewTexts[area.dataset.page] ?? area.value)); textareas().forEach(area => { area.readOnly = false; area.classList.remove('annotated-view'); }); viewMode = 'clean'; document.getElementById('viewToggleBtn').textContent = '切换为注音稿'; modeBadgeEl.textContent = '当前：清稿'; modeBadgeEl.classList.remove('annotated'); } sessionStorage.setItem(`${STORAGE_KEY}:view`, mode); setStatus(mode === 'annotated' ? '注音稿仅供查看' : '已返回清稿', 'ok'); }
+    function loadVoices() { const priority = lang => { const code = lang.toLowerCase(); return code.startsWith('en') ? 0 : code.startsWith('zh') ? 1 : code.startsWith('ru') ? 2 : code.startsWith('fr') ? 3 : 4; }; voices = speechSynthesis.getVoices().sort((a,b) => priority(a.lang) - priority(b.lang) || a.lang.localeCompare(b.lang) || a.name.localeCompare(b.name)); const select = document.getElementById('voiceSelect'); select.innerHTML = '<option value="">系统默认声音</option>' + voices.map((voice,index) => { const name = voice.name.length > 24 ? voice.name.slice(0,23) + '…' : voice.name; return `<option value="${index}">${escapeHtml(name)} — ${escapeHtml(voice.lang)}</option>`; }).join(''); }
+    function speakText() { speechSynthesis.cancel(); const area = activeArea || textareas()[0]; if (!area) return; const selection = selectedText(area).trim(); const utterance = new SpeechSynthesisUtterance(selection || area.value); utterance.lang = 'zh-CN'; utterance.rate = Number(document.getElementById('speechRate').value); const index = document.getElementById('voiceSelect').value; if (index !== '') utterance.voice = voices[Number(index)]; utterance.onstart = () => { document.getElementById('pauseSpeechBtn').disabled = false; document.getElementById('stopSpeechBtn').disabled = false; setStatus(selection ? '正在朗读所选文字' : `正在朗读 PDF ${area.dataset.page}`); }; utterance.onend = utterance.onerror = () => { document.getElementById('pauseSpeechBtn').disabled = true; document.getElementById('stopSpeechBtn').disabled = true; document.getElementById('pauseSpeechBtn').textContent = '暂停'; }; speechSynthesis.speak(utterance); }
+    function backupState() { return { version:4, chapter:"chapter_13", savedAt:new Date().toISOString(), texts:Object.fromEntries(textareas().map(area => [area.dataset.page, viewMode === 'clean' ? area.value : cleanViewTexts[area.dataset.page]])), html:Object.fromEntries(textareas().map(area => [area.dataset.page, viewMode === 'clean' ? area.innerHTML : cleanViewHtml[area.dataset.page]])), log:getLog(), chapterNotes:getChapterNotes() }; }
+    function restoreFormatSelection() { if (!savedFormatRange) return false; const selection=getSelection();selection.removeAllRanges();selection.addRange(savedFormatRange);return true; }
+    function applyTextStyle(command,value,label) { if(viewMode!=='clean'){setStatus('请先切换回清稿再设置格式','warn');return}if(!activeArea||!restoreFormatSelection()||getSelection().isCollapsed){setStatus('请先选择正文中的文字','warn');return}document.execCommand('styleWithCSS',false,true);if(!document.execCommand(command,false,value||null)){setStatus(`浏览器未能应用${label}`,'warn');return}activeArea.dispatchEvent(new Event('input',{bubbles:true}));captureEditorSelection(activeArea);addLog(`设置${label}`,getSelection().toString(),activeArea.dataset.page);setStatus(`${label}已应用`,'ok'); }
+    function prepareImage(file) { return new Promise((resolve,reject)=>{const reader=new FileReader();reader.onerror=()=>reject(new Error('无法读取图片'));reader.onload=()=>{const image=new Image();image.onerror=()=>reject(new Error('图片格式无法识别'));image.onload=()=>{const scale=Math.min(1,1800/Math.max(image.width,image.height)),canvas=document.createElement('canvas');canvas.width=Math.max(1,Math.round(image.width*scale));canvas.height=Math.max(1,Math.round(image.height*scale));canvas.getContext('2d').drawImage(image,0,0,canvas.width,canvas.height);const data=canvas.toDataURL('image/jpeg',.86);data.length>2600000?reject(new Error('压缩后的图片仍过大，请选择较小图片')):resolve(data)};image.src=reader.result};reader.readAsDataURL(file)}); }
+    function insertEditorialImage(data,fileName,caption) { if(viewMode!=='clean'||!activeArea){setStatus('请先在清稿正文中放置光标','warn');return}const figure=document.createElement('figure');figure.className='editorial-image';figure.dataset.size='medium';figure.contentEditable='false';const image=document.createElement('img');image.src=data;image.alt=caption||fileName;const figcaption=document.createElement('figcaption');figcaption.contentEditable='true';figcaption.textContent=caption||fileName;const tools=document.createElement('div');tools.className='editorial-image-tools';tools.innerHTML='<button type="button" data-image-size="small">小</button><button type="button" data-image-size="medium">中</button><button type="button" data-image-size="large">大</button><button type="button" data-image-size="full">通栏</button><button type="button" data-image-remove>删除</button>';figure.append(image,figcaption,tools);let range=savedFormatRange;try{if(!range||!activeArea.contains(range.commonAncestorContainer))range=null}catch{range=null}if(range){range.collapse(false);range.insertNode(figure)}else activeArea.append(figure);activeArea.append(document.createElement('br'));activeArea.dispatchEvent(new Event('input',{bubbles:true}));addLog('插入图片',caption||fileName,activeArea.dataset.page);setStatus('图片已插入；可编辑图注并调整大小','ok');}
+    const formatMenu=document.getElementById('formatMenu'),formatMenuBtn=document.getElementById('formatMenuBtn');
+    function closeFormatMenu(){formatMenu.classList.remove('open');formatMenuBtn.setAttribute('aria-expanded','false')}
+    formatMenuBtn.addEventListener('click',event=>{event.stopPropagation();const opening=!formatMenu.classList.contains('open');closeFormatMenu();if(opening){formatMenu.classList.add('open');formatMenuBtn.setAttribute('aria-expanded','true')}});
+    document.getElementById('formatPopover').addEventListener('click',event=>{const option=event.target.closest('.format-option');if(!option)return;applyTextStyle(option.dataset.command,option.dataset.value||null,option.dataset.label);closeFormatMenu()});
+    document.addEventListener('click',event=>{if(!formatMenu.contains(event.target))closeFormatMenu()});
+    document.addEventListener('keydown',event=>{if(event.key==='Escape')closeFormatMenu()});
+    document.getElementById('boldBtn').addEventListener('click',()=>applyTextStyle('bold',null,'粗体'));
+    document.getElementById('insertImageBtn').addEventListener('click',()=>{if(viewMode!=='clean'){setStatus('请先切换回清稿再插入图片','warn');return}if(!activeArea){setStatus('请先在正文中放置光标','warn');return}document.getElementById('editorImageInput').click();});
+    document.getElementById('editorImageInput').addEventListener('change',async event=>{const file=event.target.files[0];if(!file)return;try{const caption=prompt('请输入图片说明和来源（可稍后在正文中修改）：',file.name)||file.name;insertEditorialImage(await prepareImage(file),file.name,caption)}catch(error){setStatus(error.message,'warn')}finally{event.target.value=''}});
+    document.addEventListener('click',event=>{const size=event.target.closest('[data-image-size]'),remove=event.target.closest('[data-image-remove]'),figure=event.target.closest('.editorial-image');if(size&&figure){figure.dataset.size=size.dataset.imageSize;figure.closest('.rich-editor')?.dispatchEvent(new Event('input',{bubbles:true}))}else if(remove&&figure&&confirm('删除这张插图？')){const area=figure.closest('.rich-editor'),page=area?.dataset.page;figure.remove();area?.dispatchEvent(new Event('input',{bubbles:true}));addLog('删除图片','',page)}});
+    document.querySelectorAll('[data-target]').forEach(button => button.addEventListener('click', () => document.getElementById(button.dataset.target)?.scrollIntoView({ behavior: 'smooth', block: 'start' })));
+    textareas().forEach(initializeRichEditor);
+    textareas().forEach(area => { area.addEventListener('input', () => { queueSave(); renderUserNotes(); }); area.addEventListener('focus', () => { activeArea = area; notePageEl.value = area.dataset.page; }); area.addEventListener('click', () => captureEditorSelection(area)); area.addEventListener('keyup', () => captureEditorSelection(area)); area.addEventListener('mouseup', () => captureEditorSelection(area)); area.addEventListener('keydown',event=>{if(event.key==='Enter'&&viewMode==='clean'){event.preventDefault();captureEditorSelection(area);area.setRangeText('\n');area.dispatchEvent(new Event('input',{bubbles:true}));}}); area.addEventListener('paste',event=>{if(viewMode!=='clean')return;event.preventDefault();captureEditorSelection(area);area.setRangeText(event.clipboardData.getData('text/plain'));area.dispatchEvent(new Event('input',{bubbles:true}));}); });
+    document.querySelectorAll('button.term').forEach(button => button.addEventListener('click', () => addNotation(button.dataset.term, button.dataset.pinyin)));
+    document.getElementById('viewToggleBtn').addEventListener('click', () => setView(viewMode === 'clean' ? 'annotated' : 'clean'));
+    document.getElementById('dictionaryHintsBtn').addEventListener('click', () => saveDictionarySettings({enabled:!dictionarySettings().enabled}));
+    document.getElementById('dictionaryDifficulty').addEventListener('change', event => saveDictionarySettings({difficulty:Number(event.target.value)}));
+    document.getElementById('dictionaryDomain').addEventListener('change', event => saveDictionarySettings({domain:event.target.value}));
+    document.getElementById('dictionaryOverridesInput').addEventListener('change',async event=>{const file=event.target.files[0];if(!file)return;try{const data=JSON.parse(await file.text()),overrides=data.overrides||data;if(!overrides||typeof overrides!=='object'||Array.isArray(overrides))throw new Error('修订文件格式不正确');applyProjectDictionaryOverrides(overrides);setStatus('共享项目词典修订已导入','ok')}catch(error){setStatus('无法导入词典修订：'+error.message,'warn')}finally{event.target.value=''}});
+    document.getElementById('addNotationBtn').addEventListener('click', () => addNotation());
+    document.getElementById('addFootnoteBtn').addEventListener('click', addFootnote);
+    document.getElementById('addCommentBtn').addEventListener('click', addComment);
+    document.getElementById('markDoubtBtn').addEventListener('click', markDoubt);
+    document.getElementById('addUserNoteBtn').addEventListener('click', addUserNote);
+    document.getElementById('addChapterNoteBtn').addEventListener('click', () => {
+      const title = chapterNoteTitleEl.value.trim();
+      const note = chapterNoteTextEl.value.trim();
+      if (!title || !note) { setStatus('请填写章节札记的主题和内容', 'warn'); return; }
+      const notes = getChapterNotes();
+      notes.push({ title, note, at:new Date().toISOString() });
+      setChapterNotes(notes);
+      chapterNoteTitleEl.value = '';
+      chapterNoteTextEl.value = '';
+      setStatus('章节导读札记已保存', 'ok');
+      addLog('新增章节导读札记', title, currentPage());
+    });
+    document.getElementById('downloadChapterNotesBtn').addEventListener('click', () => {
+      downloadText(CHAPTER_NOTES_NAME, chapterNotesMarkdown());
+      setStatus('章节导读札记 Markdown 已下载', 'ok');
+      addLog('下载章节导读札记', '', currentPage());
+    });
+    markerTypeEl.addEventListener('change', updateMarkerGuidance);
+    notePageEl.addEventListener('change', () => {
+      const area = document.querySelector(`.rich-editor[data-page="${notePageEl.value}"]`);
+      if (area) activeArea = area;
+    });
+    document.getElementById('applyMarkerBtn').addEventListener('click', applyMarker);
+    document.getElementById('speakBtn').addEventListener('click', speakText);
+    document.getElementById('pauseSpeechBtn').addEventListener('click', event => { if (speechSynthesis.paused) { speechSynthesis.resume(); event.currentTarget.textContent = '暂停'; } else { speechSynthesis.pause(); event.currentTarget.textContent = '继续'; } });
+    document.getElementById('stopSpeechBtn').addEventListener('click', () => { speechSynthesis.cancel(); document.getElementById('pauseSpeechBtn').textContent = '暂停'; });
+    document.getElementById('speechRate').addEventListener('input', event => document.getElementById('speechRateValue').textContent = Number(event.target.value).toFixed(1) + '×');
+    document.getElementById('backupBtn').addEventListener('click', () => { downloadJson(BACKUP_NAME, backupState()); setStatus('JSON 备份已下载', 'ok'); addLog('导出备份', '', currentPage()); });
+    document.getElementById('importBackup').addEventListener('change', async event => { const file = event.target.files[0]; if (!file) return; try { const data = JSON.parse(await file.text()); if (!data.texts && !data.html) throw new Error('备份缺少 texts/html'); if (viewMode === 'annotated') setView('clean'); textareas().forEach(area => { const page=area.dataset.page;if(data.version>=4&&data.html?.[page]!==undefined)area.innerHTML=data.html[page];else if(data.texts?.[page]!==undefined)area.value=data.texts[page]; }); if (Array.isArray(data.log)) setLog(data.log); if (Array.isArray(data.chapterNotes)) setChapterNotes(data.chapterNotes); saveNow(false); setStatus(data.version>=4?'富文本备份已导入':'旧版备份已迁移', 'ok'); addLog('导入备份', file.name, currentPage()); } catch (error) { setStatus('无法导入备份：' + error.message, 'warn'); } finally { event.target.value = ''; } });
+    document.querySelectorAll('[data-copy-page]').forEach(button => button.addEventListener('click', async () => { const area = document.querySelector(`.rich-editor[data-page="${button.dataset.copyPage}"]`); await navigator.clipboard.writeText(area.value); setStatus('本页已复制', 'ok'); }));
+    document.querySelectorAll('[data-export-page]').forEach(button => button.addEventListener('click', () => { const area = document.querySelector(`.rich-editor[data-page="${button.dataset.exportPage}"]`); exportTextEl.value = blockFor(area); exportTextEl.scrollIntoView({ behavior: 'smooth', block: 'center' }); }));
+    document.getElementById('saveBtn').addEventListener('click', saveNow);
+    document.getElementById('exportBtn').addEventListener('click', () => { exportTextEl.value = buildText(); exportTextEl.scrollIntoView({ behavior: 'smooth', block: 'center' }); setStatus('文本已生成', 'ok'); addLog('生成文本', '', currentPage()); });
+    document.getElementById('downloadBtn').addEventListener('click', () => { downloadText(OUTPUT_NAME, buildText()); setStatus('TXT 已下载', 'ok'); addLog('下载TXT', '', currentPage()); });
+    document.getElementById('addNoteBtn').addEventListener('click', () => { const note = noteTextEl.value.trim(); if (!note) { setStatus('笔记为空', 'warn'); return; } const tag = noteTagEl.value.trim() || '校订'; addLog(tag, note, notePageEl.value); noteTextEl.value = ''; setStatus('笔记已记录', 'ok'); });
+    function buildLogText() { return getLog().map(item => { const time = new Date(item.at).toLocaleString(); const page = item.page ? `PDF ${item.page}` : '全章'; return `[${time}] ${item.action} · ${page} · ${item.chars || 0}字\n${item.detail || ''}`.trim(); }).join('\n\n'); }
+    document.getElementById('exportLogBtn').addEventListener('click', () => { exportTextEl.value = buildLogText(); exportTextEl.scrollIntoView({ behavior: 'smooth', block: 'center' }); setStatus('日志已导出', 'ok'); });
+    document.getElementById('downloadLogBtn').addEventListener('click', () => { downloadText(LOG_NAME, buildLogText()); setStatus('日志已下载', 'ok'); });
+    document.getElementById('clearLogBtn').addEventListener('click', () => { if (!confirm('清空本浏览器保存的编辑日志？')) return; localStorage.removeItem(LOG_KEY); renderLog(); setStatus('日志已清空', 'ok'); });
+    document.getElementById('resetBtn').addEventListener('click', () => { if (!confirm('恢复 chapter clean 原稿会清除本浏览器保存的编辑内容。继续？')) return; clearTimeout(timer); allowSave = false; if (viewMode === 'annotated') setView('clean'); textareas().forEach(area => area.value = ORIGINAL_TEXTS[area.dataset.page] ?? ''); cleanViewTexts = { ...ORIGINAL_TEXTS }; cleanViewHtml = {}; localStorage.removeItem(STORAGE_KEY); sessionStorage.removeItem(`${STORAGE_KEY}:view`); viewMode = 'clean'; textareas().forEach(area => { area.readOnly = false; area.classList.remove('annotated-view'); }); document.getElementById('viewToggleBtn').textContent = '切换为注音稿'; modeBadgeEl.textContent = '当前：清稿'; modeBadgeEl.classList.remove('annotated'); allowSave = true; setStatus('已恢复 chapter clean 原稿', 'ok'); addLog('恢复 clean 原稿', '', currentPage()); });
+    window.addEventListener('beforeunload', () => { if (allowSave) saveNow(false); });
+    populateNotePages();
+    updateMarkerGuidance();
+    loadSaved();
+    renderUserNotes();
+    renderChapterNotes();
+    activeArea = textareas()[0] || null;
+    applyDictionarySettings();
+    loadProjectDictionaryOverrides();
+    loadVoices();
+    if ('onvoiceschanged' in speechSynthesis) speechSynthesis.onvoiceschanged = loadVoices;
+    if (sessionStorage.getItem(`${STORAGE_KEY}:view`) === 'annotated') setView('annotated');
+    renderLog();
+  </script>
+</body>
+</html>

@@ -1,0 +1,3 @@
+Using AI Responsibly—and Reviewing the Journey
+
+This is Article 4, the final article of the AI course. Its working text is stored in article_4_clean.txt.

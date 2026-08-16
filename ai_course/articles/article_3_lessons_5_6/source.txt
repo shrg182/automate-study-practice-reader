@@ -1,0 +1,3 @@
+How AI Uses Language—and How to Build a Small Model
+
+This is Article 3 of the AI course. Its working text is stored in article_3_clean.txt.

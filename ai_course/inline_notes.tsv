@@ -1,0 +1,13 @@
+text	note
+adjustable values	These values are the model’s parameters.
+trained model	The result of learning from examples; it can be used on new input.
+next-token prediction	Predicting the next unit of text from the preceding context.
+features	Measurable properties or inputs used by a model to make a prediction.
+called its label	A label is the known answer associated with a training example.
+overfitting	Learning the training examples too narrowly and failing to generalize to new examples.
+loss function	A rule that measures prediction error as a number the training process can minimize.
+gradient descent	A method that updates parameters in the direction that reduces loss.
+learning rate	The setting that controls the size of each parameter update.
+artificial neurons	Simple mathematical units that receive values, combine them, and pass transformed values forward.
+activation function	A function that transforms a neuron’s total before it is passed to the next layer.
+backpropagation	A method for calculating how each parameter contributed to prediction error.

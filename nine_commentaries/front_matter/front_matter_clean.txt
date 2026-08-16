@@ -1,0 +1,75 @@
+十年论战
+--1956-1966中苏关系回忆录
+
+作者：吴冷西
+
+说明：
+
+本文件是 PDF 正文前材料的整理稿，对应 PDF pages 1-8。原始 OCR 保存在
+`source.txt` 和 `../sources/ocr_pages/page-001.txt` 至 `page-008.txt`。
+
+## 封面
+
+书名：十年论战
+副题：1956-1966中苏关系回忆录
+作者：吴冷西
+
+封面页有明显图书馆条码、印章、扫描噪声和底部图片。封面图片内容不进入
+正文阅读材料。
+
+## 图书在版编目（CIP）数据
+
+十年论战 / 吴冷西著。-- 北京：中央文献出版社，1999.3
+
+ISBN 7-5073-0473-6
+
+I. 十...
+II. 吴...
+III. 中苏关系-1956-1966
+IV. 822.351.2
+
+中国版本图书馆 CIP 数据核字（98）第36044号
+
+## 版权页
+
+书名：十年论战 -- 1956-1966中苏关系回忆录
+作者：吴冷西
+责任编辑：傅微山、徐永军
+特邀编辑：李捷
+封面设计：李法明
+版式设计：袁炜
+出版发行：中央文献出版社
+经销：新华书店
+排版：北京地质印刷厂
+印刷：北京外文印刷厂
+开本：850 x 1168mm 32开
+印张：29.75印张
+字数：500千字
+版次：1999年5月第1版
+印次：1999年5月第1次印刷
+印数：1-5000册
+ISBN：7-5073-0473-6/K·179
+定价：50.00元
+
+## 目录
+
+PDF pages 3-8 contain the scanned table of contents. The processed TOC is stored
+in:
+
+```text
+../sources/table_of_contents.csv
+```
+
+The working chapter extraction map is stored in:
+
+```text
+../sources/unit_map.csv
+```
+
+The confirmed body-page offset is:
+
+```text
+PDF page = printed page + 8
+```
+
+Chapter 1 starts on PDF page 9 / printed page 1.

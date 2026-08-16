@@ -1,0 +1,1087 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>《翦商》第二十章 翦商与《易经》的世界观 OCR 手工校订</title>
+  <script src="../shared/editor_header.js"></script>
+  <script src="../shared/editor_toc.js"></script>
+  <style>
+    :root { --bg:#f7f5ef; --paper:#fffdfa; --ink:#222; --muted:#666; --line:#d8d3c7; --soft:#eee8dc; --accent:#8a1f1f; --accent-ink:#fff; --warn:#9b5d00; --ok:#1f6b40; --shadow:0 8px 24px rgba(30,24,16,.08); }
+    * { box-sizing:border-box; }
+    html { scroll-behavior:smooth; }
+    body { margin:0; background:var(--bg); color:var(--ink); font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Noto Sans SC","PingFang SC","Microsoft YaHei",sans-serif; line-height:1.5; }
+    jianshang-editor-header, jianshang-editor-toc { display:contents; }
+    button, textarea, input, select, .rich-editor { font:inherit; }
+    header { position:sticky; top:0; z-index:20; background:rgba(255,253,250,.96); border-bottom:1px solid var(--line); backdrop-filter:blur(10px); }
+    .topbar { display:grid; grid-template-columns:minmax(260px,1fr) auto; gap:16px; width:min(1440px,calc(100% - 28px)); margin:0 auto; padding:12px 0; align-items:center; }
+    h1 { margin:0; font-size:1.2rem; line-height:1.2; letter-spacing:0; }
+    .subtitle { margin-top:3px; color:var(--muted); font-size:.88rem; }
+    .actions { display:flex; flex-wrap:wrap; gap:8px; justify-content:flex-end; align-items:center; }
+    button { border:1px solid var(--line); background:#fff; color:var(--ink); min-height:34px; padding:6px 10px; border-radius:6px; cursor:pointer; }
+    .import-label, .action-link { border:1px solid var(--line); background:#fff; color:var(--ink); min-height:34px; padding:6px 10px; border-radius:6px; cursor:pointer; display:inline-flex; align-items:center; text-decoration:none; }
+    button.primary { background:var(--accent); color:var(--accent-ink); border-color:var(--accent); }
+    button:focus-visible, textarea:focus-visible, input:focus-visible, select:focus-visible, .rich-editor:focus-visible { outline:2px solid var(--accent); outline-offset:2px; }
+    .format-menu { position:relative; }
+    .format-menu-trigger { display:flex; min-width:45px; align-items:center; justify-content:center; gap:7px; }
+    .marker-icon { display:inline-block; width:17px; height:8px; border-bottom:6px solid #f4c542; transform:skew(-12deg); }
+    .format-menu-trigger::after { content:"▾"; font-size:10px; color:var(--muted); }
+    .format-popover { position:absolute; top:calc(100% + 6px); left:0; z-index:40; display:none; width:178px; padding:5px; background:#fff; border:1px solid #cfc8ba; border-radius:8px; box-shadow:0 10px 30px #2927202e; }
+    .format-menu.open .format-popover { display:block; }
+    .format-option { display:flex; width:100%; gap:10px; align-items:center; border:0; background:#fff; padding:7px 9px; text-align:left; }
+    .format-option:hover,.format-option:focus { background:#edf2f5; color:var(--ink); }
+    .format-dot { width:15px; height:15px; flex:0 0 auto; border-radius:50%; box-shadow:inset 0 0 0 1px #00000018; }
+    .format-symbol { width:15px; text-align:center; font:600 15px/1 Georgia,serif; }
+    .format-divider { height:1px; margin:5px 4px; background:#ddd7cb; }
+    .status { color:var(--muted); font-size:.86rem; min-width:132px; text-align:right; }
+    main { width:min(1440px,calc(100% - 28px)); margin:18px auto 48px; }
+    .layout { display:grid; grid-template-columns:280px minmax(0,1fr); gap:18px; align-items:start; }
+    aside { position:sticky; top:calc(var(--editor-header-height, 75px) + 12px); display:grid; gap:14px; max-height:calc(100vh - var(--editor-header-height, 75px) - 24px); overflow:auto; }
+    .panel, .page, .toc-page, .reference-panel, .notes-dock, .export-dock { background:var(--paper); border:1px solid var(--line); box-shadow:var(--shadow); }
+    .panel h2, .reference-panel h2, .notes-dock h2, .export-dock h2 { margin:0; padding:10px 12px; font-size:.95rem; border-bottom:1px solid var(--line); background:var(--soft); }
+    .page-number-legend { padding:8px 11px; font-size:.82rem; color:var(--muted); }
+    .page-number-legend p { margin:3px 0; }
+    .page-number-legend strong { color:var(--ink); }
+    .nav-list, .term-list { padding:8px; display:grid; gap:6px; }
+    .nav-button { width:100%; display:flex; justify-content:space-between; gap:8px; text-align:left; }
+    .nav-button span:last-child, .term span:last-child { color:var(--muted); font-variant-numeric:tabular-nums; }
+    .term { display:flex; justify-content:space-between; gap:8px; border-bottom:1px solid var(--line); padding:4px 0; font-size:.9rem; }
+    button.term { width:100%; min-height:0; border-width:0 0 1px; border-radius:0; background:transparent; text-align:left; }
+    button.term:hover { color:var(--accent); background:#fff8ec; }
+    .pages { display:grid; gap:18px; }
+    .toc-page, .reference-panel, .page { scroll-margin-top:86px; }
+    .toc-head { display:flex; justify-content:space-between; gap:14px; align-items:baseline; padding:14px 16px; border-bottom:1px solid var(--line); background:#fff; }
+    .toc-head h2 { margin:0; font-size:1.15rem; }
+    .toc-body { display:grid; grid-template-columns:minmax(0,1fr) minmax(280px,.72fr); gap:18px; padding:14px 16px 16px; }
+    .toc-body h3 { margin:0 0 8px; font-size:.95rem; }
+    .toc-links { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:6px; }
+    .toc-link { display:flex; justify-content:space-between; gap:10px; border:1px solid var(--line); border-radius:6px; background:#fff; color:var(--ink); text-decoration:none; padding:7px 9px; min-height:34px; align-items:center; }
+    .toc-link.available { border-left:4px solid var(--ok); background:#f4fbf6; }
+    .toc-link.current { border:2px solid var(--accent); background:#fff0ec; color:var(--accent); font-weight:700; }
+    .toc-link.unavailable { background:#f1f0ed; color:#999; cursor:not-allowed; opacity:.72; }
+    .toc-legend { display:flex; flex-wrap:wrap; gap:10px; margin:0 0 8px; color:var(--muted); font-size:.8rem; }
+    .toc-legend span::before { content:""; display:inline-block; width:10px; height:10px; border-radius:2px; margin-right:4px; }
+    .legend-current::before { background:var(--accent); } .legend-available::before { background:var(--ok); } .legend-unavailable::before { background:#aaa; }
+    .toc-link span:first-child { overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+    .toc-link span:last-child { color:var(--muted); font-size:.86rem; font-variant-numeric:tabular-nums; white-space:nowrap; }
+    .reference-grid { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:14px; margin:18px 0; align-items:start; }
+    #user-notes { grid-column:1 / -1; }
+    #user-notes .table-scroll { max-height:440px; }
+    #user-notes table { table-layout:fixed; }
+    #user-notes th:nth-child(1), #user-notes td:nth-child(1) { width:110px; }
+    #user-notes th:nth-child(2), #user-notes td:nth-child(2) { width:110px; }
+    #user-notes td:nth-child(3) { overflow-wrap:anywhere; }
+    .table-scroll { overflow:auto; max-height:360px; }
+    #yueducibiao .table-scroll { max-height:none; overflow:visible; }
+    .data-table { width:100%; border-collapse:collapse; background:#fff; font-size:.9rem; }
+    .data-table th, .data-table td { border-bottom:1px solid var(--line); border-right:1px solid var(--line); padding:7px 8px; text-align:left; vertical-align:top; }
+    .data-table th:last-child, .data-table td:last-child { border-right:0; }
+    .data-table th { position:sticky; top:0; background:#fff8ec; z-index:1; font-weight:700; }
+    .data-table td { white-space:pre-wrap; }
+    .note-table td:first-child { min-width:150px; font-weight:650; }
+    .chapter-note-entry { display:grid; gap:10px; padding:12px; border-bottom:1px solid var(--line); background:#fffdf8; }
+    .chapter-note-entry label { display:grid; gap:5px; color:var(--muted); font-size:.88rem; }
+    .chapter-note-entry input, .chapter-note-entry textarea { width:100%; border:1px solid var(--line); background:#fff; color:var(--ink); border-radius:6px; padding:8px; font:inherit; }
+    .chapter-note-entry textarea { min-height:100px; resize:vertical; }
+    .page-head { display:flex; justify-content:space-between; gap:12px; align-items:center; padding:10px 12px; border-bottom:1px solid var(--line); background:#fff; }
+    .page-title { font-weight:700; }
+    .page-title span { color:var(--muted); font-weight:500; margin-left:8px; }
+    .page-tools { display:flex; gap:8px; flex-wrap:wrap; }
+    .workbench { display:grid; grid-template-columns:minmax(340px,1fr) minmax(300px,.82fr); gap:0; align-items:stretch; }
+    .editor-wrap { padding:12px; border-right:1px solid var(--line); display:flex; min-height:560px; }
+    textarea { width:100%; min-height:0; border:1px solid var(--line); background:#fff; color:var(--ink); padding:14px; border-radius:6px; line-height:1.85; font-size:1.02rem; letter-spacing:0; overflow:auto; }
+    .rich-editor { width:100%; min-height:536px; border:1px solid var(--line); background:#fff; color:var(--ink); padding:14px; border-radius:6px; line-height:1.85; font-size:1.02rem; letter-spacing:0; overflow:auto; white-space:pre-wrap; overflow-wrap:anywhere; }
+    .rich-editor.annotated-view { background:#fff9e8; color:#5b481f; }
+    .rich-editor u,.rich-editor [style*="underline"] { text-underline-offset:.2em; text-decoration-thickness:1px; }
+    .mode-badge { border-radius:999px; padding:5px 9px; background:var(--soft); color:var(--muted); font-size:.82rem; white-space:nowrap; }
+    .mode-badge.annotated { background:#fff0b8; color:#76500e; }
+    .speech-rate { display:flex; align-items:center; gap:4px; color:var(--muted); font-size:.82rem; }
+    #speechRate { width:82px; }
+    .hidden { display:none !important; }
+    .scan { padding:12px; background:#fbfaf6; display:flex; }
+    .scan img { width:100%; height:auto; display:block; border:1px solid var(--line); background:#fff; align-self:flex-start; }
+    .notes-dock { margin-top:18px; scroll-margin-top:86px; }
+    .note-grid { display:grid; grid-template-columns:minmax(240px,.75fr) minmax(320px,1fr); gap:12px; padding:12px; }
+    .note-controls { display:grid; gap:10px; align-content:start; }
+    .note-controls label { display:grid; gap:5px; color:var(--muted); font-size:.88rem; }
+    .note-controls select, .note-controls input { width:100%; border:1px solid var(--line); background:#fff; color:var(--ink); border-radius:6px; min-height:34px; padding:6px 8px; }
+    .marker-composer { border:1px solid var(--line); border-radius:7px; background:#fffaf0; padding:10px; display:grid; gap:8px; }
+    .marker-composer h3 { margin:0; font-size:.92rem; }
+    .marker-help { margin:0; color:var(--muted); font-size:.8rem; line-height:1.5; }
+    .note-actions { display:flex; gap:8px; flex-wrap:wrap; }
+    #noteText { min-height:150px; resize:vertical; }
+    .log-list { max-height:260px; overflow:auto; border:1px solid var(--line); background:#fff; border-radius:6px; padding:8px; display:grid; gap:8px; }
+    .log-item { border-bottom:1px solid var(--line); padding:0 0 8px; }
+    .log-item:last-child { border-bottom:0; padding-bottom:0; }
+    .log-meta { color:var(--muted); font-size:.82rem; font-variant-numeric:tabular-nums; }
+    .log-note { margin-top:3px; white-space:pre-wrap; }
+    .export-dock { margin-top:18px; }
+    #exportText { min-height:240px; border:0; border-radius:0; }
+    .quick-note-jump { position:fixed; right:18px; bottom:18px; z-index:25; background:var(--accent); color:var(--accent-ink); border-color:var(--accent); box-shadow:0 8px 24px rgba(30,24,16,.18); }
+    @media (max-width:980px) { .topbar { grid-template-columns:1fr; } .actions { justify-content:flex-start; } .status { text-align:left; } .layout { grid-template-columns:1fr; } aside { position:static; max-height:none; } .toc-body, .note-grid { grid-template-columns:1fr; } .toc-links { grid-template-columns:1fr; } .reference-grid { grid-template-columns:1fr; } .workbench { grid-template-columns:1fr; } .editor-wrap { border-right:0; border-bottom:1px solid var(--line); } .rich-editor { min-height:520px; } .quick-note-jump { right:12px; bottom:12px; } }
+  </style>
+</head>
+<body>
+  <jianshang-editor-header
+    page-title="《翦商》OCR 手工校订：第二十章 翦商与《易经》的世界观"
+    page-subtitle="原书阅读器页 389-406 · 原书物理 PDF 页 387-404 · 印刷页 375-392 · 输出 chapter_20_clean_edited.txt"
+    reference-href="../reference_tables.html">
+    <noscript>此编辑器需要启用 JavaScript。</noscript>
+  </jianshang-editor-header>
+  <main>
+    <div class="layout">
+      <aside>
+        <section class="panel"><h2>页码说明</h2><div class="page-number-legend"><p><strong>原阅</strong> 389-406：原书在阅读器中显示的页码</p><p><strong>原PDF</strong> 387-404：原书文件的物理页码</p><p><strong>印</strong> 375-392：书页印刷页码</p><p><strong>注音PDF</strong> 1-21：独立重排页码，不与原书逐页对应</p></div></section>
+        <section class="panel"><h2>页</h2><div class="nav-list"><button type="button" class="nav-button" data-target="toc"><span>目录</span><span>top</span></button><button type="button" class="nav-button" data-target="notes"><span>编辑札记</span><span>log</span></button><button type="button" class="nav-button" data-target="page-389"><span>原阅 389 · 原PDF 387</span><span>印 375</span></button><button type="button" class="nav-button" data-target="page-390"><span>原阅 390 · 原PDF 388</span><span>印 376</span></button><button type="button" class="nav-button" data-target="page-391"><span>原阅 391 · 原PDF 389</span><span>印 377</span></button><button type="button" class="nav-button" data-target="page-392"><span>原阅 392 · 原PDF 390</span><span>印 378</span></button><button type="button" class="nav-button" data-target="page-393"><span>原阅 393 · 原PDF 391</span><span>印 379</span></button><button type="button" class="nav-button" data-target="page-394"><span>原阅 394 · 原PDF 392</span><span>印 380</span></button><button type="button" class="nav-button" data-target="page-395"><span>原阅 395 · 原PDF 393</span><span>印 381</span></button><button type="button" class="nav-button" data-target="page-396"><span>原阅 396 · 原PDF 394</span><span>印 382</span></button><button type="button" class="nav-button" data-target="page-397"><span>原阅 397 · 原PDF 395</span><span>印 383</span></button><button type="button" class="nav-button" data-target="page-398"><span>原阅 398 · 原PDF 396</span><span>印 384</span></button><button type="button" class="nav-button" data-target="page-399"><span>原阅 399 · 原PDF 397</span><span>印 385</span></button><button type="button" class="nav-button" data-target="page-400"><span>原阅 400 · 原PDF 398</span><span>印 386</span></button><button type="button" class="nav-button" data-target="page-401"><span>原阅 401 · 原PDF 399</span><span>印 387</span></button><button type="button" class="nav-button" data-target="page-402"><span>原阅 402 · 原PDF 400</span><span>印 388</span></button><button type="button" class="nav-button" data-target="page-403"><span>原阅 403 · 原PDF 401</span><span>印 389</span></button><button type="button" class="nav-button" data-target="page-404"><span>原阅 404 · 原PDF 402</span><span>印 390</span></button><button type="button" class="nav-button" data-target="page-405"><span>原阅 405 · 原PDF 403</span><span>印 391</span></button><button type="button" class="nav-button" data-target="page-406"><span>原阅 406 · 原PDF 404</span><span>印 392</span></button></div></section>
+        <section class="panel"><h2>参考表</h2><div class="nav-list"><button type="button" class="nav-button" data-target="yueducibiao"><span>阅读词表</span><span>表</span></button><button type="button" class="nav-button" data-target="qingtongqicibiao"><span>青铜器词表</span><span>表</span></button><button type="button" class="nav-button" data-target="ancient-review"><span>古文字校读</span><span>表</span></button><button type="button" class="nav-button" data-target="dushuzhaji"><span>章节导读札记</span><span>表</span></button><button type="button" class="nav-button" data-target="user-notes"><span>用户札记</span><span>注</span></button></div></section>
+        <section class="panel"><h2>术语</h2><div class="term-list"><button type="button" class="term" data-term="爻辞" data-pinyin="yáo cí" data-difficulty="3" data-domain="general"><span>爻辞</span><span>yáo cí</span></button><button type="button" class="term" data-term="乾" data-pinyin="qián" data-difficulty="4" data-domain="general"><span>乾</span><span>qián</span></button><button type="button" class="term" data-term="易经" data-pinyin="yì jīng" data-difficulty="4" data-domain="general"><span>易经</span><span>yì jīng</span></button><button type="button" class="term" data-term="坤" data-pinyin="kūn" data-difficulty="4" data-domain="general"><span>坤</span><span>kūn</span></button><button type="button" class="term" data-term="六十四卦" data-pinyin="liù shí sì guà" data-difficulty="3" data-domain="general"><span>六十四卦</span><span>liù shí sì guà</span></button><button type="button" class="term" data-term="卦象" data-pinyin="guà xiàng" data-difficulty="3" data-domain="general"><span>卦象</span><span>guà xiàng</span></button><button type="button" class="term" data-term="八卦" data-pinyin="bā guà" data-difficulty="3" data-domain="general"><span>八卦</span><span>bā guà</span></button><button type="button" class="term" data-term="卦爻辞" data-pinyin="guà yáo cí" data-difficulty="3" data-domain="general"><span>卦爻辞</span><span>guà yáo cí</span></button><button type="button" class="term" data-term="同人" data-pinyin="tóng rén" data-difficulty="4" data-domain="general"><span>同人</span><span>tóng rén</span></button><button type="button" class="term" data-term="翦商" data-pinyin="jiǎn shāng" data-difficulty="3" data-domain="general"><span>翦商</span><span>jiǎn shāng</span></button><button type="button" class="term" data-term="离" data-pinyin="lí" data-difficulty="4" data-domain="general"><span>离</span><span>lí</span></button><button type="button" class="term" data-term="卦辞" data-pinyin="guà cí" data-difficulty="3" data-domain="general"><span>卦辞</span><span>guà cí</span></button><button type="button" class="term" data-term="坎" data-pinyin="kǎn" data-difficulty="4" data-domain="general"><span>坎</span><span>kǎn</span></button><button type="button" class="term" data-term="周昌" data-pinyin="zhōu chāng" data-difficulty="3" data-domain="proper_name"><span>周昌</span><span>zhōu chāng</span></button><button type="button" class="term" data-term="高亨" data-pinyin="gāo hēng" data-difficulty="3" data-domain="proper_name"><span>高亨</span><span>gāo hēng</span></button><button type="button" class="term" data-term="周文王" data-pinyin="zhōu wén wáng" data-difficulty="3" data-domain="proper_name"><span>周文王</span><span>zhōu wén wáng</span></button><button type="button" class="term" data-term="震" data-pinyin="zhèn" data-difficulty="4" data-domain="general"><span>震</span><span>zhèn</span></button><button type="button" class="term" data-term="艮" data-pinyin="gèn" data-difficulty="4" data-domain="general"><span>艮</span><span>gèn</span></button><button type="button" class="term" data-term="孔颖达" data-pinyin="kǒng yǐng dá" data-difficulty="3" data-domain="proper_name"><span>孔颖达</span><span>kǒng yǐng dá</span></button><button type="button" class="term" data-term="牝马" data-pinyin="pìn mǎ" data-difficulty="4" data-domain="general"><span>牝马</span><span>pìn mǎ</span></button><button type="button" class="term" data-term="阳爻" data-pinyin="yáng yáo" data-difficulty="3" data-domain="general"><span>阳爻</span><span>yáng yáo</span></button><button type="button" class="term" data-term="羑里" data-pinyin="yǒu lǐ" data-difficulty="3" data-domain="proper_name"><span>羑里</span><span>yǒu lǐ</span></button><button type="button" class="term" data-term="阴爻" data-pinyin="yīn yáo" data-difficulty="3" data-domain="general"><span>阴爻</span><span>yīn yáo</span></button><button type="button" class="term" data-term="顾颉刚" data-pinyin="gù jié gāng" data-difficulty="3" data-domain="proper_name"><span>顾颉刚</span><span>gù jié gāng</span></button><button type="button" class="term" data-term="巽" data-pinyin="xùn" data-difficulty="4" data-domain="general"><span>巽</span><span>xùn</span></button><button type="button" class="term" data-term="兑" data-pinyin="duì" data-difficulty="4" data-domain="general"><span>兑</span><span>duì</span></button><button type="button" class="term" data-term="无妄" data-pinyin="wú wàng" data-difficulty="4" data-domain="general"><span>无妄</span><span>wú wàng</span></button><button type="button" class="term" data-term="大畜" data-pinyin="dà xù" data-difficulty="4" data-domain="general"><span>大畜</span><span>dà xù</span></button><button type="button" class="term" data-term="屯" data-pinyin="tún" data-difficulty="4" data-domain="general"><span>屯</span><span>tún</span></button><button type="button" class="term" data-term="蒙" data-pinyin="méng" data-difficulty="4" data-domain="general"><span>蒙</span><span>méng</span></button><button type="button" class="term" data-term="戡" data-pinyin="kān" data-difficulty="4" data-domain="general"><span>戡</span><span>kān</span></button><button type="button" class="term" data-term="杞" data-pinyin="qǐ" data-difficulty="4" data-domain="general"><span>杞</span><span>qǐ</span></button><button type="button" class="term" data-term="颐" data-pinyin="yí" data-difficulty="4" data-domain="general"><span>颐</span><span>yí</span></button><button type="button" class="term" data-term="大过" data-pinyin="dà guò" data-difficulty="4" data-domain="general"><span>大过</span><span>dà guò</span></button><button type="button" class="term" data-term="中孚" data-pinyin="zhōng fú" data-difficulty="4" data-domain="general"><span>中孚</span><span>zhōng fú</span></button><button type="button" class="term" data-term="小过" data-pinyin="xiǎo guò" data-difficulty="4" data-domain="general"><span>小过</span><span>xiǎo guò</span></button><button type="button" class="term" data-term="筮" data-pinyin="shì" data-difficulty="4" data-domain="general"><span>筮</span><span>shì</span></button><button type="button" class="term" data-term="蹇" data-pinyin="jiǎn" data-difficulty="4" data-domain="general"><span>蹇</span><span>jiǎn</span></button><button type="button" class="term" data-term="缊" data-pinyin="yùn" data-difficulty="4" data-domain="general"><span>缊</span><span>yùn</span></button><button type="button" class="term" data-term="贞人" data-pinyin="zhēn rén" data-difficulty="3" data-domain="general"><span>贞人</span><span>zhēn rén</span></button><button type="button" class="term" data-term="亢龙有悔" data-pinyin="kàng lóng yǒu huǐ" data-difficulty="3" data-domain="general"><span>亢龙有悔</span><span>kàng lóng yǒu huǐ</span></button><button type="button" class="term" data-term="甲骨刻辞" data-pinyin="jiǎ gǔ kè cí" data-difficulty="4" data-domain="general"><span>甲骨刻辞</span><span>jiǎ gǔ kè cí</span></button><button type="button" class="term" data-term="甲骨卜辞" data-pinyin="jiǎ gǔ bǔ cí" data-difficulty="4" data-domain="general"><span>甲骨卜辞</span><span>jiǎ gǔ bǔ cí</span></button><button type="button" class="term" data-term="周武王" data-pinyin="zhōu wǔ wáng" data-difficulty="3" data-domain="proper_name"><span>周武王</span><span>zhōu wǔ wáng</span></button><button type="button" class="term" data-term="上帝" data-pinyin="shàng dì" data-difficulty="3" data-domain="general"><span>上帝</span><span>shàng dì</span></button><button type="button" class="term" data-term="人牲" data-pinyin="rén shēng" data-difficulty="3" data-domain="general"><span>人牲</span><span>rén shēng</span></button><button type="button" class="term" data-term="人祭" data-pinyin="rén jì" data-difficulty="3" data-domain="general"><span>人祭</span><span>rén jì</span></button><button type="button" class="term" data-term="卜辞" data-pinyin="bǔ cí" data-difficulty="4" data-domain="general"><span>卜辞</span><span>bǔ cí</span></button><button type="button" class="term" data-term="占辞" data-pinyin="zhān cí" data-difficulty="4" data-domain="general"><span>占辞</span><span>zhān cí</span></button><button type="button" class="term" data-term="可贞" data-pinyin="kě zhēn" data-difficulty="4" data-domain="general"><span>可贞</span><span>kě zhēn</span></button><button type="button" class="term" data-term="号咷" data-pinyin="háo táo" data-difficulty="4" data-domain="general"><span>号咷</span><span>háo táo</span></button><button type="button" class="term" data-term="含章" data-pinyin="hán zhāng" data-difficulty="4" data-domain="general"><span>含章</span><span>hán zhāng</span></button><button type="button" class="term" data-term="周公" data-pinyin="zhōu gōng" data-difficulty="3" data-domain="proper_name"><span>周公</span><span>zhōu gōng</span></button><button type="button" class="term" data-term="周原" data-pinyin="zhōu yuán" data-difficulty="5" data-domain="archaeology"><span>周原</span><span>zhōu yuán</span></button><button type="button" class="term" data-term="周易" data-pinyin="zhōu yì" data-difficulty="4" data-domain="general"><span>周易</span><span>zhōu yì</span></button><button type="button" class="term" data-term="商族" data-pinyin="shāng zú" data-difficulty="3" data-domain="general"><span>商族</span><span>shāng zú</span></button><button type="button" class="term" data-term="商王" data-pinyin="shāng wáng" data-difficulty="3" data-domain="proper_name"><span>商王</span><span>shāng wáng</span></button><button type="button" class="term" data-term="喋血" data-pinyin="dié xuè" data-difficulty="4" data-domain="general"><span>喋血</span><span>dié xuè</span></button><button type="button" class="term" data-term="图腾" data-pinyin="tú téng" data-difficulty="3" data-domain="general"><span>图腾</span><span>tú téng</span></button><button type="button" class="term" data-term="妇好" data-pinyin="fù hǎo" data-difficulty="3" data-domain="proper_name"><span>妇好</span><span>fù hǎo</span></button><button type="button" class="term" data-term="孔子" data-pinyin="kǒng zǐ" data-difficulty="3" data-domain="proper_name"><span>孔子</span><span>kǒng zǐ</span></button><button type="button" class="term" data-term="左传" data-pinyin="zuǒ zhuàn" data-difficulty="4" data-domain="general"><span>左传</span><span>zuǒ zhuàn</span></button><button type="button" class="term" data-term="易传" data-pinyin="yì zhuàn" data-difficulty="4" data-domain="general"><span>易传</span><span>yì zhuàn</span></button><button type="button" class="term" data-term="春秋" data-pinyin="chūn qiū" data-difficulty="4" data-domain="general"><span>春秋</span><span>chūn qiū</span></button><button type="button" class="term" data-term="武王" data-pinyin="wǔ wáng" data-difficulty="3" data-domain="proper_name"><span>武王</span><span>wǔ wáng</span></button><button type="button" class="term" data-term="殷商" data-pinyin="yīn shāng" data-difficulty="5" data-domain="general"><span>殷商</span><span>yīn shāng</span></button><button type="button" class="term" data-term="殷墟" data-pinyin="yīn xū" data-difficulty="5" data-domain="archaeology"><span>殷墟</span><span>yīn xū</span></button><button type="button" class="term" data-term="殷都" data-pinyin="yīn dū" data-difficulty="5" data-domain="general"><span>殷都</span><span>yīn dū</span></button><button type="button" class="term" data-term="献祭" data-pinyin="xiàn jì" data-difficulty="3" data-domain="general"><span>献祭</span><span>xiàn jì</span></button><button type="button" class="term" data-term="神权" data-pinyin="shén quán" data-difficulty="3" data-domain="general"><span>神权</span><span>shén quán</span></button><button type="button" class="term" data-term="箕子" data-pinyin="jī zǐ" data-difficulty="3" data-domain="proper_name"><span>箕子</span><span>jī zǐ</span></button><button type="button" class="term" data-term="羌人" data-pinyin="qiāng rén" data-difficulty="3" data-domain="general"><span>羌人</span><span>qiāng rén</span></button></div></section>
+      </aside>
+      <section>
+        <jianshang-editor-toc current-chapter="chapter_20">
+          <noscript>目录需要启用 JavaScript。</noscript>
+        </jianshang-editor-toc>
+        <div class="reference-grid">
+        <section class="reference-panel" id="yueducibiao">
+          <h2>阅读词表</h2>
+          <div class="table-scroll">
+            <table class="data-table">
+              <thead><tr><th>词条</th><th>拼音</th><th>类型</th><th>说明</th></tr></thead>
+              <tbody><tr><td>爻辞</td><td>yáo cí</td><td>concept</td><td>解释每一爻吉凶和意义的文字。</td></tr><tr><td>乾</td><td>qián</td><td>text</td><td>八卦和六十四卦卦名。</td></tr><tr><td>易经</td><td>yì jīng</td><td>text</td><td>文王卦爻辞体系，书中用以讨论翦商谋略。</td></tr><tr><td>坤</td><td>kūn</td><td>text</td><td>八卦和六十四卦卦名。</td></tr><tr><td>六十四卦</td><td>liù shí sì guà</td><td>concept</td><td>由上下两个八卦重叠形成的六十四种六爻卦象。</td></tr><tr><td>卦象</td><td>guà xiàng</td><td>concept</td><td>由阴阳爻组成的卦形图象。</td></tr><tr><td>八卦</td><td>bā guà</td><td>concept</td><td>由三爻组成的八种基本卦象。</td></tr><tr><td>卦爻辞</td><td>guà yáo cí</td><td>concept</td><td>《易经》中卦辞和爻辞的合称。</td></tr><tr><td>同人</td><td>tóng rén</td><td>text</td><td>《易经》卦名，文中解释为集结盟军。</td></tr><tr><td>翦商</td><td>jiǎn shāng</td><td>concept</td><td>周人剪灭商朝的政治行动。</td></tr><tr><td>离</td><td>lí</td><td>text</td><td>八卦之一。</td></tr><tr><td>卦辞</td><td>guà cí</td><td>concept</td><td>解释一卦吉凶和意义的文字。</td></tr><tr><td>坎</td><td>kǎn</td><td>text</td><td>八卦之一。</td></tr><tr><td>周昌</td><td>zhōu chāng</td><td>person</td><td>周文王姬昌，书中常称周昌。</td></tr><tr><td>高亨</td><td>gāo hēng</td><td>person</td><td>现代《周易》研究学者。</td></tr><tr><td>周文王</td><td>zhōu wén wáng</td><td>person</td><td>周族领袖姬昌。</td></tr><tr><td>震</td><td>zhèn</td><td>text</td><td>八卦之一。</td></tr><tr><td>艮</td><td>gèn</td><td>text</td><td>八卦之一。</td></tr><tr><td>孔颖达</td><td>kǒng yǐng dá</td><td>person</td><td>唐代经学家，《周易正义》编纂者之一。</td></tr><tr><td>牝马</td><td>pìn mǎ</td><td>rare_word</td><td>母马；见《易经》坤卦卦辞。</td></tr><tr><td>阳爻</td><td>yáng yáo</td><td>concept</td><td>八卦、六十四卦中的阳性爻。</td></tr><tr><td>羑里</td><td>yǒu lǐ</td><td>place</td><td>文王被商纣囚禁之地。</td></tr><tr><td>阴爻</td><td>yīn yáo</td><td>concept</td><td>八卦、六十四卦中的阴性爻。</td></tr><tr><td>顾颉刚</td><td>gù jié gāng</td><td>person</td><td>现代史学家，曾研究《周易》爻辞中的故事。</td></tr><tr><td>巽</td><td>xùn</td><td>text</td><td>八卦之一。</td></tr><tr><td>兑</td><td>duì</td><td>text</td><td>八卦之一。</td></tr><tr><td>无妄</td><td>wú wàng</td><td>text</td><td>《易经》卦名，文中用于说明卦象成对原则。</td></tr><tr><td>大畜</td><td>dà xù</td><td>text</td><td>《易经》卦名，文中与无妄成对举例。</td></tr><tr><td>屯</td><td>tún</td><td>text</td><td>《易经》卦名，震下坎上。</td></tr><tr><td>蒙</td><td>méng</td><td>text</td><td>《易经》卦名，坎下艮上。</td></tr><tr><td>戡</td><td>kān</td><td>rare_word</td><td>用武力平定；文中“戡商”即翦灭商朝。</td></tr><tr><td>杞</td><td>qǐ</td><td>rare_word</td><td>木名；此处见垢卦“以杞包瓜”。</td></tr><tr><td>颐</td><td>yí</td><td>text</td><td>《易经》卦名，文中列为自身对称的卦。</td></tr><tr><td>大过</td><td>dà guò</td><td>text</td><td>《易经》卦名，文中列为自身对称的卦。</td></tr><tr><td>中孚</td><td>zhōng fú</td><td>text</td><td>《易经》卦名，文中列为自身对称的卦。</td></tr><tr><td>小过</td><td>xiǎo guò</td><td>text</td><td>《易经》卦名，文中列为自身对称的卦。</td></tr><tr><td>筮</td><td>shì</td><td>rare_word</td><td>用蓍草或草棍占算。</td></tr><tr><td>蹇</td><td>jiǎn</td><td>text</td><td>《易经》卦名，文中以数字卦举例。</td></tr><tr><td>缊</td><td>yùn</td><td>rare_word</td><td>包藏；文中见《周易正义》引文“缊在爻卦之中矣”。</td></tr><tr><td>贞人</td><td>zhēn rén</td><td>concept</td><td>甲骨占卜中主持或记录占问的人。</td></tr><tr><td>亢龙有悔</td><td>kàng lóng yǒu huǐ</td><td>项目词典</td><td>《易》语，处于极盛而不知退会有悔恨。</td></tr><tr><td>甲骨刻辞</td><td>jiǎ gǔ kè cí</td><td>项目词典</td><td>刻在甲骨上的文字记录。</td></tr><tr><td>甲骨卜辞</td><td>jiǎ gǔ bǔ cí</td><td>项目词典</td><td>商代刻写在甲骨上的占卜文字。 | 刻写在龟甲兽骨上的占卜文字。 | 刻写在甲骨上的占卜记录。 | 刻写在龟甲兽骨上的占卜辞句。</td></tr><tr><td>周武王</td><td>zhōu wǔ wáng</td><td>项目词典</td><td>周发，灭商之君。</td></tr><tr><td>上帝</td><td>shàng dì</td><td>项目词典</td><td>商周宗教中的最高神。</td></tr><tr><td>人牲</td><td>rén shēng</td><td>项目词典</td><td>被用于祭祀的人。 | 被用于祭祀或献祭的人。 | 被杀用于祭祀的人。</td></tr><tr><td>人祭</td><td>rén jì</td><td>项目词典</td><td>杀人用于祭祀的宗教行为。 | 以人作为祭品的祭祀行为。 | 杀人用于祭祀。</td></tr><tr><td>卜辞</td><td>bǔ cí</td><td>项目词典</td><td>甲骨占卜后刻写或记录的辞句。 | 甲骨上记录占卜的文字。 | 占卜时刻写或记录的辞句。</td></tr><tr><td>占辞</td><td>zhān cí</td><td>项目词典</td><td>占卜时刻写或记录的辞句。</td></tr><tr><td>可贞</td><td>kě zhēn</td><td>项目词典</td><td>可通过占卜预测或问卜。</td></tr><tr><td>号咷</td><td>háo táo</td><td>项目词典</td><td>大声哭号。</td></tr><tr><td>含章</td><td>hán zhāng</td><td>项目词典</td><td>《易经》坤卦爻辞，文中据高亨释为“翦商”。</td></tr><tr><td>周公</td><td>zhōu gōng</td><td>项目词典</td><td>周公旦，武王之弟。 | 周公旦，周初政治家。</td></tr><tr><td>周原</td><td>zhōu yuán</td><td>项目词典</td><td>关中地区周族的重要活动中心。 | 关中地区周族重要遗址和活动中心。 | 周族核心区域。</td></tr><tr><td>周易</td><td>zhōu yì</td><td>项目词典</td><td>以《易经》及其传文构成的古代经典。 | 《易经》与后世《易传》合称的经典。</td></tr><tr><td>商族</td><td>shāng zú</td><td>项目词典</td><td>商王朝建立前后的族群共同体。</td></tr><tr><td>商王</td><td>shāng wáng</td><td>项目词典</td><td>商朝王。</td></tr><tr><td>喋血</td><td>dié xuè</td><td>项目词典</td><td>形容杀伤很多、血流遍地。</td></tr><tr><td>图腾</td><td>tú téng</td><td>项目词典</td><td>族群崇拜并作为象征的动物、植物或自然物。</td></tr><tr><td>妇好</td><td>fù hǎo</td><td>项目词典</td><td>商王武丁配偶，甲骨文中著名女性军事人物。</td></tr><tr><td>孔子</td><td>kǒng zǐ</td><td>项目词典</td><td>春秋时期思想家、教育家，儒家学派的重要奠基者。</td></tr><tr><td>左传</td><td>zuǒ zhuàn</td><td>项目词典</td><td>春秋史传文献。</td></tr><tr><td>易传</td><td>yì zhuàn</td><td>项目词典</td><td>解释《易经》的传文总称。</td></tr><tr><td>春秋</td><td>chūn qiū</td><td>项目词典</td><td>孔子时代相关的编年史经典。</td></tr><tr><td>武王</td><td>wǔ wáng</td><td>项目词典</td><td>周武王。</td></tr><tr><td>殷商</td><td>yīn shāng</td><td>项目词典</td><td>商朝后期文化和政权。 | 商代后期以殷墟为中心的商王朝阶段。</td></tr><tr><td>殷墟</td><td>yīn xū</td><td>项目词典</td><td>晚商都邑遗址，甲骨卜辞的重要出土地。 | 商代晚期都城遗址。</td></tr><tr><td>殷都</td><td>yīn dū</td><td>项目词典</td><td>商朝后期都城区域，今安阳殷墟一带。 | 商朝后期都城区域。 | 晚商都城，通常指安阳殷墟。</td></tr><tr><td>献祭</td><td>xiàn jì</td><td>项目词典</td><td>把祭品奉献给神灵或祖先。 | 向神灵、祖先等奉献祭品。</td></tr><tr><td>神权</td><td>shén quán</td><td>项目词典</td><td>以神灵、祭祀权威支撑的统治权力。 | 以神灵或宗教权威支配社会政治生活的权力形态。</td></tr><tr><td>箕子</td><td>jī zǐ</td><td>项目词典</td><td>商末贵族，后世文献中重要人物。 | 商末贵族，明夷卦解释中的关键人物。</td></tr><tr><td>羌人</td><td>qiāng rén</td><td>项目词典</td><td>西方族群，常见于商代卜辞。</td></tr></tbody>
+            </table>
+          </div>
+        </section>
+        <section class="reference-panel" id="qingtongqicibiao">
+          <h2>青铜器词表</h2>
+          <div class="table-scroll">
+            <table class="data-table">
+              <thead><tr><th>器名</th><th>拼音</th><th>类型</th><th>说明</th></tr></thead>
+              <tbody><tr><td colspan="4">暂无青铜器词表</td></tr></tbody>
+            </table>
+          </div>
+        </section>
+        <section class="reference-panel" id="ancient-review">
+          <h2>疑难古文字与 OCR 校读表</h2>
+          <div class="table-scroll">
+            <table class="data-table">
+              <thead><tr><th>来源</th><th>当前文字</th><th>问题</th><th>处理</th></tr></thead>
+              <tbody><tr><td>八卦/六十四卦卦象图示</td><td>乾☰ 坤☷；坎☵ 离☲；震☳ 艮☶；巽☴ 兑☱；屯☵/☳；蒙☶/☵；同人☰/☲；乾☰/☰ 坤☷/☷；无妄☰/☳ 大畜☶/☰</td><td>OCR 曾将卦象线图误识为普通文字、拉丁字母或异常符号，如“乾三坤三”“卦象是H”“卦象是鬓”“■Hmm”等。</td><td>已按周易卦象系统将可确认的八卦/六十四卦示例改为可渲染的 Unicode trigram 符号；六十四卦以“上卦/下卦”形式表示。若原 PDF 使用专门图片，仍建议人工抽查符号版式。</td></tr><tr><td>数字卦甲骨刻辞示例</td><td>六七八九六八</td><td>用户据原文校正，原 OCR 误作“六七，I九六”。</td><td>已按用户校正改入正文；如需进一步核对数字卦释读，可再据原 PDF 或专业释文复查。</td></tr></tbody>
+            </table>
+          </div>
+        </section>
+        <section class="reference-panel" id="dushuzhaji">
+          <h2>章节导读札记</h2>
+          <div class="chapter-note-entry">
+            <label>主题<input id="chapterNoteTitle" type="text" placeholder="例如：周公改革的沉默"></label>
+            <label>札记<textarea id="chapterNoteText" placeholder="记录对本章整体内容的理解、判断或总结"></textarea></label>
+            <div class="note-actions">
+              <button id="addChapterNoteBtn" type="button">新增章节导读札记</button>
+              <button id="downloadChapterNotesBtn" type="button">下载 Markdown</button>
+            </div>
+            <div class="log-meta">新增内容保存在本浏览器及 JSON 备份中；下载 Markdown 后可作为 reading_notes.md 导入项目。</div>
+          </div>
+          <div class="table-scroll">
+            <table class="data-table note-table">
+              <thead><tr><th>主题</th><th>札记</th><th>操作</th></tr></thead>
+              <tbody id="chapterNotesBody"><tr><td colspan="3">暂无章节导读札记</td></tr></tbody>
+            </table>
+          </div>
+        </section>
+        <section class="reference-panel" id="user-notes">
+          <h2>用户札记</h2>
+          <div class="table-scroll">
+            <table class="data-table note-table">
+              <thead><tr><th>类型</th><th>页</th><th>内容</th></tr></thead>
+              <tbody id="userNotesBody"><tr><td colspan="3">暂无用户札记</td></tr></tbody>
+            </table>
+          </div>
+        </section></div>
+        <div class="pages">
+        <section class="page" id="page-389">
+          <div class="page-head">
+            <div class="page-title">原书阅读器页 389<span>原书物理 PDF 页 387</span><span>印刷页 375</span></div>
+            <div class="page-tools">
+              <button type="button" data-copy-page="389">复制本页</button>
+              <button type="button" data-export-page="389">导出本页</button>
+            </div>
+          </div>
+          <div class="workbench">
+            <div class="editor-wrap">
+              <div class="rich-editor" data-page="389" contenteditable="true" role="textbox" aria-multiline="true" spellcheck="false">第二十章翦商与《易经》的世界观
+
+《易经》记载的猎俘和人祭完全超出了后人的想象，那么，周昌为什么记录这些？难道他就是想要写一本日记或者回忆录？
+
+卦爻辞纷繁杂乱的现象背后，其实是周昌对世界运行规律的探索，通过卦象排列组合的变化，他发现，现有的世界秩序不是永恒的，而是可以改变的。尤为重要的是，商朝的统治也是如此。
+
+在讲述这些之前，我们先要讲一讲《易经》最基本的原理：阴阳、卦象、卦辞和爻辞。
+
+易卦占算传承自商人
+
+上古时代，人们曾发明一种用草或竹子的小棍来算数的方法：把它们在地上摆放成不同的形状，用以代表不同的数字，然后进行计算，有点类似后世的算盘。用来计数的竹棍，叫“策”或“筹”，比如，流传下来的古语中就有“运筹”和“策划”等。
+
+当积累了一定的算数知识，古人发现，数字虽然有很多，但都可以被分为奇数和偶数两大类。这恰好和日常生活里的“阴” “阳”观念搭配：太阳晒到的地方是阳，晒不到的就是阴；奇数是阳，偶数是阴。然后，有天地、山水、男女、雌雄、上下……几乎所有的事物，都可以分为阴性和阳性。
+
+这是早期人类发展出的一种简单归纳思维，甚至直到现代，有些语言的名词还会分成阴阳两性，比如法语和俄语。而初步的算命理论就是将用草棍运算出的数字归纳成阴或者阳，以代表世间不同的事物，乃至命运的吉凶。
+
+用甲骨预测，称为“卜”；用草棍预测，则称为“筮”。“筮”上面的“竹”字头代表占算用的草（竹）棍，下面的“巫”字表示只有沟通鬼神的巫师才有占算能力。[[fn:1]]</div>
+            </div>
+            <div class="scan"><img src="pdf_pages/page-387.jpg" alt="PDF page 389"></div>
+          </div>
+        </section>
+        <section class="page" id="page-390">
+          <div class="page-head">
+            <div class="page-title">原书阅读器页 390<span>原书物理 PDF 页 388</span><span>印刷页 376</span></div>
+            <div class="page-tools">
+              <button type="button" data-copy-page="390">复制本页</button>
+              <button type="button" data-export-page="390">导出本页</button>
+            </div>
+          </div>
+          <div class="workbench">
+            <div class="editor-wrap">
+              <div class="rich-editor" data-page="390" contenteditable="true" role="textbox" aria-multiline="true" spellcheck="false">据说，半人半神的伏羲最先画出“八卦”，然后，由周昌在被商纣囚禁羑里期间把八卦推演成了六十四卦。所谓：“其囚羑里，盖益《易》之八卦为六十四卦。”但司马迁这里用的是“盖”字，表示不太确定。〔札记：从八卦到六十四卦应该在商朝完成。文王演周易是排序，整理和填写爻词。〕
+
+先说最古老的所谓伏羲“八卦”。有四对卦，分别是乾和坤，坎和离，震和艮，巽和兑；各有代表图案，被称为“卦象”，由三根表示阴阳的“爻”组成，一根直线代表阳爻，两段半截的线代表阴爻。
+
+乾☰ 坤☷
+
+坎☵ 离☲
+
+震☳ 艮☶
+
+巽☴ 兑☱
+〔札记：（一）八卦口诀：乾三连，坤六断，震仰盂，艮覆碗，离中虚，坎中满，兑上缺，巽下断。 （二）八卦与数：乾一，兑二，离三，震四，巽五，坎六，艮七，坤八。〕
+东周时的学者说，这是宇宙间的八大元素：乾代表天，坤代表地；坎代表水，离代表火；震代表雷，艮代表山；巽代表风，兑代表泽（沼泽）。（《周易正义•说卦卷九》）至于伏羲或者周昌时代的人是不是这么理解的，就不好说了。
+
+再来说六十四卦。卦象由两个八卦上下重叠组成，一共有六十四种，都有六个爻。假如是两个八卦的乾叠加，就仍叫乾卦，以此类推。但不一样的八卦互相叠加，就需要起新的卦名了，比如，震下坎上，叫屯卦，卦象是☵/☳；坎下艮上，叫蒙卦，卦象是☶/☵。
+
+用草棍占算的阴阳八卦体系，和华北地区自龙山时代以来的甲骨占卜体系，是分庭抗礼的关系，很难说哪一种出现得更早，因为甲骨容易保存下来，但草棍占算不容易留下遗物。
+
+到了商朝的殷都时期，有些占卜师已经习惯了在甲骨上刻字，所以他们也会把用草棍占算出来的数字刻到甲骨上。而三个数字组成的刻辞在殷墟前期武丁王的时代就有了，比周昌要早二百年。它是三个数字重叠，比如“六六六”，这三个偶数代表三个阴爻，便是八卦中的坤卦。</div>
+            </div>
+            <div class="scan"><img src="pdf_pages/page-388.jpg" alt="PDF page 390"></div>
+          </div>
+        </section>
+        <section class="page" id="page-391">
+          <div class="page-head">
+            <div class="page-title">原书阅读器页 391<span>原书物理 PDF 页 389</span><span>印刷页 377</span></div>
+            <div class="page-tools">
+              <button type="button" data-copy-page="391">复制本页</button>
+              <button type="button" data-export-page="391">导出本页</button>
+            </div>
+          </div>
+          <div class="workbench">
+            <div class="editor-wrap">
+              <div class="rich-editor" data-page="391" contenteditable="true" role="textbox" aria-multiline="true" spellcheck="false">到殷商中后期，出现了六个数字的甲骨刻辞，时代也比周昌早一些。比如，“六七八九六八”对应“阴阳阴阳阴阴”，这便是《易经》中的蹇卦。从这可见，六十四卦的基本原理并不是文王发明的。
+
+〔按语：如前所述〕
+
+关于竹草棍如何被用于六十四卦算命，最早的记载来自春秋战国之交的《易传·系辞》：按照特定的流程，将五十根草棍用两只手拆分若干次，最后剩在手里的数量就是得到的数字，它的奇、偶就是阴、阳，这算第一个爻；如此反复演算六次，就得到六个爻，也就是一个完整的卦。这种摆列阴阳爻的顺序，必须从下往上，不能颠倒。
+
+当然，《易传·系辞》这个记载已经比周昌的时代晚了五百多年，至于周昌到底是不是这么占算的，也无法确定。
+
+〔按语：反复验算〕
+
+上面所述便是六十四卦卦象的来历，那么，六十四卦的卦名，诸如乾、坤、屯、蒙等，又是什么时候产生的呢？商代的甲骨文里没有发现卦名，它们首次出现是在《易经》里。所以，也许的确是周文王命名的，至少目前还没有反面的证据。
+
+比起古老的甲骨占卜，用草棍推演更容易，所以文王被囚禁在羑里监狱的时候，可以因陋就简进行六十四卦占算。而为了让这套占算体系更适合自己的需要，他又总结和编写了卦辞和爻辞，由此形成了《易经》的基本内容。
+
+但这还不是文王周昌青睐六十四卦体系的根本原因。
+
+文王写作卦辞和爻辞
+
+六十四卦的每个卦都有一条简短的解说词，这被称为“卦辞”；相对的，卦里的每个爻也都有一条“爻辞”。概而言之，《易经》是由六十四卦的卦名、卦象、卦辞和爻辞组成的。</div>
+            </div>
+            <div class="scan"><img src="pdf_pages/page-389.jpg" alt="PDF page 391"></div>
+          </div>
+        </section>
+        <section class="page" id="page-392">
+          <div class="page-head">
+            <div class="page-title">原书阅读器页 392<span>原书物理 PDF 页 390</span><span>印刷页 378</span></div>
+            <div class="page-tools">
+              <button type="button" data-copy-page="392">复制本页</button>
+              <button type="button" data-export-page="392">导出本页</button>
+            </div>
+          </div>
+          <div class="workbench">
+            <div class="editor-wrap">
+              <div class="rich-editor" data-page="392" contenteditable="true" role="textbox" aria-multiline="true" spellcheck="false">唐代给《周易》做注的孔颖达说，最早是伏羲画出了八卦，
+
+〔按语：现存考古发现的最早八卦及阴阳爻符号，出土于浙江义乌桥头遗址的红衣彩陶，距今已有约8000至9000年的历史。〕后来有人（不知道是谁）把八卦重叠成六十四卦，可以涵盖各种“天地变化，人事吉凶”；再后来，周文王写了卦辞和爻辞，来解释每个爻和卦的吉凶含义：
+
+盖伏牺（羲）之初，直仰观俯察，用阴阳两爻而画八卦，后因而重之为六十四卦，然后天地变化，人事吉凶，莫不周备，缊在爻卦之中矣。文王又于爻卦之下，系之以辞，明其爻卦之中吉凶之义。（《周易正义•说卦卷九》）
+
+看来，孔颖达不同意《史记》说的“其囚羑里，盖益《易》之八卦为六十四卦”。而现代的考古发现也证明，孔颖达的确是对的。
+
+孔颖达还说，卦辞和爻辞是周文王写的。在古代，这个说法也缺乏直接证据，一直有学者质疑。而结合甲骨文等殷商考古成果，我们会发现，孔颖达这么说的证据是比较充分的，因为卦爻辞只会是在商朝的环境中产生，不可能更晚。
+
+〔按语：编纂〕
+
+最早从《易经》的卦爻辞中探寻历史的学者，是顾颉刚。1929年，他考证了几条卦爻辞中蕴藏的商周时期的历史事件，并撰成《周易卦爻辞中的故事》一文发表。[[fn:2]]比如，据顾颉刚推测，归妹卦和泰卦爻辞的“帝乙归妹”，其中隐含的历史是：帝乙把自己的一个女儿嫁给了周文王，但这位王室公主没能生育，最后，或是早逝，或是离婚回了娘家，文王又续娶大姒。
+
+就这样，顾颉刚开启了从《易经》探寻晚商历史的先河。当然，他对“帝乙归妹”的解释未必正确，毕竟当时商周力量对比悬殊，商王不大可能把妹妹嫁给周族，所以这很可能是周人为夸耀自己而做的吹嘘。但它的真实背景仍是晚商时代的商周关系。</div>
+            </div>
+            <div class="scan"><img src="pdf_pages/page-390.jpg" alt="PDF page 392"></div>
+          </div>
+        </section>
+        <section class="page" id="page-393">
+          <div class="page-head">
+            <div class="page-title">原书阅读器页 393<span>原书物理 PDF 页 391</span><span>印刷页 379</span></div>
+            <div class="page-tools">
+              <button type="button" data-copy-page="393">复制本页</button>
+              <button type="button" data-export-page="393">导出本页</button>
+            </div>
+          </div>
+          <div class="workbench">
+            <div class="editor-wrap">
+              <div class="rich-editor" data-page="393" contenteditable="true" role="textbox" aria-multiline="true" spellcheck="false">六十四卦的卦爻辞里含有很多商代特有的事件，比如，捕捉俘虏献祭；而从周朝建立开始，这些做法就消失了，后代的古人也就不再记得这些事。
+
+这里再举个例子。《易经》的卦爻辞里经常出现“贞”字，比如坤卦的卦辞“利牝马之贞”，后世学者都不知道这个字什么意思，包括孔颖达，也只能猜测它和“坚贞”有关，解释成：“贞，正也。”其实，商代甲骨卜辞里就频繁地出现这个“贞”字，现代学者也早已确定，它就是占卜的“占”，故而甲骨占卜师也被称为“贞人”。由此，《易经》中的“贞”也就好解释了。比如，坤卦的“利牝马之贞”的意思是说，占算结果对母马有利；相对的，否卦的“不利君子贞”的意思则是说，占算结果对君子不利。看来，倘若没有发现甲骨文，我们对《易经》中“贞”字的理解很可能还会一直错下去。
+
+《易经》的卦爻辞所记载的事件，有些肯定是只有周文王才经历过的，所以，它们的价值非常独特。[[fn:3]]从孔子时代以来，解读《易经》的著作很多，但因为没有甲骨文知识的基础，所以搞错了很多基本概念，这些“算命技术”自然也就成了无根之木。而用甲骨文和商代考古知识研究《易经》的，高亨先生可谓开先河者，他的著作《周易古经今注》就是只讨论文王的《易经》，而不涉及东周时人写的《易传》，以避免让后世的误解逆行侵入商代历史。在这个意义上，本书算是在高亨先生开创的方法基础上的一种继续。[[fn:4]]</div>
+            </div>
+            <div class="scan"><img src="pdf_pages/page-391.jpg" alt="PDF page 393"></div>
+          </div>
+        </section>
+        <section class="page" id="page-394">
+          <div class="page-head">
+            <div class="page-title">原书阅读器页 394<span>原书物理 PDF 页 392</span><span>印刷页 380</span></div>
+            <div class="page-tools">
+              <button type="button" data-copy-page="394">复制本页</button>
+              <button type="button" data-export-page="394">导出本页</button>
+            </div>
+          </div>
+          <div class="workbench">
+            <div class="editor-wrap">
+              <div class="rich-editor" data-page="394" contenteditable="true" role="textbox" aria-multiline="true" spellcheck="false">卦爻辞里有什么
+
+《易经》卦爻辞中，除了和商代的捕俘及人祭有关的内容，还包含很多周族人的活动。这应该也是周文王比较关注的内容，否则他不会一一记载下来。
+
+先来看第十三个卦，同人卦：
+
+同人于野，亨。利涉大川。利君子贞。
+
+初九：同人于门，无咎。
+
+六二：同人于宗，吝。
+
+九三：伏戎于莽，升其高陵，三岁不兴。
+
+九四：乘其墉，弗克攻。吉。
+
+九五：同人先号咷而后笑，大师克相遇。
+
+同人于郊，无悔。
+
+“离下乾上”，这是解释同人卦的卦象图案——☰/☲。它有六个爻，下边三条是八卦的离（☲），上边三条是八卦的乾（☰）。
+
+按八卦的释义，离是火，乾是天，火在天的下面燃烧，就是《同人》。但《同人》与天和火有什么必然联系吗？从卦爻辞里看不出来，这里也就不再妄加揣测。
+
+〔按语：火攻〕
+
+“同人”的意思大概是集结（同）盟军（人）。它的卦辞是：“同人于野，亨。利涉大川。利君子贞。”意为，在原野集结起我方的盟军，举行祭祀；利于渡过大河；结果对君子有利。
+
+从卦辞看，这很像是周文王晚年在准备灭商的工作：要集结起各部族的盟军，用祭祀取得诸神的支持，团结盟军，顺利渡过黄河（这样才能打到商朝腹地）；这个卦象对“君子”有利，前景比较好。
+
+再来看六个爻的爻辞。
+
+每个爻辞前面有两个字的序号，其中的“九”代表奇数、阳爻；“六”代表偶数、阴爻。
+
+按照从下往上的顺序，最下面的第一个爻叫“初”。按阴阳，只能有“初六”或“初九”两种；最后一个爻在最上面，叫“上”，分为“上六”或“上九”。</div>
+            </div>
+            <div class="scan"><img src="pdf_pages/page-392.jpg" alt="PDF page 394"></div>
+          </div>
+        </section>
+        <section class="page" id="page-395">
+          <div class="page-head">
+            <div class="page-title">原书阅读器页 395<span>原书物理 PDF 页 393</span><span>印刷页 381</span></div>
+            <div class="page-tools">
+              <button type="button" data-copy-page="395">复制本页</button>
+              <button type="button" data-export-page="395">导出本页</button>
+            </div>
+          </div>
+          <div class="workbench">
+            <div class="editor-wrap">
+              <div class="rich-editor" data-page="395" contenteditable="true" role="textbox" aria-multiline="true" spellcheck="false">中间二、三、四、五爻的名称，则是表示阴阳的六或九放在前面，序号放在后面，所以同人卦中间的四个爻依次是六二、九三、九四、九五，顺序仍是从下往上。
+
+第一个爻（初九）的爻辞：“同人于门，无咎。”意思是，在大门口集结盟军，没有灾祸。
+
+第二个爻（六二）：“同人于宗，吝。”意思是，在宗庙集结盟军，前途不太光明。
+
+第三个爻（九三）：“伏戎于莽，升其高陵，三岁不兴。”意思是，在丛林里埋伏军队，登上高高的山顶眺望敌人，三年内无法战胜敌军。[[fn:5]]
+
+第四个爻（九四）：“乘其墉，弗克攻。吉。”意思是，登上了敌人的城墙，没能攻打下来，但结果吉利。
+
+第五个爻（九五）：“同人先号咷而后笑，大师克相遇。”意思是，盟军先是号啕大哭，又变成大笑，会遭遇敌人的大部队。
+
+第六个爻（上九）：“同人于郊，无悔。”意思是，在郊野里集结盟军，没有什么后悔的。
+
+看来，同人卦皆与战争有关，但各爻的结果不太一样，有很顺利的，也有很艰难和危险的。
+
+不过，《易经》的卦并非都是军国大事，有些卦看上去只是些偶然的、彼此无关的日常小事，各爻之间也看不出，至少我们看不出有什么明显的关联。这又是为什么？探寻这背后的原因，要从文王研究“易”的目的开始。
+
+六十四卦为何成对？
+
+商王进行甲骨占卜时，会把需要预测的问题刻在甲骨上。这里，我们用前述武丁关于妇好生育的一次占卜为例说明：一，武丁先刻下了“妇好这次生育是否顺利”的问题，这是“命辞”。二，然后，从甲骨裂纹走向判断结果，这是“占辞”：“丁日或庚日生育的话会吉利”。三，最后的结果也可能会补刻到甲骨上，这是“验辞”。比如，武丁这次占卜的三十一天后，妇好生育了一个女儿，“验辞”便是：“甲寅娩，不嘉。惟女。”</div>
+            </div>
+            <div class="scan"><img src="pdf_pages/page-393.jpg" alt="PDF page 395"></div>
+          </div>
+        </section>
+        <section class="page" id="page-396">
+          <div class="page-head">
+            <div class="page-title">原书阅读器页 396<span>原书物理 PDF 页 394</span><span>印刷页 382</span></div>
+            <div class="page-tools">
+              <button type="button" data-copy-page="396">复制本页</button>
+              <button type="button" data-export-page="396">导出本页</button>
+            </div>
+          </div>
+          <div class="workbench">
+            <div class="editor-wrap">
+              <div class="rich-editor" data-page="396" contenteditable="true" role="textbox" aria-multiline="true" spellcheck="false">甲骨文的这些刻辞不太复杂，背后的原理也很简单，基本不涉及事物的因果关系：先是给诸神献祭并询问问题；然后，诸神的回答就会传递到甲骨的烫纹上；最后，占卜者将其解读出来。也就是说，这是一种单一的因果叙事：诸神的决定是因，表现到人间就是果，甲骨占卜是读取这种因果关系的工具。至于人类有时候占卜错了，那也是误读了神的旨意，错在人而不在神。
+
+但六十四卦则与此不同，它的原理更复杂。它认为，世间的一切并不都是由神直接决定的，而是各种事物会发生互相影响并形成一种因果发展的链条，其对应的就是卦里六个爻的阴阳顺序。换句话说，对于每一个主题的卦，周文王都需要找出与之相关的六个事件或现象作为六条爻辞，从而构成一个完整的因果发展链。而且，事物的因果关系不会只有一种模式。在某种环境下，甲是乙的原因，而在另一种环境下，则可能变成乙是甲的原因，甚至原本没有因果关系的两个孤立事件，在另一种时空环境下也可能会发生联系。
+
+所以，文王在《易经》中梳理了他亲历和认知的各种事件，并试图用不同的因果发展链来串联和解释它们。比如，有些相同的爻辞（事件），比如“帝乙归妹”，就出现在了不同卦的不同爻位，这其实是文王在设定不同的占算情境。因此，同一事件会具有不同的前因后果，以及不同的含义和指向性。
+
+换言之，文王的爻辞虽都是发生过的或者预测要发生的具体事件，但在他看来，这些事件未必是单线性的，它们完全可能按照不同的时间顺序再次发生，从而使因果关系发生颠倒。</div>
+            </div>
+            <div class="scan"><img src="pdf_pages/page-394.jpg" alt="PDF page 396"></div>
+          </div>
+        </section>
+        <section class="page" id="page-397">
+          <div class="page-head">
+            <div class="page-title">原书阅读器页 397<span>原书物理 PDF 页 395</span><span>印刷页 383</span></div>
+            <div class="page-tools">
+              <button type="button" data-copy-page="397">复制本页</button>
+              <button type="button" data-export-page="397">导出本页</button>
+            </div>
+          </div>
+          <div class="workbench">
+            <div class="editor-wrap">
+              <div class="rich-editor" data-page="397" contenteditable="true" role="textbox" aria-multiline="true" spellcheck="false">一切事物都是无常和可变的，六爻的不同组合对应着不同的卦象，哪怕只变换一个爻，也会变成另一种卦象，这就是“易”：变易无常。由此，六十四卦就是文王对可能性做出的六十四种探索和六十四个模型。或者说，文王是在用各种无常的可能性重新组织世界，重组头脑中的各种认知。
+
+这样一种思路，可以从六十四卦的“组对”规律中发现一些痕迹。六十四卦皆有卦名，且是成对组合，比如，“乾”和“坤”，“震”和“艮”，”同人”和“大有”，“噬嗑”和“贲”……是谁给这些卦起的名字并编组成对，史书中没有记载，但文王的可能性很大——考古发现的更早的数字卦象并没有附带卦名，更没有成对出现的记载。
+
+其中，有些成对的卦名比较好懂，比如，“乾”和“坤”，“否”和“泰”，“损”和“益”，“既济”（已经渡河）和“未济”（尚未渡河），都是反义词；有些却未必是反义词，比如，“井”和“困”，“小畜”和“履”，看不出彼此之间有什么对立关系；还有一些则更模糊，比如，“噬嗑”和“贲”，更难判断它们之间的关系。
+
+我们先搁置对卦名的解释，来看卦象，看看它们的组对规律是什么，以及是否一定会具有相反的关系。
+
+有人说，乾卦和坤卦最是简单明白，乾卦都是阳爻，坤卦都是阴爻，看来，卦象组对的规律是每个位置的爻都阴阳相反，乾的第一个爻是阳，所以坤的第一个爻是阴，以此类推……
+
+乾☰/☰ 坤☷/☷
+
+其实不然。乾和坤这一对卦的卦象比较特殊，不代表普遍规律。六十四卦分为三十二对，其中只有四对是这种情况：同位之爻，阴阳相反。〔札记：“同位之爻，阴阳相反”在《易经》里指的是错卦（又称旁通卦）关系 [5.5, 5.9]，即两个卦的对应爻位阴阳完全相反（阳变阴，阴变阳）。这种关系揭示了事物对立统一、相反相成的整体转化规律 [5.8]。错卦的基本特点爻位对应：两卦的初、二、三、四、五、上六个同位爻阴阳全盘相反 [5.9]。整体对待：如乾卦与坤卦、坎卦与离卦，彼此互为错卦，呈现完全相反的对立面与视角 [5.6]。物极必反：暗含事物发展到极端时，会向其对立面转化的哲学道理。〕</div>
+            </div>
+            <div class="scan"><img src="pdf_pages/page-395.jpg" alt="PDF page 397"></div>
+          </div>
+        </section>
+        <section class="page" id="page-398">
+          <div class="page-head">
+            <div class="page-title">原书阅读器页 398<span>原书物理 PDF 页 396</span><span>印刷页 384</span></div>
+            <div class="page-tools">
+              <button type="button" data-copy-page="398">复制本页</button>
+              <button type="button" data-export-page="398">导出本页</button>
+            </div>
+          </div>
+          <div class="workbench">
+            <div class="editor-wrap">
+              <div class="rich-editor" data-page="398" contenteditable="true" role="textbox" aria-multiline="true" spellcheck="false">还有一种可能性。六十四卦的卦象是两个八卦上下重叠而成，那是不是这两个八卦互换位置就构成一对相反的卦呢？
+
+也不是。比如，屯卦☵/☳，卦象是震☳在下，坎☵在上；和它成对的是蒙卦☶/☵，但卦象并非坎☵在下，震☳在上，而是坎☵在下，艮☶在上。
+
+从这也可见，六十四卦的意义未必跟组成它的两个八卦有关系。
+
+至于六十四卦的成对原则到底是什么，我们这里随便选个例子。比如，无妄和大畜这一对卦：
+
+无妄☰/☳ 大畜☶/☰
+
+可以看到，这两个卦象，并不是同一个位置的爻必须阴阳相反，也不是上下两个八卦位置互换，而是六个爻呈现“颠倒”关系：无妄卦的第一个爻（最下面的），和大畜卦的最后一个爻（最上面的）相同；无妄卦的第二个爻，和大畜卦的倒数第二个爻相同……
+
+六十四卦里面，有二十八对都是这种“颠倒成对”原则。但也有极少数例外。就像上面说过的乾卦，它的六个阳爻形成上下对称，如果把它们上下颠倒一遍，还是完全同样的卦象。这就没办法了，只好让它和六个阴爻的坤卦结成一对，不然，六个阴爻的坤卦，上下颠倒之后也还是自己，所以它俩正好结对。
+
+这种因为自身对称而只能“相反成对”的卦，除了乾和坤，还有三对：
+
+坎 离 颐 大过 中孚 小过〔札记：| 卦名 | Glyph | 卦序 | 上卦／下卦 | 通称   |
+| -- | :---: | -: | ----- | ---- |
+| 坎  | **䷜** | 29 | 坎上坎下  | 坎为水  |
+| 离  | **䷝** | 30 | 离上离下  | 离为火  |
+| 颐  | **䷚** | 27 | 艮上震下  | 山雷颐  |
+| 大过 | **䷛** | 28 | 兑上巽下  | 泽风大过 |
+| 中孚 | **䷼** | 61 | 巽上兑下  | 风泽中孚 |
+| 小过 | **䷽** | 62 | 震上艮下  | 雷山小过 |
+
+按《周易》卦序排列为：
+
+```text
+䷚ 颐 → ䷛ 大过 → ䷜ 坎 → ䷝ 离
+䷼ 中孚 → ䷽ 小过
+```
+
+这六卦的共同特点是：**上下颠倒后，仍然是本卦**，所以称为“错综后不变”的六个特殊卦。下一步可进一步比较它们的六爻结构。〕
+
+总结一下，在《易经》中，每卦六个爻都是自下而上的顺序，而六十四卦组对的原则总体上是六爻“颠倒成对”；只有八个上下对称和无法颠倒的卦，才按“相反成对”的原则组成四对。</div>
+            </div>
+            <div class="scan"><img src="pdf_pages/page-396.jpg" alt="PDF page 398"></div>
+          </div>
+        </section>
+        <section class="page" id="page-399">
+          <div class="page-head">
+            <div class="page-title">原书阅读器页 399<span>原书物理 PDF 页 397</span><span>印刷页 385</span></div>
+            <div class="page-tools">
+              <button type="button" data-copy-page="399">复制本页</button>
+              <button type="button" data-export-page="399">导出本页</button>
+            </div>
+          </div>
+          <div class="workbench">
+            <div class="editor-wrap">
+              <div class="rich-editor" data-page="399" contenteditable="true" role="textbox" aria-multiline="true" spellcheck="false">研究《易经》的美国学者夏含夷（Edward Shaughnessy
+
+〔札记：https://en.wikipedia.org/wiki/Edward_L._Shaughnessy〕）很重视“颠倒成对”原则。他推测说，《易经》中每一对卦的内容都基本相似，比如，对于泰卦中的“帝乙归妹”，夏含夷认为，泰卦以及与泰卦成对的否卦，都和这桩婚姻有关。但这种推论还缺少证据，至于每一对卦探讨的内容都是什么，多数还难以解释。[[fn:6]]
+
+其实，不必急于追索每一卦的具体含义，而是应当先明白卦象“颠倒成对"原则的本质是什么。综合前述，本书认为，它是文王发现的世间规律，或者说，一种被称为“易”的思维方式：世间的一切都不是永恒和持续不变的，它们都可以有另一种相反的存在形式，一切也都可以颠倒重来一遍。
+
+否，颠倒重来就是泰；损，颠倒重来就是益……一切事件的发展过程，都可以“倒放”一遍，从终点回到起点。这意味着，一切皆有可能。
+
+翦商，可占
+
+按文王《易经》的“颠倒成对”原则，世间一切既有的事实都能用相反的方式再现一遍。商族曾经很弱小，就像爻辞里的“丧牛于易”，但他们后来却建立了强大的商朝；然而，这个过程同样是可逆的，目前强大的商朝也终将灭亡。
+
+这种思维方式可谓石破天惊。当时的人还没有走出神权时代，普遍认为世间一切都被天界的鬼神主宰：商王家族世代向上帝和诸神献祭，从而得到天界的福佑，因此和商朝作对，就意味着违反鬼神世界的意志，不可能成功。
+
+然而在羑里的地牢里，周昌的身体虽无法逃离，但他推演的六十四卦组对原则却自行打开了一扇通往新世界的大门，这便是：“翦商”是有可能的。</div>
+            </div>
+            <div class="scan"><img src="pdf_pages/page-397.jpg" alt="PDF page 399"></div>
+          </div>
+        </section>
+        <section class="page" id="page-400">
+          <div class="page-head">
+            <div class="page-title">原书阅读器页 400<span>原书物理 PDF 页 398</span><span>印刷页 386</span></div>
+            <div class="page-tools">
+              <button type="button" data-copy-page="400">复制本页</button>
+              <button type="button" data-export-page="400">导出本页</button>
+            </div>
+          </div>
+          <div class="workbench">
+            <div class="editor-wrap">
+              <div class="rich-editor" data-page="400" contenteditable="true" role="textbox" aria-multiline="true" spellcheck="false">虽然当初，是上帝指示和支持商人灭夏建商的，但上帝的心意也是可以更改的，它不可能永远充当商人的守护神，周族也可以获得上帝的垂青，并在它的保佑之下灭掉商朝，取而代之。
+
+在当时，这个想法实在是大逆不道，文王更不敢明白地将其写出来，哪怕当他获释回到周邦之后，也要秘而不宣，故而《易经》中的多数内容只能用含糊其辞的隐语来表达。
+
+来看坤卦六三爻：
+
+含章可贞。或从王事，无成，有终。
+
+六三爻的第一句是“含章可贞”，这“含章”二字，历来没有合理的解释。高亨认为，“含”为“戡”之借字，“章”为“商”之借字，“含章”就是“戡商”，也就是“翦商”。[[fn:7]]所以坤卦六三爻的意思是，翦商之事是可以占算的；如果继续忠于商王，不会有成果，会有终结。
+
+这个推测颇为合理。而且，用“含章”表示“翦商”，未必全是古文字的通假借用，可能也是为了保密。
+
+有类似含义的，是讼卦的六三爻：
+
+食旧德，贞厉，终吉。或从王事，无成。
+
+高亨认为，“食旧德”就是背叛商王昔日的恩德，[[fn:8]]也就是开启翦商之谋。占卜的结果是有灾害（“贞厉”），但最终会吉利（“终吉”）；反之，也就是如果继续忠于商王（“或从王事”），则不会有成果（“无成”）。这和坤卦六三爻相同。
+
+《易经》中还有一处“含章”，出自垢卦九五爻：
+
+以杞包瓜，含章，有陨自天。
+
+〔按语：杞人忧天〕
+
+“以杞包瓜”的意义难解，但其重点是“瓜”；“含章”，传统解释是瓜上有花纹；“有陨自天”，是说这只瓜从天上落下来摔碎了。按照高亨的解释，垢卦九五爻是个隐喻，意思是说商朝就像是一只有花纹的瓜，不堪一击，落地即碎。[[fn:9]]</div>
+            </div>
+            <div class="scan"><img src="pdf_pages/page-398.jpg" alt="PDF page 400"></div>
+          </div>
+        </section>
+        <section class="page" id="page-401">
+          <div class="page-head">
+            <div class="page-title">原书阅读器页 401<span>原书物理 PDF 页 399</span><span>印刷页 387</span></div>
+            <div class="page-tools">
+              <button type="button" data-copy-page="401">复制本页</button>
+              <button type="button" data-export-page="401">导出本页</button>
+            </div>
+          </div>
+          <div class="workbench">
+            <div class="editor-wrap">
+              <div class="rich-editor" data-page="401" contenteditable="true" role="textbox" aria-multiline="true" spellcheck="false">在六十四卦中，肯定有某个卦象代表的是商朝的崛起；而与它对立的卦，则代表了商朝的灭亡。因此，只要把这些卦找出来，研究各爻的原理，也即每个爻可能代表什么具体事件或条件（文王会因此代入不同的事物进行推演），就有可能找到灭亡商朝的密码。
+
+到这里，我们就可以初步理解为什么说《易经》的卦爻辞内含各种各样的事件，甚至难以理解的只言片语了：这是文王在对自己认知的各种事件进行排列和重组，用不同的卦象（阴阳爻组合）来检验它们的吉凶，以便总结出这个世界更深层的运行规律。而限于当时的环境，他必须刻意地使与翦商有关的各种信息变得很隐晦，外人会很难理解，所以我们也就不用对所有卦爻辞都强求解释了。
+
+《易经》并非文王专门编写的算命教材，而更像是他自己的练习簿，所以内容驳杂，有大量的私人琐事。从萌生翦商之念始，文王就反复将其代入和推算，并随时验证、修订和增补，希望总结出一套最精确的占算方法，而最终目的，当然就是在消灭商朝的战争里运用这套预测技术。
+
+有了对《易经》的上述理解，我们接着来看最前面的乾、坤两卦。
+
+古人对乾与坤是这么解释的：乾为天，阳之代表；坤为地，阴之代表。其实，这一对卦可能还代表了文王最关心的两个事物：商和周。商是强大的主宰，周是弱小的藩属，但在各自的生命历程中，它们会各自走向自己的反面。
+
+元亨，利贞。
+
+初九：潜龙，勿用。
+
+九二：见龙在田，利见大人。
+
+九三：君子终日乾乾，夕惕若厉，无咎。</div>
+            </div>
+            <div class="scan"><img src="pdf_pages/page-399.jpg" alt="PDF page 401"></div>
+          </div>
+        </section>
+        <section class="page" id="page-402">
+          <div class="page-head">
+            <div class="page-title">原书阅读器页 402<span>原书物理 PDF 页 400</span><span>印刷页 388</span></div>
+            <div class="page-tools">
+              <button type="button" data-copy-page="402">复制本页</button>
+              <button type="button" data-export-page="402">导出本页</button>
+            </div>
+          </div>
+          <div class="workbench">
+            <div class="editor-wrap">
+              <div class="rich-editor" data-page="402" contenteditable="true" role="textbox" aria-multiline="true" spellcheck="false">九四：或跃在渊，无咎。
+
+九五：飞龙在天，利见大人。
+
+上九：亢龙有悔。
+
+用九：见群龙无首，吉。〔札记：视频揭示了一个颠覆性发现：乾卦中的"龙"并非神话生物，而是6000年前古人观测的苍龙七宿天象系统。通过查海遗址（8000年前石龙）、濮阳西水坡墓葬（6500年前蚌塑龙虎配北斗）和曾侯乙漆箱（战国二十八宿图）三大考古证据链证实，"二月二龙抬头"实为角宿初现的地平线天文现象。 这套观象授时系统将乾卦六爻精准对应苍龙运行轨迹：从冬至"潜龙勿用"（整条龙隐没），到夏至"飞龙在天"（龙星横贯中天），再到秋初"亢龙有悔"（龙星西沉）。大火星（心宿二）作为关键坐标，指导着"七月流火知暑退"的农耕节奏。 这不仅是天文考古的重大发现，更揭示中华龙图腾的科学根基——我们的先民早在文字诞生前，就用星空编织了跨越四千年的生存时钟。所谓"神话"，实则是先民用肉眼丈量天地的智慧结晶。〕
+
+乾卦里集中出现的意象是龙。从夏朝-二里头文化以来，龙都是王者的象征。初九爻的“潜龙勿用”是说，龙弱小，潜伏于水下，无所作为。这说的是商族崛起之前的状态，后面的龙则已经活跃在天地之间：“见龙在田”“飞龙在天”。九二爻和九五爻都有“利见大人”，可能是隐喻周昌或者周族两次见到商王并受到重视。九三爻曰：“君子终日乾乾，夕惕若厉，无咎。”这可能说的是周族人兢兢业业地侍奉商朝的状态，也可能是说商朝先王奋发有为时的状态。到上九爻的“亢龙有悔”，则已经可能是在说商朝虽已强大到极致，但其根基不稳固，埋藏着衰亡的隐患。
+
+和《易经》的其他卦不同，乾、坤两卦在六条爻辞后，还分别有一条“用九”和“用六”，这可能是因为文王对这两卦格外重视，所以各增加了一句总结。《乾》卦的“用九”是“见群龙无首，吉”，这可能是说文王在殷都生活期间结识各种商朝上层人物，发现他们之间矛盾很深，周族可以找到内应，最终倾覆商朝。在这里，“吉”当是文王对翦商事业的判断，而非商朝的国运。
+
+再来看坤卦：
+
+元亨。利牝马之贞。君子有攸往，先迷，后得主，利。西南得朋，东北丧朋。安，贞吉。
+
+初六：履霜，坚冰至。
+
+六二：直，方，大；不习，无不利。
+
+六三：含章，可贞。或从王事，无成有终。
+
+六四：括囊，无咎无誉。
+
+六五：黄裳，元吉。</div>
+            </div>
+            <div class="scan"><img src="pdf_pages/page-400.jpg" alt="PDF page 402"></div>
+          </div>
+        </section>
+        <section class="page" id="page-403">
+          <div class="page-head">
+            <div class="page-title">原书阅读器页 403<span>原书物理 PDF 页 401</span><span>印刷页 389</span></div>
+            <div class="page-tools">
+              <button type="button" data-copy-page="403">复制本页</button>
+              <button type="button" data-export-page="403">导出本页</button>
+            </div>
+          </div>
+          <div class="workbench">
+            <div class="editor-wrap">
+              <div class="rich-editor" data-page="403" contenteditable="true" role="textbox" aria-multiline="true" spellcheck="false">上六：龙战于野，其血玄黄。
+
+用六：利永贞。〔札记：坤卦"牝马"之谜的结构化解读： 1. **核心矛盾**：传统将"利牝马之贞"解为"母马柔顺"，但马实为刚烈动物，与"柔顺"象征相悖。 2. **天象溯源**： - 房宿四星排开如马车（车厢+缰绳+车锁），《史记》称"房为府曰天驷" - 房宿与太阳运行同步，春分拉日出、夏至送日高、秋分伴日落、冬至驱日返 3. **双重实证**： - 6500年前西水坡大墓：龙尾处蚌壳摆塑小马，印证"龙尾摆马"天象认知 - 坤卦六二"直方大"：冯时教授考证"方"实指房宿，描述冬至房宿中天的天象 4. **本质重构**： - 乾卦（阳）：天上运行，顺读（初九至上九），管春夏 - 坤卦（阴）：地下承载，逆读（上六至初六），管秋冬 - "牝马"非柔顺象征，而是驱动太阳完成地下返程的阴性力量 5. **体系突破**：破解两千年来误读，揭示阴阳互根的宇宙运行法则——乾创坤成，缺一不可。〕
+
+坤卦的卦辞中出现了“牝马”（母马），但不知其具体代表何事；“君子有攸往，先迷，后得主，利”，应该是说君子（周昌）去往殷都，开始时遭遇各种不幸，但也结识了可以利用之人；而“西南得朋，东北丧朋”，则是说在西南方得到盟友，东北方则丧失盟友。殷都在周原的东北方，这可能是预示商周之间终将反目。卦辞的最终判断是“安，贞吉”。
+
+六三爻的“含章”（翦商），前文已述，这里不再赘述；六四爻的“括囊”，字面意思是把口袋（囊）扎起来，这可能是比喻翦商之谋需要严格保密；上六爻的“龙战于野，其血玄黄”则可能是预言周与商最后的决战，隐喻商朝（龙）将喋血原野；最后的用六爻“利永贞”是结论，说明翦商事业大有前途。
+
+当然，乾、坤两卦的卦爻辞中也有很多难以解释之处。比如，”或跃在渊”与“黄裳，元吉”，很可能是文王有意为之的隐语。类似现象在《易经》里有很多，已经无法亦不必强行求解。
+
+不过，文王并没有活到商朝灭亡，所以他的推算和验证持续到了临死之前。至于文王是先萌生翦商冲动，再从易卦体系寻求支持，还是在研究易卦组对原则时受到启发而产生的翦商之念，这已经很难判断。但至少有一点是肯定的：羑里的牢狱生活已经让文王深切地体会到当一名人牲（孚）的滋味；而在以往，当被要求带领族人捕猎羌人缴纳给崇侯时，他不太可能有如此深刻的切肤之痛。
+
+从猎俘者变成俘，本身就是“易”，而变易的旅程一旦开启，就会产生难以预测的后果。年过半百的文王深谙世界的不确定性，把人生剩余的时光大都投入了对《易经》的推算，但同时，他也没有忽视商人最正统的甲骨占卜技术。这两套体系和世界观，文王都不敢偏废。</div>
+            </div>
+            <div class="scan"><img src="pdf_pages/page-401.jpg" alt="PDF page 403"></div>
+          </div>
+        </section>
+        <section class="page" id="page-404">
+          <div class="page-head">
+            <div class="page-title">原书阅读器页 404<span>原书物理 PDF 页 402</span><span>印刷页 390</span></div>
+            <div class="page-tools">
+              <button type="button" data-copy-page="404">复制本页</button>
+              <button type="button" data-export-page="404">导出本页</button>
+            </div>
+          </div>
+          <div class="workbench">
+            <div class="editor-wrap">
+              <div class="rich-editor" data-page="404" contenteditable="true" role="textbox" aria-multiline="true" spellcheck="false">注释
+
+1参见宋镇豪《夏商社会生活史》，中国社会科学出版社，2005年，第530页。
+
+2顾颉刚：《周易卦爻辞中的故事》，《燕京学报》1929年第6期。收入《顾颉刚古史论文集》卷11，中华书局，2010年。
+
+3有学者认为个别的卦辞出现更晚，属于周公时代产物，如晋卦辞：“康侯用锡马蕃庶，昼日三接。”意思是说，康侯（周公的弟弟卫康叔周封）被天子赐予了很多马匹，一天之内得到三次接见。但不能排除文王时期有名为“康侯”的殷商贵族。再如爻辞中曾出现“箕子”，有学者认为是周灭商之后的记录，其实文王已经有可能和箕子打过交道并记录下来。
+
+4“周易”这个词的含义发生过扩大。春秋时期的史书，如《左传》，说的“周易”只是文王卦爻辞。孔子弟子编辑《周易》时，把他们对卦爻辞体系的很多解释也汇编了进去，比如《系辞》《文言》等。这些解释被称为《易传》或《十翼》（十种对卦爻辞的解释），导致《周易》的内容扩大。为了特指文王卦爻辞，现代学者称其为《易经》，以表示和《易传》的区别。本书也用《易经》代表文王卦爻辞体系，不涉及后来的《易传》。
+
+5孔颖达《正义》：“唯升高陵以望前敌，量斯势也，纵令更经三岁，亦不能兴起也。”
+
+6 ［美］夏含夷：《结婚、离婚与革命——〈周易〉的言外之意》，李衡眉、郭明勤译，《周易研究》1994年第2期。
+
+7高亨释为：“乃武王克商之兆，所占之事，自为可行，故曰含章可贞。”参见高亨《周易古经今注》，第167页。高亨认为这是周武王灭商时的占卜辞，其实它很可能是在周文王时期就已经有了，是对未来之事的占算。
+
+8高亨认为，食为蚀之借字：“食旧德，谓亏损其旧日之德行也。”参见高亨《周易古经今注》，第178页。
+
+9高亨释为：“戡商有陨自天，言武王之克商，乃是天陨灭商祚也。”参见高亨《周易古经今注》，第287页。</div>
+            </div>
+            <div class="scan"><img src="pdf_pages/page-402.jpg" alt="PDF page 404"></div>
+          </div>
+        </section>
+        <section class="page" id="page-405">
+          <div class="page-head">
+            <div class="page-title">原书阅读器页 405<span>原书物理 PDF 页 403</span><span>印刷页 391</span></div>
+            <div class="page-tools">
+              <button type="button" data-copy-page="405">复制本页</button>
+              <button type="button" data-export-page="405">导出本页</button>
+            </div>
+          </div>
+          <div class="workbench">
+            <div class="editor-wrap">
+              <div class="rich-editor" data-page="405" contenteditable="true" role="textbox" aria-multiline="true" spellcheck="false">[[editor-fn:1]]
+
+〔编者注1〕这个版以注音为主，不对内容进行讨论。</div>
+            </div>
+            <div class="scan"><img src="pdf_pages/page-403.jpg" alt="PDF page 405"></div>
+          </div>
+        </section>
+        <section class="page" id="page-406">
+          <div class="page-head">
+            <div class="page-title">原书阅读器页 406<span>原书物理 PDF 页 404</span><span>印刷页 392</span></div>
+            <div class="page-tools">
+              <button type="button" data-copy-page="406">复制本页</button>
+              <button type="button" data-export-page="406">导出本页</button>
+            </div>
+          </div>
+          <div class="workbench">
+            <div class="editor-wrap">
+              <div class="rich-editor" data-page="406" contenteditable="true" role="textbox" aria-multiline="true" spellcheck="false"></div>
+            </div>
+            <div class="scan"><img src="pdf_pages/page-404.jpg" alt="PDF page 406"></div>
+          </div>
+        </section></div>
+        <section class="notes-dock" id="notes">
+          <h2>编辑札记</h2>
+          <div class="note-grid">
+            <div class="note-controls">
+              <label>页<select id="notePage"></select></label>
+              <div class="marker-composer" id="markerComposer">
+                <h3>标记</h3>
+                <label>类型<select id="markerType">
+                  <option value="pinyin">注音</option>
+                  <option value="editor-note">编者注／脚注</option>
+                  <option value="inline-note">按语</option>
+                  <option value="pending">待核</option>
+                  <option value="user-note">用户札记</option>
+                </select></label>
+                <label>内容<input id="markerText" type="text" autocomplete="off" placeholder="输入拼音或笔记内容"></label>
+                <p class="marker-help" id="markerHelp">先在正文中选择文字，再输入拼音；可用“拼音；简注”。</p>
+                <div class="note-actions"><button id="applyMarkerBtn" type="button">应用标记</button></div>
+              </div>
+              <label>工作日志标签<input id="noteTag" type="text" value="校订" autocomplete="off"></label>
+              <textarea id="noteText" spellcheck="false"></textarea>
+              <div class="note-actions">
+                <button id="addNoteBtn" type="button">记录到编辑日志</button>
+                <button id="exportLogBtn" type="button">导出日志</button>
+                <button id="downloadLogBtn" type="button">下载日志</button>
+                <button id="clearLogBtn" type="button">清空日志</button>
+              </div>
+            </div>
+            <div><div id="logList" class="log-list"></div></div>
+          </div>
+        </section>
+        <section class="export-dock"><h2>导出文本</h2><textarea id="exportText" spellcheck="false"></textarea></section>
+      </section>
+    </div>
+  </main>
+  <button class="quick-note-jump" type="button" data-target="notes">札记</button>
+  <script>
+    const STORAGE_KEY = "jianshang:chapter_20:editor:v3:08e020a07eb3";
+    const LOG_KEY = "jianshang:chapter_20:editor-log:v1";
+    const OUTPUT_NAME = "chapter_20_clean_edited.txt";
+    const LOG_NAME = "chapter_20_edit_log.txt";
+    const BACKUP_NAME = "chapter_20_editor_backup.json";
+    const CHAPTER_NOTES_NAME = "chapter_20_reading_notes.md";
+    const CHAPTER_NOTES_KEY = `${STORAGE_KEY}:chapter-notes`;
+    const DICTIONARY_SETTINGS_KEY = 'jianshang:dictionary-settings:v1';
+    const PROJECT_DICTIONARY_OVERRIDES_KEY = 'reading-lexicon-entry-overrides-v1';
+    const STATIC_CHAPTER_NOTES = [["以杞包瓜，含章，有陨自天。", "这一句应与杞人忧天有关。据报道古杞地发现大量陨石，古时曾经发生过陨石雨，杞国无事忧天倾并非空穴来风。\n\n### 有陨自天\n\n以古人对天象的理解，陨石从天而降，天开始碎裂，必有大事发生。天翻地覆，改朝换代，是故翦商。\n\n状态：个人理解，待补来源核查。\n记录者：reader\n记录日期：2026-07-02\n处理者：Codex\n处理日期：2026-07-02\n关联原文：chapter_20_clean.txt 第 203-207 行。\n来源线索：记忆。"], ["贞", "贞在古代是占卜的意思，贞卜、贞问、贞筮等都是指占卜。\n\n状态：作者解释，已核对本章原文。\n记录者：reader\n记录日期：2026-07-02\n处理者：Codex\n处理日期：2026-07-02\n关联原文：chapter_20_clean.txt 第 69 行。\n来源线索：记忆。"], ["同人卦", "作者的解读符合郭沫若对周易的理解，周易是一副描述古人生活的风俗画卷。\n\n### 伏戎于莽，升其高陵，三岁不兴。\n\n这一句应该是对战争的描述。伏击，占领制高点，三年为期。兵法曰：善用兵者，役不再籍，粮不三载。\n\n\n状态：个人理解。\n记录者：reader\n记录日期：2026-07-02\n处理者：Codex\n处理日期：2026-07-02\n关联原文：chapter_20_clean.txt 第 77-121 行。\n来源线索：记忆。"], ["坤卦", "现在有人使用天文学解释古人的世界观，用天文考古。譬如用「天驷」注释「牝马」。\n\n### 牝马\n\n牝马即是「天驷」。「天驷」在太阳西落后，承载太阳从地下驶过，再从东方升起。\n\n### 六二：直，方，大；不习，无不利。\n\n直，方，大，这一组字也应该有这方面，即天文学的寓意。目前未见有相关的解释。\n\n状态：个人理解，待查冯时。\n记录者：reader\n记录日期：2026-07-02\n处理者：Codex\n处理日期：2026-07-02\n关联原文：chapter_20_clean.txt 第 241-259 行。\n来源线索：韬略学宫的微信视频。"], ["乾卦", "同理坤卦。\n\n「苍龙七宿」是指天文学的七宿。乾卦的「龙」是指天上的龙，坤卦的「马」是指天上的马。\n\n如果按天文考古的路径继续读，乾卦之「龙」与坤卦之「牝马」都可能不是普通动物意象，而是天象系统中的星宿或运行模型。作者在本章侧重将乾坤解释为商周政治命运的隐喻，这一解释可以和天文解释并存：天象提供象征框架，政治经验提供卦爻辞的历史内容。\n\n状态：个人理解, Codex，待补来源核查。\n记录者：reader\n记录日期：2026-07-02\n处理者：Codex\n处理日期：2026-07-03\n关联原文：chapter_20_clean.txt 第 217-237 行。\n来源线索：微信视频；待查冯时。"], ["六十四卦为何成对？", "本章最关键的解释之一，是把六十四卦的「颠倒成对」理解为文王的世界观：既有秩序不是永恒的，事件可以反向重组，强弱、否泰、损益都可能翻转。这样读，《易经》不只是占算书，而是周昌在羑里重新组织现实、寻找翦商可能性的模型。\n\n这一点和甲骨占卜形成对照：甲骨占卜更像读取神意，六十四卦则把事件放进变化链条中推演。作者把「易」解释为变易无常，也就为「商可以被周取代」打开了思想入口。\n\n状态：个人理解, Codex。\n记录者：reader\n记录日期：2026-07-03\n处理者：Codex\n处理日期：2026-07-03\n关联原文：chapter_20_clean.txt 第 127-175 行。\n来源线索：本章原文。"], ["含章可贞", "高亨把「含章」读作「戡商」或「翦商」，是本章把《易经》和翦商计划连接起来的关键。如果「含章」只是美德或文采，就会落入后世义理化解释；若读作隐语，则坤卦六三爻变成政治谋划：「翦商之事，可以占算」。\n\n这里尤其要注意「或从王事，无成，有终」的对照结构：若从商王之事，则无成而有终；若不从王事，便暗含另一条路，即翦商。这个解释需要继续核查高亨原书上下文。\n\n状态：个人理解, Codex，待补来源核查。\n记录者：reader\n记录日期：2026-07-03\n处理者：Codex\n处理日期：2026-07-03\n关联原文：chapter_20_clean.txt 第 189-195 行。\n来源线索：高亨《周易古经今注》。"], ["食旧德，贞厉，终吉", "讼卦六三爻与坤卦六三爻形成呼应：一边是「含章可贞」，一边是「食旧德，贞厉，终吉」。若按高亨解释，「食旧德」是背叛商王旧恩，那么它呈现的是翦商计划的道德与风险两面：背叛旧主会有危险，但最终吉利。\n\n这条爻辞可以帮助理解周人处境：翦商并不是单纯军事问题，也涉及从属关系、旧恩、政治合法性和神意转换。作者说文王不敢明写翦商，这类隐语正是可能的表达方式。\n\n状态：个人理解, Codex，待补来源核查。\n记录者：reader\n记录日期：2026-07-03\n处理者：Codex\n处理日期：2026-07-03\n关联原文：chapter_20_clean.txt 第 197-201 行。\n来源线索：高亨《周易古经今注》。"], ["括囊", "坤卦六四爻「括囊」可与前文的「含章」一起读。若「含章」是把翦商之谋藏在隐语里，「括囊」则像是对行动策略的补充：扎紧口袋，不泄露谋划。这样一来，坤卦不只是抽象的阴柔之德，也像一组周族在商权力结构下求生、结盟、保密和反转的政治指南。\n\n状态：个人理解, Codex。\n记录者：reader\n记录日期：2026-07-03\n处理者：Codex\n处理日期：2026-07-03\n关联原文：chapter_20_clean.txt 第 247-259 行。\n来源线索：本章原文。"]];
+    const TERMS = [{"term": "爻辞", "pinyin": "yáo cí", "type": "concept", "annotation": "解释每一爻吉凶和意义的文字。", "difficulty": 3, "unit_type": "word", "domain": "general"}, {"term": "乾", "pinyin": "qián", "type": "text", "annotation": "八卦和六十四卦卦名。", "difficulty": 4, "unit_type": "classical_word", "domain": "general"}, {"term": "易经", "pinyin": "yì jīng", "type": "text", "annotation": "文王卦爻辞体系，书中用以讨论翦商谋略。", "difficulty": 4, "unit_type": "classical_word", "domain": "general"}, {"term": "坤", "pinyin": "kūn", "type": "text", "annotation": "八卦和六十四卦卦名。", "difficulty": 4, "unit_type": "classical_word", "domain": "general"}, {"term": "六十四卦", "pinyin": "liù shí sì guà", "type": "concept", "annotation": "由上下两个八卦重叠形成的六十四种六爻卦象。", "difficulty": 3, "unit_type": "word", "domain": "general"}, {"term": "卦象", "pinyin": "guà xiàng", "type": "concept", "annotation": "由阴阳爻组成的卦形图象。", "difficulty": 3, "unit_type": "word", "domain": "general"}, {"term": "八卦", "pinyin": "bā guà", "type": "concept", "annotation": "由三爻组成的八种基本卦象。", "difficulty": 3, "unit_type": "word", "domain": "general"}, {"term": "卦爻辞", "pinyin": "guà yáo cí", "type": "concept", "annotation": "《易经》中卦辞和爻辞的合称。", "difficulty": 3, "unit_type": "word", "domain": "general"}, {"term": "同人", "pinyin": "tóng rén", "type": "text", "annotation": "《易经》卦名，文中解释为集结盟军。", "difficulty": 4, "unit_type": "classical_word", "domain": "general"}, {"term": "翦商", "pinyin": "jiǎn shāng", "type": "concept", "annotation": "周人剪灭商朝的政治行动。", "difficulty": 3, "unit_type": "word", "domain": "general"}, {"term": "离", "pinyin": "lí", "type": "text", "annotation": "八卦之一。", "difficulty": 4, "unit_type": "classical_word", "domain": "general"}, {"term": "卦辞", "pinyin": "guà cí", "type": "concept", "annotation": "解释一卦吉凶和意义的文字。", "difficulty": 3, "unit_type": "word", "domain": "general"}, {"term": "坎", "pinyin": "kǎn", "type": "text", "annotation": "八卦之一。", "difficulty": 4, "unit_type": "classical_word", "domain": "general"}, {"term": "周昌", "pinyin": "zhōu chāng", "type": "person", "annotation": "周文王姬昌，书中常称周昌。", "difficulty": 3, "unit_type": "proper_name", "domain": "proper_name"}, {"term": "高亨", "pinyin": "gāo hēng", "type": "person", "annotation": "现代《周易》研究学者。", "difficulty": 3, "unit_type": "proper_name", "domain": "proper_name"}, {"term": "周文王", "pinyin": "zhōu wén wáng", "type": "person", "annotation": "周族领袖姬昌。", "difficulty": 3, "unit_type": "proper_name", "domain": "proper_name"}, {"term": "震", "pinyin": "zhèn", "type": "text", "annotation": "八卦之一。", "difficulty": 4, "unit_type": "classical_word", "domain": "general"}, {"term": "艮", "pinyin": "gèn", "type": "text", "annotation": "八卦之一。", "difficulty": 4, "unit_type": "classical_word", "domain": "general"}, {"term": "孔颖达", "pinyin": "kǒng yǐng dá", "type": "person", "annotation": "唐代经学家，《周易正义》编纂者之一。", "difficulty": 3, "unit_type": "proper_name", "domain": "proper_name"}, {"term": "牝马", "pinyin": "pìn mǎ", "type": "rare_word", "annotation": "母马；见《易经》坤卦卦辞。", "difficulty": 4, "unit_type": "classical_word", "domain": "general"}, {"term": "阳爻", "pinyin": "yáng yáo", "type": "concept", "annotation": "八卦、六十四卦中的阳性爻。", "difficulty": 3, "unit_type": "word", "domain": "general"}, {"term": "羑里", "pinyin": "yǒu lǐ", "type": "place", "annotation": "文王被商纣囚禁之地。", "difficulty": 3, "unit_type": "proper_name", "domain": "proper_name"}, {"term": "阴爻", "pinyin": "yīn yáo", "type": "concept", "annotation": "八卦、六十四卦中的阴性爻。", "difficulty": 3, "unit_type": "word", "domain": "general"}, {"term": "顾颉刚", "pinyin": "gù jié gāng", "type": "person", "annotation": "现代史学家，曾研究《周易》爻辞中的故事。", "difficulty": 3, "unit_type": "proper_name", "domain": "proper_name"}, {"term": "巽", "pinyin": "xùn", "type": "text", "annotation": "八卦之一。", "difficulty": 4, "unit_type": "classical_word", "domain": "general"}, {"term": "兑", "pinyin": "duì", "type": "text", "annotation": "八卦之一。", "difficulty": 4, "unit_type": "classical_word", "domain": "general"}, {"term": "无妄", "pinyin": "wú wàng", "type": "text", "annotation": "《易经》卦名，文中用于说明卦象成对原则。", "difficulty": 4, "unit_type": "classical_word", "domain": "general"}, {"term": "大畜", "pinyin": "dà xù", "type": "text", "annotation": "《易经》卦名，文中与无妄成对举例。", "difficulty": 4, "unit_type": "classical_word", "domain": "general"}, {"term": "屯", "pinyin": "tún", "type": "text", "annotation": "《易经》卦名，震下坎上。", "difficulty": 4, "unit_type": "classical_word", "domain": "general"}, {"term": "蒙", "pinyin": "méng", "type": "text", "annotation": "《易经》卦名，坎下艮上。", "difficulty": 4, "unit_type": "classical_word", "domain": "general"}, {"term": "戡", "pinyin": "kān", "type": "rare_word", "annotation": "用武力平定；文中“戡商”即翦灭商朝。", "difficulty": 4, "unit_type": "classical_word", "domain": "general"}, {"term": "杞", "pinyin": "qǐ", "type": "rare_word", "annotation": "木名；此处见垢卦“以杞包瓜”。", "difficulty": 4, "unit_type": "classical_word", "domain": "general"}, {"term": "颐", "pinyin": "yí", "type": "text", "annotation": "《易经》卦名，文中列为自身对称的卦。", "difficulty": 4, "unit_type": "classical_word", "domain": "general"}, {"term": "大过", "pinyin": "dà guò", "type": "text", "annotation": "《易经》卦名，文中列为自身对称的卦。", "difficulty": 4, "unit_type": "classical_word", "domain": "general"}, {"term": "中孚", "pinyin": "zhōng fú", "type": "text", "annotation": "《易经》卦名，文中列为自身对称的卦。", "difficulty": 4, "unit_type": "classical_word", "domain": "general"}, {"term": "小过", "pinyin": "xiǎo guò", "type": "text", "annotation": "《易经》卦名，文中列为自身对称的卦。", "difficulty": 4, "unit_type": "classical_word", "domain": "general"}, {"term": "筮", "pinyin": "shì", "type": "rare_word", "annotation": "用蓍草或草棍占算。", "difficulty": 4, "unit_type": "classical_word", "domain": "general"}, {"term": "蹇", "pinyin": "jiǎn", "type": "text", "annotation": "《易经》卦名，文中以数字卦举例。", "difficulty": 4, "unit_type": "classical_word", "domain": "general"}, {"term": "缊", "pinyin": "yùn", "type": "rare_word", "annotation": "包藏；文中见《周易正义》引文“缊在爻卦之中矣”。", "difficulty": 4, "unit_type": "classical_word", "domain": "general"}, {"term": "贞人", "pinyin": "zhēn rén", "type": "concept", "annotation": "甲骨占卜中主持或记录占问的人。", "difficulty": 3, "unit_type": "word", "domain": "general"}, {"term": "亢龙有悔", "pinyin": "kàng lóng yǒu huǐ", "type": "项目词典", "annotation": "《易》语，处于极盛而不知退会有悔恨。", "difficulty": 3, "unit_type": "word", "domain": "general"}, {"term": "甲骨刻辞", "pinyin": "jiǎ gǔ kè cí", "type": "项目词典", "annotation": "刻在甲骨上的文字记录。", "difficulty": 4, "unit_type": "classical_word", "domain": "general"}, {"term": "甲骨卜辞", "pinyin": "jiǎ gǔ bǔ cí", "type": "项目词典", "annotation": "商代刻写在甲骨上的占卜文字。 | 刻写在龟甲兽骨上的占卜文字。 | 刻写在甲骨上的占卜记录。 | 刻写在龟甲兽骨上的占卜辞句。", "difficulty": 4, "unit_type": "classical_word", "domain": "general"}, {"term": "周武王", "pinyin": "zhōu wǔ wáng", "type": "项目词典", "annotation": "周发，灭商之君。", "difficulty": 3, "unit_type": "proper_name", "domain": "proper_name"}, {"term": "上帝", "pinyin": "shàng dì", "type": "项目词典", "annotation": "商周宗教中的最高神。", "difficulty": 3, "unit_type": "word", "domain": "general"}, {"term": "人牲", "pinyin": "rén shēng", "type": "项目词典", "annotation": "被用于祭祀的人。 | 被用于祭祀或献祭的人。 | 被杀用于祭祀的人。", "difficulty": 3, "unit_type": "word", "domain": "general"}, {"term": "人祭", "pinyin": "rén jì", "type": "项目词典", "annotation": "杀人用于祭祀的宗教行为。 | 以人作为祭品的祭祀行为。 | 杀人用于祭祀。", "difficulty": 3, "unit_type": "word", "domain": "general"}, {"term": "卜辞", "pinyin": "bǔ cí", "type": "项目词典", "annotation": "甲骨占卜后刻写或记录的辞句。 | 甲骨上记录占卜的文字。 | 占卜时刻写或记录的辞句。", "difficulty": 4, "unit_type": "classical_word", "domain": "general"}, {"term": "占辞", "pinyin": "zhān cí", "type": "项目词典", "annotation": "占卜时刻写或记录的辞句。", "difficulty": 4, "unit_type": "classical_word", "domain": "general"}, {"term": "可贞", "pinyin": "kě zhēn", "type": "项目词典", "annotation": "可通过占卜预测或问卜。", "difficulty": 4, "unit_type": "classical_word", "domain": "general"}, {"term": "号咷", "pinyin": "háo táo", "type": "项目词典", "annotation": "大声哭号。", "difficulty": 4, "unit_type": "classical_word", "domain": "general"}, {"term": "含章", "pinyin": "hán zhāng", "type": "项目词典", "annotation": "《易经》坤卦爻辞，文中据高亨释为“翦商”。", "difficulty": 4, "unit_type": "classical_word", "domain": "general"}, {"term": "周公", "pinyin": "zhōu gōng", "type": "项目词典", "annotation": "周公旦，武王之弟。 | 周公旦，周初政治家。", "difficulty": 3, "unit_type": "proper_name", "domain": "proper_name"}, {"term": "周原", "pinyin": "zhōu yuán", "type": "项目词典", "annotation": "关中地区周族的重要活动中心。 | 关中地区周族重要遗址和活动中心。 | 周族核心区域。", "difficulty": 5, "unit_type": "specialist_term", "domain": "archaeology"}, {"term": "周易", "pinyin": "zhōu yì", "type": "项目词典", "annotation": "以《易经》及其传文构成的古代经典。 | 《易经》与后世《易传》合称的经典。", "difficulty": 4, "unit_type": "classical_word", "domain": "general"}, {"term": "商族", "pinyin": "shāng zú", "type": "项目词典", "annotation": "商王朝建立前后的族群共同体。", "difficulty": 3, "unit_type": "word", "domain": "general"}, {"term": "商王", "pinyin": "shāng wáng", "type": "项目词典", "annotation": "商朝王。", "difficulty": 3, "unit_type": "proper_name", "domain": "proper_name"}, {"term": "喋血", "pinyin": "dié xuè", "type": "项目词典", "annotation": "形容杀伤很多、血流遍地。", "difficulty": 4, "unit_type": "classical_word", "domain": "general"}, {"term": "图腾", "pinyin": "tú téng", "type": "项目词典", "annotation": "族群崇拜并作为象征的动物、植物或自然物。", "difficulty": 3, "unit_type": "word", "domain": "general"}, {"term": "妇好", "pinyin": "fù hǎo", "type": "项目词典", "annotation": "商王武丁配偶，甲骨文中著名女性军事人物。", "difficulty": 3, "unit_type": "proper_name", "domain": "proper_name"}, {"term": "孔子", "pinyin": "kǒng zǐ", "type": "项目词典", "annotation": "春秋时期思想家、教育家，儒家学派的重要奠基者。", "difficulty": 3, "unit_type": "proper_name", "domain": "proper_name"}, {"term": "左传", "pinyin": "zuǒ zhuàn", "type": "项目词典", "annotation": "春秋史传文献。", "difficulty": 4, "unit_type": "classical_word", "domain": "general"}, {"term": "易传", "pinyin": "yì zhuàn", "type": "项目词典", "annotation": "解释《易经》的传文总称。", "difficulty": 4, "unit_type": "classical_word", "domain": "general"}, {"term": "春秋", "pinyin": "chūn qiū", "type": "项目词典", "annotation": "孔子时代相关的编年史经典。", "difficulty": 4, "unit_type": "classical_word", "domain": "general"}, {"term": "武王", "pinyin": "wǔ wáng", "type": "项目词典", "annotation": "周武王。", "difficulty": 3, "unit_type": "proper_name", "domain": "proper_name"}, {"term": "殷商", "pinyin": "yīn shāng", "type": "项目词典", "annotation": "商朝后期文化和政权。 | 商代后期以殷墟为中心的商王朝阶段。", "difficulty": 5, "unit_type": "classical_word", "domain": "general"}, {"term": "殷墟", "pinyin": "yīn xū", "type": "项目词典", "annotation": "晚商都邑遗址，甲骨卜辞的重要出土地。 | 商代晚期都城遗址。", "difficulty": 5, "unit_type": "specialist_term", "domain": "archaeology"}, {"term": "殷都", "pinyin": "yīn dū", "type": "项目词典", "annotation": "商朝后期都城区域，今安阳殷墟一带。 | 商朝后期都城区域。 | 晚商都城，通常指安阳殷墟。", "difficulty": 5, "unit_type": "classical_word", "domain": "general"}, {"term": "献祭", "pinyin": "xiàn jì", "type": "项目词典", "annotation": "把祭品奉献给神灵或祖先。 | 向神灵、祖先等奉献祭品。", "difficulty": 3, "unit_type": "word", "domain": "general"}, {"term": "神权", "pinyin": "shén quán", "type": "项目词典", "annotation": "以神灵、祭祀权威支撑的统治权力。 | 以神灵或宗教权威支配社会政治生活的权力形态。", "difficulty": 3, "unit_type": "word", "domain": "general"}, {"term": "箕子", "pinyin": "jī zǐ", "type": "项目词典", "annotation": "商末贵族，后世文献中重要人物。 | 商末贵族，明夷卦解释中的关键人物。", "difficulty": 3, "unit_type": "proper_name", "domain": "proper_name"}, {"term": "羌人", "pinyin": "qiāng rén", "type": "项目词典", "annotation": "西方族群，常见于商代卜辞。", "difficulty": 3, "unit_type": "word", "domain": "general"}];
+    const ORIGINAL_TEXTS = {"389": "第二十章翦商与《易经》的世界观\n\n《易经》记载的猎俘和人祭完全超出了后人的想象，那么，周昌为什么记录这些？难道他就是想要写一本日记或者回忆录？\n\n卦爻辞纷繁杂乱的现象背后，其实是周昌对世界运行规律的探索，通过卦象排列组合的变化，他发现，现有的世界秩序不是永恒的，而是可以改变的。尤为重要的是，商朝的统治也是如此。\n\n在讲述这些之前，我们先要讲一讲《易经》最基本的原理：阴阳、卦象、卦辞和爻辞。\n\n易卦占算传承自商人\n\n上古时代，人们曾发明一种用草或竹子的小棍来算数的方法：把它们在地上摆放成不同的形状，用以代表不同的数字，然后进行计算，有点类似后世的算盘。用来计数的竹棍，叫“策”或“筹”，比如，流传下来的古语中就有“运筹”和“策划”等。\n\n当积累了一定的算数知识，古人发现，数字虽然有很多，但都可以被分为奇数和偶数两大类。这恰好和日常生活里的“阴” “阳”观念搭配：太阳晒到的地方是阳，晒不到的就是阴；奇数是阳，偶数是阴。然后，有天地、山水、男女、雌雄、上下……几乎所有的事物，都可以分为阴性和阳性。\n\n这是早期人类发展出的一种简单归纳思维，甚至直到现代，有些语言的名词还会分成阴阳两性，比如法语和俄语。而初步的算命理论就是将用草棍运算出的数字归纳成阴或者阳，以代表世间不同的事物，乃至命运的吉凶。\n\n用甲骨预测，称为“卜”；用草棍预测，则称为“筮”。“筮”上面的“竹”字头代表占算用的草（竹）棍，下面的“巫”字表示只有沟通鬼神的巫师才有占算能力。[[fn:1]]\n\n据说，半人半神的伏羲最先画出“八卦”，然后，由周昌在被商纣囚禁羑里期间把八卦推演成了六十四卦。所谓：“其囚羑里，盖益《易》之八卦为六十四卦。”但司马迁这里用的是“盖”字，表示不太确定。〔札记：从八卦到六十四卦应该在商朝完成。文王演周易是排序，整理和填写爻词。〕", "390": "先说最古老的所谓伏羲“八卦”。有四对卦，分别是乾和坤，坎和离，震和艮，巽和兑；各有代表图案，被称为“卦象”，由三根表示阴阳的“爻”组成，一根直线代表阳爻，两段半截的线代表阴爻。\n\n乾☰ 坤☷\n\n坎☵ 离☲\n\n震☳ 艮☶\n\n巽☴ 兑☱\n〔札记：（一）八卦口诀：乾三连，坤六断，震仰盂，艮覆碗，离中虚，坎中满，兑上缺，巽下断。 （二）八卦与数：乾一，兑二，离三，震四，巽五，坎六，艮七，坤八。〕\n东周时的学者说，这是宇宙间的八大元素：乾代表天，坤代表地；坎代表水，离代表火；震代表雷，艮代表山；巽代表风，兑代表泽（沼泽）。（《周易正义•说卦卷九》）至于伏羲或者周昌时代的人是不是这么理解的，就不好说了。\n\n再来说六十四卦。卦象由两个八卦上下重叠组成，一共有六十四种，都有六个爻。假如是两个八卦的乾叠加，就仍叫乾卦，以此类推。但不一样的八卦互相叠加，就需要起新的卦名了，比如，震下坎上，叫屯卦，卦象是☵/☳；坎下艮上，叫蒙卦，卦象是☶/☵。\n\n用草棍占算的阴阳八卦体系，和华北地区自龙山时代以来的甲骨占卜体系，是分庭抗礼的关系，很难说哪一种出现得更早，因为甲骨容易保存下来，但草棍占算不容易留下遗物。\n\n到了商朝的殷都时期，有些占卜师已经习惯了在甲骨上刻字，所以他们也会把用草棍占算出来的数字刻到甲骨上。而三个数字组成的刻辞在殷墟前期武丁王的时代就有了，比周昌要早二百年。它是三个数字重叠，比如“六六六”，这三个偶数代表三个阴爻，便是八卦中的坤卦。\n\n到殷商中后期，出现了六个数字的甲骨刻辞，时代也比周昌早一些。比如，“六七八九六八”对应“阴阳阴阳阴阴”，这便是《易经》中的蹇卦。从这可见，六十四卦的基本原理并不是文王发明的。", "391": "〔按语：如前所述〕\n\n关于竹草棍如何被用于六十四卦算命，最早的记载来自春秋战国之交的《易传·系辞》：按照特定的流程，将五十根草棍用两只手拆分若干次，最后剩在手里的数量就是得到的数字，它的奇、偶就是阴、阳，这算第一个爻；如此反复演算六次，就得到六个爻，也就是一个完整的卦。这种摆列阴阳爻的顺序，必须从下往上，不能颠倒。\n\n当然，《易传·系辞》这个记载已经比周昌的时代晚了五百多年，至于周昌到底是不是这么占算的，也无法确定。\n\n〔按语：反复验算〕\n\n上面所述便是六十四卦卦象的来历，那么，六十四卦的卦名，诸如乾、坤、屯、蒙等，又是什么时候产生的呢？商代的甲骨文里没有发现卦名，它们首次出现是在《易经》里。所以，也许的确是周文王命名的，至少目前还没有反面的证据。\n\n比起古老的甲骨占卜，用草棍推演更容易，所以文王被囚禁在羑里监狱的时候，可以因陋就简进行六十四卦占算。而为了让这套占算体系更适合自己的需要，他又总结和编写了卦辞和爻辞，由此形成了《易经》的基本内容。\n\n但这还不是文王周昌青睐六十四卦体系的根本原因。\n\n文王写作卦辞和爻辞\n\n六十四卦的每个卦都有一条简短的解说词，这被称为“卦辞”；相对的，卦里的每个爻也都有一条“爻辞”。概而言之，《易经》是由六十四卦的卦名、卦象、卦辞和爻辞组成的。\n\n唐代给《周易》做注的孔颖达说，最早是伏羲画出了八卦，\n\n〔按语：现存考古发现的最早八卦及阴阳爻符号，出土于浙江义乌桥头遗址的红衣彩陶，距今已有约8000至9000年的历史。〕后来有人（不知道是谁）把八卦重叠成六十四卦，可以涵盖各种“天地变化，人事吉凶”；再后来，周文王写了卦辞和爻辞，来解释每个爻和卦的吉凶含义：", "392": "盖伏牺（羲）之初，直仰观俯察，用阴阳两爻而画八卦，后因而重之为六十四卦，然后天地变化，人事吉凶，莫不周备，缊在爻卦之中矣。文王又于爻卦之下，系之以辞，明其爻卦之中吉凶之义。（《周易正义•说卦卷九》）\n\n看来，孔颖达不同意《史记》说的“其囚羑里，盖益《易》之八卦为六十四卦”。而现代的考古发现也证明，孔颖达的确是对的。\n\n孔颖达还说，卦辞和爻辞是周文王写的。在古代，这个说法也缺乏直接证据，一直有学者质疑。而结合甲骨文等殷商考古成果，我们会发现，孔颖达这么说的证据是比较充分的，因为卦爻辞只会是在商朝的环境中产生，不可能更晚。\n\n〔按语：编纂〕\n\n最早从《易经》的卦爻辞中探寻历史的学者，是顾颉刚。1929年，他考证了几条卦爻辞中蕴藏的商周时期的历史事件，并撰成《周易卦爻辞中的故事》一文发表。[[fn:2]]比如，据顾颉刚推测，归妹卦和泰卦爻辞的“帝乙归妹”，其中隐含的历史是：帝乙把自己的一个女儿嫁给了周文王，但这位王室公主没能生育，最后，或是早逝，或是离婚回了娘家，文王又续娶大姒。\n\n就这样，顾颉刚开启了从《易经》探寻晚商历史的先河。当然，他对“帝乙归妹”的解释未必正确，毕竟当时商周力量对比悬殊，商王不大可能把妹妹嫁给周族，所以这很可能是周人为夸耀自己而做的吹嘘。但它的真实背景仍是晚商时代的商周关系。\n\n六十四卦的卦爻辞里含有很多商代特有的事件，比如，捕捉俘虏献祭；而从周朝建立开始，这些做法就消失了，后代的古人也就不再记得这些事。\n\n这里再举个例子。《易经》的卦爻辞里经常出现“贞”字，比如坤卦的卦辞“利牝马之贞”，后世学者都不知道这个字什么意思，包括孔颖达，也只能猜测它和“坚贞”有关，解释成：“贞，正也。”其实，商代甲骨卜辞里就频繁地出现这个“贞”字，现代学者也早已确定，它就是占卜的“占”，故而甲骨占卜师也被称为“贞人”。由此，《易经》中的“贞”也就好解释了。比如，坤卦的“利牝马之贞”的意思是说，占算结果对母马有利；相对的，否卦的“不利君子贞”的意思则是说，占算结果对君子不利。看来，倘若没有发现甲骨文，我们对《易经》中“贞”字的理解很可能还会一直错下去。", "393": "《易经》的卦爻辞所记载的事件，有些肯定是只有周文王才经历过的，所以，它们的价值非常独特。[[fn:3]]从孔子时代以来，解读《易经》的著作很多，但因为没有甲骨文知识的基础，所以搞错了很多基本概念，这些“算命技术”自然也就成了无根之木。而用甲骨文和商代考古知识研究《易经》的，高亨先生可谓开先河者，他的著作《周易古经今注》就是只讨论文王的《易经》，而不涉及东周时人写的《易传》，以避免让后世的误解逆行侵入商代历史。在这个意义上，本书算是在高亨先生开创的方法基础上的一种继续。[[fn:4]]\n\n卦爻辞里有什么\n\n《易经》卦爻辞中，除了和商代的捕俘及人祭有关的内容，还包含很多周族人的活动。这应该也是周文王比较关注的内容，否则他不会一一记载下来。\n\n先来看第十三个卦，同人卦：\n\n同人于野，亨。利涉大川。利君子贞。\n\n初九：同人于门，无咎。\n\n六二：同人于宗，吝。\n\n九三：伏戎于莽，升其高陵，三岁不兴。\n\n九四：乘其墉，弗克攻。吉。\n\n九五：同人先号咷而后笑，大师克相遇。\n\n同人于郊，无悔。\n\n“离下乾上”，这是解释同人卦的卦象图案——☰/☲。它有六个爻，下边三条是八卦的离（☲），上边三条是八卦的乾（☰）。\n\n按八卦的释义，离是火，乾是天，火在天的下面燃烧，就是《同人》。但《同人》与天和火有什么必然联系吗？从卦爻辞里看不出来，这里也就不再妄加揣测。\n\n〔按语：火攻〕\n\n“同人”的意思大概是集结（同）盟军（人）。它的卦辞是：“同人于野，亨。利涉大川。利君子贞。”意为，在原野集结起我方的盟军，举行祭祀；利于渡过大河；结果对君子有利。\n\n从卦辞看，这很像是周文王晚年在准备灭商的工作：要集结起各部族的盟军，用祭祀取得诸神的支持，团结盟军，顺利渡过黄河（这样才能打到商朝腹地）；这个卦象对“君子”有利，前景比较好。", "394": "再来看六个爻的爻辞。\n\n每个爻辞前面有两个字的序号，其中的“九”代表奇数、阳爻；“六”代表偶数、阴爻。\n\n按照从下往上的顺序，最下面的第一个爻叫“初”。按阴阳，只能有“初六”或“初九”两种；最后一个爻在最上面，叫“上”，分为“上六”或“上九”。\n\n中间二、三、四、五爻的名称，则是表示阴阳的六或九放在前面，序号放在后面，所以同人卦中间的四个爻依次是六二、九三、九四、九五，顺序仍是从下往上。\n\n第一个爻（初九）的爻辞：“同人于门，无咎。”意思是，在大门口集结盟军，没有灾祸。\n\n第二个爻（六二）：“同人于宗，吝。”意思是，在宗庙集结盟军，前途不太光明。\n\n第三个爻（九三）：“伏戎于莽，升其高陵，三岁不兴。”意思是，在丛林里埋伏军队，登上高高的山顶眺望敌人，三年内无法战胜敌军。[[fn:5]]\n\n第四个爻（九四）：“乘其墉，弗克攻。吉。”意思是，登上了敌人的城墙，没能攻打下来，但结果吉利。\n\n第五个爻（九五）：“同人先号咷而后笑，大师克相遇。”意思是，盟军先是号啕大哭，又变成大笑，会遭遇敌人的大部队。\n\n第六个爻（上九）：“同人于郊，无悔。”意思是，在郊野里集结盟军，没有什么后悔的。\n\n看来，同人卦皆与战争有关，但各爻的结果不太一样，有很顺利的，也有很艰难和危险的。\n\n不过，《易经》的卦并非都是军国大事，有些卦看上去只是些偶然的、彼此无关的日常小事，各爻之间也看不出，至少我们看不出有什么明显的关联。这又是为什么？探寻这背后的原因，要从文王研究“易”的目的开始。\n\n六十四卦为何成对？\n\n商王进行甲骨占卜时，会把需要预测的问题刻在甲骨上。这里，我们用前述武丁关于妇好生育的一次占卜为例说明：一，武丁先刻下了“妇好这次生育是否顺利”的问题，这是“命辞”。二，然后，从甲骨裂纹走向判断结果，这是“占辞”：“丁日或庚日生育的话会吉利”。三，最后的结果也可能会补刻到甲骨上，这是“验辞”。比如，武丁这次占卜的三十一天后，妇好生育了一个女儿，“验辞”便是：“甲寅娩，不嘉。惟女。”", "395": "甲骨文的这些刻辞不太复杂，背后的原理也很简单，基本不涉及事物的因果关系：先是给诸神献祭并询问问题；然后，诸神的回答就会传递到甲骨的烫纹上；最后，占卜者将其解读出来。也就是说，这是一种单一的因果叙事：诸神的决定是因，表现到人间就是果，甲骨占卜是读取这种因果关系的工具。至于人类有时候占卜错了，那也是误读了神的旨意，错在人而不在神。\n\n但六十四卦则与此不同，它的原理更复杂。它认为，世间的一切并不都是由神直接决定的，而是各种事物会发生互相影响并形成一种因果发展的链条，其对应的就是卦里六个爻的阴阳顺序。换句话说，对于每一个主题的卦，周文王都需要找出与之相关的六个事件或现象作为六条爻辞，从而构成一个完整的因果发展链。而且，事物的因果关系不会只有一种模式。在某种环境下，甲是乙的原因，而在另一种环境下，则可能变成乙是甲的原因，甚至原本没有因果关系的两个孤立事件，在另一种时空环境下也可能会发生联系。\n\n所以，文王在《易经》中梳理了他亲历和认知的各种事件，并试图用不同的因果发展链来串联和解释它们。比如，有些相同的爻辞（事件），比如“帝乙归妹”，就出现在了不同卦的不同爻位，这其实是文王在设定不同的占算情境。因此，同一事件会具有不同的前因后果，以及不同的含义和指向性。\n\n换言之，文王的爻辞虽都是发生过的或者预测要发生的具体事件，但在他看来，这些事件未必是单线性的，它们完全可能按照不同的时间顺序再次发生，从而使因果关系发生颠倒。\n\n一切事物都是无常和可变的，六爻的不同组合对应着不同的卦象，哪怕只变换一个爻，也会变成另一种卦象，这就是“易”：变易无常。由此，六十四卦就是文王对可能性做出的六十四种探索和六十四个模型。或者说，文王是在用各种无常的可能性重新组织世界，重组头脑中的各种认知。", "396": "这样一种思路，可以从六十四卦的“组对”规律中发现一些痕迹。六十四卦皆有卦名，且是成对组合，比如，“乾”和“坤”，“震”和“艮”，”同人”和“大有”，“噬嗑”和“贲”……是谁给这些卦起的名字并编组成对，史书中没有记载，但文王的可能性很大——考古发现的更早的数字卦象并没有附带卦名，更没有成对出现的记载。\n\n其中，有些成对的卦名比较好懂，比如，“乾”和“坤”，“否”和“泰”，“损”和“益”，“既济”（已经渡河）和“未济”（尚未渡河），都是反义词；有些却未必是反义词，比如，“井”和“困”，“小畜”和“履”，看不出彼此之间有什么对立关系；还有一些则更模糊，比如，“噬嗑”和“贲”，更难判断它们之间的关系。\n\n我们先搁置对卦名的解释，来看卦象，看看它们的组对规律是什么，以及是否一定会具有相反的关系。\n\n有人说，乾卦和坤卦最是简单明白，乾卦都是阳爻，坤卦都是阴爻，看来，卦象组对的规律是每个位置的爻都阴阳相反，乾的第一个爻是阳，所以坤的第一个爻是阴，以此类推……\n\n乾☰/☰ 坤☷/☷\n\n其实不然。乾和坤这一对卦的卦象比较特殊，不代表普遍规律。六十四卦分为三十二对，其中只有四对是这种情况：同位之爻，阴阳相反。〔札记：“同位之爻，阴阳相反”在《易经》里指的是错卦（又称旁通卦）关系 [5.5, 5.9]，即两个卦的对应爻位阴阳完全相反（阳变阴，阴变阳）。这种关系揭示了事物对立统一、相反相成的整体转化规律 [5.8]。错卦的基本特点爻位对应：两卦的初、二、三、四、五、上六个同位爻阴阳全盘相反 [5.9]。整体对待：如乾卦与坤卦、坎卦与离卦，彼此互为错卦，呈现完全相反的对立面与视角 [5.6]。物极必反：暗含事物发展到极端时，会向其对立面转化的哲学道理。〕", "397": "还有一种可能性。六十四卦的卦象是两个八卦上下重叠而成，那是不是这两个八卦互换位置就构成一对相反的卦呢？\n\n也不是。比如，屯卦☵/☳，卦象是震☳在下，坎☵在上；和它成对的是蒙卦☶/☵，但卦象并非坎☵在下，震☳在上，而是坎☵在下，艮☶在上。\n\n从这也可见，六十四卦的意义未必跟组成它的两个八卦有关系。\n\n至于六十四卦的成对原则到底是什么，我们这里随便选个例子。比如，无妄和大畜这一对卦：\n\n无妄☰/☳ 大畜☶/☰\n\n可以看到，这两个卦象，并不是同一个位置的爻必须阴阳相反，也不是上下两个八卦位置互换，而是六个爻呈现“颠倒”关系：无妄卦的第一个爻（最下面的），和大畜卦的最后一个爻（最上面的）相同；无妄卦的第二个爻，和大畜卦的倒数第二个爻相同……\n\n六十四卦里面，有二十八对都是这种“颠倒成对”原则。但也有极少数例外。就像上面说过的乾卦，它的六个阳爻形成上下对称，如果把它们上下颠倒一遍，还是完全同样的卦象。这就没办法了，只好让它和六个阴爻的坤卦结成一对，不然，六个阴爻的坤卦，上下颠倒之后也还是自己，所以它俩正好结对。\n\n这种因为自身对称而只能“相反成对”的卦，除了乾和坤，还有三对：\n\n坎 离 颐 大过 中孚 小过〔札记：| 卦名 | Glyph | 卦序 | 上卦／下卦 | 通称   |\n| -- | :---: | -: | ----- | ---- |\n| 坎  | **䷜** | 29 | 坎上坎下  | 坎为水  |\n| 离  | **䷝** | 30 | 离上离下  | 离为火  |\n| 颐  | **䷚** | 27 | 艮上震下  | 山雷颐  |\n| 大过 | **䷛** | 28 | 兑上巽下  | 泽风大过 |\n| 中孚 | **䷼** | 61 | 巽上兑下  | 风泽中孚 |\n| 小过 | **䷽** | 62 | 震上艮下  | 雷山小过 |", "398": "按《周易》卦序排列为：\n\n```text\n䷚ 颐 → ䷛ 大过 → ䷜ 坎 → ䷝ 离\n䷼ 中孚 → ䷽ 小过\n```\n\n这六卦的共同特点是：**上下颠倒后，仍然是本卦**，所以称为“错综后不变”的六个特殊卦。下一步可进一步比较它们的六爻结构。〕\n\n总结一下，在《易经》中，每卦六个爻都是自下而上的顺序，而六十四卦组对的原则总体上是六爻“颠倒成对”；只有八个上下对称和无法颠倒的卦，才按“相反成对”的原则组成四对。\n\n研究《易经》的美国学者夏含夷（Edward Shaughnessy\n\n〔札记：https://en.wikipedia.org/wiki/Edward_L._Shaughnessy〕）很重视“颠倒成对”原则。他推测说，《易经》中每一对卦的内容都基本相似，比如，对于泰卦中的“帝乙归妹”，夏含夷认为，泰卦以及与泰卦成对的否卦，都和这桩婚姻有关。但这种推论还缺少证据，至于每一对卦探讨的内容都是什么，多数还难以解释。[[fn:6]]\n\n其实，不必急于追索每一卦的具体含义，而是应当先明白卦象“颠倒成对\"原则的本质是什么。综合前述，本书认为，它是文王发现的世间规律，或者说，一种被称为“易”的思维方式：世间的一切都不是永恒和持续不变的，它们都可以有另一种相反的存在形式，一切也都可以颠倒重来一遍。\n\n否，颠倒重来就是泰；损，颠倒重来就是益……一切事件的发展过程，都可以“倒放”一遍，从终点回到起点。这意味着，一切皆有可能。\n\n翦商，可占\n\n按文王《易经》的“颠倒成对”原则，世间一切既有的事实都能用相反的方式再现一遍。商族曾经很弱小，就像爻辞里的“丧牛于易”，但他们后来却建立了强大的商朝；然而，这个过程同样是可逆的，目前强大的商朝也终将灭亡。", "399": "这种思维方式可谓石破天惊。当时的人还没有走出神权时代，普遍认为世间一切都被天界的鬼神主宰：商王家族世代向上帝和诸神献祭，从而得到天界的福佑，因此和商朝作对，就意味着违反鬼神世界的意志，不可能成功。\n\n然而在羑里的地牢里，周昌的身体虽无法逃离，但他推演的六十四卦组对原则却自行打开了一扇通往新世界的大门，这便是：“翦商”是有可能的。\n\n虽然当初，是上帝指示和支持商人灭夏建商的，但上帝的心意也是可以更改的，它不可能永远充当商人的守护神，周族也可以获得上帝的垂青，并在它的保佑之下灭掉商朝，取而代之。\n\n在当时，这个想法实在是大逆不道，文王更不敢明白地将其写出来，哪怕当他获释回到周邦之后，也要秘而不宣，故而《易经》中的多数内容只能用含糊其辞的隐语来表达。\n\n来看坤卦六三爻：\n\n含章可贞。或从王事，无成，有终。\n\n六三爻的第一句是“含章可贞”，这“含章”二字，历来没有合理的解释。高亨认为，“含”为“戡”之借字，“章”为“商”之借字，“含章”就是“戡商”，也就是“翦商”。[[fn:7]]所以坤卦六三爻的意思是，翦商之事是可以占算的；如果继续忠于商王，不会有成果，会有终结。\n\n这个推测颇为合理。而且，用“含章”表示“翦商”，未必全是古文字的通假借用，可能也是为了保密。\n\n有类似含义的，是讼卦的六三爻：\n\n食旧德，贞厉，终吉。或从王事，无成。\n\n高亨认为，“食旧德”就是背叛商王昔日的恩德，[[fn:8]]也就是开启翦商之谋。占卜的结果是有灾害（“贞厉”），但最终会吉利（“终吉”）；反之，也就是如果继续忠于商王（“或从王事”），则不会有成果（“无成”）。这和坤卦六三爻相同。", "400": "《易经》中还有一处“含章”，出自垢卦九五爻：\n\n以杞包瓜，含章，有陨自天。\n\n〔按语：杞人忧天〕\n\n“以杞包瓜”的意义难解，但其重点是“瓜”；“含章”，传统解释是瓜上有花纹；“有陨自天”，是说这只瓜从天上落下来摔碎了。按照高亨的解释，垢卦九五爻是个隐喻，意思是说商朝就像是一只有花纹的瓜，不堪一击，落地即碎。[[fn:9]]\n\n在六十四卦中，肯定有某个卦象代表的是商朝的崛起；而与它对立的卦，则代表了商朝的灭亡。因此，只要把这些卦找出来，研究各爻的原理，也即每个爻可能代表什么具体事件或条件（文王会因此代入不同的事物进行推演），就有可能找到灭亡商朝的密码。\n\n到这里，我们就可以初步理解为什么说《易经》的卦爻辞内含各种各样的事件，甚至难以理解的只言片语了：这是文王在对自己认知的各种事件进行排列和重组，用不同的卦象（阴阳爻组合）来检验它们的吉凶，以便总结出这个世界更深层的运行规律。而限于当时的环境，他必须刻意地使与翦商有关的各种信息变得很隐晦，外人会很难理解，所以我们也就不用对所有卦爻辞都强求解释了。\n\n《易经》并非文王专门编写的算命教材，而更像是他自己的练习簿，所以内容驳杂，有大量的私人琐事。从萌生翦商之念始，文王就反复将其代入和推算，并随时验证、修订和增补，希望总结出一套最精确的占算方法，而最终目的，当然就是在消灭商朝的战争里运用这套预测技术。\n\n有了对《易经》的上述理解，我们接着来看最前面的乾、坤两卦。\n\n古人对乾与坤是这么解释的：乾为天，阳之代表；坤为地，阴之代表。其实，这一对卦可能还代表了文王最关心的两个事物：商和周。商是强大的主宰，周是弱小的藩属，但在各自的生命历程中，它们会各自走向自己的反面。", "401": "元亨，利贞。\n\n初九：潜龙，勿用。\n\n九二：见龙在田，利见大人。\n\n九三：君子终日乾乾，夕惕若厉，无咎。\n\n九四：或跃在渊，无咎。\n\n九五：飞龙在天，利见大人。\n\n上九：亢龙有悔。\n\n用九：见群龙无首，吉。〔札记：视频揭示了一个颠覆性发现：乾卦中的\"龙\"并非神话生物，而是6000年前古人观测的苍龙七宿天象系统。通过查海遗址（8000年前石龙）、濮阳西水坡墓葬（6500年前蚌塑龙虎配北斗）和曾侯乙漆箱（战国二十八宿图）三大考古证据链证实，\"二月二龙抬头\"实为角宿初现的地平线天文现象。 这套观象授时系统将乾卦六爻精准对应苍龙运行轨迹：从冬至\"潜龙勿用\"（整条龙隐没），到夏至\"飞龙在天\"（龙星横贯中天），再到秋初\"亢龙有悔\"（龙星西沉）。大火星（心宿二）作为关键坐标，指导着\"七月流火知暑退\"的农耕节奏。 这不仅是天文考古的重大发现，更揭示中华龙图腾的科学根基——我们的先民早在文字诞生前，就用星空编织了跨越四千年的生存时钟。所谓\"神话\"，实则是先民用肉眼丈量天地的智慧结晶。〕\n\n乾卦里集中出现的意象是龙。从夏朝-二里头文化以来，龙都是王者的象征。初九爻的“潜龙勿用”是说，龙弱小，潜伏于水下，无所作为。这说的是商族崛起之前的状态，后面的龙则已经活跃在天地之间：“见龙在田”“飞龙在天”。九二爻和九五爻都有“利见大人”，可能是隐喻周昌或者周族两次见到商王并受到重视。九三爻曰：“君子终日乾乾，夕惕若厉，无咎。”这可能说的是周族人兢兢业业地侍奉商朝的状态，也可能是说商朝先王奋发有为时的状态。到上九爻的“亢龙有悔”，则已经可能是在说商朝虽已强大到极致，但其根基不稳固，埋藏着衰亡的隐患。", "402": "和《易经》的其他卦不同，乾、坤两卦在六条爻辞后，还分别有一条“用九”和“用六”，这可能是因为文王对这两卦格外重视，所以各增加了一句总结。《乾》卦的“用九”是“见群龙无首，吉”，这可能是说文王在殷都生活期间结识各种商朝上层人物，发现他们之间矛盾很深，周族可以找到内应，最终倾覆商朝。在这里，“吉”当是文王对翦商事业的判断，而非商朝的国运。\n\n再来看坤卦：\n\n元亨。利牝马之贞。君子有攸往，先迷，后得主，利。西南得朋，东北丧朋。安，贞吉。\n\n初六：履霜，坚冰至。\n\n六二：直，方，大；不习，无不利。\n\n六三：含章，可贞。或从王事，无成有终。\n\n六四：括囊，无咎无誉。\n\n六五：黄裳，元吉。\n\n上六：龙战于野，其血玄黄。\n\n用六：利永贞。〔札记：坤卦\"牝马\"之谜的结构化解读： 1. **核心矛盾**：传统将\"利牝马之贞\"解为\"母马柔顺\"，但马实为刚烈动物，与\"柔顺\"象征相悖。 2. **天象溯源**： - 房宿四星排开如马车（车厢+缰绳+车锁），《史记》称\"房为府曰天驷\" - 房宿与太阳运行同步，春分拉日出、夏至送日高、秋分伴日落、冬至驱日返 3. **双重实证**： - 6500年前西水坡大墓：龙尾处蚌壳摆塑小马，印证\"龙尾摆马\"天象认知 - 坤卦六二\"直方大\"：冯时教授考证\"方\"实指房宿，描述冬至房宿中天的天象 4. **本质重构**： - 乾卦（阳）：天上运行，顺读（初九至上九），管春夏 - 坤卦（阴）：地下承载，逆读（上六至初六），管秋冬 - \"牝马\"非柔顺象征，而是驱动太阳完成地下返程的阴性力量 5. **体系突破**：破解两千年来误读，揭示阴阳互根的宇宙运行法则——乾创坤成，缺一不可。〕", "403": "坤卦的卦辞中出现了“牝马”（母马），但不知其具体代表何事；“君子有攸往，先迷，后得主，利”，应该是说君子（周昌）去往殷都，开始时遭遇各种不幸，但也结识了可以利用之人；而“西南得朋，东北丧朋”，则是说在西南方得到盟友，东北方则丧失盟友。殷都在周原的东北方，这可能是预示商周之间终将反目。卦辞的最终判断是“安，贞吉”。\n\n六三爻的“含章”（翦商），前文已述，这里不再赘述；六四爻的“括囊”，字面意思是把口袋（囊）扎起来，这可能是比喻翦商之谋需要严格保密；上六爻的“龙战于野，其血玄黄”则可能是预言周与商最后的决战，隐喻商朝（龙）将喋血原野；最后的用六爻“利永贞”是结论，说明翦商事业大有前途。\n\n当然，乾、坤两卦的卦爻辞中也有很多难以解释之处。比如，”或跃在渊”与“黄裳，元吉”，很可能是文王有意为之的隐语。类似现象在《易经》里有很多，已经无法亦不必强行求解。\n\n不过，文王并没有活到商朝灭亡，所以他的推算和验证持续到了临死之前。至于文王是先萌生翦商冲动，再从易卦体系寻求支持，还是在研究易卦组对原则时受到启发而产生的翦商之念，这已经很难判断。但至少有一点是肯定的：羑里的牢狱生活已经让文王深切地体会到当一名人牲（孚）的滋味；而在以往，当被要求带领族人捕猎羌人缴纳给崇侯时，他不太可能有如此深刻的切肤之痛。\n\n从猎俘者变成俘，本身就是“易”，而变易的旅程一旦开启，就会产生难以预测的后果。年过半百的文王深谙世界的不确定性，把人生剩余的时光大都投入了对《易经》的推算，但同时，他也没有忽视商人最正统的甲骨占卜技术。这两套体系和世界观，文王都不敢偏废。", "404": "注释\n\n1参见宋镇豪《夏商社会生活史》，中国社会科学出版社，2005年，第530页。\n\n2顾颉刚：《周易卦爻辞中的故事》，《燕京学报》1929年第6期。收入《顾颉刚古史论文集》卷11，中华书局，2010年。\n\n3有学者认为个别的卦辞出现更晚，属于周公时代产物，如晋卦辞：“康侯用锡马蕃庶，昼日三接。”意思是说，康侯（周公的弟弟卫康叔周封）被天子赐予了很多马匹，一天之内得到三次接见。但不能排除文王时期有名为“康侯”的殷商贵族。再如爻辞中曾出现“箕子”，有学者认为是周灭商之后的记录，其实文王已经有可能和箕子打过交道并记录下来。\n\n4“周易”这个词的含义发生过扩大。春秋时期的史书，如《左传》，说的“周易”只是文王卦爻辞。孔子弟子编辑《周易》时，把他们对卦爻辞体系的很多解释也汇编了进去，比如《系辞》《文言》等。这些解释被称为《易传》或《十翼》（十种对卦爻辞的解释），导致《周易》的内容扩大。为了特指文王卦爻辞，现代学者称其为《易经》，以表示和《易传》的区别。本书也用《易经》代表文王卦爻辞体系，不涉及后来的《易传》。\n\n5孔颖达《正义》：“唯升高陵以望前敌，量斯势也，纵令更经三岁，亦不能兴起也。”\n\n6 ［美］夏含夷：《结婚、离婚与革命——〈周易〉的言外之意》，李衡眉、郭明勤译，《周易研究》1994年第2期。\n\n7高亨释为：“乃武王克商之兆，所占之事，自为可行，故曰含章可贞。”参见高亨《周易古经今注》，第167页。高亨认为这是周武王灭商时的占卜辞，其实它很可能是在周文王时期就已经有了，是对未来之事的占算。\n\n8高亨认为，食为蚀之借字：“食旧德，谓亏损其旧日之德行也。”参见高亨《周易古经今注》，第178页。", "405": "9高亨释为：“戡商有陨自天，言武王之克商，乃是天陨灭商祚也。”参见高亨《周易古经今注》，第287页。\n\n[[editor-fn:1]]\n\n〔编者注1〕这个版以注音为主，不对内容进行讨论。", "406": ""};
+    const statusEl = document.getElementById('status');
+    const exportTextEl = document.getElementById('exportText');
+    const notePageEl = document.getElementById('notePage');
+    const noteTagEl = document.getElementById('noteTag');
+    const noteTextEl = document.getElementById('noteText');
+    const markerTypeEl = document.getElementById('markerType');
+    const markerTextEl = document.getElementById('markerText');
+    const markerHelpEl = document.getElementById('markerHelp');
+    const logListEl = document.getElementById('logList');
+    const userNotesBodyEl = document.getElementById('userNotesBody');
+    const modeBadgeEl = document.getElementById('modeBadge');
+    const chapterNotesBodyEl = document.getElementById('chapterNotesBody');
+    const chapterNoteTitleEl = document.getElementById('chapterNoteTitle');
+    const chapterNoteTextEl = document.getElementById('chapterNoteText');
+    let activeArea = null;
+    let viewMode = 'clean';
+    let cleanViewTexts = {};
+    let cleanViewHtml = {};
+    let voices = [];
+    let allowSave = true;
+    let savedFormatRange = null;
+    function setStatus(text, tone = '') { statusEl.textContent = text; statusEl.style.color = tone === 'ok' ? 'var(--ok)' : tone === 'warn' ? 'var(--warn)' : 'var(--muted)'; }
+    function textareas() { return Array.from(document.querySelectorAll('.rich-editor[data-page]')); }
+    function editorText(area) { return area.innerText.replace(/ /g, ' ').replace(/\n$/, ''); }
+    function nodeAtOffset(root, wanted) {
+      const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT);
+      let node = walker.nextNode(), remaining = Math.max(0, wanted);
+      while (node) { if (remaining <= node.data.length) return [node, remaining]; remaining -= node.data.length; node = walker.nextNode(); }
+      return [root, root.childNodes.length];
+    }
+    function setEditorSelection(area, start, end = start) {
+      const range = document.createRange();
+      const [startNode,startOffset] = nodeAtOffset(area,start), [endNode,endOffset] = nodeAtOffset(area,end);
+      range.setStart(startNode,startOffset); range.setEnd(endNode,endOffset);
+      const selection = getSelection(); selection.removeAllRanges(); selection.addRange(range);
+      area._selectionStart = start; area._selectionEnd = end; savedFormatRange = range.cloneRange();
+    }
+    function captureEditorSelection(area) {
+      const selection = getSelection();
+      if (!selection?.rangeCount || !area.contains(selection.anchorNode)) return;
+      const range = selection.getRangeAt(0), before = range.cloneRange();
+      before.selectNodeContents(area); before.setEnd(range.startContainer,range.startOffset);
+      area._selectionStart = before.toString().length;
+      area._selectionEnd = area._selectionStart + range.toString().length;
+      savedFormatRange = range.cloneRange(); activeArea = area; notePageEl.value = area.dataset.page;
+    }
+    function initializeRichEditor(area) {
+      area._selectionStart = area._selectionEnd = 0;
+      Object.defineProperty(area,'value',{get:()=>editorText(area),set:value=>{const projection=area._imageProjection?.items||[];area._imageProjection=null;area.textContent=String(value);[...projection].reverse().forEach(item=>{const [node,offset]=nodeAtOffset(area,Math.min(item.offset,area.innerText.length)),range=document.createRange();range.setStart(node,offset);range.collapse(true);range.insertNode(item.figure)});}});
+      Object.defineProperty(area,'selectionStart',{get:()=>area._selectionStart||0});
+      Object.defineProperty(area,'selectionEnd',{get:()=>area._selectionEnd||0});
+      Object.defineProperty(area,'readOnly',{get:()=>area.contentEditable==='false',set:value=>{area.contentEditable=value?'false':'true';}});
+      area.setSelectionRange=(start,end=start)=>setEditorSelection(area,start,end);
+      area.setRangeText=(replacement,start=area.selectionStart,end=area.selectionEnd,mode='end')=>{setEditorSelection(area,start,end);const range=getSelection().getRangeAt(0);range.deleteContents();const node=document.createTextNode(replacement);range.insertNode(node);const position=mode==='select'?start:start+replacement.length;setEditorSelection(area,mode==='select'?start:position,mode==='select'?start+replacement.length:position);};
+    }
+    function getLog() { try { return JSON.parse(localStorage.getItem(LOG_KEY) || '[]'); } catch { return []; } }
+    function setLog(items) { localStorage.setItem(LOG_KEY, JSON.stringify(items.slice(0, 300))); renderLog(); }
+    function getChapterNotes() { try { const notes = JSON.parse(localStorage.getItem(CHAPTER_NOTES_KEY) || '[]'); return Array.isArray(notes) ? notes : []; } catch { return []; } }
+    function setChapterNotes(notes) { localStorage.setItem(CHAPTER_NOTES_KEY, JSON.stringify(notes)); renderChapterNotes(); }
+    function allChapterNotes() { return [...STATIC_CHAPTER_NOTES.map(([title,note]) => ({title,note,source:'file'})), ...getChapterNotes().map(item => ({...item,source:'browser'}))]; }
+    function renderChapterNotes() {
+      const notes = allChapterNotes();
+      if (!notes.length) { chapterNotesBodyEl.innerHTML = '<tr><td colspan="3">暂无章节导读札记</td></tr>'; return; }
+      chapterNotesBodyEl.innerHTML = notes.map((item,index) => `<tr><td>${escapeHtml(item.title)}</td><td>${escapeHtml(item.note)}</td><td>${item.source === 'browser' ? `<button type="button" data-delete-chapter-note="${index - STATIC_CHAPTER_NOTES.length}">删除</button>` : '<span class="log-meta">文件</span>'}</td></tr>`).join('');
+      chapterNotesBodyEl.querySelectorAll('[data-delete-chapter-note]').forEach(button => button.addEventListener('click', () => {
+        if (!confirm('删除这条浏览器札记？')) return;
+        const notes = getChapterNotes();
+        notes.splice(Number(button.dataset.deleteChapterNote), 1);
+        setChapterNotes(notes);
+        addLog('删除章节导读札记', '', currentPage());
+      }));
+    }
+    function chapterNotesMarkdown() { return allChapterNotes().map(item => `## ${item.title}\n\n${item.note}`).join('\n\n') + '\n'; }
+    function countChars() { return textareas().reduce((sum, area) => sum + area.value.length, 0); }
+    function currentPage() { const selected = textareas().find(area => { const rect = area.getBoundingClientRect(); return rect.top >= 0 && rect.top < window.innerHeight * .65; }); return selected?.dataset.page || notePageEl.value || "389"; }
+    function addLog(action, detail = '', page = currentPage()) { const items = getLog(); items.unshift({ at: new Date().toISOString(), action, page, detail, chars: countChars(), pages: textareas().length }); setLog(items); }
+    function escapeHtml(text) { return String(text).replace(/[&<>"']/g, ch => ({ '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;' }[ch])); }
+    function renderLog() { const items = getLog(); if (!items.length) { logListEl.innerHTML = '<div class="log-meta">暂无记录</div>'; return; } logListEl.innerHTML = items.map(item => { const time = new Date(item.at).toLocaleString(); const page = item.page ? `PDF ${item.page}` : '全章'; const detail = item.detail ? `<div class="log-note">${escapeHtml(item.detail)}</div>` : ''; return `<div class="log-item"><div class="log-meta">${time} · ${escapeHtml(item.action)} · ${page} · ${item.chars || 0}字</div>${detail}</div>`; }).join(''); }
+    function populateNotePages() { notePageEl.innerHTML = textareas().map(area => `<option value="${area.dataset.page}">PDF ${area.dataset.page}</option>`).join(''); }
+    function cleanValueFor(area) { if(viewMode==='annotated')return cleanViewTexts[area.dataset.page]??area.value;const clone=area.cloneNode(true);clone.querySelectorAll('.editorial-image').forEach(image=>image.remove());return clone.innerText.replace(/\n$/,''); }
+    function editorText(area) { const figures=[...area.querySelectorAll('.editorial-image')],projection=[];figures.forEach(figure=>{const range=document.createRange();range.selectNodeContents(area);range.setEndBefore(figure);const clone=figure.cloneNode(true);clone.querySelector('.editorial-image-tools')?.remove();projection.push({offset:range.toString().length,figure:clone})});const token={items:projection};area._imageProjection=token;queueMicrotask(()=>{if(area._imageProjection===token)area._imageProjection=null});const clone=area.cloneNode(true);clone.querySelectorAll('.editorial-image').forEach(image=>image.remove());return clone.innerText.replace(/\n$/,''); }
+    function collectUserNotes() {
+      const notes = [];
+      textareas().forEach(area => {
+        const source = cleanValueFor(area);
+        const patterns = [
+          ['编者注', /^〔编者注(\d+)〕\s*(.*)$/gm, match => `编者注${match[1]}`, match => match[2]],
+          ['按语', /〔按语：([^〕]*)〕/g, () => '按语', match => match[1]],
+          ['待核', /〔待核：([^〕]*)〕/g, () => '待核', match => match[1]],
+          ['札记', /〔札记：([^〕]*)〕/g, () => '札记', match => match[1]],
+        ];
+        patterns.forEach(([_kind, pattern, label, content]) => {
+          for (const match of source.matchAll(pattern)) notes.push({ page:area.dataset.page, index:match.index, type:label(match), content:content(match).trim() });
+        });
+      });
+      return notes.sort((a,b) => Number(a.page) - Number(b.page) || a.index - b.index);
+    }
+    function renderUserNotes() {
+      const notes = collectUserNotes();
+      if (!notes.length) { userNotesBodyEl.innerHTML = '<tr><td colspan="3">暂无用户札记</td></tr>'; return; }
+      userNotesBodyEl.innerHTML = notes.map(note => `<tr><td>${escapeHtml(note.type)}</td><td><button type="button" class="user-note-jump" data-note-page="${note.page}">PDF ${note.page}</button></td><td>${escapeHtml(note.content)}</td></tr>`).join('');
+      userNotesBodyEl.querySelectorAll('[data-note-page]').forEach(button => button.addEventListener('click', () => {
+        const area = document.querySelector(`.rich-editor[data-page="${button.dataset.notePage}"]`);
+        document.getElementById(`page-${button.dataset.notePage}`)?.scrollIntoView({ behavior:'smooth', block:'start' });
+        if (area) { activeArea = area; setTimeout(() => area.focus(), 350); }
+      }));
+    }
+    function saveNow(record = true) { if (!allowSave) return; const texts = {}, html = {}; textareas().forEach(area => { const page=area.dataset.page;texts[page]=cleanValueFor(area);html[page]=viewMode==='clean'?area.innerHTML:(cleanViewHtml[page]??''); }); localStorage.setItem(STORAGE_KEY, JSON.stringify({ version:4, savedAt:new Date().toISOString(), texts, html })); setStatus('已保存 ' + new Date().toLocaleTimeString(), 'ok'); if (record) addLog('保存', '', currentPage()); }
+    function loadSaved() { try { const saved = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}'); if (!saved.texts && !saved.html) return; textareas().forEach(area => { const page=area.dataset.page;if(saved.version>=4&&saved.html?.[page]!==undefined)area.innerHTML=saved.html[page];else if(saved.texts?.[page]!==undefined)area.value=saved.texts[page]; }); setStatus(saved.version>=4?'已载入富文本保存稿':'已迁移旧版保存稿', 'ok'); } catch {} }
+    let timer = null; function queueSave() { setStatus('正在编辑', 'warn'); clearTimeout(timer); timer = setTimeout(() => saveNow(false), 900); }
+    function blockFor(area) { return `===== PDF page ${area.dataset.page} / printed page ${Number(area.dataset.page) - 14} =====\n\n${cleanValueFor(area).trim()}`; }
+    function buildText() { return textareas().map(blockFor).join('\n\n'); }
+    function downloadText(filename, text) { const blob = new Blob([text + '\n'], { type: 'text/plain;charset=utf-8' }); const url = URL.createObjectURL(blob); const a = document.createElement('a'); a.href = url; a.download = filename; document.body.appendChild(a); a.click(); a.remove(); URL.revokeObjectURL(url); }
+    function downloadJson(filename, data) { const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json;charset=utf-8' }); const url = URL.createObjectURL(blob); const a = document.createElement('a'); a.href = url; a.download = filename; document.body.appendChild(a); a.click(); a.remove(); URL.revokeObjectURL(url); }
+    function requireCleanArea() { if (viewMode !== 'clean') { setStatus('请先切换回清稿再编辑', 'warn'); return null; } const area = activeArea || textareas()[0]; if (!area) return null; area.focus(); return area; }
+    function replaceSelection(replacement) { const area = requireCleanArea(); if (!area) return; const start = area.selectionStart, end = area.selectionEnd; area.setRangeText(replacement, start, end, 'end'); area.dispatchEvent(new Event('input', { bubbles:true })); }
+    function selectedText(area) { return area.value.slice(area.selectionStart, area.selectionEnd); }
+    function nextFootnoteNumber() { const matches = buildText().match(/\[\[editor-fn:(\d+)\]\]/g) || []; return matches.reduce((max, marker) => Math.max(max, Number(marker.match(/\d+/)[0])), 0) + 1; }
+    function locateTerm(term) { const ordered = activeArea ? [activeArea, ...textareas().filter(area => area !== activeArea)] : textareas(); for (const area of ordered) { let index = area.value.indexOf(term, area === activeArea ? area.selectionEnd : 0); if (index < 0) index = area.value.indexOf(term); if (index >= 0) { activeArea = area; area.focus(); area.setSelectionRange(index, index + term.length); area.scrollIntoView({ behavior:'smooth', block:'center' }); return area; } } return null; }
+    function addNotation(term = '', pinyin = '') { let area = requireCleanArea(); if (!area) return; if (term) area = locateTerm(term); const selected = area ? selectedText(area) : ''; if (!selected) { setStatus(term ? `正文中找不到“${term}”` : '请先选择要注音的文字', 'warn'); return; } const start = area.selectionStart, end = area.selectionEnd; const reading = pinyin || prompt(`“${selected}”的拼音：`, '') || ''; if (!reading) return; const note = prompt('简注（可留空）：', '') || ''; area.setRangeText(`${selected}（${reading}${note ? '；' + note : ''}）`, start, end, 'end'); area.dispatchEvent(new Event('input', { bubbles:true })); addLog('添加注音', selected, area.dataset.page); }
+    function addFootnote() { const area = requireCleanArea(); if (!area) return; const number = nextFootnoteNumber(); const note = prompt(`编者注 ${number} 内容：`, ''); if (!note) return; const selected = selectedText(area); replaceSelection(`${selected}[[editor-fn:${number}]]`); area.insertAdjacentText('beforeend', `
+
+〔编者注${number}〕${note}`); area.dispatchEvent(new Event('input', { bubbles:true })); addLog('添加编者注', note, area.dataset.page); }
+    function addComment() { const area = requireCleanArea(); if (!area) return; const note = prompt('按语或评论：', ''); if (!note) return; const selected = selectedText(area); replaceSelection(selected ? `${selected}
+
+〔按语：${note}〕` : `
+
+〔按语：${note}〕`); addLog('插入按语', note, area.dataset.page); }
+    function markDoubt() { const area = requireCleanArea(); if (!area) return; const selected = selectedText(area); if (!selected) { setStatus('请先选择待核文字', 'warn'); return; } const reason = prompt('待核原因（可留空）：', '') || ''; replaceSelection(`〔待核：${selected}${reason ? '；' + reason : ''}〕`); addLog('标为待核', `${selected} ${reason}`.trim(), area.dataset.page); }
+    function addUserNote() { const area = requireCleanArea(); if (!area) return; const note = prompt('用户札记：', ''); if (!note) return; const selected = selectedText(area); replaceSelection(`${selected}${selected ? '\n\n' : ''}〔札记：${note}〕`); addLog('添加札记', note, area.dataset.page); }
+    const markerGuidance = {
+      'pinyin': ['先在正文中选择文字，再输入拼音；可用“拼音；简注”。', '输入拼音或“拼音；简注”'],
+      'editor-note': ['选择关联文字（可选），输入编者注内容；系统会自动编号并建立脚注标记。', '输入编者注内容'],
+      'inline-note': ['选择关联文字（可选），输入随文按语。', '输入按语内容'],
+      'pending': ['先选择待核文字；内容可填写待核原因。', '输入待核原因（可留空）'],
+      'user-note': ['选择关联文字（可选），输入个人札记；札记会出现在“用户札记”表。', '输入用户札记'],
+    };
+    function updateMarkerGuidance() { const [help, placeholder] = markerGuidance[markerTypeEl.value]; markerHelpEl.textContent = help; markerTextEl.placeholder = placeholder; }
+    function markerArea() { const chosen = document.querySelector(`.rich-editor[data-page="${notePageEl.value}"]`); return activeArea || chosen || textareas()[0]; }
+    function applyMarker() {
+      const area = markerArea();
+      if (!area || viewMode !== 'clean') { setStatus('请先切换回清稿再添加标记', 'warn'); return; }
+      activeArea = area;
+      const type = markerTypeEl.value;
+      const content = markerTextEl.value.trim();
+      const selected = selectedText(area);
+      const start = area.selectionStart;
+      const end = area.selectionEnd;
+      let replacement = selected;
+      let action = '';
+      let detail = content;
+      if (type === 'pinyin') {
+        if (!selected) { setStatus('请先选择要注音的文字', 'warn'); return; }
+        if (!content) { setStatus('请输入拼音', 'warn'); return; }
+        const [reading, ...noteParts] = content.split('；');
+        const note = noteParts.join('；').trim();
+        replacement = `${selected}（${reading.trim()}${note ? '；' + note : ''}）`;
+        action = '添加注音';
+        detail = selected;
+      } else if (type === 'editor-note') {
+        if (!content) { setStatus('请输入编者注内容', 'warn'); return; }
+        const number = nextFootnoteNumber();
+        replacement = `${selected}[[editor-fn:${number}]]`;
+        area.setRangeText(replacement, start, end, 'end');
+        area.insertAdjacentText('beforeend', `
+
+〔编者注${number}〕${content}`);
+        action = '添加编者注';
+      } else if (type === 'inline-note') {
+        if (!content) { setStatus('请输入按语内容', 'warn'); return; }
+        replacement = `${selected}${selected ? '\n\n' : ''}〔按语：${content}〕`;
+        action = '插入按语';
+      } else if (type === 'pending') {
+        if (!selected) { setStatus('请先选择待核文字', 'warn'); return; }
+        replacement = `〔待核：${selected}${content ? '；' + content : ''}〕`;
+        action = '标为待核';
+        detail = `${selected} ${content}`.trim();
+      } else {
+        if (!content) { setStatus('请输入用户札记', 'warn'); return; }
+        replacement = `${selected}${selected ? '\n\n' : ''}〔札记：${content}〕`;
+        action = '添加札记';
+      }
+      if (type !== 'editor-note') area.setRangeText(replacement, start, end, 'end');
+      area.dispatchEvent(new Event('input', { bubbles:true }));
+      addLog(action, detail, area.dataset.page);
+      markerTextEl.value = '';
+      setStatus(`${action}完成`, 'ok');
+      area.focus();
+    }
+    function escapeRegExp(text) { const specials = new Set([36,40,41,42,43,46,63,91,92,93,94,123,124,125]); return [...text].map(ch => specials.has(ch.charCodeAt(0)) ? String.fromCharCode(92) + ch : ch).join(''); }
+    function dictionarySettings() { try { return { enabled:true, difficulty:3, domain:'all', ...JSON.parse(localStorage.getItem(DICTIONARY_SETTINGS_KEY) || '{}') }; } catch { return { enabled:true, difficulty:3, domain:'all' }; } }
+    function termIsVisible(item, settings=dictionarySettings()) { return settings.enabled && (Number(item.difficulty) || 3) >= Number(settings.difficulty) && (settings.domain === 'all' || item.domain === settings.domain); }
+    function applyDictionarySettings() { const settings=dictionarySettings(), button=document.getElementById('dictionaryHintsBtn'), difficulty=document.getElementById('dictionaryDifficulty'), domain=document.getElementById('dictionaryDomain'); button.textContent=settings.enabled?'词典提示：开':'词典提示：关'; button.classList.toggle('active',settings.enabled); button.setAttribute('aria-pressed',String(settings.enabled)); difficulty.value=String(settings.difficulty); domain.value=settings.domain; document.querySelectorAll('button.term').forEach(term=>{ term.hidden=!termIsVisible({difficulty:Number(term.dataset.difficulty),domain:term.dataset.domain},settings); }); }
+    function saveDictionarySettings(changes) { localStorage.setItem(DICTIONARY_SETTINGS_KEY,JSON.stringify({...dictionarySettings(),...changes})); applyDictionarySettings(); if(viewMode==='annotated')setView('clean'); }
+    function applyProjectDictionaryOverrides(overrides) { TERMS.forEach(item=>{const saved=overrides[`zh ${item.term}`];if(!saved)return;if(saved.pinyin!==undefined)item.pinyin=String(saved.pinyin);if(saved.difficulty!==undefined)item.difficulty=Number(saved.difficulty)||3;if(saved.definition!==undefined)item.annotation=String(saved.definition)});document.querySelectorAll('button.term').forEach(button=>{const item=TERMS.find(entry=>entry.term===button.dataset.term);if(!item)return;button.dataset.pinyin=item.pinyin||'';button.dataset.difficulty=String(item.difficulty||3);const parts=button.querySelectorAll('span');if(parts[1])parts[1].textContent=item.pinyin||''});localStorage.setItem(PROJECT_DICTIONARY_OVERRIDES_KEY,JSON.stringify(overrides));applyDictionarySettings(); }
+    function loadProjectDictionaryOverrides() {try{const value=JSON.parse(localStorage.getItem(PROJECT_DICTIONARY_OVERRIDES_KEY)||'{}');if(value&&typeof value==='object'&&!Array.isArray(value))applyProjectDictionaryOverrides(value)}catch{}}
+    function annotatedTexts() { const result = { ...cleanViewTexts }; const used = new Set(); [...TERMS].filter(item=>termIsVisible(item)).sort((a,b) => (b.term || '').length - (a.term || '').length).forEach(item => { const term = (item.term || '').trim(), pinyin = (item.pinyin || '').trim(); if (!term || !pinyin || used.has(term)) return; for (const area of textareas()) { const page = area.dataset.page; const pattern = new RegExp(escapeRegExp(term) + '(?:[（(][A-Za-züÜvV:]+[1-5][）)])?'); if (pattern.test(result[page])) { result[page] = result[page].replace(pattern, `${term}（${pinyin}）`); used.add(term); break; } } }); return result; }
+    function setView(mode) { if (mode === 'annotated') { saveNow(false); cleanViewTexts = Object.fromEntries(textareas().map(area => [area.dataset.page, area.value])); cleanViewHtml = Object.fromEntries(textareas().map(area => [area.dataset.page, area.innerHTML])); const projected = annotatedTexts(); textareas().forEach(area => { area.value = projected[area.dataset.page]; area.readOnly = true; area.classList.add('annotated-view'); }); viewMode = 'annotated'; document.getElementById('viewToggleBtn').textContent = '切换为清稿'; modeBadgeEl.textContent = '当前：注音稿（只读）'; modeBadgeEl.classList.add('annotated'); } else { if (viewMode === 'annotated') textareas().forEach(area => area.innerHTML = cleanViewHtml[area.dataset.page] ?? escapeHtml(cleanViewTexts[area.dataset.page] ?? area.value)); textareas().forEach(area => { area.readOnly = false; area.classList.remove('annotated-view'); }); viewMode = 'clean'; document.getElementById('viewToggleBtn').textContent = '切换为注音稿'; modeBadgeEl.textContent = '当前：清稿'; modeBadgeEl.classList.remove('annotated'); } sessionStorage.setItem(`${STORAGE_KEY}:view`, mode); setStatus(mode === 'annotated' ? '注音稿仅供查看' : '已返回清稿', 'ok'); }
+    function loadVoices() { const priority = lang => { const code = lang.toLowerCase(); return code.startsWith('en') ? 0 : code.startsWith('zh') ? 1 : code.startsWith('ru') ? 2 : code.startsWith('fr') ? 3 : 4; }; voices = speechSynthesis.getVoices().sort((a,b) => priority(a.lang) - priority(b.lang) || a.lang.localeCompare(b.lang) || a.name.localeCompare(b.name)); const select = document.getElementById('voiceSelect'); select.innerHTML = '<option value="">系统默认声音</option>' + voices.map((voice,index) => { const name = voice.name.length > 24 ? voice.name.slice(0,23) + '…' : voice.name; return `<option value="${index}">${escapeHtml(name)} — ${escapeHtml(voice.lang)}</option>`; }).join(''); }
+    function speakText() { speechSynthesis.cancel(); const area = activeArea || textareas()[0]; if (!area) return; const selection = selectedText(area).trim(); const utterance = new SpeechSynthesisUtterance(selection || area.value); utterance.lang = 'zh-CN'; utterance.rate = Number(document.getElementById('speechRate').value); const index = document.getElementById('voiceSelect').value; if (index !== '') utterance.voice = voices[Number(index)]; utterance.onstart = () => { document.getElementById('pauseSpeechBtn').disabled = false; document.getElementById('stopSpeechBtn').disabled = false; setStatus(selection ? '正在朗读所选文字' : `正在朗读 PDF ${area.dataset.page}`); }; utterance.onend = utterance.onerror = () => { document.getElementById('pauseSpeechBtn').disabled = true; document.getElementById('stopSpeechBtn').disabled = true; document.getElementById('pauseSpeechBtn').textContent = '暂停'; }; speechSynthesis.speak(utterance); }
+    function backupState() { return { version:4, chapter:"chapter_20", savedAt:new Date().toISOString(), texts:Object.fromEntries(textareas().map(area => [area.dataset.page, viewMode === 'clean' ? area.value : cleanViewTexts[area.dataset.page]])), html:Object.fromEntries(textareas().map(area => [area.dataset.page, viewMode === 'clean' ? area.innerHTML : cleanViewHtml[area.dataset.page]])), log:getLog(), chapterNotes:getChapterNotes() }; }
+    function restoreFormatSelection() { if (!savedFormatRange) return false; const selection=getSelection();selection.removeAllRanges();selection.addRange(savedFormatRange);return true; }
+    function applyTextStyle(command,value,label) { if(viewMode!=='clean'){setStatus('请先切换回清稿再设置格式','warn');return}if(!activeArea||!restoreFormatSelection()||getSelection().isCollapsed){setStatus('请先选择正文中的文字','warn');return}document.execCommand('styleWithCSS',false,true);if(!document.execCommand(command,false,value||null)){setStatus(`浏览器未能应用${label}`,'warn');return}activeArea.dispatchEvent(new Event('input',{bubbles:true}));captureEditorSelection(activeArea);addLog(`设置${label}`,getSelection().toString(),activeArea.dataset.page);setStatus(`${label}已应用`,'ok'); }
+    function prepareImage(file) { return new Promise((resolve,reject)=>{const reader=new FileReader();reader.onerror=()=>reject(new Error('无法读取图片'));reader.onload=()=>{const image=new Image();image.onerror=()=>reject(new Error('图片格式无法识别'));image.onload=()=>{const scale=Math.min(1,1800/Math.max(image.width,image.height)),canvas=document.createElement('canvas');canvas.width=Math.max(1,Math.round(image.width*scale));canvas.height=Math.max(1,Math.round(image.height*scale));canvas.getContext('2d').drawImage(image,0,0,canvas.width,canvas.height);const data=canvas.toDataURL('image/jpeg',.86);data.length>2600000?reject(new Error('压缩后的图片仍过大，请选择较小图片')):resolve(data)};image.src=reader.result};reader.readAsDataURL(file)}); }
+    function insertEditorialImage(data,fileName,caption) { if(viewMode!=='clean'||!activeArea){setStatus('请先在清稿正文中放置光标','warn');return}const figure=document.createElement('figure');figure.className='editorial-image';figure.dataset.size='medium';figure.contentEditable='false';const image=document.createElement('img');image.src=data;image.alt=caption||fileName;const figcaption=document.createElement('figcaption');figcaption.contentEditable='true';figcaption.textContent=caption||fileName;const tools=document.createElement('div');tools.className='editorial-image-tools';tools.innerHTML='<button type="button" data-image-size="small">小</button><button type="button" data-image-size="medium">中</button><button type="button" data-image-size="large">大</button><button type="button" data-image-size="full">通栏</button><button type="button" data-image-remove>删除</button>';figure.append(image,figcaption,tools);let range=savedFormatRange;try{if(!range||!activeArea.contains(range.commonAncestorContainer))range=null}catch{range=null}if(range){range.collapse(false);range.insertNode(figure)}else activeArea.append(figure);activeArea.append(document.createElement('br'));activeArea.dispatchEvent(new Event('input',{bubbles:true}));addLog('插入图片',caption||fileName,activeArea.dataset.page);setStatus('图片已插入；可编辑图注并调整大小','ok');}
+    const formatMenu=document.getElementById('formatMenu'),formatMenuBtn=document.getElementById('formatMenuBtn');
+    function closeFormatMenu(){formatMenu.classList.remove('open');formatMenuBtn.setAttribute('aria-expanded','false')}
+    formatMenuBtn.addEventListener('click',event=>{event.stopPropagation();const opening=!formatMenu.classList.contains('open');closeFormatMenu();if(opening){formatMenu.classList.add('open');formatMenuBtn.setAttribute('aria-expanded','true')}});
+    document.getElementById('formatPopover').addEventListener('click',event=>{const option=event.target.closest('.format-option');if(!option)return;applyTextStyle(option.dataset.command,option.dataset.value||null,option.dataset.label);closeFormatMenu()});
+    document.addEventListener('click',event=>{if(!formatMenu.contains(event.target))closeFormatMenu()});
+    document.addEventListener('keydown',event=>{if(event.key==='Escape')closeFormatMenu()});
+    document.getElementById('boldBtn').addEventListener('click',()=>applyTextStyle('bold',null,'粗体'));
+    document.getElementById('insertImageBtn').addEventListener('click',()=>{if(viewMode!=='clean'){setStatus('请先切换回清稿再插入图片','warn');return}if(!activeArea){setStatus('请先在正文中放置光标','warn');return}document.getElementById('editorImageInput').click();});
+    document.getElementById('editorImageInput').addEventListener('change',async event=>{const file=event.target.files[0];if(!file)return;try{const caption=prompt('请输入图片说明和来源（可稍后在正文中修改）：',file.name)||file.name;insertEditorialImage(await prepareImage(file),file.name,caption)}catch(error){setStatus(error.message,'warn')}finally{event.target.value=''}});
+    document.addEventListener('click',event=>{const size=event.target.closest('[data-image-size]'),remove=event.target.closest('[data-image-remove]'),figure=event.target.closest('.editorial-image');if(size&&figure){figure.dataset.size=size.dataset.imageSize;figure.closest('.rich-editor')?.dispatchEvent(new Event('input',{bubbles:true}))}else if(remove&&figure&&confirm('删除这张插图？')){const area=figure.closest('.rich-editor'),page=area?.dataset.page;figure.remove();area?.dispatchEvent(new Event('input',{bubbles:true}));addLog('删除图片','',page)}});
+    document.querySelectorAll('[data-target]').forEach(button => button.addEventListener('click', () => document.getElementById(button.dataset.target)?.scrollIntoView({ behavior: 'smooth', block: 'start' })));
+    textareas().forEach(initializeRichEditor);
+    textareas().forEach(area => { area.addEventListener('input', () => { queueSave(); renderUserNotes(); }); area.addEventListener('focus', () => { activeArea = area; notePageEl.value = area.dataset.page; }); area.addEventListener('click', () => captureEditorSelection(area)); area.addEventListener('keyup', () => captureEditorSelection(area)); area.addEventListener('mouseup', () => captureEditorSelection(area)); area.addEventListener('keydown',event=>{if(event.key==='Enter'&&viewMode==='clean'){event.preventDefault();captureEditorSelection(area);area.setRangeText('\n');area.dispatchEvent(new Event('input',{bubbles:true}));}}); area.addEventListener('paste',event=>{if(viewMode!=='clean')return;event.preventDefault();captureEditorSelection(area);area.setRangeText(event.clipboardData.getData('text/plain'));area.dispatchEvent(new Event('input',{bubbles:true}));}); });
+    document.querySelectorAll('button.term').forEach(button => button.addEventListener('click', () => addNotation(button.dataset.term, button.dataset.pinyin)));
+    document.getElementById('viewToggleBtn').addEventListener('click', () => setView(viewMode === 'clean' ? 'annotated' : 'clean'));
+    document.getElementById('dictionaryHintsBtn').addEventListener('click', () => saveDictionarySettings({enabled:!dictionarySettings().enabled}));
+    document.getElementById('dictionaryDifficulty').addEventListener('change', event => saveDictionarySettings({difficulty:Number(event.target.value)}));
+    document.getElementById('dictionaryDomain').addEventListener('change', event => saveDictionarySettings({domain:event.target.value}));
+    document.getElementById('dictionaryOverridesInput').addEventListener('change',async event=>{const file=event.target.files[0];if(!file)return;try{const data=JSON.parse(await file.text()),overrides=data.overrides||data;if(!overrides||typeof overrides!=='object'||Array.isArray(overrides))throw new Error('修订文件格式不正确');applyProjectDictionaryOverrides(overrides);setStatus('共享项目词典修订已导入','ok')}catch(error){setStatus('无法导入词典修订：'+error.message,'warn')}finally{event.target.value=''}});
+    document.getElementById('addNotationBtn').addEventListener('click', () => addNotation());
+    document.getElementById('addFootnoteBtn').addEventListener('click', addFootnote);
+    document.getElementById('addCommentBtn').addEventListener('click', addComment);
+    document.getElementById('markDoubtBtn').addEventListener('click', markDoubt);
+    document.getElementById('addUserNoteBtn').addEventListener('click', addUserNote);
+    document.getElementById('addChapterNoteBtn').addEventListener('click', () => {
+      const title = chapterNoteTitleEl.value.trim();
+      const note = chapterNoteTextEl.value.trim();
+      if (!title || !note) { setStatus('请填写章节札记的主题和内容', 'warn'); return; }
+      const notes = getChapterNotes();
+      notes.push({ title, note, at:new Date().toISOString() });
+      setChapterNotes(notes);
+      chapterNoteTitleEl.value = '';
+      chapterNoteTextEl.value = '';
+      setStatus('章节导读札记已保存', 'ok');
+      addLog('新增章节导读札记', title, currentPage());
+    });
+    document.getElementById('downloadChapterNotesBtn').addEventListener('click', () => {
+      downloadText(CHAPTER_NOTES_NAME, chapterNotesMarkdown());
+      setStatus('章节导读札记 Markdown 已下载', 'ok');
+      addLog('下载章节导读札记', '', currentPage());
+    });
+    markerTypeEl.addEventListener('change', updateMarkerGuidance);
+    notePageEl.addEventListener('change', () => {
+      const area = document.querySelector(`.rich-editor[data-page="${notePageEl.value}"]`);
+      if (area) activeArea = area;
+    });
+    document.getElementById('applyMarkerBtn').addEventListener('click', applyMarker);
+    document.getElementById('speakBtn').addEventListener('click', speakText);
+    document.getElementById('pauseSpeechBtn').addEventListener('click', event => { if (speechSynthesis.paused) { speechSynthesis.resume(); event.currentTarget.textContent = '暂停'; } else { speechSynthesis.pause(); event.currentTarget.textContent = '继续'; } });
+    document.getElementById('stopSpeechBtn').addEventListener('click', () => { speechSynthesis.cancel(); document.getElementById('pauseSpeechBtn').textContent = '暂停'; });
+    document.getElementById('speechRate').addEventListener('input', event => document.getElementById('speechRateValue').textContent = Number(event.target.value).toFixed(1) + '×');
+    document.getElementById('backupBtn').addEventListener('click', () => { downloadJson(BACKUP_NAME, backupState()); setStatus('JSON 备份已下载', 'ok'); addLog('导出备份', '', currentPage()); });
+    document.getElementById('importBackup').addEventListener('change', async event => { const file = event.target.files[0]; if (!file) return; try { const data = JSON.parse(await file.text()); if (!data.texts && !data.html) throw new Error('备份缺少 texts/html'); if (viewMode === 'annotated') setView('clean'); textareas().forEach(area => { const page=area.dataset.page;if(data.version>=4&&data.html?.[page]!==undefined)area.innerHTML=data.html[page];else if(data.texts?.[page]!==undefined)area.value=data.texts[page]; }); if (Array.isArray(data.log)) setLog(data.log); if (Array.isArray(data.chapterNotes)) setChapterNotes(data.chapterNotes); saveNow(false); setStatus(data.version>=4?'富文本备份已导入':'旧版备份已迁移', 'ok'); addLog('导入备份', file.name, currentPage()); } catch (error) { setStatus('无法导入备份：' + error.message, 'warn'); } finally { event.target.value = ''; } });
+    document.querySelectorAll('[data-copy-page]').forEach(button => button.addEventListener('click', async () => { const area = document.querySelector(`.rich-editor[data-page="${button.dataset.copyPage}"]`); await navigator.clipboard.writeText(area.value); setStatus('本页已复制', 'ok'); }));
+    document.querySelectorAll('[data-export-page]').forEach(button => button.addEventListener('click', () => { const area = document.querySelector(`.rich-editor[data-page="${button.dataset.exportPage}"]`); exportTextEl.value = blockFor(area); exportTextEl.scrollIntoView({ behavior: 'smooth', block: 'center' }); }));
+    document.getElementById('saveBtn').addEventListener('click', saveNow);
+    document.getElementById('exportBtn').addEventListener('click', () => { exportTextEl.value = buildText(); exportTextEl.scrollIntoView({ behavior: 'smooth', block: 'center' }); setStatus('文本已生成', 'ok'); addLog('生成文本', '', currentPage()); });
+    document.getElementById('downloadBtn').addEventListener('click', () => { downloadText(OUTPUT_NAME, buildText()); setStatus('TXT 已下载', 'ok'); addLog('下载TXT', '', currentPage()); });
+    document.getElementById('addNoteBtn').addEventListener('click', () => { const note = noteTextEl.value.trim(); if (!note) { setStatus('笔记为空', 'warn'); return; } const tag = noteTagEl.value.trim() || '校订'; addLog(tag, note, notePageEl.value); noteTextEl.value = ''; setStatus('笔记已记录', 'ok'); });
+    function buildLogText() { return getLog().map(item => { const time = new Date(item.at).toLocaleString(); const page = item.page ? `PDF ${item.page}` : '全章'; return `[${time}] ${item.action} · ${page} · ${item.chars || 0}字\n${item.detail || ''}`.trim(); }).join('\n\n'); }
+    document.getElementById('exportLogBtn').addEventListener('click', () => { exportTextEl.value = buildLogText(); exportTextEl.scrollIntoView({ behavior: 'smooth', block: 'center' }); setStatus('日志已导出', 'ok'); });
+    document.getElementById('downloadLogBtn').addEventListener('click', () => { downloadText(LOG_NAME, buildLogText()); setStatus('日志已下载', 'ok'); });
+    document.getElementById('clearLogBtn').addEventListener('click', () => { if (!confirm('清空本浏览器保存的编辑日志？')) return; localStorage.removeItem(LOG_KEY); renderLog(); setStatus('日志已清空', 'ok'); });
+    document.getElementById('resetBtn').addEventListener('click', () => { if (!confirm('恢复 chapter clean 原稿会清除本浏览器保存的编辑内容。继续？')) return; clearTimeout(timer); allowSave = false; if (viewMode === 'annotated') setView('clean'); textareas().forEach(area => area.value = ORIGINAL_TEXTS[area.dataset.page] ?? ''); cleanViewTexts = { ...ORIGINAL_TEXTS }; cleanViewHtml = {}; localStorage.removeItem(STORAGE_KEY); sessionStorage.removeItem(`${STORAGE_KEY}:view`); viewMode = 'clean'; textareas().forEach(area => { area.readOnly = false; area.classList.remove('annotated-view'); }); document.getElementById('viewToggleBtn').textContent = '切换为注音稿'; modeBadgeEl.textContent = '当前：清稿'; modeBadgeEl.classList.remove('annotated'); allowSave = true; setStatus('已恢复 chapter clean 原稿', 'ok'); addLog('恢复 clean 原稿', '', currentPage()); });
+    window.addEventListener('beforeunload', () => { if (allowSave) saveNow(false); });
+    populateNotePages();
+    updateMarkerGuidance();
+    loadSaved();
+    renderUserNotes();
+    renderChapterNotes();
+    activeArea = textareas()[0] || null;
+    applyDictionarySettings();
+    loadProjectDictionaryOverrides();
+    loadVoices();
+    if ('onvoiceschanged' in speechSynthesis) speechSynthesis.onvoiceschanged = loadVoices;
+    if (sessionStorage.getItem(`${STORAGE_KEY}:view`) === 'annotated') setView('annotated');
+    renderLog();
+  </script>
+</body>
+</html>

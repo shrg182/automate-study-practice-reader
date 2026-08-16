@@ -1,0 +1,124 @@
+term,pinyin,type,annotation
+人祭,rén jì,concept,以人作为祭品的祭祀行为。
+人殉,rén xùn,concept,以人随葬或陪葬的行为，常见于古代贵族墓葬。
+人牲,rén shēng,concept,被用于祭祀或献祭的人。
+杀祭,shā jì,concept,通过杀牲或杀人进行的祭祀。
+牲祭,shēng jì,concept,以牛、羊、猪、狗等动物作为祭品的祭祀。
+埋祭,mái jì,concept,将祭品埋入地下的祭祀方式。
+燎祭,liáo jì,concept,焚烧祭品以祭神的仪式。
+祭牲,jì shēng,concept,祭祀中所用的牲畜。
+祭品,jì pǐn,concept,祭祀时献给神灵或祖先的物品。
+献祭,xiàn jì,concept,向神灵、祖先等奉献祭品。
+祭祀坑,jì sì kēng,concept,考古遗址中用于掩埋祭品或举行祭祀的坑穴。
+丛葬坑,cóng zàng kēng,concept,集中埋入多人尸骨或遗骸的坑。
+掷埋,zhì mái,concept,考古报告用语，指尸体或骨骼被抛掷式埋入坑中。
+灰坑,huī kēng,concept,遗址中含灰土、废弃物或祭祀遗存的坑穴。
+坑口,kēng kǒu,concept,坑穴在地表或开口处的形状和范围。
+坑底,kēng dǐ,concept,坑穴底部，常用于描述考古遗迹。
+地层,dì céng,concept,遗址中不同时期堆积形成的层次。
+层位,céng wèi,concept,考古学中遗物或遗迹所在的地层位置。
+遗存,yí cún,concept,古代活动留下的遗物、遗迹或现象。
+基址,jī zhǐ,concept,建筑物遗留下来的基础位置。
+夯土,hāng tǔ,concept,把土层层夯实形成建筑基础或城墙的技术。
+夯土台基,hāng tǔ tái jī,concept,用夯土筑成的高台式建筑基础。
+宫殿区,gōng diàn qū,concept,都邑中宫殿和王室活动集中的区域。
+宫城,gōng chéng,concept,城邑内宫殿或王室建筑集中的城垣区域。
+王陵区,wáng líng qū,concept,王室墓葬集中的区域。
+偃师商城,yǎn shī shāng chéng,site_or_culture,商代早期城址，位于二里头以东。
+郑州商城,zhèng zhōu shāng chéng,site_or_culture,商代早期大型城址。
+二里冈,èr lǐ gāng,site_or_culture,郑州一带早商文化的重要遗址和文化命名地。
+殷墟,yīn xū,site_or_culture,晚商都邑遗址，甲骨卜辞的重要出土地。
+垣曲商城,yuán qū shāng chéng,site_or_culture,山西垣曲早商城址。
+东下冯商城,dōng xià féng shāng chéng,site_or_culture,山西夏县早商城址。
+老牛坡,lǎo niú pō,site_or_culture,西安附近商代遗址，文中涉及商人据点和人祭。
+盘龙城,pán lóng chéng,site_or_culture,湖北武汉附近早商城址，是商朝南方重要据点。
+小双桥,xiǎo shuāng qiáo,site_or_culture,郑州西北中商时期重要遗址。
+良渚,liáng zhǔ,site_or_culture,长江下游新石器时代重要考古文化和古城遗址。
+石峁,shí mǎo,site_or_culture,陕北大型史前城址。
+陶寺,táo sì,site_or_culture,山西襄汾一带龙山时代重要遗址。
+岳石文化,yuè shí wén huà,site_or_culture,山东地区龙山以后、商代以前的考古文化。
+屈家岭文化,qū jiā lǐng wén huà,site_or_culture,长江中游新石器时代文化。
+石家河文化,shí jiā hé wén huà,site_or_culture,长江中游新石器时代晚期文化。
+北福地,běi fú dì,site_or_culture,河北易县史前遗址，文中涉及埋藏器物祭祀。
+九世之乱,jiǔ shì zhī luàn,text,《史记》所记商代中期王室长期内乱。
+仲丁,zhòng dīng,person,商王名，文中讨论中商迁都和内乱。
+太戊,tài wù,person,商王名，文中推测与埋祭改革有关。
+河亶甲,hé dǎn jiǎ,person,商王名，史书记载其迁都于相。
+祖乙,zǔ yǐ,person,商王名，史书记载其迁都于邢。
+卜辞,bǔ cí,text,甲骨占卜后刻写或记录的辞句。
+甲骨卜辞,jiǎ gǔ bǔ cí,text,刻写在龟甲兽骨上的占卜文字。
+神权,shén quán,concept,以神灵、祭祀权威支撑的统治权力。
+王权,wáng quán,concept,王的政治统治权力。
+巫术,wū shù,concept,古代借助神秘仪式影响现实的信仰行为。
+酋邦,qiú bāng,concept,介于部落和国家之间的复杂社会组织。
+族邑,zú yì,concept,以部族为单位聚居形成的城邑或聚落。
+宗教革命,zōng jiào gé mìng,concept,文中指商王室祭祀观念和方式的剧烈变化。
+宗教改革,zōng jiào gǎi gé,concept,文中指试图以埋藏器物替代杀人杀牲的祭祀变革。
+埋祭改革,mái jì gǎi gé,concept,文中指用埋藏青铜器等器物替代杀牲杀人的改革尝试。
+铜器窖藏坑,tóng qì jiào cáng kēng,artifact,集中埋藏青铜器的坑穴。
+窖藏,jiào cáng,concept,将器物埋藏于地下的行为或遗迹。
+铜鼎,tóng dǐng,bronze_item,青铜鼎，古代炊煮或礼仪重器。
+铜礼器,tóng lǐ qì,bronze_item,用于礼仪或祭祀的青铜器。
+乳钉纹,rǔ dīng wén,artifact,青铜器上乳突状装饰纹样。
+夔龙纹,kuí lóng wén,artifact,青铜器常见的夔龙形纹饰。
+兽面饕餮纹,shòu miàn tāo tiè wén,artifact,青铜器常见兽面纹样。
+神人兽面纹,shén rén shòu miàn wén,artifact,良渚玉器上的神人和兽面复合纹样。
+筒形器,tǒng xíng qì,artifact,筒状陶器，文中涉及屈家岭文化祭祀。
+陶塑,táo sù,artifact,陶制塑像或小动物、人偶等。
+朱砂,zhū shā,rare_word,红色矿物颜料，古代常用于礼仪。
+饕餮,tāo tiè,rare_word,古代传说中的贪食猛兽名，常用于青铜纹饰名称。
+夔,kuí,added,古代传说中的一足神兽或龙形怪物。
+龛,kān,rare_word,供奉或安置物品的小空间；文中指祭祀坑壁上的壁龛。
+壁龛,bì kān,added,墙壁或坑壁上凿出的供放置物品的小龛。
+头盖骨,tóu gài gǔ,concept,颅骨顶部，文中涉及加工成碗状器物。
+颅骨,lú gǔ,concept,头骨，包围脑部的骨骼。
+眼眶,yǎn kuàng,rare_word,眼球所在的骨性空间。
+下颌骨,xià hé gǔ,concept,下颌部骨骼。
+骨臼,gǔ jiù,concept,骨骼关节窝，文中指肢骨两端结构。
+股骨,gǔ gǔ,concept,大腿骨。
+盆骨,pén gǔ,concept,骨盆，文中作“零碎盆骨”。
+颈椎,jǐng zhuī,concept,颈部脊椎骨。
+肱骨,gōng gǔ,concept,上臂骨。
+肋骨,lèi gǔ,concept,胸部骨骼。
+肢解,zhī jiě,concept,将肢体切割分解。
+腰斩,yāo zhǎn,concept,从腰部斩断，古代酷刑或杀戮方式。
+反剪,fǎn jiǎn,concept,把双手反绑在背后。
+捆绑,kǔn bǎng,concept,用绳索等束缚身体。
+俯身屈膝,fǔ shēn qū xī,concept,身体前俯、膝部弯曲的姿势。
+凿孔,záo kǒng,concept,用工具凿出的孔。
+穿孔,chuān kǒng,concept,贯穿形成孔洞，文中多指颅骨创口。
+锐器,ruì qì,concept,带尖刃或锋利边缘的器物。
+钝器,dùn qì,concept,无锋刃但可打击致伤的器物。
+铜戈,tóng gē,bronze_item,青铜戈，古代横刃长柄兵器。
+铜凿,tóng záo,bronze_item,青铜凿，文中推测为可能造成穿孔的工具或兵器。
+铜镞,tóng zú,bronze_item,青铜箭头。
+青铜方框形构件,qīng tóng fāng kuàng xíng gòu jiàn,bronze_item,小双桥出土的方框形青铜构件。
+龙虎搏象图,lóng hǔ bó xiàng tú,artifact,青铜构件上的龙、虎与象搏斗图案。
+孔雀石,kǒng què shí,artifact,含铜矿物，古代冶铜原料之一。
+熔铜炉,róng tóng lú,artifact,熔化铜料的炉具。
+原始瓷,yuán shǐ cí,artifact,早期高温釉陶或瓷器形态。
+绿松石,lǜ sōng shí,artifact,蓝绿色矿物，古代常作装饰嵌片。
+骨簪,gǔ zān,artifact,骨制发簪。
+玉簪,yù zān,artifact,玉制发簪。
+骨匕,gǔ bǐ,artifact,骨制匕形器。
+蚌刀,bàng dāo,artifact,蚌壳制成的刀形工具。
+陶炊器,táo chuī qì,artifact,陶制炊煮器具。
+鬲,lì,artifact,古代炊器，袋状足。
+瓮,wèng,artifact,大腹陶器，可作盛器。
+簋,guǐ,bronze_item,古代盛食器，青铜礼器之一。
+樽,zūn,bronze_item,古代酒器或盛器。
+卣,yǒu,bronze_item,古代盛酒器。
+觚,gū,bronze_item,古代饮酒器。
+爵,jué,bronze_item,古代酒器，也作礼器。
+斝,jiǎ,bronze_item,古代酒器，三足，有柱。
+盉,hé,bronze_item,古代调酒或盛水器。
+铙,náo,bronze_item,古代青铜乐器。
+钺,yuè,bronze_item,古代大型斧形兵器或礼器。
+璋,zhāng,artifact,古代玉器名。
+璧,bì,artifact,圆形中孔玉器。
+卜骨,bǔ gǔ,text,用于占卜并刻写文字的兽骨。
+浮选,fú xuǎn,concept,考古中用水分离土样里的植物种子等细小遗存的方法。
+粟,sù,rare_word,古代重要旱作粮食，通常指小米。
+黍,shǔ,rare_word,古代旱作粮食作物。
+隞,áo,place,商代都城，在今河南荥阳市北、敖山南。
+莪,é,rare_word,莪蒿；亦见于人名“刘士莪”。

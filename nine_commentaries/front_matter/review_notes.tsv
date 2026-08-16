@@ -1,0 +1,8 @@
+source	current_text	issue	action
+PDF p.001	cover page	OCR cannot reliably capture large title and image elements.	Use manual bibliographic title from cover and copyright page; do not treat image content as reading text.
+PDF p.001	library barcode / stamp	Non-book artifact appears on cover.	Exclude from clean text.
+PDF p.002	图书在版编目【CHP) 数据	OCR damaged `CIP`.	Corrected to 图书在版编目（CIP）数据.
+PDF p.002	1990 年5月第1版	OCR likely misread 1999 as 1990.	Corrected to 1999年5月第1版 after visual check.
+PDF p.002	定价:5S0,00元	OCR damaged price.	Corrected to 定价：50.00元 after visual check.
+PDF pp.003-008	table of contents	OCR is too noisy for direct use because of dotted leaders and scan quality.	Use visually checked `sources/table_of_contents.csv` instead.
+PDF p.008	Chapter 17 final section list	Some punctuation in section titles needs careful visual verification.	Keep TOC rows but review if exact quotation marks matter.

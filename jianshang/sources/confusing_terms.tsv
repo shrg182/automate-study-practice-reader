@@ -1,0 +1,4 @@
+item	category	context	recommended_form	recommended_pinyin	status	reader_hint	evidence_urls	notes
+契	pronunciation	商族始祖、商先公	契	xiè	accepted	作商族始祖名读 xiè；作“契约、契合”时常读 qì。	https://baike.baidu.com/item/契/67783; https://en.wikipedia.org/wiki/Xie_of_Shang; https://zh.wikipedia.org/wiki/契	The character can read qì in other senses, but for the Shang ancestor use xiè.
+新砦	ocr_term	二里头前身/河南新密遗址	新砦	xīn zhài	accepted	“砦”同“寨”，这里是遗址名；网页 OCR/转换可能误作“碧”。	https://zh.wikipedia.org/wiki/新砦遗址	Web/OCR text may show 新碧 or other malformed variants; normalize to 新砦.
+石峁	ocr_term	陕北大型史前城址	石峁	shí mǎo	accepted	“峁”为陕北地貌字；网页/OCR可能误作“郎”。	https://zh.wikipedia.org/wiki/石峁遗址	Use 石峁 when comparing Shimao with Shijiahe and Liangzhu.

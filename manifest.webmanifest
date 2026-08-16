@@ -1,0 +1,17 @@
+{
+  "name": "校读书房",
+  "short_name": "校读书房",
+  "description": "古籍、文章与课程材料的移动阅读和校读工作区",
+  "lang": "zh-CN",
+  "start_url": "./index.html?source=pwa",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#f8f9fa",
+  "theme_color": "#188038",
+  "categories": ["books", "education", "productivity"],
+  "icons": [
+    {"src": "icons/reading-room-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any maskable"},
+    {"src": "icons/reading-room-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any maskable"}
+  ]
+}

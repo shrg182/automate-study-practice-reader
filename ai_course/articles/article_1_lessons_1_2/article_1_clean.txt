@@ -1,0 +1,45 @@
+How AI Works: Lessons 1–2
+
+Every day, artificial intelligence quietly helps people choose music, translate messages, find photographs, avoid spam, and answer questions. To a casual observer, these systems can seem almost magical. Behind the scenes, however, there is no tiny person thinking inside the computer. There are data, mathematical operations, learning algorithms, and many adjustable values working together at remarkable speed.
+
+〔按语：The opening moves from familiar uses of AI to the less visible machinery beneath them. This contrast introduces the course’s central goal: replacing mystery with a clear account of learning from data.〕
+
+This course follows the story of how an ordinary computer becomes a machine that can recognize patterns. We will begin by separating artificial intelligence from traditional rule-based software. Then we will enter the training room, where a model studies examples, makes predictions, measures its mistakes, and gradually improves. From there, we will explore neural networks, discover how language models learn relationships between words, and examine why even powerful AI can sometimes produce confident but incorrect answers.
+
+Our investigation will unfold in seven short stages. First, we will ask what AI is—and what it is not. Second, we will see how machines learn from examples, features, labels, and patterns. Third, we will follow the training process through predictions, errors, parameters, and improvement. Fourth, we will examine how layers of simple calculations form a neural network. Fifth, we will investigate tokens, context, and next-token prediction in language models. Sixth, we will build a small AI system in Python. Finally, we will consider bias, privacy, reliability, and the continuing importance of human judgment.
+
+By the end, AI should feel less like magic and more like an understandable—though still impressive—engineering achievement. Each lesson will include a plain-language explanation, a familiar example, a quick question, and, when useful, a small experiment.
+
+Lesson 1: What Is Artificial Intelligence?
+
+Artificial intelligence is the broad name for computer systems designed to perform tasks that appear to require human abilities, such as recognizing speech, interpreting images, finding patterns, making predictions, or generating language.
+
+Not every useful computer program is AI. A calculator follows precise rules written by a programmer. A machine-learning spam filter is different: it studies examples of spam and ordinary email, detects patterns in those examples, and uses the patterns to classify new messages.
+
+The basic process is simple to describe: examples enter a learning process; the learning process produces a trained model; and the trained model makes a prediction about new information.
+
+Quick check: Which system learns from data—a light switch, a calculator following fixed arithmetic rules, or an email filter trained on examples of spam? The answer is the email filter because it learns patterns from labeled examples.
+
+Your turn: Name one AI system you encounter in daily life. What information or examples do you think it learned from?
+
+Lesson 2: How Machines Learn from Data
+
+A machine-learning system learns from examples rather than receiving every rule directly. Each example contains information the model can examine. The model searches across many examples for relationships that help it make a useful prediction.
+
+Suppose we want a model to distinguish apples from oranges. We might give it examples described by color, weight, texture, and shape. These measurable properties are called features. The correct answer attached to each example—apple or orange—is called its label.
+
+During training, the model studies the features and labels together. At first, its predictions may be poor. A learning algorithm measures the errors and adjusts the model’s parameters so that later predictions are more accurate. Training is therefore a repeated cycle: predict, compare, adjust, and try again.
+
+Good performance on remembered examples is not enough. We normally divide the available data into a training set and a test set. The model learns from the training set, but the test set contains separate examples that were not used to adjust the model. Testing helps reveal whether the model learned a general pattern or merely memorized its lessons.
+
+Data quality matters as much as quantity. If the examples are incorrect, incomplete, or unrepresentative, the model may learn misleading patterns. A fruit classifier trained only on green apples, for instance, might wrongly treat redness as evidence that a fruit is an orange. The data should represent the real situations in which the model will be used.
+
+Quick check: A model scores perfectly on its training examples but performs badly on new examples. Did it necessarily learn a useful general pattern? No. It may have memorized the training data, a problem known as overfitting.
+
+Your turn: Imagine training an AI system to identify whether a photograph was taken indoors or outdoors. Name three useful features and one possible source of bias in the training data.
+
+Искусственный интеллект учится на примерах: система сравнивает свои прогнозы с известными ответами, замечает ошибки и постепенно изменяет внутренние параметры. Поэтому качество модели зависит не только от алгоритма, но и от данных, целей обучения и человеческой проверки.〔1〕
+
+脚注
+
+〔1〕Editor’s note: This Russian paragraph restates the training cycle and emphasizes the roles of data quality and human review.

@@ -1,0 +1,7 @@
+item	location	web_or_current_text	proposed_or_corrected	decision	status	reader_hint	evidence	source_url	notes
+H111	Chapter 7 clean text, paragraph beginning 再看西侧的	H1H	H111	Use H111	pending_editor_review	灰坑编号中数字和字母易混；此处与H171并列，疑为H111。	Context is a Zhengzhou Erligang pit label; web OCR likely confused 1 and H.		Applied in chapter_07_clean.txt; verify against source PDF/report if needed.
+V区/VIII区	Chapter 7 clean text, paragraph beginning 除了上述三座	VHI区	VIII区	Use VIII区	accepted	罗马数字VIII常被OCR误作VHI。	Context lists excavation areas IV, V, VIII, IX.		Applied in chapter_07_clean.txt.
+石峁	Chapter 7 clean text, final comparative paragraph	石郎/石期/石崩	石峁	Use 石峁	accepted	“石峁”是陕北大型史前城址，网页/OCR易误作近形字。	Context compares Liangzhu, Taosi, and Shimao early polities.		Applied in chapter_07_clean.txt.
+兽面饕餮纹	Chapter 7 clean text, paragraph beginning 这三座窖藏坑	兽面饕餐纹	兽面饕餮纹	Use 兽面饕餮纹	accepted	青铜器纹饰常称“饕餮纹”，“饕餐”语境不合。	Standard archaeology term for bronze vessel animal-mask pattern.		Applied in chapter_07_clean.txt and reading_terms.csv.
+下颌骨	Chapter 7 clean text, paragraph beginning 这些头骨的加工方式	下颗骨	下颌骨	Use 下颌骨	accepted	“颌”读hé，指下颌骨；“颗”是OCR近形误读。	Context lists face bones and teeth removed from skulls.		Applied in chapter_07_clean.txt and reading_terms.csv.
+footnote markers	Chapter 7 clean text	s/I?/】9/2】	5/12/19/21	Normalize footnote markers	accepted	网页文本中脚注数字常被识别为字母或括号。	Matches note numbering and source context.		Applied in chapter_07_clean.txt.

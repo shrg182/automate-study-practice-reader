@@ -1,0 +1,4 @@
+2026-08-05T03:31:50.873Z	2nd edition
+2026-08-05T02:38:51.382Z	5-6 预测下一个单元 微模型
+2026-08-04T22:35:00.000Z	Lesson 6 note: The tiny classifier is useful because its training counts and prediction scores can be inspected directly.
+2026-08-04T22:30:00.000Z	Lesson 5 note: Next-token prediction is repeated generation, while context and attention influence the probability distribution at each step.

@@ -1,0 +1,86 @@
+term,pinyin,type,annotation
+人祭,rén jì,concept,以人作为祭品的祭祀行为。
+人殉,rén xùn,concept,以人随葬或陪葬的行为。
+人牲,rén shēng,concept,被用于祭祀或献祭的人。
+杀祭,shā jì,concept,通过杀人或杀牲举行的祭祀。
+献祭,xiàn jì,concept,向神灵、祖先等奉献祭品。
+殷墟,yīn xū,site_or_culture,晚商都邑遗址，甲骨卜辞的重要出土地。
+殷商,yīn shāng,concept,商代后期以殷墟为中心的商王朝阶段。
+殷都,yīn dū,site_or_culture,晚商都城，通常指安阳殷墟。
+后冈H10,hòu gāng H10,site_or_culture,殷墟后冈圆形祭祀坑编号，文中复原其献祭过程。
+王陵区,wáng líng qū,concept,王室墓葬和祭祀坑集中的区域。
+宫殿区,gōng diàn qū,concept,都邑中宫殿和王室活动集中的区域。
+祭祀坑,jì sì kēng,concept,考古遗址中用于祭祀、掩埋祭品或尸骨的坑穴。
+灰坑,huī kēng,concept,遗址中含灰土、废弃物或祭祀遗存的坑穴。
+坑口,kēng kǒu,concept,坑穴开口处的形状和范围。
+坑壁,kēng bì,concept,坑穴侧壁。
+坑底,kēng dǐ,concept,坑穴底部。
+地层,dì céng,concept,遗址中不同时期堆积形成的层次。
+填土,tián tǔ,concept,填入坑穴或遗迹中的土层。
+红烧土,hóng shāo tǔ,concept,经火烧后变红变硬的土，常见于考古遗迹。
+生土层,shēng tǔ céng,concept,未经人类扰动的天然土层。
+朱砂,zhū shā,rare_word,红色矿物颜料，古代常用于礼仪和葬俗。
+鬲,lì,artifact,古代陶制或青铜炊器，常见袋状足。
+陶鬲,táo lì,artifact,陶制鬲，古代炊煮器。
+骨笄,gǔ jī,artifact,骨制簪笄，用于束发。
+玉璜,yù huáng,artifact,半璧形玉器。
+海贝,hǎi bèi,artifact,贝壳，古代可作装饰、随葬品或货币。
+货贝,huò bèi,artifact,作为货币使用的贝。
+朋,péng,text,古代贝币单位，两系为一朋。
+裘卫盆,qiú wèi pén,artifact,西周中期青铜器，铭文涉及贝币和土地交换。
+戍嗣子,shù sì zǐ,person,青铜器铭文所见族长或贵族名号。
+戍嗣子鼎,shù sì zǐ dǐng,bronze_item,后冈H10出土青铜鼎，铭文记载商王赏赐。
+父癸,fù guǐ,person,商代祭祀对象名，文中见于戍嗣子鼎铭。
+族徽,zú huī,text,族群标识，常见于商周青铜器铭文。
+甲骨刻辞,jiǎ gǔ kè cí,text,刻在甲骨上的文字记录。
+甲骨卜辞,jiǎ gǔ bǔ cí,text,刻写在龟甲兽骨上的占卜辞句。
+卜辞,bǔ cí,text,占卜时刻写或记录的辞句。
+《合集》,hé jí,text,《甲骨文合集》的简称。
+羌,qiāng,text,甲骨文中常见族称，商王祭祀常用羌人。
+卯,mǎo,text,甲骨卜辞中一种剖开悬挂人牲或牲畜的祭祀方式。
+笄,jī,rare_word,古代束发用的簪子。
+璜,huáng,rare_word,半璧形玉器。
+肢解,zhī jiě,concept,将肢体切割分解。
+蜷曲,quán qū,rare_word,身体弯曲缩成一团。
+拦腰,lán yāo,rare_word,从腰部横截。
+俯身,fǔ shēn,concept,身体向前伏下。
+屈膝,qū xī,concept,弯曲膝部。
+蜷身,quán shēn,concept,身体蜷缩的姿势。
+捆绑,kǔn bǎng,concept,用绳索等束缚身体。
+割喉,gē hóu,concept,割断喉部。
+下颌,xià hé,concept,下颌部位。
+下颌骨,xià hé gǔ,concept,下颌部骨骼。
+胯部,kuà bù,concept,腰与大腿之间的部位。
+青铜礼器,qīng tóng lǐ qì,bronze_item,用于礼仪或祭祀的青铜器。
+铜鼎,tóng dǐng,bronze_item,青铜鼎，古代炊煮或礼仪重器。
+铜爵,tóng jué,bronze_item,青铜爵，古代酒器。
+铜斝,tóng jiǎ,bronze_item,青铜斝，古代三足酒器。
+铜戈,tóng gē,bronze_item,青铜戈，古代横刃长柄兵器。
+铜刀,tóng dāo,bronze_item,青铜刀。
+铜镞,tóng zú,bronze_item,青铜箭头。
+铜觚,tóng gū,bronze_item,古代饮酒器；若正文作近形误字，需对照原书核实。
+鼎铭,dǐng míng,text,铸刻在鼎上的铭文。
+铭文,míng wén,text,器物上铸刻或刻写的文字。
+龟甲兽骨,guī jiǎ shòu gǔ,text,占卜用龟甲和兽骨，甲骨文载体。
+卦爻辞,guà yáo cí,text,《易经》中解释卦、爻的辞句。
+含章,hán zhāng,text,《易经》坤卦爻辞，文中据高亨释为“翦商”。
+可贞,kě zhēn,text,可通过占卜预测或问卜。
+翦商,jiǎn shāng,text,剪除商朝，文中为全书核心主题。
+周昌,zhōu chāng,person,周文王之名。
+周公旦,zhōu gōng dàn,person,西周初年政治家，文中指其取缔人祭风俗。
+纣王,zhòu wáng,person,商末王，文中讨论其暴虐和人祭。
+郭沫若,guō mò ruò,person,现代学者，文中涉及其对后冈H10的判断。
+王国维,wáng guó wéi,person,现代学者，文中引用《说珏朋》。
+高亨,gāo hēng,person,文史学者，文中引用其对《易经》的解释。
+玄奘,xuán zàng,person,唐代僧人，文中涉及其遭遇人祭险境。
+突伽天神,tū jiā tiān shén,text,玄奘传记中土著祭祀对象名。
+阿兹特克,ā zī tè kè,site_or_culture,中美洲古代文明，文中讨论其人祭。
+玛雅,mǎ yǎ,site_or_culture,中美洲古代文明。
+米诺斯,mǐ nuò sī,site_or_culture,克里特岛青铜时代文明。
+克里特岛,kè lǐ tè dǎo,place,地中海岛屿，文中涉及古代人祭遗迹。
+角斗士,jué dòu shì,concept,古罗马竞技表演中的搏斗者。
+酋邦,qiú bāng,concept,介于部落和国家之间的复杂社会组织。
+巫术,wū shù,concept,借助神秘仪式影响现实的信仰行为。
+人奠基,rén diàn jī,concept,将人夯筑在地基内作为建筑奠基祭祀。
+奠基,diàn jī,concept,建筑开始时的基础仪式或基础施工。
+人文主义,rén wén zhǔ yì,concept,以人和现实生活为中心的思想立场。

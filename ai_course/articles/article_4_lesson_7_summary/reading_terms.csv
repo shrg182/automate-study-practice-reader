@@ -1,0 +1,16 @@
+term,pinyin,type,annotation
+bias,,concept,A systematic tendency that can produce uneven or unfair results.
+fairness,,concept,The effort to assess and reduce unjust differences in a system’s outcomes.
+privacy,,concept,Protection of personal or sensitive information and control over its use.
+confidential information,,concept,Information intended to be accessible only to authorized people.
+reliability,,concept,The degree to which a system performs dependably under relevant conditions.
+verification,,concept,Checking a claim or output against independent evidence or tests.
+human oversight,,concept,Structured human review of an automated system and its decisions.
+accountability,,concept,"Clear responsibility for decisions, outcomes, and corrective action."
+security,,concept,"Protection against unauthorized access, manipulation, and harmful use."
+misuse,,concept,"Use of a system in a harmful, deceptive, or unintended way."
+monitoring,,concept,Ongoing observation of performance and failures after deployment.
+generalization,,concept,The ability to perform well on relevant examples not seen during training.
+hallucination,,concept,A generated claim that is unsupported or false despite sounding plausible.
+Human oversight,,added,Specific human review with authority and a defined standard.
+generalize,,added,Perform well on relevant examples not seen during training.

@@ -1,0 +1,11 @@
+term,pinyin,type,annotation
+artificial intelligence,,concept,Computer systems designed to perform tasks associated with human intelligence.
+machine learning,,concept,Learning patterns from data rather than relying only on fixed rules.
+model,,concept,A trained mathematical system that produces predictions or generated output.
+parameter,,concept,An adjustable numerical value changed during training.
+feature,,concept,A measurable property or input used by a model to make a prediction.
+label,,concept,The known answer associated with a training example.
+training set,,concept,The examples used to adjust a model during training.
+test set,,concept,Separate examples used to evaluate a model on unseen data.
+overfitting,,concept,Learning training examples too narrowly and performing poorly on new examples.
+bias,,concept,A systematic tendency that can produce uneven or unfair results.

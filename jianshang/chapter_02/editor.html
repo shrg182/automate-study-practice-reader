@@ -1,0 +1,913 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>《翦商》第二章 大禹治水真相：稻与龙 OCR 手工校订</title>
+  <script src="../shared/editor_header.js"></script>
+  <script src="../shared/editor_toc.js"></script>
+  <style>
+    :root { --bg:#f7f5ef; --paper:#fffdfa; --ink:#222; --muted:#666; --line:#d8d3c7; --soft:#eee8dc; --accent:#8a1f1f; --accent-ink:#fff; --warn:#9b5d00; --ok:#1f6b40; --shadow:0 8px 24px rgba(30,24,16,.08); }
+    * { box-sizing:border-box; }
+    html { scroll-behavior:smooth; }
+    body { margin:0; background:var(--bg); color:var(--ink); font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Noto Sans SC","PingFang SC","Microsoft YaHei",sans-serif; line-height:1.5; }
+    jianshang-editor-header, jianshang-editor-toc { display:contents; }
+    button, textarea, input, select, .rich-editor { font:inherit; }
+    header { position:sticky; top:0; z-index:20; background:rgba(255,253,250,.96); border-bottom:1px solid var(--line); backdrop-filter:blur(10px); }
+    .topbar { display:grid; grid-template-columns:minmax(260px,1fr) auto; gap:16px; width:min(1440px,calc(100% - 28px)); margin:0 auto; padding:12px 0; align-items:center; }
+    h1 { margin:0; font-size:1.2rem; line-height:1.2; letter-spacing:0; }
+    .subtitle { margin-top:3px; color:var(--muted); font-size:.88rem; }
+    .actions { display:flex; flex-wrap:wrap; gap:8px; justify-content:flex-end; align-items:center; }
+    button { border:1px solid var(--line); background:#fff; color:var(--ink); min-height:34px; padding:6px 10px; border-radius:6px; cursor:pointer; }
+    .import-label, .action-link { border:1px solid var(--line); background:#fff; color:var(--ink); min-height:34px; padding:6px 10px; border-radius:6px; cursor:pointer; display:inline-flex; align-items:center; text-decoration:none; }
+    button.primary { background:var(--accent); color:var(--accent-ink); border-color:var(--accent); }
+    button:focus-visible, textarea:focus-visible, input:focus-visible, select:focus-visible, .rich-editor:focus-visible { outline:2px solid var(--accent); outline-offset:2px; }
+    .format-menu { position:relative; }
+    .format-menu-trigger { display:flex; min-width:45px; align-items:center; justify-content:center; gap:7px; }
+    .marker-icon { display:inline-block; width:17px; height:8px; border-bottom:6px solid #f4c542; transform:skew(-12deg); }
+    .format-menu-trigger::after { content:"▾"; font-size:10px; color:var(--muted); }
+    .format-popover { position:absolute; top:calc(100% + 6px); left:0; z-index:40; display:none; width:178px; padding:5px; background:#fff; border:1px solid #cfc8ba; border-radius:8px; box-shadow:0 10px 30px #2927202e; }
+    .format-menu.open .format-popover { display:block; }
+    .format-option { display:flex; width:100%; gap:10px; align-items:center; border:0; background:#fff; padding:7px 9px; text-align:left; }
+    .format-option:hover,.format-option:focus { background:#edf2f5; color:var(--ink); }
+    .format-dot { width:15px; height:15px; flex:0 0 auto; border-radius:50%; box-shadow:inset 0 0 0 1px #00000018; }
+    .format-symbol { width:15px; text-align:center; font:600 15px/1 Georgia,serif; }
+    .format-divider { height:1px; margin:5px 4px; background:#ddd7cb; }
+    .status { color:var(--muted); font-size:.86rem; min-width:132px; text-align:right; }
+    main { width:min(1440px,calc(100% - 28px)); margin:18px auto 48px; }
+    .layout { display:grid; grid-template-columns:280px minmax(0,1fr); gap:18px; align-items:start; }
+    aside { position:sticky; top:calc(var(--editor-header-height, 75px) + 12px); display:grid; gap:14px; max-height:calc(100vh - var(--editor-header-height, 75px) - 24px); overflow:auto; }
+    .panel, .page, .toc-page, .reference-panel, .notes-dock, .export-dock { background:var(--paper); border:1px solid var(--line); box-shadow:var(--shadow); }
+    .panel h2, .reference-panel h2, .notes-dock h2, .export-dock h2 { margin:0; padding:10px 12px; font-size:.95rem; border-bottom:1px solid var(--line); background:var(--soft); }
+    .page-number-legend { padding:8px 11px; font-size:.82rem; color:var(--muted); }
+    .page-number-legend p { margin:3px 0; }
+    .page-number-legend strong { color:var(--ink); }
+    .nav-list, .term-list { padding:8px; display:grid; gap:6px; }
+    .nav-button { width:100%; display:flex; justify-content:space-between; gap:8px; text-align:left; }
+    .nav-button span:last-child, .term span:last-child { color:var(--muted); font-variant-numeric:tabular-nums; }
+    .term { display:flex; justify-content:space-between; gap:8px; border-bottom:1px solid var(--line); padding:4px 0; font-size:.9rem; }
+    button.term { width:100%; min-height:0; border-width:0 0 1px; border-radius:0; background:transparent; text-align:left; }
+    button.term:hover { color:var(--accent); background:#fff8ec; }
+    .pages { display:grid; gap:18px; }
+    .toc-page, .reference-panel, .page { scroll-margin-top:86px; }
+    .toc-head { display:flex; justify-content:space-between; gap:14px; align-items:baseline; padding:14px 16px; border-bottom:1px solid var(--line); background:#fff; }
+    .toc-head h2 { margin:0; font-size:1.15rem; }
+    .toc-body { display:grid; grid-template-columns:minmax(0,1fr) minmax(280px,.72fr); gap:18px; padding:14px 16px 16px; }
+    .toc-body h3 { margin:0 0 8px; font-size:.95rem; }
+    .toc-links { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:6px; }
+    .toc-link { display:flex; justify-content:space-between; gap:10px; border:1px solid var(--line); border-radius:6px; background:#fff; color:var(--ink); text-decoration:none; padding:7px 9px; min-height:34px; align-items:center; }
+    .toc-link.available { border-left:4px solid var(--ok); background:#f4fbf6; }
+    .toc-link.current { border:2px solid var(--accent); background:#fff0ec; color:var(--accent); font-weight:700; }
+    .toc-link.unavailable { background:#f1f0ed; color:#999; cursor:not-allowed; opacity:.72; }
+    .toc-legend { display:flex; flex-wrap:wrap; gap:10px; margin:0 0 8px; color:var(--muted); font-size:.8rem; }
+    .toc-legend span::before { content:""; display:inline-block; width:10px; height:10px; border-radius:2px; margin-right:4px; }
+    .legend-current::before { background:var(--accent); } .legend-available::before { background:var(--ok); } .legend-unavailable::before { background:#aaa; }
+    .toc-link span:first-child { overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+    .toc-link span:last-child { color:var(--muted); font-size:.86rem; font-variant-numeric:tabular-nums; white-space:nowrap; }
+    .reference-grid { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:14px; margin:18px 0; align-items:start; }
+    #user-notes { grid-column:1 / -1; }
+    #user-notes .table-scroll { max-height:440px; }
+    #user-notes table { table-layout:fixed; }
+    #user-notes th:nth-child(1), #user-notes td:nth-child(1) { width:110px; }
+    #user-notes th:nth-child(2), #user-notes td:nth-child(2) { width:110px; }
+    #user-notes td:nth-child(3) { overflow-wrap:anywhere; }
+    .table-scroll { overflow:auto; max-height:360px; }
+    #yueducibiao .table-scroll { max-height:none; overflow:visible; }
+    .data-table { width:100%; border-collapse:collapse; background:#fff; font-size:.9rem; }
+    .data-table th, .data-table td { border-bottom:1px solid var(--line); border-right:1px solid var(--line); padding:7px 8px; text-align:left; vertical-align:top; }
+    .data-table th:last-child, .data-table td:last-child { border-right:0; }
+    .data-table th { position:sticky; top:0; background:#fff8ec; z-index:1; font-weight:700; }
+    .data-table td { white-space:pre-wrap; }
+    .note-table td:first-child { min-width:150px; font-weight:650; }
+    .chapter-note-entry { display:grid; gap:10px; padding:12px; border-bottom:1px solid var(--line); background:#fffdf8; }
+    .chapter-note-entry label { display:grid; gap:5px; color:var(--muted); font-size:.88rem; }
+    .chapter-note-entry input, .chapter-note-entry textarea { width:100%; border:1px solid var(--line); background:#fff; color:var(--ink); border-radius:6px; padding:8px; font:inherit; }
+    .chapter-note-entry textarea { min-height:100px; resize:vertical; }
+    .page-head { display:flex; justify-content:space-between; gap:12px; align-items:center; padding:10px 12px; border-bottom:1px solid var(--line); background:#fff; }
+    .page-title { font-weight:700; }
+    .page-title span { color:var(--muted); font-weight:500; margin-left:8px; }
+    .page-tools { display:flex; gap:8px; flex-wrap:wrap; }
+    .workbench { display:grid; grid-template-columns:minmax(340px,1fr) minmax(300px,.82fr); gap:0; align-items:stretch; }
+    .editor-wrap { padding:12px; border-right:1px solid var(--line); display:flex; min-height:560px; }
+    textarea { width:100%; min-height:0; border:1px solid var(--line); background:#fff; color:var(--ink); padding:14px; border-radius:6px; line-height:1.85; font-size:1.02rem; letter-spacing:0; overflow:auto; }
+    .rich-editor { width:100%; min-height:536px; border:1px solid var(--line); background:#fff; color:var(--ink); padding:14px; border-radius:6px; line-height:1.85; font-size:1.02rem; letter-spacing:0; overflow:auto; white-space:pre-wrap; overflow-wrap:anywhere; }
+    .rich-editor.annotated-view { background:#fff9e8; color:#5b481f; }
+    .rich-editor u,.rich-editor [style*="underline"] { text-underline-offset:.2em; text-decoration-thickness:1px; }
+    .mode-badge { border-radius:999px; padding:5px 9px; background:var(--soft); color:var(--muted); font-size:.82rem; white-space:nowrap; }
+    .mode-badge.annotated { background:#fff0b8; color:#76500e; }
+    .speech-rate { display:flex; align-items:center; gap:4px; color:var(--muted); font-size:.82rem; }
+    #speechRate { width:82px; }
+    .hidden { display:none !important; }
+    .scan { padding:12px; background:#fbfaf6; display:flex; }
+    .scan img { width:100%; height:auto; display:block; border:1px solid var(--line); background:#fff; align-self:flex-start; }
+    .notes-dock { margin-top:18px; scroll-margin-top:86px; }
+    .note-grid { display:grid; grid-template-columns:minmax(240px,.75fr) minmax(320px,1fr); gap:12px; padding:12px; }
+    .note-controls { display:grid; gap:10px; align-content:start; }
+    .note-controls label { display:grid; gap:5px; color:var(--muted); font-size:.88rem; }
+    .note-controls select, .note-controls input { width:100%; border:1px solid var(--line); background:#fff; color:var(--ink); border-radius:6px; min-height:34px; padding:6px 8px; }
+    .marker-composer { border:1px solid var(--line); border-radius:7px; background:#fffaf0; padding:10px; display:grid; gap:8px; }
+    .marker-composer h3 { margin:0; font-size:.92rem; }
+    .marker-help { margin:0; color:var(--muted); font-size:.8rem; line-height:1.5; }
+    .note-actions { display:flex; gap:8px; flex-wrap:wrap; }
+    #noteText { min-height:150px; resize:vertical; }
+    .log-list { max-height:260px; overflow:auto; border:1px solid var(--line); background:#fff; border-radius:6px; padding:8px; display:grid; gap:8px; }
+    .log-item { border-bottom:1px solid var(--line); padding:0 0 8px; }
+    .log-item:last-child { border-bottom:0; padding-bottom:0; }
+    .log-meta { color:var(--muted); font-size:.82rem; font-variant-numeric:tabular-nums; }
+    .log-note { margin-top:3px; white-space:pre-wrap; }
+    .export-dock { margin-top:18px; }
+    #exportText { min-height:240px; border:0; border-radius:0; }
+    .quick-note-jump { position:fixed; right:18px; bottom:18px; z-index:25; background:var(--accent); color:var(--accent-ink); border-color:var(--accent); box-shadow:0 8px 24px rgba(30,24,16,.18); }
+    @media (max-width:980px) { .topbar { grid-template-columns:1fr; } .actions { justify-content:flex-start; } .status { text-align:left; } .layout { grid-template-columns:1fr; } aside { position:static; max-height:none; } .toc-body, .note-grid { grid-template-columns:1fr; } .toc-links { grid-template-columns:1fr; } .reference-grid { grid-template-columns:1fr; } .workbench { grid-template-columns:1fr; } .editor-wrap { border-right:0; border-bottom:1px solid var(--line); } .rich-editor { min-height:520px; } .quick-note-jump { right:12px; bottom:12px; } }
+  </style>
+</head>
+<body>
+  <jianshang-editor-header
+    page-title="《翦商》OCR 手工校订：第二章 大禹治水真相：稻与龙"
+    page-subtitle="原书阅读器页 049-062 · 原书物理 PDF 页 047-060 · 印刷页 35-48 · 输出 chapter_02_clean_edited.txt"
+    reference-href="../reference_tables.html">
+    <noscript>此编辑器需要启用 JavaScript。</noscript>
+  </jianshang-editor-header>
+  <main>
+    <div class="layout">
+      <aside>
+        <section class="panel"><h2>页码说明</h2><div class="page-number-legend"><p><strong>原阅</strong> 049-062：原书在阅读器中显示的页码</p><p><strong>原PDF</strong> 047-060：原书文件的物理页码</p><p><strong>印</strong> 35-48：书页印刷页码</p><p><strong>注音PDF</strong> 1-11：独立重排页码，不与原书逐页对应</p></div></section>
+        <section class="panel"><h2>页</h2><div class="nav-list"><button type="button" class="nav-button" data-target="toc"><span>目录</span><span>top</span></button><button type="button" class="nav-button" data-target="notes"><span>编辑札记</span><span>log</span></button><button type="button" class="nav-button" data-target="page-049"><span>原阅 049 · 原PDF 047</span><span>印 35</span></button><button type="button" class="nav-button" data-target="page-050"><span>原阅 050 · 原PDF 048</span><span>印 36</span></button><button type="button" class="nav-button" data-target="page-051"><span>原阅 051 · 原PDF 049</span><span>印 37</span></button><button type="button" class="nav-button" data-target="page-052"><span>原阅 052 · 原PDF 050</span><span>印 38</span></button><button type="button" class="nav-button" data-target="page-053"><span>原阅 053 · 原PDF 051</span><span>印 39</span></button><button type="button" class="nav-button" data-target="page-054"><span>原阅 054 · 原PDF 052</span><span>印 40</span></button><button type="button" class="nav-button" data-target="page-055"><span>原阅 055 · 原PDF 053</span><span>印 41</span></button><button type="button" class="nav-button" data-target="page-056"><span>原阅 056 · 原PDF 054</span><span>印 42</span></button><button type="button" class="nav-button" data-target="page-057"><span>原阅 057 · 原PDF 055</span><span>印 43</span></button><button type="button" class="nav-button" data-target="page-058"><span>原阅 058 · 原PDF 056</span><span>印 44</span></button><button type="button" class="nav-button" data-target="page-059"><span>原阅 059 · 原PDF 057</span><span>印 45</span></button><button type="button" class="nav-button" data-target="page-060"><span>原阅 060 · 原PDF 058</span><span>印 46</span></button><button type="button" class="nav-button" data-target="page-061"><span>原阅 061 · 原PDF 059</span><span>印 47</span></button><button type="button" class="nav-button" data-target="page-062"><span>原阅 062 · 原PDF 060</span><span>印 48</span></button></div></section>
+        <section class="panel"><h2>参考表</h2><div class="nav-list"><button type="button" class="nav-button" data-target="yueducibiao"><span>阅读词表</span><span>表</span></button><button type="button" class="nav-button" data-target="qingtongqicibiao"><span>青铜器词表</span><span>表</span></button><button type="button" class="nav-button" data-target="dushuzhaji"><span>章节导读札记</span><span>表</span></button><button type="button" class="nav-button" data-target="user-notes"><span>用户札记</span><span>注</span></button></div></section>
+        <section class="panel"><h2>术语</h2><div class="term-list"><button type="button" class="term" data-term="绿松石" data-pinyin="lǜ sōng shí" data-difficulty="4" data-domain="general"><span>绿松石</span><span>lǜ sōng shí</span></button><button type="button" class="term" data-term="鲧" data-pinyin="gǔn" data-difficulty="4" data-domain="general"><span>鲧</span><span>gǔn</span></button><button type="button" class="term" data-term="偃师" data-pinyin="yǎn shī" data-difficulty="3" data-domain="proper_name"><span>偃师</span><span>yǎn shī</span></button><button type="button" class="term" data-term="贡赋" data-pinyin="gòng fù" data-difficulty="4" data-domain="general"><span>贡赋</span><span>gòng fù</span></button><button type="button" class="term" data-term="顾颉刚" data-pinyin="gù jié gāng" data-difficulty="3" data-domain="proper_name"><span>顾颉刚</span><span>gù jié gāng</span></button><button type="button" class="term" data-term="杂糅" data-pinyin="zá róu" data-difficulty="4" data-domain="general"><span>杂糅</span><span>zá róu</span></button><button type="button" class="term" data-term="碳化" data-pinyin="tàn huà" data-difficulty="4" data-domain="general"><span>碳化</span><span>tàn huà</span></button><button type="button" class="term" data-term="浮选法" data-pinyin="fú xuǎn fǎ" data-difficulty="4" data-domain="general"><span>浮选法</span><span>fú xuǎn fǎ</span></button><button type="button" class="term" data-term="蜷曲" data-pinyin="quán qū" data-difficulty="4" data-domain="general"><span>蜷曲</span><span>quán qū</span></button><button type="button" class="term" data-term="浚川" data-pinyin="jùn chuān" data-difficulty="4" data-domain="general"><span>浚川</span><span>jùn chuān</span></button><button type="button" class="term" data-term="构拟" data-pinyin="gòu nǐ" data-difficulty="4" data-domain="general"><span>构拟</span><span>gòu nǐ</span></button><button type="button" class="term" data-term="蚌镰" data-pinyin="bàng lián" data-difficulty="4" data-domain="general"><span>蚌镰</span><span>bàng lián</span></button><button type="button" class="term" data-term="营窟" data-pinyin="yíng kū" data-difficulty="4" data-domain="general"><span>营窟</span><span>yíng kū</span></button><button type="button" class="term" data-term="姒" data-pinyin="sì" data-difficulty="4" data-domain="general"><span>姒</span><span>sì</span></button><button type="button" class="term" data-term="蔚为大观" data-pinyin="wèi wéi dà guān" data-difficulty="3" data-domain="phrase"><span>蔚为大观</span><span>wèi wéi dà guān</span></button><button type="button" class="term" data-term="亢龙有悔" data-pinyin="kàng lóng yǒu huǐ" data-difficulty="3" data-domain="general"><span>亢龙有悔</span><span>kàng lóng yǒu huǐ</span></button><button type="button" class="term" data-term="华夏文明" data-pinyin="huá xià wén míng" data-difficulty="3" data-domain="general"><span>华夏文明</span><span>huá xià wén míng</span></button><button type="button" class="term" data-term="长江流域" data-pinyin="cháng jiāng liú yù" data-difficulty="3" data-domain="proper_name"><span>长江流域</span><span>cháng jiāng liú yù</span></button><button type="button" class="term" data-term="先后" data-pinyin="xiān hòu" data-difficulty="4" data-domain="general"><span>先后</span><span>xiān hòu</span></button><button type="button" class="term" data-term="图腾" data-pinyin="tú téng" data-difficulty="3" data-domain="general"><span>图腾</span><span>tú téng</span></button><button type="button" class="term" data-term="土著" data-pinyin="tǔ zhù" data-difficulty="3" data-domain="general"><span>土著</span><span>tǔ zhù</span></button><button type="button" class="term" data-term="地层" data-pinyin="dì céng" data-difficulty="3" data-domain="general"><span>地层</span><span>dì céng</span></button><button type="button" class="term" data-term="城邑" data-pinyin="chéng yì" data-difficulty="3" data-domain="general"><span>城邑</span><span>chéng yì</span></button><button type="button" class="term" data-term="夯土" data-pinyin="hāng tǔ" data-difficulty="3" data-domain="general"><span>夯土</span><span>hāng tǔ</span></button><button type="button" class="term" data-term="尚书" data-pinyin="shàng shū" data-difficulty="4" data-domain="general"><span>尚书</span><span>shàng shū</span></button><button type="button" class="term" data-term="新砦" data-pinyin="xīn zhài" data-difficulty="5" data-domain="archaeology"><span>新砦</span><span>xīn zhài</span></button><button type="button" class="term" data-term="易经" data-pinyin="yì jīng" data-difficulty="4" data-domain="general"><span>易经</span><span>yì jīng</span></button><button type="button" class="term" data-term="春秋" data-pinyin="chūn qiū" data-difficulty="4" data-domain="general"><span>春秋</span><span>chūn qiū</span></button><button type="button" class="term" data-term="水牛" data-pinyin="shuǐ niú" data-difficulty="3" data-domain="general"><span>水牛</span><span>shuǐ niú</span></button><button type="button" class="term" data-term="浮选" data-pinyin="fú xuǎn" data-difficulty="3" data-domain="general"><span>浮选</span><span>fú xuǎn</span></button><button type="button" class="term" data-term="淮河" data-pinyin="huái hé" data-difficulty="3" data-domain="proper_name"><span>淮河</span><span>huái hé</span></button><button type="button" class="term" data-term="爻辞" data-pinyin="yáo cí" data-difficulty="3" data-domain="general"><span>爻辞</span><span>yáo cí</span></button><button type="button" class="term" data-term="石峁" data-pinyin="shí mǎo" data-difficulty="5" data-domain="archaeology"><span>石峁</span><span>shí mǎo</span></button><button type="button" class="term" data-term="箭镞" data-pinyin="jiàn zú" data-difficulty="5" data-domain="general"><span>箭镞</span><span>jiàn zú</span></button><button type="button" class="term" data-term="粟米" data-pinyin="sù mǐ" data-difficulty="4" data-domain="general"><span>粟米</span><span>sù mǐ</span></button><button type="button" class="term" data-term="良渚" data-pinyin="liáng zhǔ" data-difficulty="5" data-domain="archaeology"><span>良渚</span><span>liáng zhǔ</span></button><button type="button" class="term" data-term="许宏" data-pinyin="xǔ hóng" data-difficulty="3" data-domain="proper_name"><span>许宏</span><span>xǔ hóng</span></button><button type="button" class="term" data-term="迁徙" data-pinyin="qiān xǐ" data-difficulty="3" data-domain="general"><span>迁徙</span><span>qiān xǐ</span></button><button type="button" class="term" data-term="铭文" data-pinyin="míng wén" data-difficulty="4" data-domain="general"><span>铭文</span><span>míng wén</span></button><button type="button" class="term" data-term="陶寺" data-pinyin="táo sì" data-difficulty="5" data-domain="archaeology"><span>陶寺</span><span>táo sì</span></button><button type="button" class="term" data-term="豆" data-pinyin="dòu" data-difficulty="5" data-domain="bronze_vessel"><span>豆</span><span>dòu</span></button><button type="button" class="term" data-term="盨" data-pinyin="xǔ" data-difficulty="5" data-domain="bronze_vessel"><span>盨</span><span>xǔ</span></button><button type="button" class="term" data-term="镞" data-pinyin="zú" data-difficulty="5" data-domain="bronze_vessel"><span>镞</span><span>zú</span></button></div></section>
+      </aside>
+      <section>
+        <jianshang-editor-toc current-chapter="chapter_02">
+          <noscript>目录需要启用 JavaScript。</noscript>
+        </jianshang-editor-toc>
+        <div class="reference-grid">
+        <section class="reference-panel" id="yueducibiao">
+          <h2>阅读词表</h2>
+          <div class="table-scroll">
+            <table class="data-table">
+              <thead><tr><th>词条</th><th>拼音</th><th>类型</th><th>说明</th></tr></thead>
+              <tbody><tr><td>绿松石</td><td>lǜ sōng shí</td><td>rare_word</td><td>一种蓝绿色矿石，常用于装饰。</td></tr><tr><td>鲧</td><td>gǔn</td><td>rare_word</td><td>传说中禹的父亲，曾奉命治水。</td></tr><tr><td>偃师</td><td>yǎn shī</td><td>place</td><td>今河南洛阳附近地名，二里头遗址所在地。</td></tr><tr><td>贡赋</td><td>gòng fù</td><td>rare_word</td><td>向统治者进贡或缴纳的赋税。</td></tr><tr><td>顾颉刚</td><td>gù jié gāng</td><td>person</td><td>现代历史学家，“古史辨”学派代表人物。</td></tr><tr><td>杂糅</td><td>zá róu</td><td>rare_word</td><td>混杂融合在一起。</td></tr><tr><td>碳化</td><td>tàn huà</td><td>rare_word</td><td>有机物受热或长期埋藏后变成含碳状态。</td></tr><tr><td>浮选法</td><td>fú xuǎn fǎ</td><td>rare_word</td><td>考古中利用水筛选炭化植物遗存的方法。</td></tr><tr><td>蜷曲</td><td>quán qū</td><td>rare_word</td><td>弯曲、卷曲。</td></tr><tr><td>浚川</td><td>jùn chuān</td><td>rare_word</td><td>疏通河道。</td></tr><tr><td>构拟</td><td>gòu nǐ</td><td>rare_word</td><td>根据材料推想、重建原貌。</td></tr><tr><td>蚌镰</td><td>bàng lián</td><td>rare_word</td><td>用蚌壳制作的收割工具。</td></tr><tr><td>营窟</td><td>yíng kū</td><td>rare_word</td><td>建造洞穴居所。</td></tr><tr><td>姒</td><td>sì</td><td>rare_word</td><td>夏朝王室族姓。</td></tr><tr><td>蔚为大观</td><td>wèi wéi dà guān</td><td>idiom</td><td>发展成盛大壮观的景象。</td></tr><tr><td>亢龙有悔</td><td>kàng lóng yǒu huǐ</td><td>项目词典</td><td>《易》语，处于极盛而不知退会有悔恨。</td></tr><tr><td>华夏文明</td><td>huá xià wén míng</td><td>项目词典</td><td>在中国早期历史中逐渐形成和发展的文明传统。</td></tr><tr><td>长江流域</td><td>cháng jiāng liú yù</td><td>项目词典</td><td>长江水系覆盖的广大地区。</td></tr><tr><td>先后</td><td>xiān hòu</td><td>项目词典</td><td>《盘庚》引文中指已故先王。</td></tr><tr><td>图腾</td><td>tú téng</td><td>项目词典</td><td>族群崇拜并作为象征的动物、植物或自然物。</td></tr><tr><td>土著</td><td>tǔ zhù</td><td>项目词典</td><td>本地原有居民或族群。</td></tr><tr><td>地层</td><td>dì céng</td><td>项目词典</td><td>遗址中不同时期堆积形成的层次。</td></tr><tr><td>城邑</td><td>chéng yì</td><td>项目词典</td><td>古代有人群聚居、具有一定组织和防御功能的城镇聚落。</td></tr><tr><td>夯土</td><td>hāng tǔ</td><td>项目词典</td><td>把土层层夯实形成建筑基础或城墙的技术。</td></tr><tr><td>尚书</td><td>shàng shū</td><td>项目词典</td><td>儒家经典之一，文中引用《盘庚》篇。 | 保存上古政治文献和诰命的儒家经典。</td></tr><tr><td>新砦</td><td>xīn zhài</td><td>项目词典</td><td>河南新密遗址；“砦”同“寨”，网页可能误作“新碧”。</td></tr><tr><td>易经</td><td>yì jīng</td><td>项目词典</td><td>文王卦爻辞体系，书中用以讨论翦商谋略。 | 文王卦爻辞体系。 | 以六十四卦及卦爻辞为主体的古代经典。</td></tr><tr><td>春秋</td><td>chūn qiū</td><td>项目词典</td><td>孔子时代相关的编年史经典。</td></tr><tr><td>水牛</td><td>shuǐ niú</td><td>项目词典</td><td>商人畜牧和祭祀中涉及的家畜。</td></tr><tr><td>浮选</td><td>fú xuǎn</td><td>项目词典</td><td>考古中用水分离土样里的植物种子等细小遗存的方法。</td></tr><tr><td>淮河</td><td>huái hé</td><td>项目词典</td><td>中国东部重要河流。</td></tr><tr><td>爻辞</td><td>yáo cí</td><td>项目词典</td><td>解释每一爻吉凶和意义的文字。</td></tr><tr><td>石峁</td><td>shí mǎo</td><td>项目词典</td><td>陕北大型史前城址，文中与郑州商城作比较。 | 陕北大型史前城址。</td></tr><tr><td>箭镞</td><td>jiàn zú</td><td>项目词典</td><td>箭头。 | 箭头，文中有青铜、石骨材质。</td></tr><tr><td>粟米</td><td>sù mǐ</td><td>项目词典</td><td>小米；北方旱作农业的重要作物。</td></tr><tr><td>良渚</td><td>liáng zhǔ</td><td>项目词典</td><td>长江下游新石器时代重要考古文化和古城遗址。</td></tr><tr><td>许宏</td><td>xǔ hóng</td><td>项目词典</td><td>考古学者，长期主持或研究二里头考古。</td></tr><tr><td>迁徙</td><td>qiān xǐ</td><td>项目词典</td><td>群体从一地迁移到另一地。</td></tr><tr><td>铭文</td><td>míng wén</td><td>项目词典</td><td>铸刻在青铜器等器物上的文字。 | 器物上铸刻或刻写的文字。</td></tr><tr><td>陶寺</td><td>táo sì</td><td>项目词典</td><td>山西襄汾一带龙山时代重要遗址。</td></tr></tbody>
+            </table>
+          </div>
+        </section>
+        <section class="reference-panel" id="qingtongqicibiao">
+          <h2>青铜器词表</h2>
+          <div class="table-scroll">
+            <table class="data-table">
+              <thead><tr><th>器名</th><th>拼音</th><th>类型</th><th>说明</th></tr></thead>
+              <tbody><tr><td>豆</td><td>dòu</td><td>bronze_item</td><td>古代盛肉或食品的高足盘形器。</td></tr><tr><td>盨</td><td>xǔ</td><td>bronze_item</td><td>古代盛食物的铜器，多有盖、耳和圈足。</td></tr><tr><td>镞</td><td>zú</td><td>bronze_item</td><td>箭头。</td></tr></tbody>
+            </table>
+          </div>
+        </section>
+        <section class="reference-panel" id="dushuzhaji">
+          <h2>章节导读札记</h2>
+          <div class="chapter-note-entry">
+            <label>主题<input id="chapterNoteTitle" type="text" placeholder="例如：周公改革的沉默"></label>
+            <label>札记<textarea id="chapterNoteText" placeholder="记录对本章整体内容的理解、判断或总结"></textarea></label>
+            <div class="note-actions">
+              <button id="addChapterNoteBtn" type="button">新增章节导读札记</button>
+              <button id="downloadChapterNotesBtn" type="button">下载 Markdown</button>
+            </div>
+            <div class="log-meta">新增内容保存在本浏览器及 JSON 备份中；下载 Markdown 后可作为 reading_notes.md 导入项目。</div>
+          </div>
+          <div class="table-scroll">
+            <table class="data-table note-table">
+              <thead><tr><th>主题</th><th>札记</th><th>操作</th></tr></thead>
+              <tbody id="chapterNotesBody"><tr><td colspan="3">暂无章节导读札记</td></tr></tbody>
+            </table>
+          </div>
+        </section>
+        <section class="reference-panel" id="user-notes">
+          <h2>用户札记</h2>
+          <div class="table-scroll">
+            <table class="data-table note-table">
+              <thead><tr><th>类型</th><th>页</th><th>内容</th></tr></thead>
+              <tbody id="userNotesBody"><tr><td colspan="3">暂无用户札记</td></tr></tbody>
+            </table>
+          </div>
+        </section></div>
+        <div class="pages">
+        <section class="page" id="page-049">
+          <div class="page-head">
+            <div class="page-title">原书阅读器页 049<span>原书物理 PDF 页 047</span><span>印刷页 35</span></div>
+            <div class="page-tools">
+              <button type="button" data-copy-page="049">复制本页</button>
+              <button type="button" data-export-page="049">导出本页</button>
+            </div>
+          </div>
+          <div class="workbench">
+            <div class="editor-wrap">
+              <div class="rich-editor" data-page="049" contenteditable="true" role="textbox" aria-multiline="true" spellcheck="false">第二章大禹治水真相：稻与龙
+
+在上古的传说中，“大禹治水”是人类改变自然界的宏大事业；禹的儿子启则在随后建立了华夏第一王朝——夏。两代人的故事堪比创世史诗，壮丽辉煌。
+
+按照古书记载，在尧和舜的时代曾经发生大洪水，尧帝派禹的父亲鲧治水，但没有成效，鲧被处死；舜帝则继续任命禹治水，结果禹不仅治理了水患，还开辟了黄河和长江流域的陆路与水路交通网，划出了九州行政区。[[fn:1]]
+
+远古历史总是和神话杂糅。现代学术产生后，有学者开始质疑大禹传说的真实性，比如开创“古史辨”学派的顾颉刚，他就认为大禹的事迹是战国时的人虚构的。
+
+历史文献在流传的过程中往往会被后人加工或改造，甚至被塞进更晚的篇章。现存关于大禹最早的文献，是《尚书》开头的几篇，如《舜典》《禹贡》，但受到的怀疑也最多。近年，一件流散海外的青铜器“遂公盨”被发现，其铭文中有这样的叙述：“天命禹敷土，随山浚川。”但它属于西周，跟大禹的时代相距甚远。
+
+传说是大禹凿通了长江、黄河、淮河和汉江，但从工程的可能性看，这都不现实。即便是现代国家也不太可能实施这种完全改变大江大河的工程，更何况在4000年前还没有出现地跨黄河和长江流域的大型国家，其人口规模和技术水平根本不足以改造大江大河。
+
+难道，大禹治水只是西周或者春秋时候的人创造的神话？考古发现能提供解答，虽然它有时会离人们最初想象的“答案”很遥远。
+
+依赖水稻的古洛阳一二里头</div>
+            </div>
+            <div class="scan"><img src="pdf_pages/page-047.jpg" alt="PDF page 049"></div>
+          </div>
+        </section>
+        <section class="page" id="page-050">
+          <div class="page-head">
+            <div class="page-title">原书阅读器页 050<span>原书物理 PDF 页 048</span><span>印刷页 36</span></div>
+            <div class="page-tools">
+              <button type="button" data-copy-page="050">复制本页</button>
+              <button type="button" data-export-page="050">导出本页</button>
+            </div>
+          </div>
+          <div class="workbench">
+            <div class="editor-wrap">
+              <div class="rich-editor" data-page="050" contenteditable="true" role="textbox" aria-multiline="true" spellcheck="false">在今洛阳市以东20公里处，伊河和洛河沉积形成的小平原上，发现了疑似“夏都”的偃师二里头遗址。它的占地面积、宫殿规格以及手工业的发达程度都超过了以往和同期任何遗址。而且，二里头遗址距今3900—3500年，恰好在商朝之前，所以它很可能就是夏朝的都城。
+
+二里头考古的成果已经有很多，但留心二里头人的主食是哪种的还不多，大多数学者普遍默认，按照华北地区的传统，它应当以旱作的粟（小米）为主。
+
+但事实恰好相反，二里头人的主食是水稻（大米）。不仅如此，这背后还可能隐藏着“大禹治水”的来历。学界没有意识到这个问题的原因，说起来颇为有趣，就是按粮食颗粒数进行统计和排名，而忽视了不同粮食的颗粒其实差别巨大。
+
+历经上千年埋藏的粮食大都已经碳化，如果不是大量的堆积很难被发现。近年来，考古工作者开始采用“浮选法”来寻找粮食：在遗址中采集土样，打散后放入水中搅拌，而碳化的粮食比水轻，所以粮食会浮上水面。这样，人们就可以采集到古人遗弃的粮食颗粒，观察古人在种什么、吃什么。
+
+在1999—2006年的二里头发掘中，对遗址土样采用“浮选法”得到的样本显示：粟米（小米）数量最多；稻米（大米）其次，约为粟米数量的一半；其他旱作的黍、大豆和小麦数量很少（参见表一）。[[fn:2]] 这样看来，稻米在二里头似乎不占主要地位。
+
+表一：《二里头：1999-2006》中的出土粮食颗粒占比
+
+| | 粟 | 稻 | 黍 | 合计 |
+| ---- | --- | ----- | ----- | --- |
+|粒数 | 11059 | 5687 | 1542 | 18288 |
+| 粒数占比 | 60.5% | 31.1% | 8.4% | |</div>
+            </div>
+            <div class="scan"><img src="pdf_pages/page-048.jpg" alt="PDF page 050"></div>
+          </div>
+        </section>
+        <section class="page" id="page-051">
+          <div class="page-head">
+            <div class="page-title">原书阅读器页 051<span>原书物理 PDF 页 049</span><span>印刷页 37</span></div>
+            <div class="page-tools">
+              <button type="button" data-copy-page="051">复制本页</button>
+              <button type="button" data-export-page="051">导出本页</button>
+            </div>
+          </div>
+          <div class="workbench">
+            <div class="editor-wrap">
+              <div class="rich-editor" data-page="051" contenteditable="true" role="textbox" aria-multiline="true" spellcheck="false">但粟米和稻米的颗粒大小及重量很不一样，单棵植株收获的籽粒数量也相差悬殊。分析古人的种植规模和食物构成，应当统计的是重量，而非粒数。但很可惜，浮选工作没有称重的报告，目前还只能通过粮食颗粒数“构拟”它们的重量。在农学上，统计不同作物颗粒重量的术语是“千粒重”，所以，我们可以参考现代粮食的“千粒重”数值进行折算。这也是不得已的替代方法。
+
+粟米平均千粒重一般为2克，稻米平均千粒重一般为16—34克，即使按最低的16克计算，两者颗粒重量也相差七倍。根据这个比例，二里头出土的稻米重量应是粟米的四倍，是当之无愧的最重要的粮食。[[fn:3]]
+
+二里头出土的粟、黍和稻粒：三者体积差别很大，如果用颗粒数来衡量它们的种植面积，显然会产生重大偏差。[[fn:4]]（图）
+
+2019年，一份样本更多的浮选统计论文发表，包含二里头各期的277个采样，但仍是按照粮食颗粒数计算的。这次，稻米颗粒数量略超过粟米，位居第一：稻，14768粒；粟，13883粒；黍，2248粒。
+
+稻米粒数略多于粟，这让论文作者觉得难以解释，便猜测这些稻米是从外地进贡来的：“通过收取贡赋的手段，从当时的水稻种植区域征集大量稻谷。”[[fn:5]] 但稻谷种植区应当在哪里，古人的交通问题如何解决，这些都还无法解答。
+
+如果把颗粒数折算成重量，稻米的权重还要上升很多，占比84.5%，在二里头人的种植面积和食谱中占据绝对优势（参见表二）。</div>
+            </div>
+            <div class="scan"><img src="pdf_pages/page-049.jpg" alt="PDF page 051"></div>
+          </div>
+        </section>
+        <section class="page" id="page-052">
+          <div class="page-head">
+            <div class="page-title">原书阅读器页 052<span>原书物理 PDF 页 050</span><span>印刷页 38</span></div>
+            <div class="page-tools">
+              <button type="button" data-copy-page="052">复制本页</button>
+              <button type="button" data-export-page="052">导出本页</button>
+            </div>
+          </div>
+          <div class="workbench">
+            <div class="editor-wrap">
+              <div class="rich-editor" data-page="052" contenteditable="true" role="textbox" aria-multiline="true" spellcheck="false">表二：二里头出土粮食颗粒及折合重量
+
+| | 稻米 | 粟米 | 黍米 | 合计 |
+| ----- | ------ | ------ | ------ | ----- |
+| 颗粒数 | 14768 | 13883 | 2248 | 30899 |
+| 千粒重（克）| 16 | 2 | 7 | |
+| 折合克数 | 236.288 | 27.766 | 15.736 | 279.79 |
+| 粒数占比 | 47.8% | 44.9% | 7.3% | |
+| 重量占比 | 84.5% | 9.9% | 5.6% | |
+
+现在洛阳市周边，包括二里头地区，已经很少种植水稻了，但距今4000年前显然不是这样。
+
+水稻发源于长江流域，从6000年前以来，一直在缓慢而持续地向华北传播。在距今4000余年前的华北遗址中，有很多都发现过水稻粒，但数量占比很低，几乎可以忽略不计。可见，二里头发现的水稻不可能是外来的贡品，因为在二里头人还没有建立起王朝、无法向外地征收“贡赋”的时候，他们就以水稻为主粮了。
+
+这就需要说说二里头人的来历。
+
+移民穿越嵩山
+
+考古发现，二里头人并非洛河边的土著居民，他们来自位于二里头东南方100多公里的新砦聚落，而新砦和二里头之间隔着嵩山。
+
+新砦聚落存在于距今4000—3900年间，面积约1平方公里，这意味着聚落人口已多达数千。在龙山时代的繁荣过去之后，这种规模的聚落已经很少见，显然，新砦人找到了某种可以使人口增殖的秘诀。</div>
+            </div>
+            <div class="scan"><img src="pdf_pages/page-050.jpg" alt="PDF page 052"></div>
+          </div>
+        </section>
+        <section class="page" id="page-053">
+          <div class="page-head">
+            <div class="page-title">原书阅读器页 053<span>原书物理 PDF 页 051</span><span>印刷页 39</span></div>
+            <div class="page-tools">
+              <button type="button" data-copy-page="053">复制本页</button>
+              <button type="button" data-export-page="053">导出本页</button>
+            </div>
+          </div>
+          <div class="workbench">
+            <div class="editor-wrap">
+              <div class="rich-editor" data-page="053" contenteditable="true" role="textbox" aria-multiline="true" spellcheck="false">考古工作者对新砦遗址也做过浮选，稻米粒数占54.37%，折合成重量的占比则是85.1%，和二里头的数据（84.5%）非常接近。[[fn:6]] （参见表三）
+
+表三：新砦遗址出土粮食颗粒及折合重量
+
+| | 稻米 | 粟米 | 黍米 | 合计 |
+| ----- | ------ | ------ | ------ | ----- |
+|颗粒数 | 429 | 256 | 98 | 783 |
+|千粒重（克）| 16 | 2 | 7 | |
+|折合克数 | 6.84 | 0.51 | 0.69 | 8.04 |
+|粒数占比 | 54.8% | 32.7% | 12.5% | |
+|重量占比 | 85.1% | 6.3% | 8.6% | |
+
+到3900年前，新砦人突然向西北穿过嵩山，进入洛阳盆地，在古伊洛河北岸营建起新的家园，这就是二里头的来历。新聚落和新砦规模接近，也是约1平方公里，数千人。
+
+在二里头遗址最早的地层（一期），考古工作者发现了捕鱼用的骨鱼叉和陶网坠，很多蚌壳制作的工具，如箭镞和用于收割的蚌镰，显示当年这里是水滨湿地环境。
+
+二里头一期（距今约3900—3800年）的聚落规模，继承了新砦遗址，面积约1平方公里，尚未发现大型建筑。
+
+二里头与新砦遗址方位[[fn:7]]（图）
+
+不过，水稻在二里头人的粮食中已占据最重要地位：在这一期地层内，发现水稻953粒、粟155粒、黍36粒。[[fn:8]] 这个比例和新砦可谓一脉相承。值得注意的是，此时的二里头聚落规模不算大，还不可能统治到较远的地方，所以水稻肯定不是外来的“贡赋”，只能是自己生产。</div>
+            </div>
+            <div class="scan"><img src="pdf_pages/page-051.jpg" alt="PDF page 053"></div>
+          </div>
+        </section>
+        <section class="page" id="page-054">
+          <div class="page-head">
+            <div class="page-title">原书阅读器页 054<span>原书物理 PDF 页 052</span><span>印刷页 40</span></div>
+            <div class="page-tools">
+              <button type="button" data-copy-page="054">复制本页</button>
+              <button type="button" data-export-page="054">导出本页</button>
+            </div>
+          </div>
+          <div class="workbench">
+            <div class="editor-wrap">
+              <div class="rich-editor" data-page="054" contenteditable="true" role="textbox" aria-multiline="true" spellcheck="false">洛阳，位于中国地形第三和第二阶梯过渡带上的一个大平原和山地的交界处，被断续的低山包围成不太严密的盆地，而黄河正是从洛阳北部山地穿过，然后流入开阔的华北-黄淮海大平原。在新石器时代，洛阳盆地一直有零星的聚落，到新石器末尾的龙山文化时代（距今4500—4000年），曾出现部落间剧烈冲突的迹象，如各种被杀害后遗弃的尸骨（王湾二期），[[fn:9]] 但并没有发育出大型城邑。龙山时代的辉煌基本在洛阳盆地之外，比如，在东边，嵩山东南麓曾出现过一系列夯土小城-小型古国，在西北方，临汾盆地则有繁荣的陶寺古国。
+
+龙山时代结束后，洛阳盆地才成为孕育华夏文明的温床。
+
+大禹治水真相
+
+《史记•夏本纪》中有一处很特殊的记载，说大禹在治水期间曾经让他的助手“益”给民众散发稻种，在低洼多水的地方种植：
+
+以开九州，通九道，陂九泽，度九山。令益予众庶稻，可种卑湿。
+
+大禹推广稻作在其他古书中都没有相关记载，但在《史记》中却出现过两次。这应当不是司马迁的笔误，而且，在新砦和二里头考古中也都得到了验证。
+
+在有关大禹的传说中，治水的背景是大洪水泛滥，所以有学者认为，龙山时代的华北曾出现过一些古国，但在4000年前陷入萧条，原因就是那场传说的大洪水。但这个观点很难成立，因为在新石器时代，华北以粟、黍等旱作农业为主，基本不需要人工灌溉，从而聚落也就可以远离河谷低地。龙山时代最显赫的古国，如山西陶寺、清凉寺和陕西石峁，都坐落在山前和梁峁地带，比临近的河谷高出数十米，不太会遭受洪水威胁。总之，它们的衰落可能各有原因，但不会是因为洪水。</div>
+            </div>
+            <div class="scan"><img src="pdf_pages/page-052.jpg" alt="PDF page 054"></div>
+          </div>
+        </section>
+        <section class="page" id="page-055">
+          <div class="page-head">
+            <div class="page-title">原书阅读器页 055<span>原书物理 PDF 页 053</span><span>印刷页 41</span></div>
+            <div class="page-tools">
+              <button type="button" data-copy-page="055">复制本页</button>
+              <button type="button" data-export-page="055">导出本页</button>
+            </div>
+          </div>
+          <div class="workbench">
+            <div class="editor-wrap">
+              <div class="rich-editor" data-page="055" contenteditable="true" role="textbox" aria-multiline="true" spellcheck="false">传说是经过诸多流变、改造的历史记忆，其最初的“内核”会被层层包裹，甚至改头换面，难以识别。但参照考古成果，我们还是能发现“大禹治水”的最初内核：一场龙山末期部分古人改造湿地、开发平原的活动。
+
+这涉及上古和后世地理环境的区别，需要多解释一下。
+
+从历史时期直到现在，江河下游的平原地带都是人口最为密集的地区，如华北平原、黄淮海平原、长江中下游平原。但上古的石器时代则截然相反，在没有人为筑堤干预的情况下，江河在平地上容易呈漫流状态，而湿地沼泽并不适合农业。
+
+《尚书•禹贡》这样描写黄河下游的景观：“又北，播为九河，同为逆河，入于海。”这里的“九河”不是确数，是泛称，指下游黄河形成多条扇状分岔，泛滥成为广阔湿地，与海滩相连。这是上古时代未经治理的下游平原面貌，而内陆的平原地区，其环境也与此类似。比如，关中的仰韶文化遗址就有大量和水有关的元素，捕鱼的鱼钩、网坠，用蚌壳制作的各种工具，乃至陶器上画有大量鱼类图案等。这些遗址大都分布在台地，远离湿地水滨，看来古人也会到湿地中渔猎。
+
+而在华北地区龙山时代的遗址中，普遍有少量稻谷，虽然占比很小，但说明黄河流域的人们已经开始尝试利用湿地边缘种植水稻。新砦-二里头人则走得更远，他们已把水稻作为主粮，而这就需要开发湿地，排干沼泽，将其改造成拥有灌排水系统的稻田。简而言之，在龙山时代结束后的“大萧条”中，新砦-二里头人之所以能够异军突起，甚至建立华夏第一王朝，水稻是重要原因。</div>
+            </div>
+            <div class="scan"><img src="pdf_pages/page-053.jpg" alt="PDF page 055"></div>
+          </div>
+        </section>
+        <section class="page" id="page-056">
+          <div class="page-head">
+            <div class="page-title">原书阅读器页 056<span>原书物理 PDF 页 054</span><span>印刷页 42</span></div>
+            <div class="page-tools">
+              <button type="button" data-copy-page="056">复制本页</button>
+              <button type="button" data-export-page="056">导出本页</button>
+            </div>
+          </div>
+          <div class="workbench">
+            <div class="editor-wrap">
+              <div class="rich-editor" data-page="056" contenteditable="true" role="textbox" aria-multiline="true" spellcheck="false">这在文献中也能找到一些旁证。战国的孟子这样描述大禹的治水：“当尧之时，水逆行、泛滥于中国，蛇龙居之，民无所定，下者为巢，上者为营窟……使禹治之。禹掘地而注之海，驱蛇龙而放之范，水由地中行，江、淮、河、汉是也。险阻既远，鸟兽之害人者消，然后，人得平土而居之……”（《孟子•滕文公章句下》）
+
+从孟子的描述看，禹的治水工作就是排干和改造湿地。这其实是新石器晚期以来几乎全人类共同的事业。比如，古罗马城是在公元前6世纪王政时期的排干沼泽工程中初步建成的，甚至直到工业时代初期，巴黎的凡尔赛宫，乃至整座圣彼得堡市，也都是排干沼泽后营建出来的。
+
+进入现代社会，平原地区的人口最密集，产业也最集中，但这已经不是石器时代的本来面貌，而是后来人工改造地理的产物。新砦-二里头人可谓这个变化的先行者。
+
+当然，改造湿地、扩大稻田的工作并非新砦-二里头人的首创，南方稻作的良渚和石家河古国都曾经有过这种工程，比二里头要早一千年甚至更多，但都还没形成持续的效果就先后解体了。
+
+但在华北，改造平原湿地的工作，起步虽晚，却更有成效和持续性。原因何在？
+
+其一，可能是因为比起南方，华北降雨较少，更容易排涝，且粮食作物更多元，既有水稻，也有旱作的黍、粟、豆和麦，这样的话，改造初期的湿地适合种植水稻，但随着气候暖湿程度的减弱，二里头这种“稻作殖民地”会逐渐回归旱作，同时，稻田灌溉技术被保留下来，继续用于粟、麦等北方作物，而这对于旱作农业的增收有重要作用。这可能也是为什么继夏朝之后，商朝和周朝都建立在华北的平原地带，并奠定了此后直至秦汉的“华北优势”。</div>
+            </div>
+            <div class="scan"><img src="pdf_pages/page-054.jpg" alt="PDF page 056"></div>
+          </div>
+        </section>
+        <section class="page" id="page-057">
+          <div class="page-head">
+            <div class="page-title">原书阅读器页 057<span>原书物理 PDF 页 055</span><span>印刷页 43</span></div>
+            <div class="page-tools">
+              <button type="button" data-copy-page="057">复制本页</button>
+              <button type="button" data-export-page="057">导出本页</button>
+            </div>
+          </div>
+          <div class="workbench">
+            <div class="editor-wrap">
+              <div class="rich-editor" data-page="057" contenteditable="true" role="textbox" aria-multiline="true" spellcheck="false">当然，和后世相比，新砦-二里头的人口基数仍然很低，改造湿地平原的工作也很有限。新砦属于豫西山地与河南平原的交界带，地势相对低平，向东就是广阔的大平原-古湿地，但新砦人却没有东进，而是选择了洛阳盆地的二里头，究其原因，这很可能是因为：洛阳盆地面积有限，二里头周边的微环境更容易改造；他们当时的人口规模也还不足以全面开发大平原。
+
+其二，新砦人有机会扩展稻作农业还有一个重要原因：从陶器器型看，新砦属于主要分布在淮河、汉江流域以及长江中游北岸稻作区的煤山文化，[[fn:10]] 且位于煤山文化的最北边，稻作和旱作农业的杂糅地带。正是在此基础上，新砦人用水稻开发了二里头。
+
+其三，新砦人并不是从南方的煤山文化中心区搬迁而来的移民，因为没有发现他们饲养水牛的证据。水牛是热带、亚热带动物，直到今天，也还是只能生活在秦岭-淮河以南地区。新砦和二里头出土过很多人工饲养的牛骨，但都属于黄牛，没有水牛，说明他们并非从南方迁徙而来。新砦人的先祖应当是以旱作为主的本地土著，后来因被南方蔓延来的煤山文化同化，从而学会了水稻种植。二里头出土过犀牛和鳄鱼的骨头，可见当时华北的气候比现代更湿热。至于为何水稻比水牛先传播到黄河流域，目前还没有令人满意的答案。
+
+游龙的王朝
+
+距今4000年前，河南平原上有大量水泊湿地，所以新砦人可能是一个生活在湿地中的部族，能很快适应南方传来的水稻农业。另外，二里头-夏朝人有崇拜龙的习俗，应当也和他们曾经的滨水生活有关，因为上古传说中的龙都是水生，形体与蛇接近。</div>
+            </div>
+            <div class="scan"><img src="pdf_pages/page-055.jpg" alt="PDF page 057"></div>
+          </div>
+        </section>
+        <section class="page" id="page-058">
+          <div class="page-head">
+            <div class="page-title">原书阅读器页 058<span>原书物理 PDF 页 056</span><span>印刷页 44</span></div>
+            <div class="page-tools">
+              <button type="button" data-copy-page="058">复制本页</button>
+              <button type="button" data-export-page="058">导出本页</button>
+            </div>
+          </div>
+          <div class="workbench">
+            <div class="editor-wrap">
+              <div class="rich-editor" data-page="058" contenteditable="true" role="textbox" aria-multiline="true" spellcheck="false">顾颉刚早已发现，“禹”字从“虫”，也就是蜷曲的蛇形，而在古史中，禹的父亲名“鲧”，字义是某种水生之物，据说鲧死后变成了黄龙。（《山海经•海内经》郭璞注）夏朝王室族姓为“姒”，在后世的甲骨文和金文中，它的“以”部的写法就是蜷曲的蛇形。[[fn:11]]
+
+这些古史中的信息应当不是偶然，因为在考古中也能找到呼应。二里头的显贵墓葬经常随葬绿松石的龙形器或饰牌。其中最典型的，是一座二期墓葬，编号2002VM3。[[fn:12]] 墓主上身放着一条绿松石镶嵌的“龙形器”，全长约70厘米，由两千多片细小的绿松石片组成，呈游动的蛇形，从墓主肩部延伸到腰部。龙头用两枚白玉珠做眼，球状绿松石做成蒜头鼻，鼻梁是三节柱状青玉和白玉。这些复杂的绿松石结构可能是粘贴在纺织物上面的，类似挂毯，覆盖在墓主上半身。出土时，有机物已经腐蚀消失，绿松石嵌片尚保持原位。这位墓主被埋葬在当时的一座大型宫殿院内，还有其他高级随葬品，显然是王室成员的级别。由此亦可见，绿松石龙很可能代表的是夏-二里头人的图腾。
+
+后来，二里头显贵的丧葬习俗发生了一些改变，绿松石镶嵌的大龙变成了巴掌大小的铜牌饰，上面用绿松石拼成一只俯卧的动物，但造型比较抽象，不太容易辨认是什么。但有二期2002VM3中的龙形器先例，学者认为，这些铜牌饰的造型也是龙。[[fn:13]]
+
+龙一直是二里头高等级墓葬的标志，迄今发现龙形器和铜牌饰的高等级墓不超过五座。另外，龙形图案不止有墓葬中的绿松石饰物，很多陶器上也有龙或蛇的花纹和造型。</div>
+            </div>
+            <div class="scan"><img src="pdf_pages/page-056.jpg" alt="PDF page 058"></div>
+          </div>
+        </section>
+        <section class="page" id="page-059">
+          <div class="page-head">
+            <div class="page-title">原书阅读器页 059<span>原书物理 PDF 页 057</span><span>印刷页 45</span></div>
+            <div class="page-tools">
+              <button type="button" data-copy-page="059">复制本页</button>
+              <button type="button" data-export-page="059">导出本页</button>
+            </div>
+          </div>
+          <div class="workbench">
+            <div class="editor-wrap">
+              <div class="rich-editor" data-page="059" contenteditable="true" role="textbox" aria-multiline="true" spellcheck="false">2002VM3绿松石龙形器[[fn:14]]（图）
+
+二里头发现的龙蛇纹饰[[fn:15]]（图）
+
+在二里头之前，龙已经有一千多年的历史。在距今5000多年前的红山文化中，经常出现玉雕龙，稍后的凌家滩和良渚文化中也有玉龙，陕北石峁古城（比二里头古城早三四百年）的石墙有浮雕龙形图案。二里头的绿松石龙形器造型和石峁皇城台的浮雕龙接近：石峁浮雕龙的头部为圆弧形，二里头的初看是方形，但实际上方形只是基座轮廓，其中包含的龙头仍是圆弧形。石峁的龙元素并不多，到二里头则蔚为大观。
+
+石峁皇城台大台基8号石雕龙拓片[[fn:16]]（图）
+
+比较起来，二里头的龙的规格更高，出现在最为显赫的墓葬，且俯卧在墓主上半身。这是其他文化里的“龙”没有的“待遇”。可见，二里头-夏朝王室和龙的关系更密切，或者说，龙是他们的象征和图腾。
+
+在《易经》的《乾》卦中，也多次出现龙。如“潜龙”，即潜在水下的龙；“或跃在渊”，省略的主语也是“龙”；龙还可以飞，所谓“飞龙在天”。
+
+初九：潜龙勿用。
+
+九二：见龙在田，利见大人。
+
+九三：君子终日乾乾。夕惕若厉。无咎。
+
+九四：或跃在渊。无咎。
+
+九五：飞龙在天，利见大人。
+
+上九：亢龙有悔。
+
+用九：见群龙无首。吉。
+
+从《易经•乾》的爻辞可知，古人观念中的龙主要生活在水中，但也会一飞冲天。
+
+二里头人有稻作和龙崇拜，这让他们在普遍萧条中建立起繁荣的聚落；然而，要超越昔日龙山时代的古国，他们还需要其他的技术，比如青铜。</div>
+            </div>
+            <div class="scan"><img src="pdf_pages/page-057.jpg" alt="PDF page 059"></div>
+          </div>
+        </section>
+        <section class="page" id="page-060">
+          <div class="page-head">
+            <div class="page-title">原书阅读器页 060<span>原书物理 PDF 页 058</span><span>印刷页 46</span></div>
+            <div class="page-tools">
+              <button type="button" data-copy-page="060">复制本页</button>
+              <button type="button" data-export-page="060">导出本页</button>
+            </div>
+          </div>
+          <div class="workbench">
+            <div class="editor-wrap">
+              <div class="rich-editor" data-page="060" contenteditable="true" role="textbox" aria-multiline="true" spellcheck="false">注释
+
+1《史记•五帝本纪》。现存关于大禹的记载，主要来自《尚书》、战国诸子和司马迁的《史记》。
+
+2中国社科院考古所：《二里头：1999—2006》第一册，文物出版社，2014年，第150页。有关二里头考古的基本信息及图片，未注明出处的皆出自该书，不再详注。
+
+3这里采用的是较低的稻米千粒重数值，二里头稻米和粟米颗粒重量比实际应远超过八倍。二里头浮选结果并未介绍粮食颗粒的平均体积、重量，但王城岗遗址的浮选有体积：粟粒“均呈近圆球状，直径多在1.2毫米以上”，稻米“平均粒长是4.47毫米，平均粒宽为2.41毫米”，计算可知，粟米平均体积约0.9立方毫米，稻米平均体积近20立方毫米，是粟米的20倍，所以8倍的重量估值属于相当保守。参见赵志军《河南登封王城岗遗址浮选结果及分析》，《植物考古学：理论、方法与实践》，科学出版社，2010年，第148页。
+
+4中国社科院考古所：《二里头：1999—2006》第三册，第1301页。这是等比例显示的图片，在有些浮选统计论文里，各种粮食照片的比例不同，显示的颗粒大小都近似，更容易使人忽视千粒重问题。
+
+5赵志军：《偃师二里头遗址浮选结果的分析和讨论》，《农业考古》2019年第6期。
+
+6北京大学震旦古代文明研究中心等：《新密新砦》，文物出版社，2008年，第522、523页。新砦一期数据中粟和黍被合计在一起，但这两者的千粒重相差较大，难以进行合并折算，所以这里只用了第二期数据。</div>
+            </div>
+            <div class="scan"><img src="pdf_pages/page-058.jpg" alt="PDF page 060"></div>
+          </div>
+        </section>
+        <section class="page" id="page-061">
+          <div class="page-head">
+            <div class="page-title">原书阅读器页 061<span>原书物理 PDF 页 059</span><span>印刷页 47</span></div>
+            <div class="page-tools">
+              <button type="button" data-copy-page="061">复制本页</button>
+              <button type="button" data-export-page="061">导出本页</button>
+            </div>
+          </div>
+          <div class="workbench">
+            <div class="editor-wrap">
+              <div class="rich-editor" data-page="061" contenteditable="true" role="textbox" aria-multiline="true" spellcheck="false">7根据中国社科院考古所《二里头：1999-2006》第四册彩版一改绘。
+
+8赵志军：《偃师二里头遗址浮选结果的分析和讨论》。
+
+9北京大学考古文博学院：《洛阳王湾：考古发掘报告》，北京大学出版社，2002年，第72页。
+
+10袁飞勇：《煤山文化研究》，武汉大学2020年博士论文。关于新砦陶器所属文化类型及分布范围，学术界有不同的划分方式，本书采用的是较广义的一种。
+
+11杜金鹏、许宏主编：《二里头遗址与二里头文化研究》，科学出版社，2006年，第112、137页。
+
+12常淑敏：《二里头王都的龙文化研究》，中国社会科学院研究生院2014年硕士论文。2002是发掘年份，V是发掘区编号。
+
+13王青、赵江运、赵海涛：《二里头遗址新见神灵及动物形象的复原和初步认识》，《考古》2020年第2期。
+
+14朱乃诚：《二里头绿松石龙的源流：兼论石峁遗址皇城台大台基石护墙的年代》，《中原文物》2021年第2期。
+
+15同上。
+
+16同上。</div>
+            </div>
+            <div class="scan"><img src="pdf_pages/page-059.jpg" alt="PDF page 061"></div>
+          </div>
+        </section>
+        <section class="page" id="page-062">
+          <div class="page-head">
+            <div class="page-title">原书阅读器页 062<span>原书物理 PDF 页 060</span><span>印刷页 48</span></div>
+            <div class="page-tools">
+              <button type="button" data-copy-page="062">复制本页</button>
+              <button type="button" data-export-page="062">导出本页</button>
+            </div>
+          </div>
+          <div class="workbench">
+            <div class="editor-wrap">
+              <div class="rich-editor" data-page="062" contenteditable="true" role="textbox" aria-multiline="true" spellcheck="false"></div>
+            </div>
+            <div class="scan"><img src="pdf_pages/page-060.jpg" alt="PDF page 062"></div>
+          </div>
+        </section></div>
+        <section class="notes-dock" id="notes">
+          <h2>编辑札记</h2>
+          <div class="note-grid">
+            <div class="note-controls">
+              <label>页<select id="notePage"></select></label>
+              <div class="marker-composer" id="markerComposer">
+                <h3>标记</h3>
+                <label>类型<select id="markerType">
+                  <option value="pinyin">注音</option>
+                  <option value="editor-note">编者注／脚注</option>
+                  <option value="inline-note">按语</option>
+                  <option value="pending">待核</option>
+                  <option value="user-note">用户札记</option>
+                </select></label>
+                <label>内容<input id="markerText" type="text" autocomplete="off" placeholder="输入拼音或笔记内容"></label>
+                <p class="marker-help" id="markerHelp">先在正文中选择文字，再输入拼音；可用“拼音；简注”。</p>
+                <div class="note-actions"><button id="applyMarkerBtn" type="button">应用标记</button></div>
+              </div>
+              <label>工作日志标签<input id="noteTag" type="text" value="校订" autocomplete="off"></label>
+              <textarea id="noteText" spellcheck="false"></textarea>
+              <div class="note-actions">
+                <button id="addNoteBtn" type="button">记录到编辑日志</button>
+                <button id="exportLogBtn" type="button">导出日志</button>
+                <button id="downloadLogBtn" type="button">下载日志</button>
+                <button id="clearLogBtn" type="button">清空日志</button>
+              </div>
+            </div>
+            <div><div id="logList" class="log-list"></div></div>
+          </div>
+        </section>
+        <section class="export-dock"><h2>导出文本</h2><textarea id="exportText" spellcheck="false"></textarea></section>
+      </section>
+    </div>
+  </main>
+  <button class="quick-note-jump" type="button" data-target="notes">札记</button>
+  <script>
+    const STORAGE_KEY = "jianshang:chapter_02:editor:v3:7c28d169af1f";
+    const LOG_KEY = "jianshang:chapter_02:editor-log:v1";
+    const OUTPUT_NAME = "chapter_02_clean_edited.txt";
+    const LOG_NAME = "chapter_02_edit_log.txt";
+    const BACKUP_NAME = "chapter_02_editor_backup.json";
+    const CHAPTER_NOTES_NAME = "chapter_02_reading_notes.md";
+    const CHAPTER_NOTES_KEY = `${STORAGE_KEY}:chapter-notes`;
+    const DICTIONARY_SETTINGS_KEY = 'jianshang:dictionary-settings:v1';
+    const PROJECT_DICTIONARY_OVERRIDES_KEY = 'reading-lexicon-entry-overrides-v1';
+    const STATIC_CHAPTER_NOTES = [["治水传说与水稻农业", "本章把“大禹治水”从单纯的神话工程转向生态与农业解释：二里头的水稻证据提示，治水也许不只是疏导大江大河，而是围绕稻作、灌溉和洛阳盆地开发形成的历史记忆。传说仍可保留真相，但真相可能藏在粮食结构里。\n\n状态：Codex。\n记录者：Codex\n记录日期：2026-07-03\n处理者：Codex\n处理日期：2026-07-03\n关联原文：chapter_02_clean.txt 第 3-23 行。\n来源线索：本章原文。"], ["乾卦", "根据天文学考古，乾卦里的龙是天象，苍龙星座与银河系的关系，是古人对天象的观察和记录。乾卦的象征意义源于对农业周期的观察和判断。如二月二龙抬头；七月流火，九月授衣。\n\n### 苍龙星座\n\n苍龙星座（即东方苍龙）是中国古代天文学“四象”之一，指东宫七宿。古人将黄道附近的星象连缀成巨龙形态，包含角、亢、氐、房、心、尾、箕七个星宿，分别对应龙的角、颈、爪、胸腹、心脏和尾部。\n\n状态：个人理解。\n记录者：Codex\n记录日期：2026-07-03\n处理者：Codex\n处理日期：2026-07-03\n关联原文：chapter_02_clean.txt 第 25-35 行。\n来源线索：韬略学宫的微信视频。"]];
+    const TERMS = [{"term": "绿松石", "pinyin": "lǜ sōng shí", "type": "rare_word", "annotation": "一种蓝绿色矿石，常用于装饰。", "difficulty": 4, "unit_type": "classical_word", "domain": "general"}, {"term": "鲧", "pinyin": "gǔn", "type": "rare_word", "annotation": "传说中禹的父亲，曾奉命治水。", "difficulty": 4, "unit_type": "classical_word", "domain": "general"}, {"term": "偃师", "pinyin": "yǎn shī", "type": "place", "annotation": "今河南洛阳附近地名，二里头遗址所在地。", "difficulty": 3, "unit_type": "proper_name", "domain": "proper_name"}, {"term": "贡赋", "pinyin": "gòng fù", "type": "rare_word", "annotation": "向统治者进贡或缴纳的赋税。", "difficulty": 4, "unit_type": "classical_word", "domain": "general"}, {"term": "顾颉刚", "pinyin": "gù jié gāng", "type": "person", "annotation": "现代历史学家，“古史辨”学派代表人物。", "difficulty": 3, "unit_type": "proper_name", "domain": "proper_name"}, {"term": "杂糅", "pinyin": "zá róu", "type": "rare_word", "annotation": "混杂融合在一起。", "difficulty": 4, "unit_type": "classical_word", "domain": "general"}, {"term": "碳化", "pinyin": "tàn huà", "type": "rare_word", "annotation": "有机物受热或长期埋藏后变成含碳状态。", "difficulty": 4, "unit_type": "classical_word", "domain": "general"}, {"term": "浮选法", "pinyin": "fú xuǎn fǎ", "type": "rare_word", "annotation": "考古中利用水筛选炭化植物遗存的方法。", "difficulty": 4, "unit_type": "classical_word", "domain": "general"}, {"term": "蜷曲", "pinyin": "quán qū", "type": "rare_word", "annotation": "弯曲、卷曲。", "difficulty": 4, "unit_type": "classical_word", "domain": "general"}, {"term": "浚川", "pinyin": "jùn chuān", "type": "rare_word", "annotation": "疏通河道。", "difficulty": 4, "unit_type": "classical_word", "domain": "general"}, {"term": "构拟", "pinyin": "gòu nǐ", "type": "rare_word", "annotation": "根据材料推想、重建原貌。", "difficulty": 4, "unit_type": "classical_word", "domain": "general"}, {"term": "蚌镰", "pinyin": "bàng lián", "type": "rare_word", "annotation": "用蚌壳制作的收割工具。", "difficulty": 4, "unit_type": "classical_word", "domain": "general"}, {"term": "营窟", "pinyin": "yíng kū", "type": "rare_word", "annotation": "建造洞穴居所。", "difficulty": 4, "unit_type": "classical_word", "domain": "general"}, {"term": "姒", "pinyin": "sì", "type": "rare_word", "annotation": "夏朝王室族姓。", "difficulty": 4, "unit_type": "classical_word", "domain": "general"}, {"term": "蔚为大观", "pinyin": "wèi wéi dà guān", "type": "idiom", "annotation": "发展成盛大壮观的景象。", "difficulty": 3, "unit_type": "idiom", "domain": "phrase"}, {"term": "亢龙有悔", "pinyin": "kàng lóng yǒu huǐ", "type": "项目词典", "annotation": "《易》语，处于极盛而不知退会有悔恨。", "difficulty": 3, "unit_type": "word", "domain": "general"}, {"term": "华夏文明", "pinyin": "huá xià wén míng", "type": "项目词典", "annotation": "在中国早期历史中逐渐形成和发展的文明传统。", "difficulty": 3, "unit_type": "word", "domain": "general"}, {"term": "长江流域", "pinyin": "cháng jiāng liú yù", "type": "项目词典", "annotation": "长江水系覆盖的广大地区。", "difficulty": 3, "unit_type": "proper_name", "domain": "proper_name"}, {"term": "先后", "pinyin": "xiān hòu", "type": "项目词典", "annotation": "《盘庚》引文中指已故先王。", "difficulty": 4, "unit_type": "classical_word", "domain": "general"}, {"term": "图腾", "pinyin": "tú téng", "type": "项目词典", "annotation": "族群崇拜并作为象征的动物、植物或自然物。", "difficulty": 3, "unit_type": "word", "domain": "general"}, {"term": "土著", "pinyin": "tǔ zhù", "type": "项目词典", "annotation": "本地原有居民或族群。", "difficulty": 3, "unit_type": "word", "domain": "general"}, {"term": "地层", "pinyin": "dì céng", "type": "项目词典", "annotation": "遗址中不同时期堆积形成的层次。", "difficulty": 3, "unit_type": "word", "domain": "general"}, {"term": "城邑", "pinyin": "chéng yì", "type": "项目词典", "annotation": "古代有人群聚居、具有一定组织和防御功能的城镇聚落。", "difficulty": 3, "unit_type": "word", "domain": "general"}, {"term": "夯土", "pinyin": "hāng tǔ", "type": "项目词典", "annotation": "把土层层夯实形成建筑基础或城墙的技术。", "difficulty": 3, "unit_type": "word", "domain": "general"}, {"term": "尚书", "pinyin": "shàng shū", "type": "项目词典", "annotation": "儒家经典之一，文中引用《盘庚》篇。 | 保存上古政治文献和诰命的儒家经典。", "difficulty": 4, "unit_type": "classical_word", "domain": "general"}, {"term": "新砦", "pinyin": "xīn zhài", "type": "项目词典", "annotation": "河南新密遗址；“砦”同“寨”，网页可能误作“新碧”。", "difficulty": 5, "unit_type": "specialist_term", "domain": "archaeology"}, {"term": "易经", "pinyin": "yì jīng", "type": "项目词典", "annotation": "文王卦爻辞体系，书中用以讨论翦商谋略。 | 文王卦爻辞体系。 | 以六十四卦及卦爻辞为主体的古代经典。", "difficulty": 4, "unit_type": "classical_word", "domain": "general"}, {"term": "春秋", "pinyin": "chūn qiū", "type": "项目词典", "annotation": "孔子时代相关的编年史经典。", "difficulty": 4, "unit_type": "classical_word", "domain": "general"}, {"term": "水牛", "pinyin": "shuǐ niú", "type": "项目词典", "annotation": "商人畜牧和祭祀中涉及的家畜。", "difficulty": 3, "unit_type": "word", "domain": "general"}, {"term": "浮选", "pinyin": "fú xuǎn", "type": "项目词典", "annotation": "考古中用水分离土样里的植物种子等细小遗存的方法。", "difficulty": 3, "unit_type": "word", "domain": "general"}, {"term": "淮河", "pinyin": "huái hé", "type": "项目词典", "annotation": "中国东部重要河流。", "difficulty": 3, "unit_type": "proper_name", "domain": "proper_name"}, {"term": "爻辞", "pinyin": "yáo cí", "type": "项目词典", "annotation": "解释每一爻吉凶和意义的文字。", "difficulty": 3, "unit_type": "word", "domain": "general"}, {"term": "石峁", "pinyin": "shí mǎo", "type": "项目词典", "annotation": "陕北大型史前城址，文中与郑州商城作比较。 | 陕北大型史前城址。", "difficulty": 5, "unit_type": "specialist_term", "domain": "archaeology"}, {"term": "箭镞", "pinyin": "jiàn zú", "type": "项目词典", "annotation": "箭头。 | 箭头，文中有青铜、石骨材质。", "difficulty": 5, "unit_type": "classical_word", "domain": "general"}, {"term": "粟米", "pinyin": "sù mǐ", "type": "项目词典", "annotation": "小米；北方旱作农业的重要作物。", "difficulty": 4, "unit_type": "classical_word", "domain": "general"}, {"term": "良渚", "pinyin": "liáng zhǔ", "type": "项目词典", "annotation": "长江下游新石器时代重要考古文化和古城遗址。", "difficulty": 5, "unit_type": "specialist_term", "domain": "archaeology"}, {"term": "许宏", "pinyin": "xǔ hóng", "type": "项目词典", "annotation": "考古学者，长期主持或研究二里头考古。", "difficulty": 3, "unit_type": "proper_name", "domain": "proper_name"}, {"term": "迁徙", "pinyin": "qiān xǐ", "type": "项目词典", "annotation": "群体从一地迁移到另一地。", "difficulty": 3, "unit_type": "word", "domain": "general"}, {"term": "铭文", "pinyin": "míng wén", "type": "项目词典", "annotation": "铸刻在青铜器等器物上的文字。 | 器物上铸刻或刻写的文字。", "difficulty": 4, "unit_type": "classical_word", "domain": "general"}, {"term": "陶寺", "pinyin": "táo sì", "type": "项目词典", "annotation": "山西襄汾一带龙山时代重要遗址。", "difficulty": 5, "unit_type": "specialist_term", "domain": "archaeology"}, {"term": "豆", "pinyin": "dòu", "type": "bronze_item", "annotation": "古代盛肉或食品的高足盘形器。", "difficulty": 5, "unit_type": "specialist_term", "domain": "bronze_vessel"}, {"term": "盨", "pinyin": "xǔ", "type": "bronze_item", "annotation": "古代盛食物的铜器，多有盖、耳和圈足。", "difficulty": 5, "unit_type": "specialist_term", "domain": "bronze_vessel"}, {"term": "镞", "pinyin": "zú", "type": "bronze_item", "annotation": "箭头。", "difficulty": 5, "unit_type": "specialist_term", "domain": "bronze_vessel"}];
+    const ORIGINAL_TEXTS = {"049": "第二章大禹治水真相：稻与龙\n\n在上古的传说中，“大禹治水”是人类改变自然界的宏大事业；禹的儿子启则在随后建立了华夏第一王朝——夏。两代人的故事堪比创世史诗，壮丽辉煌。\n\n按照古书记载，在尧和舜的时代曾经发生大洪水，尧帝派禹的父亲鲧治水，但没有成效，鲧被处死；舜帝则继续任命禹治水，结果禹不仅治理了水患，还开辟了黄河和长江流域的陆路与水路交通网，划出了九州行政区。[[fn:1]]\n\n远古历史总是和神话杂糅。现代学术产生后，有学者开始质疑大禹传说的真实性，比如开创“古史辨”学派的顾颉刚，他就认为大禹的事迹是战国时的人虚构的。\n\n历史文献在流传的过程中往往会被后人加工或改造，甚至被塞进更晚的篇章。现存关于大禹最早的文献，是《尚书》开头的几篇，如《舜典》《禹贡》，但受到的怀疑也最多。近年，一件流散海外的青铜器“遂公盨”被发现，其铭文中有这样的叙述：“天命禹敷土，随山浚川。”但它属于西周，跟大禹的时代相距甚远。\n\n传说是大禹凿通了长江、黄河、淮河和汉江，但从工程的可能性看，这都不现实。即便是现代国家也不太可能实施这种完全改变大江大河的工程，更何况在4000年前还没有出现地跨黄河和长江流域的大型国家，其人口规模和技术水平根本不足以改造大江大河。\n\n难道，大禹治水只是西周或者春秋时候的人创造的神话？考古发现能提供解答，虽然它有时会离人们最初想象的“答案”很遥远。\n\n依赖水稻的古洛阳一二里头", "050": "在今洛阳市以东20公里处，伊河和洛河沉积形成的小平原上，发现了疑似“夏都”的偃师二里头遗址。它的占地面积、宫殿规格以及手工业的发达程度都超过了以往和同期任何遗址。而且，二里头遗址距今3900—3500年，恰好在商朝之前，所以它很可能就是夏朝的都城。\n\n二里头考古的成果已经有很多，但留心二里头人的主食是哪种的还不多，大多数学者普遍默认，按照华北地区的传统，它应当以旱作的粟（小米）为主。\n\n但事实恰好相反，二里头人的主食是水稻（大米）。不仅如此，这背后还可能隐藏着“大禹治水”的来历。学界没有意识到这个问题的原因，说起来颇为有趣，就是按粮食颗粒数进行统计和排名，而忽视了不同粮食的颗粒其实差别巨大。\n\n历经上千年埋藏的粮食大都已经碳化，如果不是大量的堆积很难被发现。近年来，考古工作者开始采用“浮选法”来寻找粮食：在遗址中采集土样，打散后放入水中搅拌，而碳化的粮食比水轻，所以粮食会浮上水面。这样，人们就可以采集到古人遗弃的粮食颗粒，观察古人在种什么、吃什么。\n\n在1999—2006年的二里头发掘中，对遗址土样采用“浮选法”得到的样本显示：粟米（小米）数量最多；稻米（大米）其次，约为粟米数量的一半；其他旱作的黍、大豆和小麦数量很少（参见表一）。[[fn:2]] 这样看来，稻米在二里头似乎不占主要地位。\n\n表一：《二里头：1999-2006》中的出土粮食颗粒占比\n\n| | 粟 | 稻 | 黍 | 合计 |\n| ---- | --- | ----- | ----- | --- |\n|粒数 | 11059 | 5687 | 1542 | 18288 |\n| 粒数占比 | 60.5% | 31.1% | 8.4% | |", "051": "但粟米和稻米的颗粒大小及重量很不一样，单棵植株收获的籽粒数量也相差悬殊。分析古人的种植规模和食物构成，应当统计的是重量，而非粒数。但很可惜，浮选工作没有称重的报告，目前还只能通过粮食颗粒数“构拟”它们的重量。在农学上，统计不同作物颗粒重量的术语是“千粒重”，所以，我们可以参考现代粮食的“千粒重”数值进行折算。这也是不得已的替代方法。\n\n粟米平均千粒重一般为2克，稻米平均千粒重一般为16—34克，即使按最低的16克计算，两者颗粒重量也相差七倍。根据这个比例，二里头出土的稻米重量应是粟米的四倍，是当之无愧的最重要的粮食。[[fn:3]]\n\n二里头出土的粟、黍和稻粒：三者体积差别很大，如果用颗粒数来衡量它们的种植面积，显然会产生重大偏差。[[fn:4]]\n\n2019年，一份样本更多的浮选统计论文发表，包含二里头各期的277个采样，但仍是按照粮食颗粒数计算的。这次，稻米颗粒数量略超过粟米，位居第一：稻，14768粒；粟，13883粒；黍，2248粒。\n\n稻米粒数略多于粟，这让论文作者觉得难以解释，便猜测这些稻米是从外地进贡来的：“通过收取贡赋的手段，从当时的水稻种植区域征集大量稻谷。”[[fn:5]] 但稻谷种植区应当在哪里，古人的交通问题如何解决，这些都还无法解答。\n\n如果把颗粒数折算成重量，稻米的权重还要上升很多，占比84.5%，在二里头人的种植面积和食谱中占据绝对优势（参见表二）。", "052": "表二：二里头出土粮食颗粒及折合重量\n\n| | 稻米 | 粟米 | 黍米 | 合计 |\n| ----- | ------ | ------ | ------ | ----- |\n| 颗粒数 | 14768 | 13883 | 2248 | 30899 |\n| 千粒重（克）| 16 | 2 | 7 | |\n| 折合克数 | 236.288 | 27.766 | 15.736 | 279.79 |\n| 粒数占比 | 47.8% | 44.9% | 7.3% | |\n| 重量占比 | 84.5% | 9.9% | 5.6% | |\n\n现在洛阳市周边，包括二里头地区，已经很少种植水稻了，但距今4000年前显然不是这样。\n\n水稻发源于长江流域，从6000年前以来，一直在缓慢而持续地向华北传播。在距今4000余年前的华北遗址中，有很多都发现过水稻粒，但数量占比很低，几乎可以忽略不计。可见，二里头发现的水稻不可能是外来的贡品，因为在二里头人还没有建立起王朝、无法向外地征收“贡赋”的时候，他们就以水稻为主粮了。\n\n这就需要说说二里头人的来历。\n\n移民穿越嵩山\n\n考古发现，二里头人并非洛河边的土著居民，他们来自位于二里头东南方100多公里的新砦聚落，而新砦和二里头之间隔着嵩山。\n\n新砦聚落存在于距今4000—3900年间，面积约1平方公里，这意味着聚落人口已多达数千。在龙山时代的繁荣过去之后，这种规模的聚落已经很少见，显然，新砦人找到了某种可以使人口增殖的秘诀。", "053": "考古工作者对新砦遗址也做过浮选，稻米粒数占54.37%，折合成重量的占比则是85.1%，和二里头的数据（84.5%）非常接近。[[fn:6]] （参见表三）\n\n表三：新砦遗址出土粮食颗粒及折合重量\n\n| | 稻米 | 粟米 | 黍米 | 合计 |\n| ----- | ------ | ------ | ------ | ----- |\n|颗粒数 | 429 | 256 | 98 | 783 |\n|千粒重（克）| 16 | 2 | 7 | |\n|折合克数 | 6.84 | 0.51 | 0.69 | 8.04 |\n|粒数占比 | 54.8% | 32.7% | 12.5% | |\n|重量占比 | 85.1% | 6.3% | 8.6% | |\n\n到3900年前，新砦人突然向西北穿过嵩山，进入洛阳盆地，在古伊洛河北岸营建起新的家园，这就是二里头的来历。新聚落和新砦规模接近，也是约1平方公里，数千人。\n\n在二里头遗址最早的地层（一期），考古工作者发现了捕鱼用的骨鱼叉和陶网坠，很多蚌壳制作的工具，如箭镞和用于收割的蚌镰，显示当年这里是水滨湿地环境。\n\n二里头一期（距今约3900—3800年）的聚落规模，继承了新砦遗址，面积约1平方公里，尚未发现大型建筑。\n\n二里头与新砦遗址方位（图）\n\n不过，水稻在二里头人的粮食中已占据最重要地位：在这一期地层内，发现水稻953粒、粟155粒、黍36粒。[[fn:8]] 这个比例和新砦可谓一脉相承。值得注意的是，此时的二里头聚落规模不算大，还不可能统治到较远的地方，所以水稻肯定不是外来的“贡赋”，只能是自己生产。", "054": "洛阳，位于中国地形第三和第二阶梯过渡带上的一个大平原和山地的交界处，被断续的低山包围成不太严密的盆地，而黄河正是从洛阳北部山地穿过，然后流入开阔的华北-黄淮海大平原。在新石器时代，洛阳盆地一直有零星的聚落，到新石器末尾的龙山文化时代（距今4500—4000年），曾出现部落间剧烈冲突的迹象，如各种被杀害后遗弃的尸骨（王湾二期），[[fn:9]] 但并没有发育出大型城邑。龙山时代的辉煌基本在洛阳盆地之外，比如，在东边，嵩山东南麓曾出现过一系列夯土小城-小型古国，在西北方，临汾盆地则有繁荣的陶寺古国。\n\n龙山时代结束后，洛阳盆地才成为孕育华夏文明的温床。\n\n大禹治水真相\n\n《史记•夏本纪》中有一处很特殊的记载，说大禹在治水期间曾经让他的助手“益”给民众散发稻种，在低洼多水的地方种植：\n\n以开九州，通九道，陂九泽，度九山。令益予众庶稻，可种卑湿。\n\n大禹推广稻作在其他古书中都没有相关记载，但在《史记》中却出现过两次。这应当不是司马迁的笔误，而且，在新砦和二里头考古中也都得到了验证。\n\n在有关大禹的传说中，治水的背景是大洪水泛滥，所以有学者认为，龙山时代的华北曾出现过一些古国，但在4000年前陷入萧条，原因就是那场传说的大洪水。但这个观点很难成立，因为在新石器时代，华北以粟、黍等旱作农业为主，基本不需要人工灌溉，从而聚落也就可以远离河谷低地。龙山时代最显赫的古国，如山西陶寺、清凉寺和陕西石峁，都坐落在山前和梁峁地带，比临近的河谷高出数十米，不太会遭受洪水威胁。总之，它们的衰落可能各有原因，但不会是因为洪水。", "055": "传说是经过诸多流变、改造的历史记忆，其最初的“内核”会被层层包裹，甚至改头换面，难以识别。但参照考古成果，我们还是能发现“大禹治水”的最初内核：一场龙山末期部分古人改造湿地、开发平原的活动。\n\n这涉及上古和后世地理环境的区别，需要多解释一下。\n\n从历史时期直到现在，江河下游的平原地带都是人口最为密集的地区，如华北平原、黄淮海平原、长江中下游平原。但上古的石器时代则截然相反，在没有人为筑堤干预的情况下，江河在平地上容易呈漫流状态，而湿地沼泽并不适合农业。\n\n《尚书•禹贡》这样描写黄河下游的景观：“又北，播为九河，同为逆河，入于海。”这里的“九河”不是确数，是泛称，指下游黄河形成多条扇状分岔，泛滥成为广阔湿地，与海滩相连。这是上古时代未经治理的下游平原面貌，而内陆的平原地区，其环境也与此类似。比如，关中的仰韶文化遗址就有大量和水有关的元素，捕鱼的鱼钩、网坠，用蚌壳制作的各种工具，乃至陶器上画有大量鱼类图案等。这些遗址大都分布在台地，远离湿地水滨，看来古人也会到湿地中渔猎。\n\n而在华北地区龙山时代的遗址中，普遍有少量稻谷，虽然占比很小，但说明黄河流域的人们已经开始尝试利用湿地边缘种植水稻。新砦-二里头人则走得更远，他们已把水稻作为主粮，而这就需要开发湿地，排干沼泽，将其改造成拥有灌排水系统的稻田。简而言之，在龙山时代结束后的“大萧条”中，新砦-二里头人之所以能够异军突起，甚至建立华夏第一王朝，水稻是重要原因。", "056": "这在文献中也能找到一些旁证。战国的孟子这样描述大禹的治水：“当尧之时，水逆行、泛滥于中国，蛇龙居之，民无所定，下者为巢，上者为营窟……使禹治之。禹掘地而注之海，驱蛇龙而放之范，水由地中行，江、淮、河、汉是也。险阻既远，鸟兽之害人者消，然后，人得平土而居之……”（《孟子•滕文公章句下》）\n\n从孟子的描述看，禹的治水工作就是排干和改造湿地。这其实是新石器晚期以来几乎全人类共同的事业。比如，古罗马城是在公元前6世纪王政时期的排干沼泽工程中初步建成的，甚至直到工业时代初期，巴黎的凡尔赛宫，乃至整座圣彼得堡市，也都是排干沼泽后营建出来的。\n\n进入现代社会，平原地区的人口最密集，产业也最集中，但这已经不是石器时代的本来面貌，而是后来人工改造地理的产物。新砦-二里头人可谓这个变化的先行者。\n\n当然，改造湿地、扩大稻田的工作并非新砦-二里头人的首创，南方稻作的良渚和石家河古国都曾经有过这种工程，比二里头要早一千年甚至更多，但都还没形成持续的效果就先后解体了。\n\n但在华北，改造平原湿地的工作，起步虽晚，却更有成效和持续性。原因何在？\n\n其一，可能是因为比起南方，华北降雨较少，更容易排涝，且粮食作物更多元，既有水稻，也有旱作的黍、粟、豆和麦，这样的话，改造初期的湿地适合种植水稻，但随着气候暖湿程度的减弱，二里头这种“稻作殖民地”会逐渐回归旱作，同时，稻田灌溉技术被保留下来，继续用于粟、麦等北方作物，而这对于旱作农业的增收有重要作用。这可能也是为什么继夏朝之后，商朝和周朝都建立在华北的平原地带，并奠定了此后直至秦汉的“华北优势”。", "057": "当然，和后世相比，新砦-二里头的人口基数仍然很低，改造湿地平原的工作也很有限。新砦属于豫西山地与河南平原的交界带，地势相对低平，向东就是广阔的大平原-古湿地，但新砦人却没有东进，而是选择了洛阳盆地的二里头，究其原因，这很可能是因为：洛阳盆地面积有限，二里头周边的微环境更容易改造；他们当时的人口规模也还不足以全面开发大平原。\n\n其二，新砦人有机会扩展稻作农业还有一个重要原因：从陶器器型看，新砦属于主要分布在淮河、汉江流域以及长江中游北岸稻作区的煤山文化，且位于煤山文化的最北边，稻作和旱作农业的杂糅地带。正是在此基础上，新砦人用水稻开发了二里头。\n\n其三，新砦人并不是从南方的煤山文化中心区搬迁而来的移民，因为没有发现他们饲养水牛的证据。水牛是热带、亚热带动物，直到今天，也还是只能生活在秦岭-淮河以南地区。新砦和二里头出土过很多人工饲养的牛骨，但都属于黄牛，没有水牛，说明他们并非从南方迁徙而来。新砦人的先祖应当是以旱作为主的本地土著，后来因被南方蔓延来的煤山文化同化，从而学会了水稻种植。二里头出土过犀牛和鳄鱼的骨头，可见当时华北的气候比现代更湿热。至于为何水稻比水牛先传播到黄河流域，目前还没有令人满意的答案。\n\n游龙的王朝\n\n距今4000年前，河南平原上有大量水泊湿地，所以新砦人可能是一个生活在湿地中的部族，能很快适应南方传来的水稻农业。另外，二里头-夏朝人有崇拜龙的习俗，应当也和他们曾经的滨水生活有关，因为上古传说中的龙都是水生，形体与蛇接近。", "058": "顾颉刚早已发现，“禹”字从“虫”，也就是蜷曲的蛇形，而在古史中，禹的父亲名“鲧”，字义是某种水生之物，据说鲧死后变成了黄龙。（《山海经•海内经》郭璞注）夏朝王室族姓为“姒”，在后世的甲骨文和金文中，它的“以”部的写法就是蜷曲的蛇形。[[fn:11]]\n\n这些古史中的信息应当不是偶然，因为在考古中也能找到呼应。二里头的显贵墓葬经常随葬绿松石的龙形器或饰牌。其中最典型的，是一座二期墓葬，编号2002VM3。墓主上身放着一条绿松石镶嵌的“龙形器”，全长约70厘米，由两千多片细小的绿松石片组成，呈游动的蛇形，从墓主肩部延伸到腰部。龙头用两枚白玉珠做眼，球状绿松石做成蒜头鼻，鼻梁是三节柱状青玉和白玉。这些复杂的绿松石结构可能是粘贴在纺织物上面的，类似挂毯，覆盖在墓主上半身。出土时，有机物已经腐蚀消失，绿松石嵌片尚保持原位。这位墓主被埋葬在当时的一座大型宫殿院内，还有其他高级随葬品，显然是王室成员的级别。由此亦可见，绿松石龙很可能代表的是夏-二里头人的图腾。\n\n后来，二里头显贵的丧葬习俗发生了一些改变，绿松石镶嵌的大龙变成了巴掌大小的铜牌饰，上面用绿松石拼成一只俯卧的动物，但造型比较抽象，不太容易辨认是什么。但有二期2002VM3中的龙形器先例，学者认为，这些铜牌饰的造型也是龙。[[fn:13]]\n\n龙一直是二里头高等级墓葬的标志，迄今发现龙形器和铜牌饰的高等级墓不超过五座。另外，龙形图案不止有墓葬中的绿松石饰物，很多陶器上也有龙或蛇的花纹和造型。", "059": "2002VM3绿松石龙形器[[fn:14]]（图）\n\n二里头发现的龙蛇纹饰[[fn:15]]（图）\n\n在二里头之前，龙已经有一千多年的历史。在距今5000多年前的红山文化中，经常出现玉雕龙，稍后的凌家滩和良渚文化中也有玉龙，陕北石峁古城（比二里头古城早三四百年）的石墙有浮雕龙形图案。二里头的绿松石龙形器造型和石峁皇城台的浮雕龙接近：石峁浮雕龙的头部为圆弧形，二里头的初看是方形，但实际上方形只是基座轮廓，其中包含的龙头仍是圆弧形。石峁的龙元素并不多，到二里头则蔚为大观。\n\n石峁皇城台大台基8号石雕龙拓片（图）\n\n比较起来，二里头的龙的规格更高，出现在最为显赫的墓葬，且俯卧在墓主上半身。这是其他文化里的“龙”没有的“待遇”。可见，二里头-夏朝王室和龙的关系更密切，或者说，龙是他们的象征和图腾。\n\n在《易经》的《乾》卦中，也多次出现龙。如“潜龙”，即潜在水下的龙；“或跃在渊”，省略的主语也是“龙”；龙还可以飞，所谓“飞龙在天”。\n\n初九：潜龙勿用。\n\n九二：见龙在田，利见大人。\n\n九三：君子终日乾乾。夕惕若厉。无咎。\n\n九四：或跃在渊。无咎。\n\n九五：飞龙在天，利见大人。\n\n上九：亢龙有悔。\n\n用九：见群龙无首。吉。\n\n从《易经•乾》的爻辞可知，古人观念中的龙主要生活在水中，但也会一飞冲天。\n\n二里头人有稻作和龙崇拜，这让他们在普遍萧条中建立起繁荣的聚落；然而，要超越昔日龙山时代的古国，他们还需要其他的技术，比如青铜。", "060": "注释\n\n1《史记•五帝本纪》。现存关于大禹的记载，主要来自《尚书》、战国诸子和司马迁的《史记》。\n\n2中国社科院考古所：《二里头：1999—2006》第一册，文物出版社，2014年，第150页。有关二里头考古的基本信息及图片，未注明出处的皆出自该书，不再详注。\n\n3这里采用的是较低的稻米千粒重数值，二里头稻米和粟米颗粒重量比实际应远超过八倍。二里头浮选结果并未介绍粮食颗粒的平均体积、重量，但王城岗遗址的浮选有体积：粟粒“均呈近圆球状，直径多在1.2毫米以上”，稻米“平均粒长是4.47毫米，平均粒宽为2.41毫米”，计算可知，粟米平均体积约0.9立方毫米，稻米平均体积近20立方毫米，是粟米的20倍，所以8倍的重量估值属于相当保守。参见赵志军《河南登封王城岗遗址浮选结果及分析》，《植物考古学：理论、方法与实践》，科学出版社，2010年，第148页。\n\n4中国社科院考古所：《二里头：1999—2006》第三册，第1301页。这是等比例显示的图片，在有些浮选统计论文里，各种粮食照片的比例不同，显示的颗粒大小都近似，更容易使人忽视千粒重问题。\n\n5赵志军：《偃师二里头遗址浮选结果的分析和讨论》，《农业考古》2019年第6期。\n\n6北京大学震旦古代文明研究中心等：《新密新砦》，文物出版社，2008年，第522、523页。新砦一期数据中粟和黍被合计在一起，但这两者的千粒重相差较大，难以进行合并折算，所以这里只用了第二期数据。", "061": "7根据中国社科院考古所《二里头：1999-2006》第四册彩版一改绘。\n\n8赵志军：《偃师二里头遗址浮选结果的分析和讨论》。\n\n9北京大学考古文博学院：《洛阳王湾：考古发掘报告》，北京大学出版社，2002年，第72页。\n\n10袁飞勇：《煤山文化研究》，武汉大学2020年博士论文。关于新砦陶器所属文化类型及分布范围，学术界有不同的划分方式，本书采用的是较广义的一种。\n\n11杜金鹏、许宏主编：《二里头遗址与二里头文化研究》，科学出版社，2006年，第112、137页。\n\n12常淑敏：《二里头王都的龙文化研究》，中国社会科学院研究生院2014年硕士论文。2002是发掘年份，V是发掘区编号。\n\n13王青、赵江运、赵海涛：《二里头遗址新见神灵及动物形象的复原和初步认识》，《考古》2020年第2期。\n\n14朱乃诚：《二里头绿松石龙的源流：兼论石峁遗址皇城台大台基石护墙的年代》，《中原文物》2021年第2期。\n\n15同上。\n\n16同上。", "062": ""};
+    const statusEl = document.getElementById('status');
+    const exportTextEl = document.getElementById('exportText');
+    const notePageEl = document.getElementById('notePage');
+    const noteTagEl = document.getElementById('noteTag');
+    const noteTextEl = document.getElementById('noteText');
+    const markerTypeEl = document.getElementById('markerType');
+    const markerTextEl = document.getElementById('markerText');
+    const markerHelpEl = document.getElementById('markerHelp');
+    const logListEl = document.getElementById('logList');
+    const userNotesBodyEl = document.getElementById('userNotesBody');
+    const modeBadgeEl = document.getElementById('modeBadge');
+    const chapterNotesBodyEl = document.getElementById('chapterNotesBody');
+    const chapterNoteTitleEl = document.getElementById('chapterNoteTitle');
+    const chapterNoteTextEl = document.getElementById('chapterNoteText');
+    let activeArea = null;
+    let viewMode = 'clean';
+    let cleanViewTexts = {};
+    let cleanViewHtml = {};
+    let voices = [];
+    let allowSave = true;
+    let savedFormatRange = null;
+    function setStatus(text, tone = '') { statusEl.textContent = text; statusEl.style.color = tone === 'ok' ? 'var(--ok)' : tone === 'warn' ? 'var(--warn)' : 'var(--muted)'; }
+    function textareas() { return Array.from(document.querySelectorAll('.rich-editor[data-page]')); }
+    function editorText(area) { return area.innerText.replace(/ /g, ' ').replace(/\n$/, ''); }
+    function nodeAtOffset(root, wanted) {
+      const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT);
+      let node = walker.nextNode(), remaining = Math.max(0, wanted);
+      while (node) { if (remaining <= node.data.length) return [node, remaining]; remaining -= node.data.length; node = walker.nextNode(); }
+      return [root, root.childNodes.length];
+    }
+    function setEditorSelection(area, start, end = start) {
+      const range = document.createRange();
+      const [startNode,startOffset] = nodeAtOffset(area,start), [endNode,endOffset] = nodeAtOffset(area,end);
+      range.setStart(startNode,startOffset); range.setEnd(endNode,endOffset);
+      const selection = getSelection(); selection.removeAllRanges(); selection.addRange(range);
+      area._selectionStart = start; area._selectionEnd = end; savedFormatRange = range.cloneRange();
+    }
+    function captureEditorSelection(area) {
+      const selection = getSelection();
+      if (!selection?.rangeCount || !area.contains(selection.anchorNode)) return;
+      const range = selection.getRangeAt(0), before = range.cloneRange();
+      before.selectNodeContents(area); before.setEnd(range.startContainer,range.startOffset);
+      area._selectionStart = before.toString().length;
+      area._selectionEnd = area._selectionStart + range.toString().length;
+      savedFormatRange = range.cloneRange(); activeArea = area; notePageEl.value = area.dataset.page;
+    }
+    function initializeRichEditor(area) {
+      area._selectionStart = area._selectionEnd = 0;
+      Object.defineProperty(area,'value',{get:()=>editorText(area),set:value=>{const projection=area._imageProjection?.items||[];area._imageProjection=null;area.textContent=String(value);[...projection].reverse().forEach(item=>{const [node,offset]=nodeAtOffset(area,Math.min(item.offset,area.innerText.length)),range=document.createRange();range.setStart(node,offset);range.collapse(true);range.insertNode(item.figure)});}});
+      Object.defineProperty(area,'selectionStart',{get:()=>area._selectionStart||0});
+      Object.defineProperty(area,'selectionEnd',{get:()=>area._selectionEnd||0});
+      Object.defineProperty(area,'readOnly',{get:()=>area.contentEditable==='false',set:value=>{area.contentEditable=value?'false':'true';}});
+      area.setSelectionRange=(start,end=start)=>setEditorSelection(area,start,end);
+      area.setRangeText=(replacement,start=area.selectionStart,end=area.selectionEnd,mode='end')=>{setEditorSelection(area,start,end);const range=getSelection().getRangeAt(0);range.deleteContents();const node=document.createTextNode(replacement);range.insertNode(node);const position=mode==='select'?start:start+replacement.length;setEditorSelection(area,mode==='select'?start:position,mode==='select'?start+replacement.length:position);};
+    }
+    function getLog() { try { return JSON.parse(localStorage.getItem(LOG_KEY) || '[]'); } catch { return []; } }
+    function setLog(items) { localStorage.setItem(LOG_KEY, JSON.stringify(items.slice(0, 300))); renderLog(); }
+    function getChapterNotes() { try { const notes = JSON.parse(localStorage.getItem(CHAPTER_NOTES_KEY) || '[]'); return Array.isArray(notes) ? notes : []; } catch { return []; } }
+    function setChapterNotes(notes) { localStorage.setItem(CHAPTER_NOTES_KEY, JSON.stringify(notes)); renderChapterNotes(); }
+    function allChapterNotes() { return [...STATIC_CHAPTER_NOTES.map(([title,note]) => ({title,note,source:'file'})), ...getChapterNotes().map(item => ({...item,source:'browser'}))]; }
+    function renderChapterNotes() {
+      const notes = allChapterNotes();
+      if (!notes.length) { chapterNotesBodyEl.innerHTML = '<tr><td colspan="3">暂无章节导读札记</td></tr>'; return; }
+      chapterNotesBodyEl.innerHTML = notes.map((item,index) => `<tr><td>${escapeHtml(item.title)}</td><td>${escapeHtml(item.note)}</td><td>${item.source === 'browser' ? `<button type="button" data-delete-chapter-note="${index - STATIC_CHAPTER_NOTES.length}">删除</button>` : '<span class="log-meta">文件</span>'}</td></tr>`).join('');
+      chapterNotesBodyEl.querySelectorAll('[data-delete-chapter-note]').forEach(button => button.addEventListener('click', () => {
+        if (!confirm('删除这条浏览器札记？')) return;
+        const notes = getChapterNotes();
+        notes.splice(Number(button.dataset.deleteChapterNote), 1);
+        setChapterNotes(notes);
+        addLog('删除章节导读札记', '', currentPage());
+      }));
+    }
+    function chapterNotesMarkdown() { return allChapterNotes().map(item => `## ${item.title}\n\n${item.note}`).join('\n\n') + '\n'; }
+    function countChars() { return textareas().reduce((sum, area) => sum + area.value.length, 0); }
+    function currentPage() { const selected = textareas().find(area => { const rect = area.getBoundingClientRect(); return rect.top >= 0 && rect.top < window.innerHeight * .65; }); return selected?.dataset.page || notePageEl.value || "049"; }
+    function addLog(action, detail = '', page = currentPage()) { const items = getLog(); items.unshift({ at: new Date().toISOString(), action, page, detail, chars: countChars(), pages: textareas().length }); setLog(items); }
+    function escapeHtml(text) { return String(text).replace(/[&<>"']/g, ch => ({ '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;' }[ch])); }
+    function renderLog() { const items = getLog(); if (!items.length) { logListEl.innerHTML = '<div class="log-meta">暂无记录</div>'; return; } logListEl.innerHTML = items.map(item => { const time = new Date(item.at).toLocaleString(); const page = item.page ? `PDF ${item.page}` : '全章'; const detail = item.detail ? `<div class="log-note">${escapeHtml(item.detail)}</div>` : ''; return `<div class="log-item"><div class="log-meta">${time} · ${escapeHtml(item.action)} · ${page} · ${item.chars || 0}字</div>${detail}</div>`; }).join(''); }
+    function populateNotePages() { notePageEl.innerHTML = textareas().map(area => `<option value="${area.dataset.page}">PDF ${area.dataset.page}</option>`).join(''); }
+    function cleanValueFor(area) { if(viewMode==='annotated')return cleanViewTexts[area.dataset.page]??area.value;const clone=area.cloneNode(true);clone.querySelectorAll('.editorial-image').forEach(image=>image.remove());return clone.innerText.replace(/\n$/,''); }
+    function editorText(area) { const figures=[...area.querySelectorAll('.editorial-image')],projection=[];figures.forEach(figure=>{const range=document.createRange();range.selectNodeContents(area);range.setEndBefore(figure);const clone=figure.cloneNode(true);clone.querySelector('.editorial-image-tools')?.remove();projection.push({offset:range.toString().length,figure:clone})});const token={items:projection};area._imageProjection=token;queueMicrotask(()=>{if(area._imageProjection===token)area._imageProjection=null});const clone=area.cloneNode(true);clone.querySelectorAll('.editorial-image').forEach(image=>image.remove());return clone.innerText.replace(/\n$/,''); }
+    function collectUserNotes() {
+      const notes = [];
+      textareas().forEach(area => {
+        const source = cleanValueFor(area);
+        const patterns = [
+          ['编者注', /^〔编者注(\d+)〕\s*(.*)$/gm, match => `编者注${match[1]}`, match => match[2]],
+          ['按语', /〔按语：([^〕]*)〕/g, () => '按语', match => match[1]],
+          ['待核', /〔待核：([^〕]*)〕/g, () => '待核', match => match[1]],
+          ['札记', /〔札记：([^〕]*)〕/g, () => '札记', match => match[1]],
+        ];
+        patterns.forEach(([_kind, pattern, label, content]) => {
+          for (const match of source.matchAll(pattern)) notes.push({ page:area.dataset.page, index:match.index, type:label(match), content:content(match).trim() });
+        });
+      });
+      return notes.sort((a,b) => Number(a.page) - Number(b.page) || a.index - b.index);
+    }
+    function renderUserNotes() {
+      const notes = collectUserNotes();
+      if (!notes.length) { userNotesBodyEl.innerHTML = '<tr><td colspan="3">暂无用户札记</td></tr>'; return; }
+      userNotesBodyEl.innerHTML = notes.map(note => `<tr><td>${escapeHtml(note.type)}</td><td><button type="button" class="user-note-jump" data-note-page="${note.page}">PDF ${note.page}</button></td><td>${escapeHtml(note.content)}</td></tr>`).join('');
+      userNotesBodyEl.querySelectorAll('[data-note-page]').forEach(button => button.addEventListener('click', () => {
+        const area = document.querySelector(`.rich-editor[data-page="${button.dataset.notePage}"]`);
+        document.getElementById(`page-${button.dataset.notePage}`)?.scrollIntoView({ behavior:'smooth', block:'start' });
+        if (area) { activeArea = area; setTimeout(() => area.focus(), 350); }
+      }));
+    }
+    function saveNow(record = true) { if (!allowSave) return; const texts = {}, html = {}; textareas().forEach(area => { const page=area.dataset.page;texts[page]=cleanValueFor(area);html[page]=viewMode==='clean'?area.innerHTML:(cleanViewHtml[page]??''); }); localStorage.setItem(STORAGE_KEY, JSON.stringify({ version:4, savedAt:new Date().toISOString(), texts, html })); setStatus('已保存 ' + new Date().toLocaleTimeString(), 'ok'); if (record) addLog('保存', '', currentPage()); }
+    function loadSaved() { try { const saved = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}'); if (!saved.texts && !saved.html) return; textareas().forEach(area => { const page=area.dataset.page;if(saved.version>=4&&saved.html?.[page]!==undefined)area.innerHTML=saved.html[page];else if(saved.texts?.[page]!==undefined)area.value=saved.texts[page]; }); setStatus(saved.version>=4?'已载入富文本保存稿':'已迁移旧版保存稿', 'ok'); } catch {} }
+    let timer = null; function queueSave() { setStatus('正在编辑', 'warn'); clearTimeout(timer); timer = setTimeout(() => saveNow(false), 900); }
+    function blockFor(area) { return `===== PDF page ${area.dataset.page} / printed page ${Number(area.dataset.page) - 14} =====\n\n${cleanValueFor(area).trim()}`; }
+    function buildText() { return textareas().map(blockFor).join('\n\n'); }
+    function downloadText(filename, text) { const blob = new Blob([text + '\n'], { type: 'text/plain;charset=utf-8' }); const url = URL.createObjectURL(blob); const a = document.createElement('a'); a.href = url; a.download = filename; document.body.appendChild(a); a.click(); a.remove(); URL.revokeObjectURL(url); }
+    function downloadJson(filename, data) { const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json;charset=utf-8' }); const url = URL.createObjectURL(blob); const a = document.createElement('a'); a.href = url; a.download = filename; document.body.appendChild(a); a.click(); a.remove(); URL.revokeObjectURL(url); }
+    function requireCleanArea() { if (viewMode !== 'clean') { setStatus('请先切换回清稿再编辑', 'warn'); return null; } const area = activeArea || textareas()[0]; if (!area) return null; area.focus(); return area; }
+    function replaceSelection(replacement) { const area = requireCleanArea(); if (!area) return; const start = area.selectionStart, end = area.selectionEnd; area.setRangeText(replacement, start, end, 'end'); area.dispatchEvent(new Event('input', { bubbles:true })); }
+    function selectedText(area) { return area.value.slice(area.selectionStart, area.selectionEnd); }
+    function nextFootnoteNumber() { const matches = buildText().match(/\[\[editor-fn:(\d+)\]\]/g) || []; return matches.reduce((max, marker) => Math.max(max, Number(marker.match(/\d+/)[0])), 0) + 1; }
+    function locateTerm(term) { const ordered = activeArea ? [activeArea, ...textareas().filter(area => area !== activeArea)] : textareas(); for (const area of ordered) { let index = area.value.indexOf(term, area === activeArea ? area.selectionEnd : 0); if (index < 0) index = area.value.indexOf(term); if (index >= 0) { activeArea = area; area.focus(); area.setSelectionRange(index, index + term.length); area.scrollIntoView({ behavior:'smooth', block:'center' }); return area; } } return null; }
+    function addNotation(term = '', pinyin = '') { let area = requireCleanArea(); if (!area) return; if (term) area = locateTerm(term); const selected = area ? selectedText(area) : ''; if (!selected) { setStatus(term ? `正文中找不到“${term}”` : '请先选择要注音的文字', 'warn'); return; } const start = area.selectionStart, end = area.selectionEnd; const reading = pinyin || prompt(`“${selected}”的拼音：`, '') || ''; if (!reading) return; const note = prompt('简注（可留空）：', '') || ''; area.setRangeText(`${selected}（${reading}${note ? '；' + note : ''}）`, start, end, 'end'); area.dispatchEvent(new Event('input', { bubbles:true })); addLog('添加注音', selected, area.dataset.page); }
+    function addFootnote() { const area = requireCleanArea(); if (!area) return; const number = nextFootnoteNumber(); const note = prompt(`编者注 ${number} 内容：`, ''); if (!note) return; const selected = selectedText(area); replaceSelection(`${selected}[[editor-fn:${number}]]`); area.insertAdjacentText('beforeend', `
+
+〔编者注${number}〕${note}`); area.dispatchEvent(new Event('input', { bubbles:true })); addLog('添加编者注', note, area.dataset.page); }
+    function addComment() { const area = requireCleanArea(); if (!area) return; const note = prompt('按语或评论：', ''); if (!note) return; const selected = selectedText(area); replaceSelection(selected ? `${selected}
+
+〔按语：${note}〕` : `
+
+〔按语：${note}〕`); addLog('插入按语', note, area.dataset.page); }
+    function markDoubt() { const area = requireCleanArea(); if (!area) return; const selected = selectedText(area); if (!selected) { setStatus('请先选择待核文字', 'warn'); return; } const reason = prompt('待核原因（可留空）：', '') || ''; replaceSelection(`〔待核：${selected}${reason ? '；' + reason : ''}〕`); addLog('标为待核', `${selected} ${reason}`.trim(), area.dataset.page); }
+    function addUserNote() { const area = requireCleanArea(); if (!area) return; const note = prompt('用户札记：', ''); if (!note) return; const selected = selectedText(area); replaceSelection(`${selected}${selected ? '\n\n' : ''}〔札记：${note}〕`); addLog('添加札记', note, area.dataset.page); }
+    const markerGuidance = {
+      'pinyin': ['先在正文中选择文字，再输入拼音；可用“拼音；简注”。', '输入拼音或“拼音；简注”'],
+      'editor-note': ['选择关联文字（可选），输入编者注内容；系统会自动编号并建立脚注标记。', '输入编者注内容'],
+      'inline-note': ['选择关联文字（可选），输入随文按语。', '输入按语内容'],
+      'pending': ['先选择待核文字；内容可填写待核原因。', '输入待核原因（可留空）'],
+      'user-note': ['选择关联文字（可选），输入个人札记；札记会出现在“用户札记”表。', '输入用户札记'],
+    };
+    function updateMarkerGuidance() { const [help, placeholder] = markerGuidance[markerTypeEl.value]; markerHelpEl.textContent = help; markerTextEl.placeholder = placeholder; }
+    function markerArea() { const chosen = document.querySelector(`.rich-editor[data-page="${notePageEl.value}"]`); return activeArea || chosen || textareas()[0]; }
+    function applyMarker() {
+      const area = markerArea();
+      if (!area || viewMode !== 'clean') { setStatus('请先切换回清稿再添加标记', 'warn'); return; }
+      activeArea = area;
+      const type = markerTypeEl.value;
+      const content = markerTextEl.value.trim();
+      const selected = selectedText(area);
+      const start = area.selectionStart;
+      const end = area.selectionEnd;
+      let replacement = selected;
+      let action = '';
+      let detail = content;
+      if (type === 'pinyin') {
+        if (!selected) { setStatus('请先选择要注音的文字', 'warn'); return; }
+        if (!content) { setStatus('请输入拼音', 'warn'); return; }
+        const [reading, ...noteParts] = content.split('；');
+        const note = noteParts.join('；').trim();
+        replacement = `${selected}（${reading.trim()}${note ? '；' + note : ''}）`;
+        action = '添加注音';
+        detail = selected;
+      } else if (type === 'editor-note') {
+        if (!content) { setStatus('请输入编者注内容', 'warn'); return; }
+        const number = nextFootnoteNumber();
+        replacement = `${selected}[[editor-fn:${number}]]`;
+        area.setRangeText(replacement, start, end, 'end');
+        area.insertAdjacentText('beforeend', `
+
+〔编者注${number}〕${content}`);
+        action = '添加编者注';
+      } else if (type === 'inline-note') {
+        if (!content) { setStatus('请输入按语内容', 'warn'); return; }
+        replacement = `${selected}${selected ? '\n\n' : ''}〔按语：${content}〕`;
+        action = '插入按语';
+      } else if (type === 'pending') {
+        if (!selected) { setStatus('请先选择待核文字', 'warn'); return; }
+        replacement = `〔待核：${selected}${content ? '；' + content : ''}〕`;
+        action = '标为待核';
+        detail = `${selected} ${content}`.trim();
+      } else {
+        if (!content) { setStatus('请输入用户札记', 'warn'); return; }
+        replacement = `${selected}${selected ? '\n\n' : ''}〔札记：${content}〕`;
+        action = '添加札记';
+      }
+      if (type !== 'editor-note') area.setRangeText(replacement, start, end, 'end');
+      area.dispatchEvent(new Event('input', { bubbles:true }));
+      addLog(action, detail, area.dataset.page);
+      markerTextEl.value = '';
+      setStatus(`${action}完成`, 'ok');
+      area.focus();
+    }
+    function escapeRegExp(text) { const specials = new Set([36,40,41,42,43,46,63,91,92,93,94,123,124,125]); return [...text].map(ch => specials.has(ch.charCodeAt(0)) ? String.fromCharCode(92) + ch : ch).join(''); }
+    function dictionarySettings() { try { return { enabled:true, difficulty:3, domain:'all', ...JSON.parse(localStorage.getItem(DICTIONARY_SETTINGS_KEY) || '{}') }; } catch { return { enabled:true, difficulty:3, domain:'all' }; } }
+    function termIsVisible(item, settings=dictionarySettings()) { return settings.enabled && (Number(item.difficulty) || 3) >= Number(settings.difficulty) && (settings.domain === 'all' || item.domain === settings.domain); }
+    function applyDictionarySettings() { const settings=dictionarySettings(), button=document.getElementById('dictionaryHintsBtn'), difficulty=document.getElementById('dictionaryDifficulty'), domain=document.getElementById('dictionaryDomain'); button.textContent=settings.enabled?'词典提示：开':'词典提示：关'; button.classList.toggle('active',settings.enabled); button.setAttribute('aria-pressed',String(settings.enabled)); difficulty.value=String(settings.difficulty); domain.value=settings.domain; document.querySelectorAll('button.term').forEach(term=>{ term.hidden=!termIsVisible({difficulty:Number(term.dataset.difficulty),domain:term.dataset.domain},settings); }); }
+    function saveDictionarySettings(changes) { localStorage.setItem(DICTIONARY_SETTINGS_KEY,JSON.stringify({...dictionarySettings(),...changes})); applyDictionarySettings(); if(viewMode==='annotated')setView('clean'); }
+    function applyProjectDictionaryOverrides(overrides) { TERMS.forEach(item=>{const saved=overrides[`zh ${item.term}`];if(!saved)return;if(saved.pinyin!==undefined)item.pinyin=String(saved.pinyin);if(saved.difficulty!==undefined)item.difficulty=Number(saved.difficulty)||3;if(saved.definition!==undefined)item.annotation=String(saved.definition)});document.querySelectorAll('button.term').forEach(button=>{const item=TERMS.find(entry=>entry.term===button.dataset.term);if(!item)return;button.dataset.pinyin=item.pinyin||'';button.dataset.difficulty=String(item.difficulty||3);const parts=button.querySelectorAll('span');if(parts[1])parts[1].textContent=item.pinyin||''});localStorage.setItem(PROJECT_DICTIONARY_OVERRIDES_KEY,JSON.stringify(overrides));applyDictionarySettings(); }
+    function loadProjectDictionaryOverrides() {try{const value=JSON.parse(localStorage.getItem(PROJECT_DICTIONARY_OVERRIDES_KEY)||'{}');if(value&&typeof value==='object'&&!Array.isArray(value))applyProjectDictionaryOverrides(value)}catch{}}
+    function annotatedTexts() { const result = { ...cleanViewTexts }; const used = new Set(); [...TERMS].filter(item=>termIsVisible(item)).sort((a,b) => (b.term || '').length - (a.term || '').length).forEach(item => { const term = (item.term || '').trim(), pinyin = (item.pinyin || '').trim(); if (!term || !pinyin || used.has(term)) return; for (const area of textareas()) { const page = area.dataset.page; const pattern = new RegExp(escapeRegExp(term) + '(?:[（(][A-Za-züÜvV:]+[1-5][）)])?'); if (pattern.test(result[page])) { result[page] = result[page].replace(pattern, `${term}（${pinyin}）`); used.add(term); break; } } }); return result; }
+    function setView(mode) { if (mode === 'annotated') { saveNow(false); cleanViewTexts = Object.fromEntries(textareas().map(area => [area.dataset.page, area.value])); cleanViewHtml = Object.fromEntries(textareas().map(area => [area.dataset.page, area.innerHTML])); const projected = annotatedTexts(); textareas().forEach(area => { area.value = projected[area.dataset.page]; area.readOnly = true; area.classList.add('annotated-view'); }); viewMode = 'annotated'; document.getElementById('viewToggleBtn').textContent = '切换为清稿'; modeBadgeEl.textContent = '当前：注音稿（只读）'; modeBadgeEl.classList.add('annotated'); } else { if (viewMode === 'annotated') textareas().forEach(area => area.innerHTML = cleanViewHtml[area.dataset.page] ?? escapeHtml(cleanViewTexts[area.dataset.page] ?? area.value)); textareas().forEach(area => { area.readOnly = false; area.classList.remove('annotated-view'); }); viewMode = 'clean'; document.getElementById('viewToggleBtn').textContent = '切换为注音稿'; modeBadgeEl.textContent = '当前：清稿'; modeBadgeEl.classList.remove('annotated'); } sessionStorage.setItem(`${STORAGE_KEY}:view`, mode); setStatus(mode === 'annotated' ? '注音稿仅供查看' : '已返回清稿', 'ok'); }
+    function loadVoices() { const priority = lang => { const code = lang.toLowerCase(); return code.startsWith('en') ? 0 : code.startsWith('zh') ? 1 : code.startsWith('ru') ? 2 : code.startsWith('fr') ? 3 : 4; }; voices = speechSynthesis.getVoices().sort((a,b) => priority(a.lang) - priority(b.lang) || a.lang.localeCompare(b.lang) || a.name.localeCompare(b.name)); const select = document.getElementById('voiceSelect'); select.innerHTML = '<option value="">系统默认声音</option>' + voices.map((voice,index) => { const name = voice.name.length > 24 ? voice.name.slice(0,23) + '…' : voice.name; return `<option value="${index}">${escapeHtml(name)} — ${escapeHtml(voice.lang)}</option>`; }).join(''); }
+    function speakText() { speechSynthesis.cancel(); const area = activeArea || textareas()[0]; if (!area) return; const selection = selectedText(area).trim(); const utterance = new SpeechSynthesisUtterance(selection || area.value); utterance.lang = 'zh-CN'; utterance.rate = Number(document.getElementById('speechRate').value); const index = document.getElementById('voiceSelect').value; if (index !== '') utterance.voice = voices[Number(index)]; utterance.onstart = () => { document.getElementById('pauseSpeechBtn').disabled = false; document.getElementById('stopSpeechBtn').disabled = false; setStatus(selection ? '正在朗读所选文字' : `正在朗读 PDF ${area.dataset.page}`); }; utterance.onend = utterance.onerror = () => { document.getElementById('pauseSpeechBtn').disabled = true; document.getElementById('stopSpeechBtn').disabled = true; document.getElementById('pauseSpeechBtn').textContent = '暂停'; }; speechSynthesis.speak(utterance); }
+    function backupState() { return { version:4, chapter:"chapter_02", savedAt:new Date().toISOString(), texts:Object.fromEntries(textareas().map(area => [area.dataset.page, viewMode === 'clean' ? area.value : cleanViewTexts[area.dataset.page]])), html:Object.fromEntries(textareas().map(area => [area.dataset.page, viewMode === 'clean' ? area.innerHTML : cleanViewHtml[area.dataset.page]])), log:getLog(), chapterNotes:getChapterNotes() }; }
+    function restoreFormatSelection() { if (!savedFormatRange) return false; const selection=getSelection();selection.removeAllRanges();selection.addRange(savedFormatRange);return true; }
+    function applyTextStyle(command,value,label) { if(viewMode!=='clean'){setStatus('请先切换回清稿再设置格式','warn');return}if(!activeArea||!restoreFormatSelection()||getSelection().isCollapsed){setStatus('请先选择正文中的文字','warn');return}document.execCommand('styleWithCSS',false,true);if(!document.execCommand(command,false,value||null)){setStatus(`浏览器未能应用${label}`,'warn');return}activeArea.dispatchEvent(new Event('input',{bubbles:true}));captureEditorSelection(activeArea);addLog(`设置${label}`,getSelection().toString(),activeArea.dataset.page);setStatus(`${label}已应用`,'ok'); }
+    function prepareImage(file) { return new Promise((resolve,reject)=>{const reader=new FileReader();reader.onerror=()=>reject(new Error('无法读取图片'));reader.onload=()=>{const image=new Image();image.onerror=()=>reject(new Error('图片格式无法识别'));image.onload=()=>{const scale=Math.min(1,1800/Math.max(image.width,image.height)),canvas=document.createElement('canvas');canvas.width=Math.max(1,Math.round(image.width*scale));canvas.height=Math.max(1,Math.round(image.height*scale));canvas.getContext('2d').drawImage(image,0,0,canvas.width,canvas.height);const data=canvas.toDataURL('image/jpeg',.86);data.length>2600000?reject(new Error('压缩后的图片仍过大，请选择较小图片')):resolve(data)};image.src=reader.result};reader.readAsDataURL(file)}); }
+    function insertEditorialImage(data,fileName,caption) { if(viewMode!=='clean'||!activeArea){setStatus('请先在清稿正文中放置光标','warn');return}const figure=document.createElement('figure');figure.className='editorial-image';figure.dataset.size='medium';figure.contentEditable='false';const image=document.createElement('img');image.src=data;image.alt=caption||fileName;const figcaption=document.createElement('figcaption');figcaption.contentEditable='true';figcaption.textContent=caption||fileName;const tools=document.createElement('div');tools.className='editorial-image-tools';tools.innerHTML='<button type="button" data-image-size="small">小</button><button type="button" data-image-size="medium">中</button><button type="button" data-image-size="large">大</button><button type="button" data-image-size="full">通栏</button><button type="button" data-image-remove>删除</button>';figure.append(image,figcaption,tools);let range=savedFormatRange;try{if(!range||!activeArea.contains(range.commonAncestorContainer))range=null}catch{range=null}if(range){range.collapse(false);range.insertNode(figure)}else activeArea.append(figure);activeArea.append(document.createElement('br'));activeArea.dispatchEvent(new Event('input',{bubbles:true}));addLog('插入图片',caption||fileName,activeArea.dataset.page);setStatus('图片已插入；可编辑图注并调整大小','ok');}
+    const formatMenu=document.getElementById('formatMenu'),formatMenuBtn=document.getElementById('formatMenuBtn');
+    function closeFormatMenu(){formatMenu.classList.remove('open');formatMenuBtn.setAttribute('aria-expanded','false')}
+    formatMenuBtn.addEventListener('click',event=>{event.stopPropagation();const opening=!formatMenu.classList.contains('open');closeFormatMenu();if(opening){formatMenu.classList.add('open');formatMenuBtn.setAttribute('aria-expanded','true')}});
+    document.getElementById('formatPopover').addEventListener('click',event=>{const option=event.target.closest('.format-option');if(!option)return;applyTextStyle(option.dataset.command,option.dataset.value||null,option.dataset.label);closeFormatMenu()});
+    document.addEventListener('click',event=>{if(!formatMenu.contains(event.target))closeFormatMenu()});
+    document.addEventListener('keydown',event=>{if(event.key==='Escape')closeFormatMenu()});
+    document.getElementById('boldBtn').addEventListener('click',()=>applyTextStyle('bold',null,'粗体'));
+    document.getElementById('insertImageBtn').addEventListener('click',()=>{if(viewMode!=='clean'){setStatus('请先切换回清稿再插入图片','warn');return}if(!activeArea){setStatus('请先在正文中放置光标','warn');return}document.getElementById('editorImageInput').click();});
+    document.getElementById('editorImageInput').addEventListener('change',async event=>{const file=event.target.files[0];if(!file)return;try{const caption=prompt('请输入图片说明和来源（可稍后在正文中修改）：',file.name)||file.name;insertEditorialImage(await prepareImage(file),file.name,caption)}catch(error){setStatus(error.message,'warn')}finally{event.target.value=''}});
+    document.addEventListener('click',event=>{const size=event.target.closest('[data-image-size]'),remove=event.target.closest('[data-image-remove]'),figure=event.target.closest('.editorial-image');if(size&&figure){figure.dataset.size=size.dataset.imageSize;figure.closest('.rich-editor')?.dispatchEvent(new Event('input',{bubbles:true}))}else if(remove&&figure&&confirm('删除这张插图？')){const area=figure.closest('.rich-editor'),page=area?.dataset.page;figure.remove();area?.dispatchEvent(new Event('input',{bubbles:true}));addLog('删除图片','',page)}});
+    document.querySelectorAll('[data-target]').forEach(button => button.addEventListener('click', () => document.getElementById(button.dataset.target)?.scrollIntoView({ behavior: 'smooth', block: 'start' })));
+    textareas().forEach(initializeRichEditor);
+    textareas().forEach(area => { area.addEventListener('input', () => { queueSave(); renderUserNotes(); }); area.addEventListener('focus', () => { activeArea = area; notePageEl.value = area.dataset.page; }); area.addEventListener('click', () => captureEditorSelection(area)); area.addEventListener('keyup', () => captureEditorSelection(area)); area.addEventListener('mouseup', () => captureEditorSelection(area)); area.addEventListener('keydown',event=>{if(event.key==='Enter'&&viewMode==='clean'){event.preventDefault();captureEditorSelection(area);area.setRangeText('\n');area.dispatchEvent(new Event('input',{bubbles:true}));}}); area.addEventListener('paste',event=>{if(viewMode!=='clean')return;event.preventDefault();captureEditorSelection(area);area.setRangeText(event.clipboardData.getData('text/plain'));area.dispatchEvent(new Event('input',{bubbles:true}));}); });
+    document.querySelectorAll('button.term').forEach(button => button.addEventListener('click', () => addNotation(button.dataset.term, button.dataset.pinyin)));
+    document.getElementById('viewToggleBtn').addEventListener('click', () => setView(viewMode === 'clean' ? 'annotated' : 'clean'));
+    document.getElementById('dictionaryHintsBtn').addEventListener('click', () => saveDictionarySettings({enabled:!dictionarySettings().enabled}));
+    document.getElementById('dictionaryDifficulty').addEventListener('change', event => saveDictionarySettings({difficulty:Number(event.target.value)}));
+    document.getElementById('dictionaryDomain').addEventListener('change', event => saveDictionarySettings({domain:event.target.value}));
+    document.getElementById('dictionaryOverridesInput').addEventListener('change',async event=>{const file=event.target.files[0];if(!file)return;try{const data=JSON.parse(await file.text()),overrides=data.overrides||data;if(!overrides||typeof overrides!=='object'||Array.isArray(overrides))throw new Error('修订文件格式不正确');applyProjectDictionaryOverrides(overrides);setStatus('共享项目词典修订已导入','ok')}catch(error){setStatus('无法导入词典修订：'+error.message,'warn')}finally{event.target.value=''}});
+    document.getElementById('addNotationBtn').addEventListener('click', () => addNotation());
+    document.getElementById('addFootnoteBtn').addEventListener('click', addFootnote);
+    document.getElementById('addCommentBtn').addEventListener('click', addComment);
+    document.getElementById('markDoubtBtn').addEventListener('click', markDoubt);
+    document.getElementById('addUserNoteBtn').addEventListener('click', addUserNote);
+    document.getElementById('addChapterNoteBtn').addEventListener('click', () => {
+      const title = chapterNoteTitleEl.value.trim();
+      const note = chapterNoteTextEl.value.trim();
+      if (!title || !note) { setStatus('请填写章节札记的主题和内容', 'warn'); return; }
+      const notes = getChapterNotes();
+      notes.push({ title, note, at:new Date().toISOString() });
+      setChapterNotes(notes);
+      chapterNoteTitleEl.value = '';
+      chapterNoteTextEl.value = '';
+      setStatus('章节导读札记已保存', 'ok');
+      addLog('新增章节导读札记', title, currentPage());
+    });
+    document.getElementById('downloadChapterNotesBtn').addEventListener('click', () => {
+      downloadText(CHAPTER_NOTES_NAME, chapterNotesMarkdown());
+      setStatus('章节导读札记 Markdown 已下载', 'ok');
+      addLog('下载章节导读札记', '', currentPage());
+    });
+    markerTypeEl.addEventListener('change', updateMarkerGuidance);
+    notePageEl.addEventListener('change', () => {
+      const area = document.querySelector(`.rich-editor[data-page="${notePageEl.value}"]`);
+      if (area) activeArea = area;
+    });
+    document.getElementById('applyMarkerBtn').addEventListener('click', applyMarker);
+    document.getElementById('speakBtn').addEventListener('click', speakText);
+    document.getElementById('pauseSpeechBtn').addEventListener('click', event => { if (speechSynthesis.paused) { speechSynthesis.resume(); event.currentTarget.textContent = '暂停'; } else { speechSynthesis.pause(); event.currentTarget.textContent = '继续'; } });
+    document.getElementById('stopSpeechBtn').addEventListener('click', () => { speechSynthesis.cancel(); document.getElementById('pauseSpeechBtn').textContent = '暂停'; });
+    document.getElementById('speechRate').addEventListener('input', event => document.getElementById('speechRateValue').textContent = Number(event.target.value).toFixed(1) + '×');
+    document.getElementById('backupBtn').addEventListener('click', () => { downloadJson(BACKUP_NAME, backupState()); setStatus('JSON 备份已下载', 'ok'); addLog('导出备份', '', currentPage()); });
+    document.getElementById('importBackup').addEventListener('change', async event => { const file = event.target.files[0]; if (!file) return; try { const data = JSON.parse(await file.text()); if (!data.texts && !data.html) throw new Error('备份缺少 texts/html'); if (viewMode === 'annotated') setView('clean'); textareas().forEach(area => { const page=area.dataset.page;if(data.version>=4&&data.html?.[page]!==undefined)area.innerHTML=data.html[page];else if(data.texts?.[page]!==undefined)area.value=data.texts[page]; }); if (Array.isArray(data.log)) setLog(data.log); if (Array.isArray(data.chapterNotes)) setChapterNotes(data.chapterNotes); saveNow(false); setStatus(data.version>=4?'富文本备份已导入':'旧版备份已迁移', 'ok'); addLog('导入备份', file.name, currentPage()); } catch (error) { setStatus('无法导入备份：' + error.message, 'warn'); } finally { event.target.value = ''; } });
+    document.querySelectorAll('[data-copy-page]').forEach(button => button.addEventListener('click', async () => { const area = document.querySelector(`.rich-editor[data-page="${button.dataset.copyPage}"]`); await navigator.clipboard.writeText(area.value); setStatus('本页已复制', 'ok'); }));
+    document.querySelectorAll('[data-export-page]').forEach(button => button.addEventListener('click', () => { const area = document.querySelector(`.rich-editor[data-page="${button.dataset.exportPage}"]`); exportTextEl.value = blockFor(area); exportTextEl.scrollIntoView({ behavior: 'smooth', block: 'center' }); }));
+    document.getElementById('saveBtn').addEventListener('click', saveNow);
+    document.getElementById('exportBtn').addEventListener('click', () => { exportTextEl.value = buildText(); exportTextEl.scrollIntoView({ behavior: 'smooth', block: 'center' }); setStatus('文本已生成', 'ok'); addLog('生成文本', '', currentPage()); });
+    document.getElementById('downloadBtn').addEventListener('click', () => { downloadText(OUTPUT_NAME, buildText()); setStatus('TXT 已下载', 'ok'); addLog('下载TXT', '', currentPage()); });
+    document.getElementById('addNoteBtn').addEventListener('click', () => { const note = noteTextEl.value.trim(); if (!note) { setStatus('笔记为空', 'warn'); return; } const tag = noteTagEl.value.trim() || '校订'; addLog(tag, note, notePageEl.value); noteTextEl.value = ''; setStatus('笔记已记录', 'ok'); });
+    function buildLogText() { return getLog().map(item => { const time = new Date(item.at).toLocaleString(); const page = item.page ? `PDF ${item.page}` : '全章'; return `[${time}] ${item.action} · ${page} · ${item.chars || 0}字\n${item.detail || ''}`.trim(); }).join('\n\n'); }
+    document.getElementById('exportLogBtn').addEventListener('click', () => { exportTextEl.value = buildLogText(); exportTextEl.scrollIntoView({ behavior: 'smooth', block: 'center' }); setStatus('日志已导出', 'ok'); });
+    document.getElementById('downloadLogBtn').addEventListener('click', () => { downloadText(LOG_NAME, buildLogText()); setStatus('日志已下载', 'ok'); });
+    document.getElementById('clearLogBtn').addEventListener('click', () => { if (!confirm('清空本浏览器保存的编辑日志？')) return; localStorage.removeItem(LOG_KEY); renderLog(); setStatus('日志已清空', 'ok'); });
+    document.getElementById('resetBtn').addEventListener('click', () => { if (!confirm('恢复 chapter clean 原稿会清除本浏览器保存的编辑内容。继续？')) return; clearTimeout(timer); allowSave = false; if (viewMode === 'annotated') setView('clean'); textareas().forEach(area => area.value = ORIGINAL_TEXTS[area.dataset.page] ?? ''); cleanViewTexts = { ...ORIGINAL_TEXTS }; cleanViewHtml = {}; localStorage.removeItem(STORAGE_KEY); sessionStorage.removeItem(`${STORAGE_KEY}:view`); viewMode = 'clean'; textareas().forEach(area => { area.readOnly = false; area.classList.remove('annotated-view'); }); document.getElementById('viewToggleBtn').textContent = '切换为注音稿'; modeBadgeEl.textContent = '当前：清稿'; modeBadgeEl.classList.remove('annotated'); allowSave = true; setStatus('已恢复 chapter clean 原稿', 'ok'); addLog('恢复 clean 原稿', '', currentPage()); });
+    window.addEventListener('beforeunload', () => { if (allowSave) saveNow(false); });
+    populateNotePages();
+    updateMarkerGuidance();
+    loadSaved();
+    renderUserNotes();
+    renderChapterNotes();
+    activeArea = textareas()[0] || null;
+    applyDictionarySettings();
+    loadProjectDictionaryOverrides();
+    loadVoices();
+    if ('onvoiceschanged' in speechSynthesis) speechSynthesis.onvoiceschanged = loadVoices;
+    if (sessionStorage.getItem(`${STORAGE_KEY}:view`) === 'annotated') setView('annotated');
+    renderLog();
+  </script>
+</body>
+</html>

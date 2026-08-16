@@ -1,0 +1,5 @@
+text	issue	status
+appear to require human abilities	Consider whether “imitate aspects of human abilities” would be more precise.	open
+Data quality matters as much as quantity	Add a later example showing how data collection choices can introduce bias.	open
+you may approach a low point	Clarify later that gradient descent is not guaranteed to find the best possible solution.	open
+loosely inspired by biological brains	Keep the analogy limited so readers do not confuse artificial neurons with biological neurons.	open

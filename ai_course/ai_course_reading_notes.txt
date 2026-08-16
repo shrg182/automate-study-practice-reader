@@ -1,0 +1,5 @@
+2026-08-04T12:00:00.000Z	Reader’s note: The contrast between a calculator and a spam filter is useful. One follows rules supplied directly by a programmer; the other derives classification patterns from examples.
+2026-08-04T12:05:00.000Z	Reader’s question: If a model learns biased patterns from its training data, which parts of the training and evaluation process can reveal or reduce that bias?
+2026-08-04T12:10:00.000Z	Lesson 2 note: The apple-and-orange example makes features and labels concrete, while the separate test set explains why memorization is not the same as learning a general pattern.
+2026-08-04T12:15:00.000Z	Lesson 3 note: The foggy-hillside analogy connects loss, gradient direction, learning rate, and repeated updates without requiring calculus.
+2026-08-04T12:20:00.000Z	Lesson 4 note: A neural network is best understood as layered numerical transformations. The brain analogy is historical and limited, not evidence that the model thinks like a person.

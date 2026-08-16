@@ -1,0 +1,16 @@
+source	current_text	issue	action
+PDF p.009 / printed p.1	第一章 HHA HR ow	OCR turned running header/title into mixed Latin debris.	Remove from clean text after human verification; keep title as 第一章 苏共“20大”的震动.
+PDF p.009 / printed p.1	通邓 / 项年堂 / 显年党	Several clear OCR errors in the opening paragraph.	Verify against page image; likely 通知、颐年堂、颐年堂.
+PDF p.009 / printed p.1	TP A, DA aR Be OR RE RE th	Full line is OCR debris from a damaged scan line.	Human transcription required from the PDF image.
+PDF p.010 / printed p.2	任弱时 / 毛上席 / 市记 / 12 人以肉	Names and ordinary words damaged by OCR.	Correct line by line against PDF p.010.
+PDF p.010 / printed p.2	闻小平 / 杨尚民 / 习仲苑	Personal names damaged.	Verify likely forms 邓小平、杨尚昆、习仲勋.
+PDF p.011 / printed p.3	赫生了晓夫 / 苏共第 20 次代表大会	Core name and event title damaged.	Normalize after checking scan: 赫鲁晓夫、苏共第二十次代表大会.
+PDF p.011 / printed p.3	lines 83-88 in chapter_01_clean.txt	Large block of mixed Latin/CJK OCR debris.	Human transcription required; do not auto-delete until compared with PDF.
+PDF p.015 / printed p.7	第二节”评论世人鲁晓夫报告	Section heading damaged.	Correct to 第二节 评论赫鲁晓夫报告 after PDF check.
+PDF p.020 / printed p.12	第三节 ER PERT AM	Section heading badly damaged.	Correct from TOC/PDF to 第三节 怎样看待斯大林.
+PDF p.027 / printed p.19	“四十而不惑"... 4	Page bottom appears cut off at next page boundary.	Check continuity with PDF p.028 before cleaning paragraph.
+PDF p.028 / printed p.20	第四节 heading not found by OCR	OCR did not reliably capture the section heading.	Inspect PDF p.028 and transcribe heading manually.
+PDF p.032 / printed p.24	第五节 heading not found by OCR	OCR did not reliably capture the section heading.	Inspect PDF p.032 and transcribe heading manually.
+PDF p.037 / printed p.29	many lines dominated by Latin fragments and noise	This page has the worst OCR quality in Chapter 1.	Full-page human transcription likely needed.
+PDF p.038 / printed p.30	第六节”必要的说明	Section heading punctuation damaged.	Correct to 第六节 必要的说明 after PDF check.
+PDF p.041 / printed p.33	final paragraph only	Chapter ends mid-page with only a few OCR lines.	Verify final paragraph and confirm no Chapter 2 text included.

@@ -1,0 +1,2 @@
+2026-07-30T23:08:30.829Z	Need to be able to see the note following pinyin.
+2026-07-30T23:06:11.522Z	Need to be able to edit a word repeatedly.

@@ -1,0 +1,4 @@
+2026-08-05T03:40:57.788Z	3rd edition
+2026-08-05T03:33:03.556Z	2nd edition
+2026-08-04T22:50:00.000Z	Course summary note: The recurring pattern is examples, prediction, error, adjustment, evaluation, and responsible human judgment.
+2026-08-04T22:45:00.000Z	Lesson 7 note: Verification should be proportional to risk; low-stakes brainstorming and high-stakes decisions require different safeguards.

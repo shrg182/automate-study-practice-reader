@@ -1,0 +1,6 @@
+item	location	web_or_current_text	proposed_or_corrected	decision	status	reader_hint	evidence	source_url	notes
+1960年	intro clean text, paragraph beginning 1960年	I960年	1960年	Use 1960年	accepted	年份中数字1常被OCR误作大写I。	Context follows 1959 and 1977 excavation chronology.		Applied in intro_clean.txt.
+上颌骨	intro clean text, first-round killing paragraph	上颗骨	上颌骨	Use 上颌骨	accepted	“颌”读hé，指颌部骨骼；“颗”是近形误读。	Context lists human bones and teeth.		Applied in intro_clean.txt.
+铜镞	intro clean text, bronze weapon list	铜镶	铜镞	Use 铜镞	accepted	“镞”读zú，指箭头；与铜戈、铜刀同列为兵器。	Context lists weapons, so 铜镞 is expected.		Applied in intro_clean.txt and reading_terms.csv.
+铜斝	intro clean text, bronze vessel references	铜瞿/铜肇/铜肆/铜界	铜斝	Use 铜斝	accepted	“斝”读jiǎ，商代青铜酒器；这些近形误字均出现在同一件/同组青铜礼器语境。	PDF printed pages 6-7 show 铜斝 in the object list and related explanatory paragraphs.		Applied in intro_clean.txt and reading_terms.csv.
+footnote markers	intro clean text	心3/2。/口	23/20/10	Normalize obvious footnote markers	accepted	网页文本中脚注数字常被误作符号或字母。	Note sequence and context support numeric markers.		Applied where unambiguous.

@@ -1,0 +1,460 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>《十年论战》目录</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --ink: #222;
+      --muted: #666;
+      --line: #d8d8d8;
+      --soft: #f6f6f3;
+      --accent: #8b1e1e;
+      --accent-soft: #f3e8e6;
+      --paper: #fffdf8;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans SC", "PingFang SC", "Microsoft YaHei", sans-serif;
+      color: var(--ink);
+      background: var(--paper);
+      line-height: 1.55;
+    }
+    header {
+      border-bottom: 1px solid var(--line);
+      background: #fff;
+    }
+    .wrap {
+      width: min(1120px, calc(100% - 32px));
+      margin: 0 auto;
+    }
+    header .wrap { padding: 28px 0 22px; }
+    h1 {
+      margin: 0 0 8px;
+      font-size: clamp(1.75rem, 3vw, 2.7rem);
+      letter-spacing: 0;
+      line-height: 1.15;
+    }
+    .meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px 18px;
+      color: var(--muted);
+      font-size: 0.95rem;
+    }
+    main { padding: 24px 0 48px; }
+    .summary {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 1px;
+      border: 1px solid var(--line);
+      background: var(--line);
+      margin-bottom: 24px;
+    }
+    .summary div {
+      background: #fff;
+      padding: 14px 16px;
+      min-height: 76px;
+    }
+    .summary strong {
+      display: block;
+      font-size: 1.35rem;
+      color: var(--accent);
+      line-height: 1.2;
+    }
+    .summary span { color: var(--muted); font-size: 0.9rem; }
+    .front, .chapter {
+      border-top: 1px solid var(--line);
+      padding: 18px 0;
+    }
+    .front h2, .chapter h2 {
+      margin: 0 0 10px;
+      font-size: 1.2rem;
+      letter-spacing: 0;
+    }
+    .chapter-head {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto auto;
+      gap: 16px;
+      align-items: baseline;
+    }
+    .chapter-title { font-weight: 700; }
+    .chapter-title span { color: var(--accent); margin-right: 8px; }
+    .pages { color: var(--muted); font-variant-numeric: tabular-nums; white-space: nowrap; }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 10px;
+      background: #fff;
+      border: 1px solid var(--line);
+      table-layout: fixed;
+    }
+    th, td {
+      padding: 8px 10px;
+      border-bottom: 1px solid var(--line);
+      text-align: left;
+      vertical-align: top;
+      overflow-wrap: anywhere;
+    }
+    th {
+      background: var(--soft);
+      color: #333;
+      font-weight: 650;
+      font-size: 0.9rem;
+    }
+    td.num, th.num { width: 84px; text-align: right; font-variant-numeric: tabular-nums; }
+    td.sec, th.sec { width: 84px; }
+    tbody tr:last-child td { border-bottom: 0; }
+    .sources {
+      margin-top: 28px;
+      padding-top: 18px;
+      border-top: 1px solid var(--line);
+      color: var(--muted);
+      font-size: 0.95rem;
+    }
+    code { background: var(--accent-soft); padding: 1px 4px; border-radius: 3px; }
+    @media (max-width: 760px) {
+      .summary { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .chapter-head { grid-template-columns: 1fr; gap: 4px; }
+      th:nth-child(4), td:nth-child(4) { display: none; }
+      td.sec, th.sec { width: 70px; }
+      td.num, th.num { width: 72px; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="wrap">
+      <h1>《十年论战》目录</h1>
+      <div class="meta">
+        <span>吴冷西</span>
+        <span>1956-1966中苏关系回忆录</span>
+        <span>整理自 <code>sources/table_of_contents.csv</code></span>
+      </div>
+    </div>
+  </header>
+  <main class="wrap">
+    <section class="summary" aria-label="目录统计">
+      <div><strong>17</strong><span>章</span></div>
+      <div><strong>92</strong><span>节</span></div>
+      <div><strong>1-940</strong><span>正文印刷页</span></div>
+      <div><strong>+8</strong><span>PDF页码偏移</span></div>
+    </section>
+    <section class="front">
+      <h2>正文前材料</h2>
+      <table>
+        <thead><tr><th>单元</th><th>标题</th><th class="num">PDF页</th><th>说明</th></tr></thead>
+        <tbody>
+          <tr><td>front_matter</td><td>封面、版权页、目录</td><td class="num">1</td><td>PDF pages 1-8 before printed page numbering starts.</td></tr>
+          <tr><td>front_cover</td><td>封面</td><td class="num">1</td><td></td></tr>
+          <tr><td>copyright_page</td><td>版权页</td><td class="num">2</td><td></td></tr>
+          <tr><td>toc</td><td>目录</td><td class="num">3</td><td>TOC spans PDF pages 3-8.</td></tr>
+        </tbody>
+      </table>
+    </section>
+    <section class="chapter" id="chapter-01">
+      <div class="chapter-head">
+        <h2 class="chapter-title"><span>第1章</span>苏共“20大”的震动</h2>
+        <div class="pages">印刷页 1</div>
+        <div class="pages">PDF页 9</div>
+      </div>
+      <table>
+        <thead><tr><th class="sec">节</th><th>标题</th><th class="num">印刷页</th><th class="num">PDF页</th></tr></thead>
+        <tbody>
+          <tr id="chapter-01-section-01"><td class="sec">第1节</td><td>“破题”</td><td class="num">1</td><td class="num">9</td></tr>
+          <tr id="chapter-01-section-02"><td class="sec">第2节</td><td>评论赫鲁晓夫报告</td><td class="num">7</td><td class="num">15</td></tr>
+          <tr id="chapter-01-section-03"><td class="sec">第3节</td><td>怎样看待斯大林</td><td class="num">12</td><td class="num">20</td></tr>
+          <tr id="chapter-01-section-04"><td class="sec">第4节</td><td>探索正确道路</td><td class="num">20</td><td class="num">28</td></tr>
+          <tr id="chapter-01-section-05"><td class="sec">第5节</td><td>文章的要点</td><td class="num">24</td><td class="num">32</td></tr>
+          <tr id="chapter-01-section-06"><td class="sec">第6节</td><td>必要的说明</td><td class="num">30</td><td class="num">38</td></tr>
+        </tbody>
+      </table>
+    </section>
+    <section class="chapter" id="chapter-02">
+      <div class="chapter-head">
+        <h2 class="chapter-title"><span>第2章</span>苏波关系与匈牙利事件</h2>
+        <div class="pages">印刷页 34</div>
+        <div class="pages">PDF页 42</div>
+      </div>
+      <table>
+        <thead><tr><th class="sec">节</th><th>标题</th><th class="num">印刷页</th><th class="num">PDF页</th></tr></thead>
+        <tbody>
+          <tr id="chapter-02-section-01"><td class="sec">第1节</td><td>苏联兵临华沙</td><td class="num">34</td><td class="num">42</td></tr>
+          <tr id="chapter-02-section-02"><td class="sec">第2节</td><td>毛主席警告赫鲁晓夫</td><td class="num">39</td><td class="num">47</td></tr>
+          <tr id="chapter-02-section-03"><td class="sec">第3节</td><td>苏波中三角会谈</td><td class="num">42</td><td class="num">50</td></tr>
+          <tr id="chapter-02-section-04"><td class="sec">第4节</td><td>匈牙利反革命叛乱</td><td class="num">48</td><td class="num">56</td></tr>
+          <tr id="chapter-02-section-05"><td class="sec">第5节</td><td>抛弃还是支援匈牙利人民</td><td class="num">51</td><td class="num">59</td></tr>
+          <tr id="chapter-02-section-06"><td class="sec">第6节</td><td>两次事件的观感</td><td class="num">56</td><td class="num">64</td></tr>
+          <tr id="chapter-02-section-07"><td class="sec">第7节</td><td>在反苏反共浪潮面前</td><td class="num">62</td><td class="num">70</td></tr>
+          <tr id="chapter-02-section-08"><td class="sec">第8节</td><td>毛主席的基本论点</td><td class="num">66</td><td class="num">74</td></tr>
+          <tr id="chapter-02-section-09"><td class="sec">第9节</td><td>从分析世界基本矛盾入手</td><td class="num">71</td><td class="num">79</td></tr>
+          <tr id="chapter-02-section-10"><td class="sec">第10节</td><td>反对教条主义和修正主义</td><td class="num">75</td><td class="num">83</td></tr>
+          <tr id="chapter-02-section-11"><td class="sec">第11节</td><td>文章的要点</td><td class="num">83</td><td class="num">91</td></tr>
+        </tbody>
+      </table>
+    </section>
+    <section class="chapter" id="chapter-03">
+      <div class="chapter-head">
+        <h2 class="chapter-title"><span>第3章</span>1957年莫斯科会议</h2>
+        <div class="pages">印刷页 92</div>
+        <div class="pages">PDF页 100</div>
+      </div>
+      <table>
+        <thead><tr><th class="sec">节</th><th>标题</th><th class="num">印刷页</th><th class="num">PDF页</th></tr></thead>
+        <tbody>
+          <tr id="chapter-03-section-01"><td class="sec">第1节</td><td>毛主席提前赴苏</td><td class="num">92</td><td class="num">100</td></tr>
+          <tr id="chapter-03-section-02"><td class="sec">第2节</td><td>同兄弟党领导人会谈</td><td class="num">100</td><td class="num">108</td></tr>
+          <tr id="chapter-03-section-03"><td class="sec">第3节</td><td>纵论兄弟党关系与世界大势</td><td class="num">112</td><td class="num">120</td></tr>
+          <tr id="chapter-03-section-04"><td class="sec">第4节</td><td>争论和协商一致</td><td class="num">127</td><td class="num">135</td></tr>
+          <tr id="chapter-03-section-05"><td class="sec">第5节</td><td>同志式的话别</td><td class="num">142</td><td class="num">150</td></tr>
+        </tbody>
+      </table>
+    </section>
+    <section class="chapter" id="chapter-04">
+      <div class="chapter-head">
+        <h2 class="chapter-title"><span>第4章</span>戴维营会谈前后</h2>
+        <div class="pages">印刷页 156</div>
+        <div class="pages">PDF页 164</div>
+      </div>
+      <table>
+        <thead><tr><th class="sec">节</th><th>标题</th><th class="num">印刷页</th><th class="num">PDF页</th></tr></thead>
+        <tbody>
+          <tr id="chapter-04-section-01"><td class="sec">第1节</td><td>面对面的抗衡</td><td class="num">156</td><td class="num">164</td></tr>
+          <tr id="chapter-04-section-02"><td class="sec">第2节</td><td>四方的盘算</td><td class="num">174</td><td class="num">182</td></tr>
+          <tr id="chapter-04-section-03"><td class="sec">第3节</td><td>影射攻击的开始</td><td class="num">191</td><td class="num">199</td></tr>
+          <tr id="chapter-04-section-04"><td class="sec">第4节</td><td>赫鲁晓夫的贡礼</td><td class="num">205</td><td class="num">213</td></tr>
+          <tr id="chapter-04-section-05"><td class="sec">第5节</td><td>在中南海的激烈辩论</td><td class="num">218</td><td class="num">226</td></tr>
+          <tr id="chapter-04-section-06"><td class="sec">第6节</td><td>杭州的议论</td><td class="num">229</td><td class="num">237</td></tr>
+        </tbody>
+      </table>
+    </section>
+    <section class="chapter" id="chapter-05">
+      <div class="chapter-head">
+        <h2 class="chapter-title"><span>第5章</span>突然袭击</h2>
+        <div class="pages">印刷页 236</div>
+        <div class="pages">PDF页 244</div>
+      </div>
+      <table>
+        <thead><tr><th class="sec">节</th><th>标题</th><th class="num">印刷页</th><th class="num">PDF页</th></tr></thead>
+        <tbody>
+          <tr id="chapter-05-section-01"><td class="sec">第1节</td><td>毛主席强调团结为重</td><td class="num">236</td><td class="num">244</td></tr>
+          <tr id="chapter-05-section-02"><td class="sec">第2节</td><td>赫鲁晓夫开始行动</td><td class="num">250</td><td class="num">258</td></tr>
+          <tr id="chapter-05-section-03"><td class="sec">第3节</td><td>纪念列宁的文章</td><td class="num">258</td><td class="num">266</td></tr>
+          <tr id="chapter-05-section-04"><td class="sec">第4节</td><td>首脑会议流产</td><td class="num">266</td><td class="num">274</td></tr>
+          <tr id="chapter-05-section-05"><td class="sec">第5节</td><td>建议和反建议</td><td class="num">273</td><td class="num">281</td></tr>
+          <tr id="chapter-05-section-06"><td class="sec">第6节</td><td>突然袭击</td><td class="num">279</td><td class="num">287</td></tr>
+          <tr id="chapter-05-section-07"><td class="sec">第7节</td><td>防守反击</td><td class="num">288</td><td class="num">296</td></tr>
+          <tr id="chapter-05-section-08"><td class="sec">第8节</td><td>留有余地</td><td class="num">298</td><td class="num">306</td></tr>
+        </tbody>
+      </table>
+    </section>
+    <section class="chapter" id="chapter-06">
+      <div class="chapter-head">
+        <h2 class="chapter-title"><span>第6章</span>回顾与决策</h2>
+        <div class="pages">印刷页 301</div>
+        <div class="pages">PDF页 309</div>
+      </div>
+      <table>
+        <thead><tr><th class="sec">节</th><th>标题</th><th class="num">印刷页</th><th class="num">PDF页</th></tr></thead>
+        <tbody>
+          <tr id="chapter-06-section-01"><td class="sec">第1节</td><td>避暑胜地</td><td class="num">301</td><td class="num">309</td></tr>
+          <tr id="chapter-06-section-02"><td class="sec">第2节</td><td>布加勒斯特会议说明什么</td><td class="num">308</td><td class="num">316</td></tr>
+          <tr id="chapter-06-section-03"><td class="sec">第3节</td><td>历史的回顾</td><td class="num">314</td><td class="num">322</td></tr>
+          <tr id="chapter-06-section-04"><td class="sec">第4节</td><td>顶住压力</td><td class="num">334</td><td class="num">342</td></tr>
+        </tbody>
+      </table>
+    </section>
+    <section class="chapter" id="chapter-07">
+      <div class="chapter-head">
+        <h2 class="chapter-title"><span>第7章</span>斗争与妥协</h2>
+        <div class="pages">印刷页 344</div>
+        <div class="pages">PDF页 352</div>
+      </div>
+      <table>
+        <thead><tr><th class="sec">节</th><th>标题</th><th class="num">印刷页</th><th class="num">PDF页</th></tr></thead>
+        <tbody>
+          <tr id="chapter-07-section-01"><td class="sec">第1节</td><td>胡志明劝和</td><td class="num">344</td><td class="num">352</td></tr>
+          <tr id="chapter-07-section-02"><td class="sec">第2节</td><td>对苏共的《答复书》</td><td class="num">351</td><td class="num">359</td></tr>
+          <tr id="chapter-07-section-03"><td class="sec">第3节</td><td>中苏两党会谈</td><td class="num">357</td><td class="num">365</td></tr>
+          <tr id="chapter-07-section-04"><td class="sec">第4节</td><td>起草委员会争论不休</td><td class="num">365</td><td class="num">373</td></tr>
+          <tr id="chapter-07-section-05"><td class="sec">第5节</td><td>大会首轮较量</td><td class="num">368</td><td class="num">376</td></tr>
+          <tr id="chapter-07-section-06"><td class="sec">第6节</td><td>压服与反压服的斗争</td><td class="num">385</td><td class="num">393</td></tr>
+          <tr id="chapter-07-section-07"><td class="sec">第7节</td><td>调解与妥协</td><td class="num">397</td><td class="num">405</td></tr>
+          <tr id="chapter-07-section-08"><td class="sec">第8节</td><td>胜利达成协议</td><td class="num">414</td><td class="num">422</td></tr>
+          <tr id="chapter-07-section-09"><td class="sec">第9节</td><td>刘主席国事访问</td><td class="num">430</td><td class="num">438</td></tr>
+          <tr id="chapter-07-section-10"><td class="sec">第10节</td><td>会后的评论</td><td class="num">438</td><td class="num">446</td></tr>
+        </tbody>
+      </table>
+    </section>
+    <section class="chapter" id="chapter-08">
+      <div class="chapter-head">
+        <h2 class="chapter-title"><span>第8章</span>赫鲁晓夫再度挑战</h2>
+        <div class="pages">印刷页 452</div>
+        <div class="pages">PDF页 460</div>
+      </div>
+      <table>
+        <thead><tr><th class="sec">节</th><th>标题</th><th class="num">印刷页</th><th class="num">PDF页</th></tr></thead>
+        <tbody>
+          <tr id="chapter-08-section-01"><td class="sec">第1节</td><td>81党会议后的缓和</td><td class="num">452</td><td class="num">460</td></tr>
+          <tr id="chapter-08-section-02"><td class="sec">第2节</td><td>苏共错误观点的系统化</td><td class="num">457</td><td class="num">465</td></tr>
+          <tr id="chapter-08-section-03"><td class="sec">第3节</td><td>赫鲁晓夫大搞“四反”</td><td class="num">467</td><td class="num">475</td></tr>
+          <tr id="chapter-08-section-04"><td class="sec">第4节</td><td>对苏共“22大”的看法</td><td class="num">480</td><td class="num">488</td></tr>
+        </tbody>
+      </table>
+    </section>
+    <section class="chapter" id="chapter-09">
+      <div class="chapter-head">
+        <h2 class="chapter-title"><span>第9章</span>走向公开论战</h2>
+        <div class="pages">印刷页 491</div>
+        <div class="pages">PDF页 499</div>
+      </div>
+      <table>
+        <thead><tr><th class="sec">节</th><th>标题</th><th class="num">印刷页</th><th class="num">PDF页</th></tr></thead>
+        <tbody>
+          <tr id="chapter-09-section-01"><td class="sec">第1节</td><td>树欲静而风不止</td><td class="num">491</td><td class="num">499</td></tr>
+          <tr id="chapter-09-section-02"><td class="sec">第2节</td><td>中印边境冲突与美苏核对抗危机</td><td class="num">496</td><td class="num">504</td></tr>
+          <tr id="chapter-09-section-03"><td class="sec">第3节</td><td>“围剿”和反“围剿”</td><td class="num">504</td><td class="num">512</td></tr>
+          <tr id="chapter-09-section-04"><td class="sec">第4节</td><td>第一轮论战小结</td><td class="num">531</td><td class="num">539</td></tr>
+        </tbody>
+      </table>
+    </section>
+    <section class="chapter" id="chapter-10">
+      <div class="chapter-head">
+        <h2 class="chapter-title"><span>第10章</span>两条总路线</h2>
+        <div class="pages">印刷页 542</div>
+        <div class="pages">PDF页 550</div>
+      </div>
+      <table>
+        <thead><tr><th class="sec">节</th><th>标题</th><th class="num">印刷页</th><th class="num">PDF页</th></tr></thead>
+        <tbody>
+          <tr id="chapter-10-section-01"><td class="sec">第1节</td><td>菊香书屋的评论</td><td class="num">542</td><td class="num">550</td></tr>
+          <tr id="chapter-10-section-02"><td class="sec">第2节</td><td>京、杭之间的酝酿</td><td class="num">552</td><td class="num">560</td></tr>
+          <tr id="chapter-10-section-03"><td class="sec">第3节</td><td>征求兄弟党意见</td><td class="num">568</td><td class="num">576</td></tr>
+          <tr id="chapter-10-section-04"><td class="sec">第4节</td><td>关于总路线的《建议》的要点</td><td class="num">579</td><td class="num">587</td></tr>
+        </tbody>
+      </table>
+    </section>
+    <section class="chapter" id="chapter-11">
+      <div class="chapter-head">
+        <h2 class="chapter-title"><span>第11章</span>中苏两党会谈</h2>
+        <div class="pages">印刷页 593</div>
+        <div class="pages">PDF页 601</div>
+      </div>
+      <table>
+        <thead><tr><th class="sec">节</th><th>标题</th><th class="num">印刷页</th><th class="num">PDF页</th></tr></thead>
+        <tbody>
+          <tr id="chapter-11-section-01"><td class="sec">第1节</td><td>会谈前夕的“声明战”</td><td class="num">593</td><td class="num">601</td></tr>
+          <tr id="chapter-11-section-02"><td class="sec">第2节</td><td>列宁山上短兵相接</td><td class="num">601</td><td class="num">609</td></tr>
+          <tr id="chapter-11-section-03"><td class="sec">第3节</td><td>苏共《公开信》出笼与联美反华</td><td class="num">610</td><td class="num">618</td></tr>
+          <tr id="chapter-11-section-04"><td class="sec">第4节</td><td>破裂的边缘</td><td class="num">623</td><td class="num">631</td></tr>
+        </tbody>
+      </table>
+    </section>
+    <section class="chapter" id="chapter-12">
+      <div class="chapter-head">
+        <h2 class="chapter-title"><span>第12章</span>公开大论战</h2>
+        <div class="pages">印刷页 631</div>
+        <div class="pages">PDF页 639</div>
+      </div>
+      <table>
+        <thead><tr><th class="sec">节</th><th>标题</th><th class="num">印刷页</th><th class="num">PDF页</th></tr></thead>
+        <tbody>
+          <tr id="chapter-12-section-01"><td class="sec">第1节</td><td>公开论战新阶段</td><td class="num">631</td><td class="num">639</td></tr>
+          <tr id="chapter-12-section-02"><td class="sec">第2节</td><td>评苏共中央《公开信》</td><td class="num">637</td><td class="num">645</td></tr>
+          <tr id="chapter-12-section-03"><td class="sec">第3节</td><td>为什么苏共要“停战”</td><td class="num">655</td><td class="num">663</td></tr>
+          <tr id="chapter-12-section-04"><td class="sec">第4节</td><td>同兄弟党商量</td><td class="num">666</td><td class="num">674</td></tr>
+          <tr id="chapter-12-section-05"><td class="sec">第5节</td><td>针锋相对的答复</td><td class="num">681</td><td class="num">689</td></tr>
+        </tbody>
+      </table>
+    </section>
+    <section class="chapter" id="chapter-13">
+      <div class="chapter-head">
+        <h2 class="chapter-title"><span>第13章</span>难为的调停</h2>
+        <div class="pages">印刷页 688</div>
+        <div class="pages">PDF页 696</div>
+      </div>
+      <table>
+        <thead><tr><th class="sec">节</th><th>标题</th><th class="num">印刷页</th><th class="num">PDF页</th></tr></thead>
+        <tbody>
+          <tr id="chapter-13-section-01"><td class="sec">第1节</td><td>路经莫斯科</td><td class="num">688</td><td class="num">696</td></tr>
+          <tr id="chapter-13-section-02"><td class="sec">第2节</td><td>中罗会谈既激烈又友好</td><td class="num">699</td><td class="num">707</td></tr>
+          <tr id="chapter-13-section-03"><td class="sec">第3节</td><td>毛主席亦庄亦谐</td><td class="num">712</td><td class="num">720</td></tr>
+        </tbody>
+      </table>
+    </section>
+    <section class="chapter" id="chapter-14">
+      <div class="chapter-head">
+        <h2 class="chapter-title"><span>第14章</span>新的反华运动</h2>
+        <div class="pages">印刷页 724</div>
+        <div class="pages">PDF页 732</div>
+      </div>
+      <table>
+        <thead><tr><th class="sec">节</th><th>标题</th><th class="num">印刷页</th><th class="num">PDF页</th></tr></thead>
+        <tbody>
+          <tr id="chapter-14-section-01"><td class="sec">第1节</td><td>“坚决反击”的预谋</td><td class="num">724</td><td class="num">732</td></tr>
+          <tr id="chapter-14-section-02"><td class="sec">第2节</td><td>用“拖”的办法推迟分裂</td><td class="num">733</td><td class="num">741</td></tr>
+          <tr id="chapter-14-section-03"><td class="sec">第3节</td><td>给赫鲁晓夫祝寿</td><td class="num">740</td><td class="num">748</td></tr>
+          <tr id="chapter-14-section-04"><td class="sec">第4节</td><td>苏共反华文件出笼</td><td class="num">754</td><td class="num">762</td></tr>
+        </tbody>
+      </table>
+    </section>
+    <section class="chapter" id="chapter-15">
+      <div class="chapter-head">
+        <h2 class="chapter-title"><span>第15章</span>形势急转直下</h2>
+        <div class="pages">印刷页 777</div>
+        <div class="pages">PDF页 785</div>
+      </div>
+      <table>
+        <thead><tr><th class="sec">节</th><th>标题</th><th class="num">印刷页</th><th class="num">PDF页</th></tr></thead>
+        <tbody>
+          <tr id="chapter-15-section-01"><td class="sec">第1节</td><td>《九评》的彻底揭露</td><td class="num">777</td><td class="num">785</td></tr>
+          <tr id="chapter-15-section-02"><td class="sec">第2节</td><td>急于采取“集体措施”</td><td class="num">792</td><td class="num">800</td></tr>
+          <tr id="chapter-15-section-03"><td class="sec">第3节</td><td>赫鲁晓夫孤注一掷</td><td class="num">808</td><td class="num">816</td></tr>
+          <tr id="chapter-15-section-04"><td class="sec">第4节</td><td>山雨欲来风满楼</td><td class="num">814</td><td class="num">822</td></tr>
+        </tbody>
+      </table>
+    </section>
+    <section class="chapter" id="chapter-16">
+      <div class="chapter-head">
+        <h2 class="chapter-title"><span>第16章</span>赫鲁晓夫下台</h2>
+        <div class="pages">印刷页 829</div>
+        <div class="pages">PDF页 837</div>
+      </div>
+      <table>
+        <thead><tr><th class="sec">节</th><th>标题</th><th class="num">印刷页</th><th class="num">PDF页</th></tr></thead>
+        <tbody>
+          <tr id="chapter-16-section-01"><td class="sec">第1节</td><td>初步分析</td><td class="num">829</td><td class="num">837</td></tr>
+          <tr id="chapter-16-section-02"><td class="sec">第2节</td><td>从“一肯二看”到“一推二看”</td><td class="num">841</td><td class="num">849</td></tr>
+          <tr id="chapter-16-section-03"><td class="sec">第3节</td><td>在莫斯科的观察</td><td class="num">855</td><td class="num">863</td></tr>
+          <tr id="chapter-16-section-04"><td class="sec">第4节</td><td>抗议攻势</td><td class="num">862</td><td class="num">870</td></tr>
+          <tr id="chapter-16-section-05"><td class="sec">第5节</td><td>商定对策</td><td class="num">878</td><td class="num">886</td></tr>
+          <tr id="chapter-16-section-06"><td class="sec">第6节</td><td>种种看法</td><td class="num">898</td><td class="num">906</td></tr>
+        </tbody>
+      </table>
+    </section>
+    <section class="chapter" id="chapter-17">
+      <div class="chapter-head">
+        <h2 class="chapter-title"><span>第17章</span>走向分而不裂</h2>
+        <div class="pages">印刷页 908</div>
+        <div class="pages">PDF页 916</div>
+      </div>
+      <table>
+        <thead><tr><th class="sec">节</th><th>标题</th><th class="num">印刷页</th><th class="num">PDF页</th></tr></thead>
+        <tbody>
+          <tr id="chapter-17-section-01"><td class="sec">第1节</td><td>置之不理</td><td class="num">908</td><td class="num">916</td></tr>
+          <tr id="chapter-17-section-02"><td class="sec">第2节</td><td>最后告诫</td><td class="num">913</td><td class="num">921</td></tr>
+          <tr id="chapter-17-section-03"><td class="sec">第3节</td><td>不成样子的分裂会议</td><td class="num">921</td><td class="num">929</td></tr>
+          <tr id="chapter-17-section-04"><td class="sec">第4节</td><td>不参加苏共“23大”</td><td class="num">933</td><td class="num">941</td></tr>
+        </tbody>
+      </table>
+    </section>
+    <section class="sources">
+      <p>章标题使用 programthink Google Doc 的清洁目录；节标题与页码来自本地扫描 PDF 目录的人工整理。正文页码换算规则为 <code>PDF page = printed page + 8</code>。</p>
+      <p>相关文件：<code>sources/table_of_contents.csv</code>、<code>sources/unit_map.csv</code>、<code>front_matter/</code>。</p>
+    </section>
+  </main>
+</body>
+</html>

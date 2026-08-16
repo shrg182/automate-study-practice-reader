@@ -1,0 +1,105 @@
+term,pinyin,type,annotation
+台西,tái xī,site_or_culture,河北藁城商代遗址，文中作为商朝北方军事聚落。
+藁城,gǎo chéng,place,今河北石家庄藁城区，台西遗址所在地。
+麋鹿,mí lù,rare_word,生活于湿地的鹿科动物。
+芦苇荡,lú wěi dàng,rare_word,大片芦苇生长的水边湿地。
+草莽,cǎo mǎng,rare_word,荒草丛生之地，也可指边远荒野。
+半地穴式,bàn dì xué shì,concept,部分低于地面的房屋形式。
+窖穴,jiào xué,concept,地下储藏坑穴。
+陶鬲,táo lì,artifact,三足陶炊器。
+盘庚,pán gēng,person,商王名，以迁都殷地著称。
+北土,běi tǔ,place,文中指商朝北方边地。
+基槽,jī cáo,concept,建筑墙基开挖的沟槽。
+夯筑,hāng zhù,concept,用夯打方式筑成墙体或台基。
+土坯,tǔ pī,artifact,未经烧制或低温处理的泥土砖块。
+椽子,chuán zi,artifact,屋顶承托瓦草等材料的木构件。
+奠基,diàn jī,concept,建筑开始时的基础工程或相关仪式。
+人奠基,rén diàn jī,concept,建筑奠基时以人作为牺牲的行为。
+祭祀坑,jì sì kēng,concept,用于祭祀或埋藏祭品的坑穴。
+人祭,rén jì,concept,以人作为祭品的祭祀行为。
+人殉,rén xùn,concept,以人随葬或陪葬的行为。
+敞厦,chǎng shà,artifact,一面或多面敞开的房屋空间。
+门楼,mén lóu,artifact,门上或门前的楼式建筑结构。
+殉人,xùn rén,concept,陪葬或随葬的人。
+腰坑殉狗,yāo kēng xùn gǒu,concept,墓穴腰部小坑中埋狗的商人葬俗。
+二层台,èr céng tái,concept,墓室内用于放置随葬品或殉人的台阶状结构。
+铜戟,tóng jǐ,bronze_item,青铜戟，戈与矛结合的兵器。
+铜钺,tóng yuè,bronze_item,青铜钺，常象征军事权力。
+铜戈,tóng gē,bronze_item,青铜戈，商周常见兵器。
+石钺,shí yuè,artifact,石制钺，文中多作象征性随葬品。
+卜骨,bǔ gǔ,artifact,用于占卜的兽骨。
+肩胛骨,jiān jiǎ gǔ,concept,动物或人的肩部骨骼，常被加工为卜骨。
+巫医,wū yī,concept,兼具巫术占卜和治疗职能的人。
+石砭镰,shí biān lián,artifact,石制砭镰，文中推测为医用手术刀。
+獠牙,liáo yá,rare_word,外露的长牙，文中形容铜钺纹饰。
+刖,yuè,rare_word,古代砍足或断小腿的刑罚。
+刖刑,yuè xíng,concept,砍足或断小腿的刑罚。
+殷墟,yīn xū,site_or_culture,晚商都邑遗址，甲骨卜辞的重要出土地。
+妇好,fù hǎo,person,商王武丁配偶，甲骨文中著名女性军事人物。
+皱纹绢,zhòu wén juàn,artifact,带皱纹效果的丝织品。
+铜爵,tóng jué,bronze_item,青铜酒器爵。
+铜觚,tóng gū,bronze_item,青铜觚，古代饮酒器。
+铜斝,tóng jiǎ,bronze_item,青铜斝，古代三足酒器。
+铜镞,tóng zú,bronze_item,青铜箭头。
+箭镞,jiàn zú,artifact,箭头，文中有青铜、石骨材质。
+羽箭,yǔ jiàn,artifact,带尾羽的箭。
+公共伙房,gōng gòng huǒ fáng,concept,供集体烹饪或酿酒的房屋。
+草木樨,cǎo mù xī,rare_word,豆科植物，文中作为植物遗存。
+水牛,shuǐ niú,concept,商人畜牧和祭祀中涉及的家畜。
+三牲,sān shēng,concept,猪、牛、羊等祭祀牲畜组合。
+陨铁,yǔn tiě,concept,来自陨石的铁。
+熟铁,shú tiě,concept,含碳量较低、可锻造的铁。
+铜瓿,tóng bù,bronze_item,青铜瓿，古代盛酒、水或酱料的器皿。
+冶铁,yě tiě,concept,从铁矿石中冶炼铁的技术。
+锻铁,duàn tiě,concept,锻打铁料或铁器的技术。
+胫骨,jìng gǔ,concept,小腿内侧长骨。
+族邑,zú yì,concept,以部族为单位聚居形成的城邑或聚落。
+张营,zhāng yíng,site_or_culture,北京昌平商代遗址，文中涉及食人遗存。
+瘪裆,biě dāng,rare_word,陶鬲等器物裆部低瘪的形态描述。
+铸铜范,zhù tóng fàn,artifact,铸造铜器所用的范模。
+石锛,shí bēn,artifact,石制锛，常见新石器和青铜时代木工工具。
+铜锡合金,tóng xī hé jīn,concept,铜和锡组成的青铜合金。
+骨锥,gǔ zhuī,artifact,用骨头制成的尖锥形工具。
+敲骨吸髓,qiāo gǔ xī suǐ,concept,敲碎骨头吸食骨髓的行为。
+灰坑,huī kēng,concept,遗址中含灰土、废弃物或祭祀遗存的坑穴。
+商式陶器,shāng shì táo qì,artifact,具有商文化风格的陶器。
+蹂躏,róu lìn,rare_word,践踏摧残；文中形容武乙与“天神”人偶搏斗后的羞辱行为。
+孔伋,kǒng jí,person,孔子之孙，字子思；“伋”读jí。
+閟,bì,manual,幽深、神秘；《诗经·鲁颂》篇名《閟宫》中的用字。
+僇,lù,manual,通“戮”，羞辱；见《史记·殷本纪》“乃僇辱之”。
+儇,xuān,manual,轻捷、聪慧；此处为《国语》所列古姓氏用字。
+瓜瓞,guā dié,manual,绵延生长的大小瓜；《绵》以瓜蔓比喻周族繁衍。
+亶父,dǎn fǔ,person,古公亶父；周族迁居周原时的首领。
+水浒,shuǐ hǔ,manual,水边；《绵》“率西水浒”中的古义。
+爰,yuán,manual,于是、就；《绵》中多次使用的古代虚词。
+聿,yù,manual,于是、遂；《绵》“聿来胥宇”中的虚词。
+胥宇,xū yǔ,manual,察看可供居住的地方。
+膴膴,wǔ wǔ,manual,土地肥美的样子。
+堇荼,jǐn tú,manual,堇菜和苦菜；《绵》用来表现周原土地肥美。
+饴,yí,manual,麦芽糖；“堇荼如饴”形容苦菜也甜美。
+廼,nǎi,manual,同“乃”；《绵》中的古字写法。
+徂,cú,manual,往、到；“自西徂东”即从西向东。
+俾,bǐ,manual,使、让。
+捄,jū,manual,聚集泥土；见《绵》“捄之陾陾”。
+陾陾,réng réng,manual,众多的样子；此处形容筑墙时聚土。
+薨薨,hōng hōng,manual,众人劳作或筑墙发出的声音。
+冯冯,píng píng,manual,墙体坚实或劳作声盛大的样子。
+鼛,gāo,manual,古代用于役事的大鼓。
+皋门,gāo mén,manual,古代王宫或城郭的外门。
+伉,kàng,manual,高大；“皋门有伉”形容门高大。
+将将,qiāng qiāng,manual,庄严盛大的样子。
+冢土,zhǒng tǔ,manual,大社；古代祭祀土地神的场所。
+殄,tiǎn,manual,消灭、断绝。
+愠,yùn,manual,怨恨。
+柞棫,zuò yù,manual,柞树和棫树。
+駾,tuì,manual,迅速奔逃。
+喙,huì,manual,疲困喘息的样子。
+虞芮,yú ruì,place,周代虞、芮两个诸侯国的合称。
+蹶,guì,manual,使动、改变；“文王蹶厥生”指文王改变其争端状态。
+菑,zī,manual,直立的枯树；《皇矣》中指尚未清除的死树。
+翳,yì,manual,倒伏或遮蔽的树木。
+栵,lì,manual,成行生长的树木。
+柽,chēng,manual,柽柳。
+椐,jū,manual,古代树名；一说即灵寿木。
+檿,yǎn,manual,山桑。
+柘,zhè,manual,柘树。

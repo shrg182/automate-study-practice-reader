@@ -1,0 +1,300 @@
+{
+  "version": 3,
+  "savedAt": "2026-08-05T02:01:54.034Z",
+  "bodyHTML": "<p data-paragraph=\"1\">How AI Learns: Training and Neural Networks</p>\n<p data-paragraph=\"2\">The first article introduced AI and showed how models learn patterns from examples. This second article steps inside the training process, then follows information through the layers of a neural network.</p>\n<p data-paragraph=\"3\">Lesson 3: How Training Improves a Model</p>\n<p data-paragraph=\"4\">Training <span style=\"background-color:#fff1b8\">turns mistakes into directions for improvement</span>. A model receives an input, makes a prediction, and compares that prediction with the known answer. The difference tells the training process how far the model is from the desired result.</p>\n<p data-paragraph=\"5\">Imagine a model predicting the price of a house. If the correct price is $300,000 and the model predicts $240,000, its error is $60,000. A <span class=\"notation auto-notation\" data-term=\"loss function\" data-note=\"A rule that converts prediction error into a number for training to minimize.\" title=\"A rule that converts prediction error into a number for training to minimize.\"><span class=\"term-anchor\" tabindex=\"0\" role=\"link\" aria-label=\"查看“loss function”的词典解释\">loss function</span></span> <span style=\"background-color:#e3f0dc\">converts the difference between predictions and answers into a number</span>. A larger loss usually means that the prediction was worse.</p>\n<p data-paragraph=\"6\">The learning algorithm then asks which internal parameters contributed to the error. In a large model, <span style=\"font-weight: bold;\">millions or even billions of parameters may share responsibility</span>. The algorithm <span style=\"background-color: rgb(255, 241, 168);\">calculates a small adjustment to many parameters</span>, aiming to make the loss slightly lower the next time similar data appears.</p>\n<p data-paragraph=\"7\">One widely used adjustment method is <span style=\"background-color: rgb(183, 231, 167);\"><span class=\"notation auto-notation\" data-term=\"gradient descent\" data-note=\"A method for adjusting parameters in a direction that reduces loss.\" title=\"A method for adjusting parameters in a direction that reduces loss.\"><span class=\"term-anchor\" tabindex=\"0\" role=\"link\" aria-label=\"查看“gradient descent”的词典解释\">gradient descent</span></span></span>. Imagine standing on a foggy hillside and trying to reach the lowest point. You cannot see the whole landscape, but you can feel which direction slopes downward. By taking repeated downhill steps, you may approach a low point. Gradient descent similarly uses the local slope of the loss to choose a direction for updating parameters.</p>\n<p data-paragraph=\"8\">The size of each update is controlled by the <span style=\"background-color: rgb(183, 231, 167);\"><span class=\"notation auto-notation\" data-term=\"learning rate\" data-note=\"The setting that controls the size of each parameter update.\" title=\"The setting that controls the size of each parameter update.\"><span class=\"term-anchor\" tabindex=\"0\" role=\"link\" aria-label=\"查看“learning rate”的词典解释\">learning rate</span></span></span>. If the learning rate is too small, training may be extremely slow. If it is too large, the model may repeatedly jump past a useful solution. Effective training requires a <span style=\"background-color: rgb(221, 181, 235);\">balance between learning too slowly and overshooting</span>.</p>\n<p data-paragraph=\"9\">One complete pass through the training data is called an <span class=\"notation auto-notation\" data-term=\"epoch\" data-note=\"One complete pass through the training data.（时代）\" title=\"One complete pass through the training data.（时代）\"><span class=\"term-anchor\" tabindex=\"0\" role=\"link\" aria-label=\"查看“epoch”的词典解释\">epoch</span></span>. Models commonly train for many epochs, but more is not always better. We can monitor performance on a <span class=\"notation auto-notation\" data-term=\"validation set\" data-note=\"Separate data used during training to monitor generalization.\" title=\"Separate data used during training to monitor generalization.\"><span class=\"term-anchor\" tabindex=\"0\" role=\"link\" aria-label=\"查看“validation set”的词典解释\">validation set</span></span> while training. If training loss continues to improve while validation performance becomes worse, the model may be starting to overfit.</p>\n<p data-paragraph=\"10\">Quick check: Why not make the learning rate as large as possible? A very large update can skip over better parameter settings or make training unstable.</p>\n<p data-paragraph=\"11\">Your turn: Picture yourself walking downhill in fog. What do the hill’s height, downhill direction, step size, and repeated steps represent in model training?</p>\n<p data-paragraph=\"12\">Lesson 4: <span class=\"comment-anchor\" data-comment=\"neu·ral net·work | ˈn(j)ʊrəl ˈnɛtˌwərk | (also neural net)\nnoun\na computer system modeled on the human brain and nervous system.\">Neural Networks</span></p><p class=\"comment-block\">neural network (also neural net)\nnoun\na computer system modeled on the human brain and nervous system. （神经网络）</p>\n<p data-paragraph=\"13\">A neural network is a model built from layers of simple mathematical units often called <span class=\"notation auto-notation\" data-term=\"artificial neuron\" data-note=\"A mathematical unit that combines input values and passes a transformed value forward.\" title=\"A mathematical unit that combines input values and passes a transformed value forward.\"><span class=\"term-anchor\" tabindex=\"0\" role=\"link\" aria-label=\"查看“artificial neuron”的词典解释\">artificial neuron</span></span>s. The name is loosely inspired by biological brains, but an artificial neural network is an <span style=\"background-color:#fff1b8\">engineered system of calculations, not a miniature human brain</span>.</p>\n<p data-paragraph=\"14\">Each artificial neuron receives several input numbers. It multiplies each input by a learned <span class=\"notation auto-notation\" data-term=\"weight\" data-note=\"A learned number controlling how strongly an input influences a neuron.\" title=\"A learned number controlling how strongly an input influences a neuron.\"><span class=\"term-anchor\" tabindex=\"0\" role=\"link\" aria-label=\"查看“weight”的词典解释\">weight</span></span>, adds the results together, and usually adds another adjustable value called a <span class=\"notation auto-notation\" data-term=\"bias term\" data-note=\"An adjustable offset added to a neuron’s weighted inputs.\" title=\"An adjustable offset added to a neuron’s weighted inputs.\"><span class=\"term-anchor\" tabindex=\"0\" role=\"link\" aria-label=\"查看“bias term”的词典解释\">bias term</span></span>. An <span class=\"notation auto-notation\" data-term=\"activation function\" data-note=\"A function that transforms a neuron’s combined input.\" title=\"A function that transforms a neuron’s combined input.\"><span class=\"term-anchor\" tabindex=\"0\" role=\"link\" aria-label=\"查看“activation function”的词典解释\">activation function</span></span> then transforms the total and determines the value passed forward.</p>\n<p data-paragraph=\"15\">The <span style=\"background-color:#e3f0dc\">weights tell the network which inputs deserve more or less influence</span>. Consider a simple system estimating whether a student will complete an assignment. Time available, assignment length, and previous completion patterns might enter as numbers. Training adjusts their weights according to how strongly each input helps predict the answer.</p>\n<p data-paragraph=\"16\"><span class=\"notation\" data-term=\"Neurons\" data-note=\"neu·ron | ˈno͝oˌrän | (mainly British also neurone | -rōn | )\nnoun\na specialized cell transmitting nerve impulses; a nerve cell.\" title=\"neu·ron | ˈno͝oˌrän | (mainly British also neurone | -rōn | )\nnoun\na specialized cell transmitting nerve impulses; a nerve cell.\"><span class=\"term-anchor\" tabindex=\"0\" role=\"link\" aria-label=\"查看“Neurons”的词典解释\"><ruby>Neurons<rt>ˈno͝oˌrän</rt></ruby></span></span> are arranged in layers. The input layer receives the original information. One or more <span class=\"notation auto-notation\" data-term=\"hidden layer\" data-note=\"An internal layer that transforms information into learned representations.\" title=\"An internal layer that transforms information into learned representations.\"><span class=\"term-anchor\" tabindex=\"0\" role=\"link\" aria-label=\"查看“hidden layer”的词典解释\">hidden layer</span></span>s transform it into increasingly useful internal patterns. The output layer produces the final prediction. Information moving from input to output is called a <span class=\"notation auto-notation\" data-term=\"forward pass\" data-note=\"The movement and transformation of information from input to output.\" title=\"The movement and transformation of information from input to output.\"><span class=\"term-anchor\" tabindex=\"0\" role=\"link\" aria-label=\"查看“forward pass”的词典解释\">forward pass</span></span>.</p>\n<p data-paragraph=\"17\">Hidden layers allow a network to build representations in stages. In an image system, early layers may respond to edges or colors, middle layers may combine them into textures and shapes, and later layers may respond to larger structures. The programmer does not need to write a separate rule for every possible shape; training helps the network discover useful combinations.</p>\n<p data-paragraph=\"18\">After a forward pass, the loss function measures the prediction error. Backpropagation<sup class=\"footnote-ref\" data-note-id=\"b065eadb-7e17-43c1-a20b-fc57923219e0\" contenteditable=\"false\" title=\"In machine learning, backpropagation is a gradient computation method commonly used for training a neural network in computing parameter updates. It is an efficient application of the chain rule to neural networks. Backpropagation efficiently computes the gradient of the loss with respect to the network weights for a single input–output example.\" aria-label=\"脚注 1\">〔1〕</sup> works backward through the network to calculate how each weight contributed to that error. Gradient descent then uses those calculations to update the weights. Repeating forward passes, loss measurements, backward calculations, and updates gradually changes the network’s behavior.</p>\n<p data-paragraph=\"19\"><span style=\"font-weight: bold;\">Deep learning uses neural networks with multiple hidden layers</span>. Greater depth can help a network represent complicated patterns, but a larger network is not automatically better. It may require more data, computation, careful evaluation, and safeguards against <span style=\"background-color: rgb(183, 231, 167);\"><span class=\"interlinear-note\" data-note=\"缺对应中文\" title=\"缺对应中文\"><ruby>overfitting<rt contenteditable=\"false\">缺对应中文</rt></ruby></span></span><sup class=\"footnote-ref\" data-note-id=\"c462d98e-9df4-4ae2-818a-79a2e9c3cd50\" contenteditable=\"false\" title=\"In mathematical modeling, overfitting is the production of an analysis that corresponds too closely or exactly to a particular set of data and may therefore fail to fit to additional data or predict future observations reliably. An overfitted model is a mathematical model that contains more parameters than can be justified by the data. In the special case of a model that consists of a polynomial function, these parameters represent the degree of a polynomial.\" aria-label=\"脚注 2\">〔2〕</sup>.</p>\n<p data-paragraph=\"20\">Quick check: Does an artificial neuron understand its inputs in the human sense? No. It performs numerical operations; useful behavior emerges from many trained operations working together.</p>\n<p data-paragraph=\"21\">Your turn: Draw a tiny network with three input circles, two hidden-layer circles, and one output circle. What real-world quantities could the three inputs represent, and what could the output predict?</p>\n<p data-paragraph=\"22\">Обучение превращает ошибки модели в указания для улучшения. Нейронная сеть передаёт числа через слои искусственных нейронов, а обратное распространение ошибки показывает, как изменить веса. Эти вычисления могут создавать полезное поведение, но сами по себе они не означают человеческого понимания.<sup class=\"footnote-ref\" data-note-id=\"clean-footnote-1\" contenteditable=\"false\" title=\"The Russian paragraph summarizes training, neural-network layers, backpropagation, and the distinction between useful computation and human understanding.\" aria-label=\"脚注 3\">〔3〕</sup></p>",
+  "terms": [
+    {
+      "term": "loss function",
+      "pinyin": "",
+      "type": "concept",
+      "annotation": "A rule that converts prediction error into a number for training to minimize."
+    },
+    {
+      "term": "gradient descent",
+      "pinyin": "",
+      "type": "concept",
+      "annotation": "A method for adjusting parameters in a direction that reduces loss."
+    },
+    {
+      "term": "learning rate",
+      "pinyin": "",
+      "type": "concept",
+      "annotation": "The setting that controls the size of each parameter update."
+    },
+    {
+      "term": "epoch",
+      "pinyin": "",
+      "type": "concept",
+      "annotation": "One complete pass through the training data.（时代）"
+    },
+    {
+      "term": "validation set",
+      "pinyin": "",
+      "type": "concept",
+      "annotation": "Separate data used during training to monitor generalization."
+    },
+    {
+      "term": "artificial neuron",
+      "pinyin": "",
+      "type": "concept",
+      "annotation": "A mathematical unit that combines input values and passes a transformed value forward."
+    },
+    {
+      "term": "weight",
+      "pinyin": "",
+      "type": "concept",
+      "annotation": "A learned number controlling how strongly an input influences a neuron."
+    },
+    {
+      "term": "bias term",
+      "pinyin": "",
+      "type": "concept",
+      "annotation": "An adjustable offset added to a neuron’s weighted inputs."
+    },
+    {
+      "term": "activation function",
+      "pinyin": "",
+      "type": "concept",
+      "annotation": "A function that transforms a neuron’s combined input."
+    },
+    {
+      "term": "hidden layer",
+      "pinyin": "",
+      "type": "concept",
+      "annotation": "An internal layer that transforms information into learned representations."
+    },
+    {
+      "term": "forward pass",
+      "pinyin": "",
+      "type": "concept",
+      "annotation": "The movement and transformation of information from input to output."
+    },
+    {
+      "term": "backpropagation",
+      "pinyin": "",
+      "type": "concept",
+      "annotation": "A method for calculating how network parameters contributed to error."
+    },
+    {
+      "term": "deep learning",
+      "pinyin": "",
+      "type": "concept",
+      "annotation": "Machine learning using neural networks with multiple hidden layers."
+    }
+  ],
+  "footnotes": [
+    {
+      "id": "b065eadb-7e17-43c1-a20b-fc57923219e0",
+      "note": "In machine learning, backpropagation is a gradient computation method commonly used for training a neural network in computing parameter updates. It is an efficient application of the chain rule to neural networks. Backpropagation efficiently computes the gradient of the loss with respect to the network weights for a single input–output example."
+    },
+    {
+      "id": "c462d98e-9df4-4ae2-818a-79a2e9c3cd50",
+      "note": "In mathematical modeling, overfitting is the production of an analysis that corresponds too closely or exactly to a particular set of data and may therefore fail to fit to additional data or predict future observations reliably. An overfitted model is a mathematical model that contains more parameters than can be justified by the data. In the special case of a model that consists of a polynomial function, these parameters represent the degree of a polynomial."
+    },
+    {
+      "id": "clean-footnote-1",
+      "note": "The Russian paragraph summarizes training, neural-network layers, backpropagation, and the distinction between useful computation and human understanding."
+    }
+  ],
+  "notes": [
+    {
+      "time": "2026-08-05T02:01:23.657Z",
+      "text": "3-4 迷雾中下山 神经网络，神经元，"
+    },
+    {
+      "time": "2026-08-04T12:20:00.000Z",
+      "text": "Lesson 4 note: A neural network is a system of layered numerical transformations. The brain analogy is historical and limited."
+    },
+    {
+      "time": "2026-08-04T12:15:00.000Z",
+      "text": "Lesson 3 note: The foggy-hillside analogy connects loss, gradient direction, learning rate, and repeated updates without requiring calculus."
+    }
+  ],
+  "log": [
+    {
+      "time": "2026-08-05T02:01:51.402Z",
+      "action": "手动保存",
+      "detail": ""
+    },
+    {
+      "time": "2026-08-05T02:01:23.657Z",
+      "action": "添加用户札记",
+      "detail": ""
+    },
+    {
+      "time": "2026-08-05T01:59:01.217Z",
+      "action": "添加行间注",
+      "detail": "overfitting：无对应中文"
+    },
+    {
+      "time": "2026-08-05T01:56:44.999Z",
+      "action": "设置粗体",
+      "detail": "artificial neuron"
+    },
+    {
+      "time": "2026-08-05T01:55:45.444Z",
+      "action": "设置粗体",
+      "detail": "artificial neuron"
+    },
+    {
+      "time": "2026-08-05T01:54:31.197Z",
+      "action": "设置清除高亮",
+      "detail": "useful behavior emerges from many trained operations working together"
+    },
+    {
+      "time": "2026-08-05T01:54:08.859Z",
+      "action": "设置Green 高亮",
+      "detail": "overfitting"
+    },
+    {
+      "time": "2026-08-05T01:53:38.189Z",
+      "action": "添加编者注",
+      "detail": "In mathematical modeling, overfitting is the production of an analysis that corresponds too closely or exactly to a particular set of data and may therefore fail to fit to additional data or predict future observations reliably. An overfitted model is a mathematical model that contains more parameters than can be justified by the data. In the special case of a model that consists of a polynomial function, these parameters represent the degree of a polynomial."
+    },
+    {
+      "time": "2026-08-05T01:51:36.866Z",
+      "action": "设置粗体",
+      "detail": "Deep learning uses neural networks with multiple hidden layers"
+    },
+    {
+      "time": "2026-08-05T01:49:52.396Z",
+      "action": "添加编者注",
+      "detail": "In machine learning, backpropagation is a gradient computation method commonly used for training a neural network in computing parameter updates. It is an efficient application of the chain rule to neural networks. Backpropagation efficiently computes the gradient of the loss with respect to the network weights for a single input–output example."
+    },
+    {
+      "time": "2026-08-05T01:49:40.743Z",
+      "action": "编辑本篇词典",
+      "detail": "backpropagation"
+    },
+    {
+      "time": "2026-08-05T01:48:54.838Z",
+      "action": "编辑本篇词典",
+      "detail": "backpropagation"
+    },
+    {
+      "time": "2026-08-05T01:45:42.420Z",
+      "action": "设置清除高亮",
+      "detail": "transform it into increasingly useful internal patterns"
+    },
+    {
+      "time": "2026-08-05T01:42:14.493Z",
+      "action": "设置Pink 高亮",
+      "detail": "transform it into increasingly useful internal patterns"
+    },
+    {
+      "time": "2026-08-05T01:41:11.791Z",
+      "action": "更新注音/简注",
+      "detail": "Neurons"
+    },
+    {
+      "time": "2026-08-05T01:40:04.204Z",
+      "action": "添加注音/简注",
+      "detail": "Neurons"
+    },
+    {
+      "time": "2026-08-05T01:34:03.462Z",
+      "action": "插入按语",
+      "detail": "neu·ral net·work | ˈn(j)ʊrəl ˈnɛtˌwərk | (also neural net)\nnoun\na computer system modeled on the human brain and nervous system."
+    },
+    {
+      "time": "2026-08-05T01:32:45.980Z",
+      "action": "设置粗体",
+      "detail": "Neural Networks"
+    },
+    {
+      "time": "2026-08-05T01:32:40.496Z",
+      "action": "设置粗体",
+      "detail": "Neural Networks"
+    },
+    {
+      "time": "2026-08-05T01:31:30.448Z",
+      "action": "编辑本篇词典",
+      "detail": "epoch"
+    },
+    {
+      "time": "2026-08-05T01:30:36.735Z",
+      "action": "编辑本篇词典",
+      "detail": "epoch"
+    },
+    {
+      "time": "2026-08-05T01:28:45.702Z",
+      "action": "设置下划线",
+      "detail": "calculates a small adjustment to many parameters"
+    },
+    {
+      "time": "2026-08-05T01:28:24.585Z",
+      "action": "设置下划线",
+      "detail": "calculates a small adjustment to many parameters"
+    },
+    {
+      "time": "2026-08-05T01:27:54.547Z",
+      "action": "设置Yellow 高亮",
+      "detail": "calculates a small adjustment to many parameters"
+    },
+    {
+      "time": "2026-08-05T01:27:11.771Z",
+      "action": "设置粗体",
+      "detail": "millions or even billions of parameters may share responsibility"
+    },
+    {
+      "time": "2026-08-05T01:25:47.429Z",
+      "action": "删除待核",
+      "detail": "loosely inspired by biological brains"
+    },
+    {
+      "time": "2026-08-05T01:25:41.495Z",
+      "action": "删除待核",
+      "detail": "you may approach a low point"
+    },
+    {
+      "time": "2026-08-05T01:25:24.175Z",
+      "action": "删除行间注",
+      "detail": ""
+    },
+    {
+      "time": "2026-08-05T01:25:20.891Z",
+      "action": "删除行间注",
+      "detail": ""
+    },
+    {
+      "time": "2026-08-05T01:25:18.257Z",
+      "action": "删除行间注",
+      "detail": ""
+    },
+    {
+      "time": "2026-08-05T01:25:17.207Z",
+      "action": "删除行间注",
+      "detail": ""
+    },
+    {
+      "time": "2026-08-05T01:25:11.841Z",
+      "action": "删除行间注",
+      "detail": ""
+    },
+    {
+      "time": "2026-08-05T01:24:19.483Z",
+      "action": "设置粗体",
+      "detail": "millions or even billions of parameters may share responsibility"
+    },
+    {
+      "time": "2026-08-05T01:22:24.924Z",
+      "action": "设置Purple 高亮",
+      "detail": "balance between learning too slowly and overshooting"
+    },
+    {
+      "time": "2026-08-05T01:21:51.822Z",
+      "action": "设置Green 高亮",
+      "detail": "learning rate"
+    },
+    {
+      "time": "2026-08-05T01:19:48.270Z",
+      "action": "设置Green 高亮",
+      "detail": "gradient descent"
+    },
+    {
+      "time": "2026-08-05T01:19:14.159Z",
+      "action": "设置粗体",
+      "detail": "millions or even billions of parameters may share responsibility"
+    }
+  ]
+}

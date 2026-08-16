@@ -1,0 +1,49 @@
+How AI Uses Language—and How to Build a Small Model
+
+The previous article followed prediction errors through training and neural-network layers. This article turns to language models, then converts the main ideas into a small program that can learn from labeled messages.
+
+Lesson 5: Language Models and Next-Token Prediction
+
+A language model learns statistical relationships in sequences of text. It does not begin with a human-style dictionary of meanings. During training, it examines many examples and adjusts its parameters so it becomes better at predicting what is likely to come next.
+
+Before text enters a model, it is divided into tokens. A token may be a whole word, part of a word, punctuation, or another recurring unit. Tokenization allows a model to represent text as numbers that a neural network can process.
+
+During generation, a language model predicts one token at a time. Given “The cat sat on the,” it might assign high probability to “mat,” “floor,” or “chair.” It selects a continuation, adds that token to the context, and repeats the process. A long response is produced through many successive predictions.
+
+The context window is the text the model can consider at one time. Context changes which continuation is likely. After “She deposited money at the,” the word “bank” probably refers to a financial institution; after “She sat beside the river,” the same word has another likely meaning.
+
+Modern language models commonly use a neural-network design called a transformer. Its attention mechanism helps the model compare relevant parts of the context. In a long sentence, attention can strengthen connections between words that depend on one another even when they are far apart.
+
+The model’s output is a probability distribution, not a single fact retrieved from a perfect encyclopedia. Sampling settings influence whether generation favors the safest high-probability continuation or explores less likely alternatives. This is one reason the same prompt can produce different answers.
+
+Training on large collections of text gives a model broad linguistic patterns, but plausible language is not the same as verified truth. A model can generate an incorrect statement that sounds confident because its immediate task is producing a likely continuation. Such an unsupported or false generation is often called a hallucination.
+
+Quick check: If a language model writes a grammatically excellent answer, does that prove the answer is factually correct? No. Fluency and factual reliability must be evaluated separately.
+
+Your turn: Complete the phrase “After the storm, the street was” in three different ways. How does each continuation change the direction of the next sentence?
+
+Lesson 6: Building a Small AI System in Python
+
+We can demonstrate learning without a giant neural network. The accompanying Python program trains a tiny classifier to decide whether a short message belongs to the category “study” or “everyday.” Its goal is modest, but its workflow mirrors larger machine-learning projects.
+
+First, we prepare a small labeled collection of example messages. “Review the chapter before class” is labeled study, while “Buy fruit on the way home” is labeled everyday. The labels tell the program which pattern each example should support.
+
+Next, the program tokenizes the messages and counts how often each word appears in each category. Words such as “chapter,” “quiz,” and “notes” become evidence for study. Words such as “dinner,” “store,” and “laundry” become evidence for everyday.
+
+The classifier uses a simple method called multinomial naive Bayes. For a new message, it combines many small pieces of evidence from the words it recognizes. Smoothing prevents an unseen word from reducing a category’s probability to zero. The category with the higher score becomes the prediction.
+
+The program separates training examples from test examples. This matters because evaluation on new messages is essential. Testing only on the examples used for training would tell us whether the model remembered its lessons, not whether it can generalize.
+
+You can run the project with the command “python3 tiny_text_classifier.py.” It prints predictions for several new messages and reports the held-out test accuracy. No external Python packages are required.
+
+This model is intentionally tiny. Its dataset is too small for real deployment, its categories are simplified, and individual words can mislead it. Its value is educational: every count and score is visible, so the path from examples to prediction can be inspected.
+
+Quick check: Why does the program keep test examples separate from training? Because testing on unseen examples provides a more honest measure of generalization.
+
+Your turn: Add two study messages and two everyday messages to the training data. Before running the program, predict which words will most influence the model and where it might still make mistakes.
+
+Языковая модель предсказывает текст по одному токену, учитывая доступный контекст. Небольшой классификатор работает похожим образом: он учится на размеченных примерах и объединяет признаки, чтобы выбрать категорию. Однако правдоподобный ответ необходимо проверять, потому что языковая плавность не гарантирует фактическую точность.〔1〕
+
+脚注
+
+〔1〕Editor’s note: The Russian paragraph summarizes token prediction, contextual evidence, supervised classification, and the difference between fluency and factual reliability.

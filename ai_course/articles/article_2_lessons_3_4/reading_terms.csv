@@ -1,0 +1,17 @@
+term,pinyin,type,annotation
+loss function,,concept,A rule that converts prediction error into a number for training to minimize.
+gradient descent,,concept,A method for adjusting parameters in a direction that reduces loss.
+learning rate,,concept,The setting that controls the size of each parameter update.
+epoch,,concept,One complete pass through the training data.（时代）
+validation set,,concept,Separate data used during training to monitor generalization.
+artificial neuron,,concept,A mathematical unit that combines input values and passes a transformed value forward.
+weight,,concept,A learned number controlling how strongly an input influences a neuron.
+bias term,,concept,An adjustable offset added to a neuron’s weighted inputs.
+activation function,,concept,A function that transforms a neuron’s combined input.
+hidden layer,,concept,An internal layer that transforms information into learned representations.
+forward pass,,concept,The movement and transformation of information from input to output.
+backpropagation,,concept,A method for calculating how network parameters contributed to error.
+deep learning,,concept,Machine learning using neural networks with multiple hidden layers.
+Neurons,ˈno͝oˌrän,added,"neu·ron | ˈno͝oˌrän | (mainly British also neurone | -rōn | )
+noun
+a specialized cell transmitting nerve impulses; a nerve cell."
