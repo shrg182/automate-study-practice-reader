@@ -107,6 +107,15 @@ Required components:
 
 The current `file:///Users/...` pages cannot be installed directly as a normal mobile PWA. The project must be served through HTTPS, or through a suitable development server during testing.
 
+### Live mobile site
+
+The installable public site is deployed separately from the private working repository:
+
+- Site: <https://shrg182.github.io/automate-study-practice-reader/>
+- Public deployment repository: <https://github.com/shrg182/automate-study-practice-reader>
+
+The public repository contains a history-free snapshot of the `practice` folder and its own GitHub Pages workflow. Future additions and dictionary changes made in the private workspace must be republished to that repository before they appear in the mobile version. An installed device receives the update when it next opens the site online; articles already selected for offline reading remain available while disconnected.
+
 Reference: [MDN — Making PWAs installable](https://developer.mozilla.org/en-US/docs/Web/Progressive_web_apps/Guides/Making_PWAs_installable).
 
 ## Offline strategy
