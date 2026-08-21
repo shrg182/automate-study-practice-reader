@@ -12,7 +12,7 @@ from pathlib import Path
 import re
 import subprocess
 import sys
-from urllib.parse import urljoin
+from urllib.parse import quote, urljoin
 
 import requests
 from bs4 import BeautifulSoup, Tag
@@ -49,8 +49,8 @@ PERIODS = {
     "prc": (21, "中华人民共和国参与的战争（1949年10月－至今）", 45),
 }
 HEADERS = {"User-Agent": "Mozilla/5.0 (compatible; StudyPracticeBuilder/1.0)"}
-ALTERNATE_SOURCES = {
-    "十三翼之战": [("百度百科", "https://baike.baidu.com/item/%E5%8D%81%E4%B8%89%E7%BF%BC%E4%B9%8B%E6%88%98/2559232")],
+BAIDU_BAIKE_SOURCES = {
+    "十三翼之战": "https://baike.baidu.com/item/%E5%8D%81%E4%B8%89%E7%BF%BC%E4%B9%8B%E6%88%98/2559232",
 }
 sys.path.insert(0, str(PRACTICE_DIR / "shiji" / "shiji_lisheng_lujia"))
 from build_editor import build_html, load_global_terms, load_terms  # noqa: E402
@@ -148,7 +148,7 @@ def period_dir(period_id: str) -> Path:
 
 
 def war_table(rows: list[dict[str, str]]) -> str:
-    headings = ("年代", "战争／战役", "说明", "可靠性", "来源")
+    headings = ("年代", "战争／战役", "说明", "可靠性", "中文维基", "百度百科", "人工补充")
     parts = ['<div class="chinese-war-table-wrap"><table class="chinese-war-table"><thead><tr>']
     parts.extend(f'<th scope="col">{heading}</th>' for heading in headings)
     parts.append('</tr></thead><tbody>')
@@ -156,17 +156,20 @@ def war_table(rows: list[dict[str, str]]) -> str:
         source = html.escape(row["source_url"], quote=True)
         title = html.escape(row["battle_title"])
         title_link = f'<a href="{source}" target="_blank" rel="noopener" contenteditable="false">{title}</a>'
-        source_links = [f'<a href="{source}" target="_blank" rel="noopener" contenteditable="false">中文维基 ↗</a>']
-        source_links.extend(
-            f'<a href="{html.escape(url, quote=True)}" target="_blank" rel="noopener" contenteditable="false">{html.escape(label)} ↗</a>'
-            for label, url in ALTERNATE_SOURCES.get(row["battle_title"], [])
-        )
+        baidu_direct = BAIDU_BAIKE_SOURCES.get(row["battle_title"])
+        baidu_url = baidu_direct or f'https://baike.baidu.com/search/word?word={quote(row["battle_title"])}'
+        baidu_label = "打开条目 ↗" if baidu_direct else "搜索同名条目 ↗"
         cells = (
             html.escape(row["date_original"]), title_link, html.escape(row["source_note"] or "—"),
-            html.escape(row["reliability"]), '<span class="war-source-links">' + "".join(source_links) + "</span>",
+            html.escape(row["reliability"]),
+            f'<a href="{source}" target="_blank" rel="noopener" contenteditable="false">打开条目 ↗</a>',
+            f'<a href="{html.escape(baidu_url, quote=True)}" target="_blank" rel="noopener" contenteditable="false" data-baidu-verified="{str(bool(baidu_direct)).lower()}">{baidu_label}</a>',
+            "",
         )
         parts.append(f'<tr data-paragraph="{number}">')
-        parts.extend(f'<td data-label="{heading}">{cell}</td>' for heading, cell in zip(headings, cells))
+        for heading, cell in zip(headings, cells):
+            cell_class = ' class="manual-cell" data-placeholder="手动添加链接或评论"' if heading == "人工补充" else ""
+            parts.append(f'<td data-label="{heading}"{cell_class}>{cell}</td>')
         parts.append('</tr>')
     parts.append('</tbody></table></div>')
     return "".join(parts)
@@ -195,7 +198,7 @@ def build_period(period_id: str, rows: list[dict[str, str]]) -> None:
     terms = load_terms(terms_file)
     output = build_html(text, terms, SOURCE_URL, chapter_title=f"《中国历代战争·{period_title}》", editor_title=f"《中国历代战争·{period_title}》校读编辑器", storage_key=f"chinese-wars-{period_id}-editor-v2", file_stem=f"chinese_wars_{period_id}", global_terms=load_global_terms(PRACTICE_DIR / "project_dictionary" / "dictionary.csv", text, terms), home_href="../../../index.html", theme_href="../../../workspace_theme.css", shared_library_href="", source_site_label="文学城", body_html=war_table(rows))
     table_styles = '''<style>
-.chinese-war-table-wrap{width:100%;overflow-x:auto}.chinese-war-table{width:100%;min-width:980px;border-collapse:collapse;font:14px/1.5 Arial,"PingFang SC",sans-serif}.chinese-war-table th,.chinese-war-table td{padding:9px 10px;border:1px solid #dadce0;text-align:left;vertical-align:top}.chinese-war-table th{position:sticky;top:0;z-index:1;background:#f1f3f4;color:#5f6368;font-size:12px}.chinese-war-table td:nth-child(1){min-width:165px}.chinese-war-table td:nth-child(2){min-width:240px;font-weight:700}.chinese-war-table td:nth-child(3){min-width:280px}.chinese-war-table td:nth-child(4){min-width:85px}.chinese-war-table a{color:#174ea6;text-decoration:none}.chinese-war-table a:hover{text-decoration:underline}.chinese-war-table td:nth-child(4){color:#5f6368;font-weight:700}.war-source-links{display:flex;flex-wrap:wrap;gap:5px}.war-source-links a{display:inline-block;padding:3px 7px;border:1px solid #c7d5e8;border-radius:12px;background:#f7faff;white-space:nowrap}
+.chinese-war-table-wrap{width:100%;overflow-x:auto}.chinese-war-table{width:100%;min-width:1320px;border-collapse:collapse;font:14px/1.5 Arial,"PingFang SC",sans-serif}.chinese-war-table th,.chinese-war-table td{padding:9px 10px;border:1px solid #dadce0;text-align:left;vertical-align:top}.chinese-war-table th{position:sticky;top:0;z-index:1;background:#f1f3f4;color:#5f6368;font-size:12px}.chinese-war-table td:nth-child(1){min-width:165px}.chinese-war-table td:nth-child(2){min-width:240px;font-weight:700}.chinese-war-table td:nth-child(3){min-width:260px}.chinese-war-table td:nth-child(4){min-width:85px}.chinese-war-table td:nth-child(5),.chinese-war-table td:nth-child(6){min-width:120px}.chinese-war-table td:nth-child(7){min-width:220px}.chinese-war-table a{color:#174ea6;text-decoration:none}.chinese-war-table a:hover{text-decoration:underline}.chinese-war-table td:nth-child(4){color:#5f6368;font-weight:700}.chinese-war-table td:nth-child(5) a,.chinese-war-table td:nth-child(6) a{display:inline-block;padding:3px 7px;border:1px solid #c7d5e8;border-radius:12px;background:#f7faff;white-space:nowrap}.manual-cell:empty::after{content:attr(data-placeholder);color:#9aa0a6;font-style:italic}
 html[data-workspace-skin="reading"] .chinese-war-table{display:block;min-width:0;font:18px/1.75 "Songti SC","STSong",serif}html[data-workspace-skin="reading"] .chinese-war-table thead{display:none}html[data-workspace-skin="reading"] .chinese-war-table tbody{display:grid;gap:18px}html[data-workspace-skin="reading"] .chinese-war-table tr{display:grid;padding:18px 20px;border:1px solid #ded6c7;border-radius:8px;background:#fffdfa}html[data-workspace-skin="reading"] .chinese-war-table td{display:grid;grid-template-columns:88px minmax(0,1fr);gap:12px;padding:5px 0;border:0}html[data-workspace-skin="reading"] .chinese-war-table td::before{content:attr(data-label);color:#8a8174;font:700 11px/1.5 Arial,"PingFang SC",sans-serif;letter-spacing:.08em}html[data-workspace-skin="reading"] .chinese-war-table td[data-label="战争／战役"]{font-size:22px}html[data-workspace-skin="reading"] .chinese-war-table td[data-label="说明"]{margin-top:4px;padding-top:12px;border-top:1px solid #e8e0d2}
 @media(max-width:760px){html[data-workspace-skin="reading"] .chinese-war-table tr{padding:14px}html[data-workspace-skin="reading"] .chinese-war-table td{grid-template-columns:68px minmax(0,1fr);gap:8px}.chinese-war-table{font-size:12px}}
 </style>'''
