@@ -104,7 +104,7 @@ def year_dir(year: str) -> Path:
 
 
 def battle_table(rows: list[dict[str, str]]) -> str:
-    headings = ("Date", "Battle", "中文译名", "State", "Result", "Class", "Notes", "Source", "Manual Supplement")
+    headings = ("Date", "Battle", "中文译名", "State", "Result", "Class", "Notes", "Commentary", "Manual Supplement")
     parts = ['<div class="civil-war-table-wrap"><table class="civil-war-table"><thead><tr>']
     parts.extend(f'<th scope="col">{heading}</th>' for heading in headings)
     parts.append('</tr></thead><tbody>')
@@ -118,14 +118,17 @@ def battle_table(rows: list[dict[str, str]]) -> str:
         rating = f'CWSAC {html.escape(row["cwsac"])}' if row["cwsac"] else html.escape(row["category"])
         cells = (
             html.escape(row["date_original"]), battle_link, chinese_link, html.escape(row["state"]),
-            html.escape(row["outcome"]), rating, html.escape(row["notes"]),
-            f'<a href="{source}" target="_blank" rel="noopener" contenteditable="false" aria-label="Open {title} source">English ↗</a>',
-            "",
+            html.escape(row["outcome"]), rating, html.escape(row["notes"]), "", "",
         )
-        parts.append(f'<tr data-paragraph="{number}">')
+        parts.append(f'<tr data-paragraph="{number}" data-entry-id="{html.escape(row["sequence"], quote=True)}">')
         for heading, cell in zip(headings, cells):
-            cell_class = ' class="manual-cell" data-placeholder="Add links or comments manually"' if heading == "Manual Supplement" else ""
-            parts.append(f'<td data-label="{heading}"{cell_class}>{cell}</td>')
+            if heading in {"Commentary", "Manual Supplement"}:
+                field = "commentary" if heading == "Commentary" else "supplement"
+                placeholder = "Add commentary" if heading == "Commentary" else "Add links or supplementary notes"
+                attributes = f' class="reader-editable-cell" contenteditable="true" spellcheck="true" data-field="{field}" data-placeholder="{placeholder}"'
+            else:
+                attributes = ""
+            parts.append(f'<td data-label="{heading}"{attributes}>{cell}</td>')
         parts.append('</tr>')
     parts.append('</tbody></table></div>')
     return "".join(parts)
@@ -156,11 +159,40 @@ def build_year(year: str, rows: list[dict[str, str]]) -> None:
     terms = load_terms(terms_file)
     output = build_html(body, terms, SOURCE_URL, chapter_title=f"American Civil War Battles · {year}", editor_title=f"American Civil War · {year} Reading Editor", storage_key=f"american-civil-war-{year}-editor-v2", file_stem=f"american_civil_war_{year}", global_terms=load_global_terms(PRACTICE_DIR / "project_dictionary" / "dictionary.csv", body, terms), home_href="../../../index.html", theme_href="../../../workspace_theme.css", shared_library_href="", source_site_label="Wikipedia", body_html=battle_table(rows))
     table_styles = '''<style>
-.civil-war-table-wrap{width:100%;overflow-x:auto}.civil-war-table{width:100%;min-width:1420px;border-collapse:collapse;font:14px/1.45 Arial,sans-serif}.civil-war-table th,.civil-war-table td{padding:9px 10px;border:1px solid #dadce0;text-align:left;vertical-align:top}.civil-war-table th{position:sticky;top:0;z-index:1;background:#f1f3f4;color:#5f6368;font-size:12px}.civil-war-table td:nth-child(1){min-width:135px}.civil-war-table td:nth-child(2){min-width:210px;font-weight:700}.civil-war-table td:nth-child(3){min-width:130px;color:#174ea6}.civil-war-table td:nth-child(7){min-width:300px}.civil-war-table td:nth-child(9){min-width:220px}.civil-war-table a{color:#174ea6;text-decoration:none}.civil-war-table a:hover{text-decoration:underline}.civil-war-table .manual-cell:empty::after{content:attr(data-placeholder);color:#9aa0a6;font-style:italic}
+.civil-war-table-wrap{width:100%;overflow-x:auto}.civil-war-table{width:100%;min-width:1420px;border-collapse:collapse;font:14px/1.45 Arial,sans-serif}.civil-war-table th,.civil-war-table td{padding:9px 10px;border:1px solid #dadce0;text-align:left;vertical-align:top}.civil-war-table th{position:sticky;top:0;z-index:1;background:#f1f3f4;color:#5f6368;font-size:12px}.civil-war-table td:nth-child(1){min-width:135px}.civil-war-table td:nth-child(2){min-width:210px;font-weight:700}.civil-war-table td:nth-child(3){min-width:130px;color:#174ea6}.civil-war-table td:nth-child(7){min-width:300px}.civil-war-table td:nth-child(8),.civil-war-table td:nth-child(9){min-width:220px}.civil-war-table a{color:#174ea6;text-decoration:none}.civil-war-table a:hover{text-decoration:underline}.civil-war-table .reader-editable-cell{background:#fffdf4;outline:none}.civil-war-table .reader-editable-cell:focus{background:#fff;border-color:#1a73e8;box-shadow:inset 0 0 0 2px #d2e3fc}.civil-war-table .reader-editable-cell:empty::after{content:attr(data-placeholder);color:#9aa0a6;font-style:italic;pointer-events:none}
 html[data-workspace-skin="reading"] .civil-war-table{display:block;min-width:0;font:17px/1.7 Georgia,"Songti SC",serif}html[data-workspace-skin="reading"] .civil-war-table thead{display:none}html[data-workspace-skin="reading"] .civil-war-table tbody{display:grid;gap:18px}html[data-workspace-skin="reading"] .civil-war-table tr{display:grid;padding:18px 20px;border:1px solid #ded6c7;border-radius:8px;background:#fffdfa}html[data-workspace-skin="reading"] .civil-war-table td{display:grid;grid-template-columns:105px minmax(0,1fr);gap:12px;padding:5px 0;border:0}html[data-workspace-skin="reading"] .civil-war-table td::before{content:attr(data-label);color:#8a8174;font:700 11px/1.5 Arial,sans-serif;text-transform:uppercase;letter-spacing:.08em}html[data-workspace-skin="reading"] .civil-war-table td[data-label="Battle"]{font-size:21px}html[data-workspace-skin="reading"] .civil-war-table td[data-label="Notes"]{margin-top:4px;padding-top:12px;border-top:1px solid #e8e0d2}
 @media(max-width:760px){html[data-workspace-skin="reading"] .civil-war-table tr{padding:14px}html[data-workspace-skin="reading"] .civil-war-table td{grid-template-columns:78px minmax(0,1fr);gap:8px}.civil-war-table{font-size:12px}}
 </style>'''
     output = output.replace("</head>", table_styles + "</head>", 1)
+    entry_ids = json.dumps([row["sequence"] for row in rows])
+    table_storage = f'''<script>
+(() => {{
+  const editor = document.getElementById("editor"), key = "american-civil-war-{year}-table-notes-v1";
+  const entryIds = {entry_ids};
+  const read = () => {{ try {{ return JSON.parse(localStorage.getItem(key) || "{{}}"); }} catch {{ return {{}}; }} }};
+  function normalizeAndRestore() {{
+    const saved = read();
+    editor.querySelectorAll(".civil-war-table th").forEach(th => {{ if (th.textContent.trim() === "Source") th.textContent = "Commentary"; }});
+    editor.querySelectorAll(".civil-war-table tbody tr").forEach((row, index) => {{
+      row.dataset.entryId ||= entryIds[index] || String(index + 1);
+      const commentary = row.querySelector('[data-field="commentary"]') || row.querySelector('[data-label="Source"]');
+      const supplement = row.querySelector('[data-field="supplement"]') || row.querySelector('[data-label="Manual Supplement"]');
+      if (commentary) {{ commentary.replaceChildren(); commentary.dataset.label = "Commentary"; commentary.dataset.field = "commentary"; commentary.dataset.placeholder = "Add commentary"; commentary.className = "reader-editable-cell"; commentary.contentEditable = "true"; }}
+      if (supplement) {{ supplement.dataset.field = "supplement"; supplement.dataset.placeholder = "Add links or supplementary notes"; supplement.className = "reader-editable-cell"; supplement.contentEditable = "true"; }}
+      const values = saved[row.dataset.entryId] || {{}};
+      if (commentary && values.commentary) commentary.innerHTML = values.commentary;
+      if (supplement && values.supplement) supplement.innerHTML = values.supplement;
+    }});
+  }}
+  editor.addEventListener("input", event => {{
+    const cell = event.target.closest(".reader-editable-cell[data-field]"); if (!cell) return;
+    const row = cell.closest("tr[data-entry-id]"), saved = read(); saved[row.dataset.entryId] ||= {{}};
+    saved[row.dataset.entryId][cell.dataset.field] = cell.innerHTML; localStorage.setItem(key, JSON.stringify(saved));
+  }});
+  normalizeAndRestore();
+}})();
+</script>'''
+    output = output.replace("</body>", table_storage + "</body>", 1)
     (target / "editor.html").write_text(output, encoding="utf-8")
 
 
