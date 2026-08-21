@@ -12,7 +12,7 @@ import re
 
 BASE_DIR = Path(__file__).resolve().parent
 OUTPUT = BASE_DIR / "index.html"
-MOBILE_READER_VERSION = "1.2.1"
+MOBILE_READER_VERSION = "1.2.2"
 COPYRIGHT_YEAR = 2026
 COPYRIGHT_HOLDER = "Ruixing Shi"
 
@@ -163,13 +163,20 @@ def collect_entries() -> dict[str, list[dict[str, str | None]]]:
             }
         )
     nine_sources = BASE_DIR / "nine_commentaries" / "source_index" / "select_readings.html"
+    nine_book_pdf = BASE_DIR / "nine_commentaries" / "吴冷西：十年论战——1956-1966中苏关系回忆录.pdf"
+    if nine_book_pdf.exists():
+        for entry in grouped["nine_commentaries"]:
+            if entry["editor"] == "nine_commentaries/chapter_01/editor.html":
+                entry["pdf"] = nine_book_pdf.relative_to(BASE_DIR).as_posix()
+                entry["pdf_label"] = "原书 PDF"
     if nine_sources.exists():
         grouped["nine_commentaries"].append(
             {
                 "title": "中苏论战与九评文献目录（49篇）",
                 "context": "专题目录",
                 "editor": nine_sources.relative_to(BASE_DIR).as_posix(),
-                "pdf": None,
+                "pdf": "https://www.marxists.org/chinese/reference-books/sino-soviet-debate/index.htm",
+                "pdf_label": "原始目录",
                 "search": "九评 中苏论战 中方文献 苏方文献 苏共中央公开信 专题目录",
                 "action_label": "打开目录",
                 "direct_link": "yes",
@@ -192,7 +199,7 @@ def entry_card(entry: dict[str, str | None], number: int) -> str:
     action_label = str(entry.get("action_label") or "打开编辑器")
     pdf_link = (
         f'<a class="secondary" href="{escape(str(pdf), quote=True)}" '
-        'target="_blank" rel="noopener">PDF</a>'
+        f'target="_blank" rel="noopener">{escape(str(entry.get("pdf_label") or "PDF"))}</a>'
         if pdf
         else '<span class="action-empty" aria-label="暂无 PDF">—</span>'
     )
@@ -221,7 +228,6 @@ def build_html(grouped: dict[str, list[dict[str, str | None]]]) -> str:
         selector_link = (f'<a class="collection-tool" href="{selector_links[key]}">选择更多篇目</a>' if key in selector_links else "")
         resource_links = {
             "jianshang": '<a class="collection-resource" href="jianshang/翦商.pdf" target="_blank" rel="noopener">原书 PDF</a>',
-            "nine_commentaries": '<a class="collection-resource" href="nine_commentaries/吴冷西：十年论战——1956-1966中苏关系回忆录.pdf" target="_blank" rel="noopener">原书 PDF</a>',
         }.get(key, "")
         resources_block = f'<div class="collection-resources">{resource_links}</div>' if resource_links else ""
         cards = []
