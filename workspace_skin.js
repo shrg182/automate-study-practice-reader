@@ -346,7 +346,9 @@
     document.head.appendChild(style);
     const nav = document.createElement("nav");
     nav.className = "reader-quick-nav"; nav.setAttribute("aria-label", "阅读快捷导航");
-    nav.innerHTML = `<a href="${new URL("index.html", workspaceRoot).href}">目录</a><button type="button" data-reader-action="immersive" aria-pressed="false">沉浸</button><button type="button" data-reader-action="settings">设置</button><button type="button" data-reader-action="sync">同步</button>`;
+    const contextualHome = [...document.querySelectorAll("a[href]")].find(link => /返回首页|返回目录|书目|篇目/.test(link.textContent || ""));
+    const directoryHref = contextualHome?.href || new URL("index.html", workspaceRoot).href;
+    nav.innerHTML = `<a href="${directoryHref}">目录</a><button type="button" data-reader-action="immersive" aria-pressed="false">沉浸</button><button type="button" data-reader-action="settings">设置</button><button type="button" data-reader-action="sync">同步</button>`;
     const setImmersive = async enabled => {
       document.body.classList.toggle("reading-immersive", enabled);
       const button = nav.querySelector('[data-reader-action="immersive"]'); button.classList.toggle("active", enabled); button.setAttribute("aria-pressed", String(enabled)); button.textContent = enabled ? "退出沉浸" : "沉浸";
