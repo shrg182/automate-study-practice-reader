@@ -6,6 +6,7 @@ from __future__ import annotations
 import argparse
 import csv
 from datetime import datetime, timezone
+import html
 import json
 from pathlib import Path
 import re
@@ -143,6 +144,26 @@ def period_dir(period_id: str) -> Path:
     return BASE_DIR / "periods" / f"{order:02d}_{period_id}"
 
 
+def war_table(rows: list[dict[str, str]]) -> str:
+    headings = ("年代", "战争／战役", "说明", "可靠性", "来源")
+    parts = ['<div class="chinese-war-table-wrap"><table class="chinese-war-table"><thead><tr>']
+    parts.extend(f'<th scope="col">{heading}</th>' for heading in headings)
+    parts.append('</tr></thead><tbody>')
+    for number, row in enumerate(rows, 1):
+        source = html.escape(row["source_url"], quote=True)
+        title = html.escape(row["battle_title"])
+        source_link = f'<a href="{source}" target="_blank" rel="noopener" contenteditable="false">打开条目 ↗</a>'
+        cells = (
+            html.escape(row["date_original"]), title, html.escape(row["source_note"] or "—"),
+            html.escape(row["reliability"]), source_link,
+        )
+        parts.append(f'<tr data-paragraph="{number}">')
+        parts.extend(f'<td data-label="{heading}">{cell}</td>' for heading, cell in zip(headings, cells))
+        parts.append('</tr>')
+    parts.append('</tbody></table></div>')
+    return "".join(parts)
+
+
 def build_period(period_id: str, rows: list[dict[str, str]]) -> None:
     target = period_dir(period_id)
     target.mkdir(parents=True, exist_ok=True)
@@ -164,7 +185,13 @@ def build_period(period_id: str, rows: list[dict[str, str]]) -> None:
     metadata = {"period_id": period_id, "period_title": period_title, "entry_count": len(rows), "source_url": SOURCE_URL, "canonical_source_url": CANONICAL_URL, "retrieved_at": datetime.now(timezone.utc).isoformat(), "editorial_policy": "Original date wording and uncertainty notes are preserved."}
     (target / "source.json").write_text(json.dumps(metadata, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     terms = load_terms(terms_file)
-    output = build_html(text, terms, SOURCE_URL, chapter_title=f"《中国历代战争·{period_title}》", editor_title=f"《中国历代战争·{period_title}》校读编辑器", storage_key=f"chinese-wars-{period_id}-editor-v1", file_stem=f"chinese_wars_{period_id}", global_terms=load_global_terms(PRACTICE_DIR / "project_dictionary" / "dictionary.csv", text, terms), home_href="../../../index.html", theme_href="../../../workspace_theme.css", shared_library_href="", source_site_label="文学城")
+    output = build_html(text, terms, SOURCE_URL, chapter_title=f"《中国历代战争·{period_title}》", editor_title=f"《中国历代战争·{period_title}》校读编辑器", storage_key=f"chinese-wars-{period_id}-editor-v2", file_stem=f"chinese_wars_{period_id}", global_terms=load_global_terms(PRACTICE_DIR / "project_dictionary" / "dictionary.csv", text, terms), home_href="../../../index.html", theme_href="../../../workspace_theme.css", shared_library_href="", source_site_label="文学城", body_html=war_table(rows))
+    table_styles = '''<style>
+.chinese-war-table-wrap{width:100%;overflow-x:auto}.chinese-war-table{width:100%;min-width:980px;border-collapse:collapse;font:14px/1.5 Arial,"PingFang SC",sans-serif}.chinese-war-table th,.chinese-war-table td{padding:9px 10px;border:1px solid #dadce0;text-align:left;vertical-align:top}.chinese-war-table th{position:sticky;top:0;z-index:1;background:#f1f3f4;color:#5f6368;font-size:12px}.chinese-war-table td:nth-child(1){min-width:165px}.chinese-war-table td:nth-child(2){min-width:240px;font-weight:700}.chinese-war-table td:nth-child(3){min-width:280px}.chinese-war-table td:nth-child(4){min-width:85px}.chinese-war-table a{color:#174ea6;text-decoration:none}.chinese-war-table a:hover{text-decoration:underline}.chinese-war-table td:nth-child(4){color:#5f6368}.chinese-war-table tr:has(td:nth-child(4):not(:empty)) td:nth-child(4){font-weight:700}
+html[data-workspace-skin="reading"] .chinese-war-table{display:block;min-width:0;font:18px/1.75 "Songti SC","STSong",serif}html[data-workspace-skin="reading"] .chinese-war-table thead{display:none}html[data-workspace-skin="reading"] .chinese-war-table tbody{display:grid;gap:18px}html[data-workspace-skin="reading"] .chinese-war-table tr{display:grid;padding:18px 20px;border:1px solid #ded6c7;border-radius:8px;background:#fffdfa}html[data-workspace-skin="reading"] .chinese-war-table td{display:grid;grid-template-columns:88px minmax(0,1fr);gap:12px;padding:5px 0;border:0}html[data-workspace-skin="reading"] .chinese-war-table td::before{content:attr(data-label);color:#8a8174;font:700 11px/1.5 Arial,"PingFang SC",sans-serif;letter-spacing:.08em}html[data-workspace-skin="reading"] .chinese-war-table td[data-label="战争／战役"]{font-size:22px}html[data-workspace-skin="reading"] .chinese-war-table td[data-label="说明"]{margin-top:4px;padding-top:12px;border-top:1px solid #e8e0d2}
+@media(max-width:760px){html[data-workspace-skin="reading"] .chinese-war-table tr{padding:14px}html[data-workspace-skin="reading"] .chinese-war-table td{grid-template-columns:68px minmax(0,1fr);gap:8px}.chinese-war-table{font-size:12px}}
+</style>'''
+    output = output.replace("</head>", table_styles + "</head>", 1)
     (target / "editor.html").write_text(output, encoding="utf-8")
 
 
