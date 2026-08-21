@@ -120,6 +120,7 @@
     if (!host) return;
     const style = document.createElement("style");
     style.textContent = `.workspace-skin-switch{display:inline-flex;flex:0 0 auto;gap:2px;margin-left:auto;padding:3px;border:1px solid #c9c3b7;border-radius:18px;background:#fff;color:#3c4043;font:12px/1.2 Arial,"PingFang SC",sans-serif;box-shadow:0 1px 2px #00000010}.workspace-skin-switch button{min-height:28px;margin:0;padding:5px 10px;border:0;border-radius:14px;background:transparent;color:inherit;cursor:pointer;font:inherit;white-space:nowrap}.workspace-skin-switch button:hover{background:#f1f3f4}.workspace-skin-switch button.active{background:#e6f4ea;color:#137333;font-weight:700}html[data-workspace-skin=reading] .workspace-skin-switch button.active{background:#eee5d2;color:#71352e}@media(max-width:700px){.workspace-skin-switch{width:100%;margin-left:0;justify-content:center}}@media print{.workspace-skin-switch{display:none!important}}`;
+    style.textContent += `html[data-workspace-skin="sheet"] body.reading-immersive .paper,html[data-workspace-skin="sheet"] body.reading-immersive .editor-panel{width:100%!important;max-width:none!important;padding:clamp(18px,2vw,32px)!important}html[data-workspace-skin="sheet"] body.reading-immersive .civil-war-table-wrap,html[data-workspace-skin="sheet"] body.reading-immersive .chinese-war-table-wrap{max-width:100%;overflow-x:auto;scrollbar-gutter:stable}`;
     document.head.appendChild(style);
     const control = document.createElement("div");
     control.className = "workspace-skin-switch";
