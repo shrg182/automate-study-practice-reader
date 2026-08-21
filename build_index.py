@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
+import csv
 from html import escape
 from html.parser import HTMLParser
 from pathlib import Path
@@ -12,7 +13,7 @@ import re
 
 BASE_DIR = Path(__file__).resolve().parent
 OUTPUT = BASE_DIR / "index.html"
-MOBILE_READER_VERSION = "1.3.6"
+MOBILE_READER_VERSION = "1.3.7"
 COPYRIGHT_YEAR = 2026
 COPYRIGHT_HOLDER = "Ruixing"
 
@@ -128,6 +129,21 @@ def find_pdf(editor: Path) -> Path | None:
     return (annotated or candidates)[0] if candidates else None
 
 
+def editor_content_search_terms(editor: Path) -> str:
+    entries = editor.parent / "entries.csv"
+    if not entries.exists():
+        return ""
+    with entries.open(encoding="utf-8-sig", newline="") as file:
+        rows = csv.DictReader(file)
+        searchable_fields = ("battle_title", "battle_title_zh", "date_original", "source_note", "notes")
+        return " ".join(
+            str(row.get(field) or "").strip()
+            for row in rows
+            for field in searchable_fields
+            if str(row.get(field) or "").strip()
+        )
+
+
 def collect_entries() -> dict[str, list[dict[str, str | None]]]:
     grouped: dict[str, list[dict[str, str | None]]] = {key: [] for key in COLLECTION_ORDER}
     for editor in sorted(BASE_DIR.rglob("editor.html"), key=natural_key):
@@ -144,7 +160,7 @@ def collect_entries() -> dict[str, list[dict[str, str | None]]]:
                 "context": entry_context(editor, collection_key),
                 "editor": editor.relative_to(BASE_DIR).as_posix(),
                 "pdf": pdf.relative_to(BASE_DIR).as_posix() if pdf else None,
-                "search": " ".join((editor_title(editor), relative.as_posix(), COLLECTIONS[collection_key].title)),
+                "search": " ".join((editor_title(editor), relative.as_posix(), COLLECTIONS[collection_key].title, editor_content_search_terms(editor))),
                 "action_label": "打开编辑器",
                 "direct_link": None,
             }
