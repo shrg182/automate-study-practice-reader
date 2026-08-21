@@ -156,12 +156,13 @@ def build_html(
     shared_library_href: str = "../reference_library/index.html",
     shared_library_label: str = "史记资料库",
     source_site_label: str = "古文岛",
+    body_html: str | None = None,
 ) -> str:
     term_json = json.dumps(terms, ensure_ascii=False).replace("</", "<\\/")
     global_term_json = json.dumps(global_terms or [], ensure_ascii=False).replace("</", "<\\/")
     source_json = json.dumps(source_url, ensure_ascii=False)
     body_text, initial_footnotes = split_clean_footnotes(text)
-    paragraphs = make_paragraphs(body_text, inline_notes, review_notes)
+    paragraphs = body_html if body_html is not None else make_paragraphs(body_text, inline_notes, review_notes)
     for item in initial_footnotes:
         marker = f"〔{item['number']}〕"
         replacement = (
