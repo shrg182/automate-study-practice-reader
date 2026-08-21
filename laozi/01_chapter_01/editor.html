@@ -3,9 +3,9 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
+<title>《老子·第一章》校读编辑器</title>
 <link rel="stylesheet" href="../../workspace_theme.css">
 <script src="../../workspace_skin.js"></script>
-<title>《老子·第一章》校读编辑器</title>
 <style>
 .inline-media figcaption:empty::before{content:attr(data-placeholder);color:#aaa}
 .inline-media{position:relative;clear:both;margin:1.2em auto;padding:10px;border:1px solid var(--line);border-radius:7px;background:#fff;text-align:center;text-indent:0!important}.inline-media[data-size="small"]{max-width:320px}.inline-media[data-size="medium"]{max-width:560px}.inline-media[data-size="large"]{max-width:820px}.inline-media[data-size="full"]{max-width:none}.inline-media img{display:block;width:100%;max-height:70vh;object-fit:contain}.inline-media figcaption{min-height:1.5em;margin-top:7px;color:var(--muted);font:13px/1.5 system-ui,sans-serif}.inline-media-tools{display:flex;gap:5px;justify-content:center;margin-top:7px}.inline-media-tools button{padding:3px 7px;font-size:11px}.clean-view .inline-media{display:none!important}
@@ -44,7 +44,11 @@ button,input,select,textarea{font:inherit}.app{min-height:100vh;display:grid;gri
   <main class="workspace">
     <article class="paper">
       <h1>《老子·道经·第一章》</h1><div class="subtitle">正文可直接编辑；选择文字后可从标记菜单设置高亮与划线，也可加粗，或添加注音、行间注、脚注、按语与待核标记</div>
-      <section id="editor" class="editor" contenteditable="true" spellcheck="false" aria-label="正文编辑区"><p data-paragraph="1">道可道，非常道；名可名，非常名。无名天地之始，有名万物之母。故常无，欲以观其妙；常有，欲以观其徼。此两者同出而异名，同谓之玄，玄之又玄，众妙之门。</p></section>
+      <section id="editor" class="editor" contenteditable="true" spellcheck="false" aria-label="正文编辑区"><p data-paragraph="1">道可道，非常道；名可名，非常名。无名天地之始，有名万物之母。故常无，欲以观其妙；常有，欲以观其<span class="notation" data-term="徼" data-note="徼 jiào
+〈文〉
+名 边界。" title="徼 jiào
+〈文〉
+名 边界。"><span class="term-anchor" tabindex="0" role="link" aria-label="查看“徼”的词典解释"><ruby>徼<rt>jiao4</rt></ruby></span></span>。<span style="background-color: rgb(231, 216, 242);">此两者同出而异名，同谓之玄</span>，玄之又玄，众妙之门。</p></section>
       <section class="footnotes" id="footnotes"><h2>脚注</h2><div id="footnoteList"></div></section>
       <section class="annotation-register" id="interlinearRegister"><h2>行间注 <small>Inline Notes</small></h2><div id="interlinearList"></div></section>
       <section class="annotation-register" id="commentRegister"><h2>按语 <small>Editorial Notes</small></h2><div id="commentList"></div></section>
@@ -63,7 +67,7 @@ button,input,select,textarea{font:inherit}.app{min-height:100vh;display:grid;gri
   </main>
 </div>
 <script>
-const TERMS=[]; const GLOBAL_TERMS=[]; const SOURCE_URL="https://www.guwendao.net/guwen/bookv_63ba586b03e1.aspx"; const INITIAL_FOOTNOTES=[]; const INITIAL_READING_NOTES=[]; const INITIAL_MEDIA=[]; const STORAGE_KEY='laozi-1-editor-v1'; const LOG_KEY=STORAGE_KEY+'-log-v1'; const NOTES_KEY=STORAGE_KEY+'-notes-v1'; const PROJECT_DICTIONARY_OVERRIDES_KEY='reading-lexicon-entry-overrides-v1';
+const TERMS=[{"term":"徼","pinyin":"jiao4","annotation":"徼 jiào\n〈文〉\n名 边界。","type":"added"}]; const GLOBAL_TERMS=[]; const SOURCE_URL="https://www.guwendao.net/guwen/bookv_63ba586b03e1.aspx"; const INITIAL_FOOTNOTES=[]; const INITIAL_READING_NOTES=[]; const INITIAL_MEDIA=[]; const STORAGE_KEY='laozi-1-editor-v1'; const LOG_KEY=STORAGE_KEY+'-log-v1'; const NOTES_KEY=STORAGE_KEY+'-notes-v1'; const PROJECT_DICTIONARY_OVERRIDES_KEY='reading-lexicon-entry-overrides-v1';
 const editor=document.getElementById('editor'), footnoteList=document.getElementById('footnoteList'), saveStatus=document.getElementById('saveStatus');const INLINE_GLOSS_LIMIT=36,INTERLINEAR_NOTE_LIMIT=60;
 const initialHTML=editor.innerHTML,GLOBAL_TERM_DEFAULTS=GLOBAL_TERMS.map(entry=>({...entry})); let savedRange=null, saveTimer=null, voices=[];
 document.getElementById('sourceLink').href=SOURCE_URL;
@@ -177,9 +181,9 @@ async function attachDraftFiles(files){try{draftMediaIds.push(...await addMediaF
 document.getElementById('exportNotesBtn').onclick=()=>download('laozi_01_reading_notes.txt','text/plain;charset=utf-8',getStored(NOTES_KEY).map(item=>`${item.time}\t${item.text}`).join('\n')+'\n');
 document.getElementById('clearLogBtn').onclick=()=>{if(confirm('清空本浏览器保存的编辑日志？')){localStorage.removeItem(LOG_KEY);renderLog()}};
 document.getElementById('importJson').onchange=event=>{const file=event.target.files[0];if(!file)return;const reader=new FileReader();reader.onload=async()=>{try{const data=JSON.parse(reader.result);await importMedia(data.media||[]);loadState(data);saveLocal(false);renderNotes();renderAnnotationRegisters()}catch(error){alert('无法导入备份：'+error.message)}};reader.readAsText(file)};
-document.getElementById('resetBtn').onclick=()=>{if(confirm('恢复初始文本会清除当前浏览器内的编辑记录。确定继续吗？')){localStorage.removeItem(STORAGE_KEY);editor.innerHTML=initialHTML;footnoteList.innerHTML='';renderAnnotationRegisters();changed()}};
+document.getElementById('resetBtn').onclick=()=>{if(confirm('恢复初始文本会清除当前浏览器内的编辑记录。确定继续吗？')){localStorage.removeItem(STORAGE_KEY);editor.innerHTML=initialHTML;footnoteList.innerHTML='';INITIAL_FOOTNOTES.forEach(item=>addFootnoteRow(item.id,item.note,item.mediaIds||[]));renumberFootnotes();renderAnnotationRegisters();changed()}};
 document.getElementById('termSearch').oninput=event=>renderTerms(event.target.value);document.getElementById('termList').onclick=event=>{const row=event.target.closest('.term');if(!row)return;const index=Number(row.dataset.index);if(event.target.closest('.edit-term'))editDictionaryTerm(index);else addNotation(TERMS[index])};document.getElementById('exportTermsBtn').onclick=exportTerms;
 document.getElementById('speakBtn').onclick=speak;document.getElementById('pauseBtn').onclick=event=>{if(speechSynthesis.paused){speechSynthesis.resume();event.target.textContent='暂停'}else{speechSynthesis.pause();event.target.textContent='继续'}};document.getElementById('stopBtn').onclick=()=>speechSynthesis.cancel();document.getElementById('rate').oninput=event=>document.getElementById('rateValue').textContent=`${event.target.value}×`;window.addEventListener('resize',()=>footnoteList.querySelectorAll('textarea').forEach(resizeFootnoteTextarea));
-speechSynthesis.onvoiceschanged=loadVoices;loadVoices();renderTerms();mergeInitialNotes();renderNotes();renderLog();const stored=localStorage.getItem(STORAGE_KEY);if(stored){try{loadState(JSON.parse(stored));saveStatus.textContent='已恢复浏览器中的编辑记录'}catch{localStorage.removeItem(STORAGE_KEY)}}else{INITIAL_FOOTNOTES.forEach(item=>addFootnoteRow(item.id,item.note,item.mediaIds||[]));renumberFootnotes()}mergeInitialNotes();renderNotes();applyProjectDictionaryOverrides();document.getElementById('difficultyLevel').value=localStorage.getItem(STORAGE_KEY+'-difficulty')||'3';setView(sessionStorage.getItem('shiji-editor-view')||'clean');setToolbarCollapsed(sessionStorage.getItem('shiji-toolbar-collapsed')==='yes');if(sessionStorage.getItem('shiji-global-hints')==='off')document.getElementById('globalHintsBtn').click();updateStats();importMedia(INITIAL_MEDIA).then(loadMediaRecords).catch(error=>console.error('无法载入媒体附件',error));
+speechSynthesis.onvoiceschanged=loadVoices;loadVoices();renderTerms();mergeInitialNotes();renderNotes();renderLog();const stored=localStorage.getItem(STORAGE_KEY);if(stored){try{loadState(JSON.parse(stored));saveStatus.textContent='已恢复浏览器中的编辑记录'}catch{localStorage.removeItem(STORAGE_KEY)}}else{INITIAL_FOOTNOTES.forEach(item=>addFootnoteRow(item.id,item.note,item.mediaIds||[]));renumberFootnotes()}mergeInitialNotes();renderNotes();applyProjectDictionaryOverrides();document.getElementById('difficultyLevel').value=localStorage.getItem(STORAGE_KEY+'-difficulty')||'3';const requestedView=new URLSearchParams(location.search).get('view');setView(['annotated','clean'].includes(requestedView)?requestedView:(sessionStorage.getItem('shiji-editor-view')||'clean'));setToolbarCollapsed(sessionStorage.getItem('shiji-toolbar-collapsed')==='yes');if(sessionStorage.getItem('shiji-global-hints')==='off')document.getElementById('globalHintsBtn').click();updateStats();importMedia(INITIAL_MEDIA).then(loadMediaRecords).catch(error=>console.error('无法载入媒体附件',error));
 </script>
 </body></html>

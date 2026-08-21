@@ -1,41 +1,41 @@
-sequence,year,date_original,battle_title,state,cwsac,outcome,notes,category,source_url
-357,1865,"January 13 –15, 1865",Second Battle of Fort Fisher,North Carolina,A,Union,Union takes fort.,CWSAC-rated,https://en.wikipedia.org/wiki/Second_Battle_of_Fort_Fisher
-358,1865,"February 3, 1865",Battle of Rivers' Bridge,South Carolina,D,Union,Union forces capture river crossing.,CWSAC-rated,https://en.wikipedia.org/wiki/Battle_of_Rivers'_Bridge
-359,1865,"February 5 –7, 1865",Battle of Hatcher's Run,Virginia,B,Union,Union force launch unexpected attack.,CWSAC-rated,https://en.wikipedia.org/wiki/Battle_of_Hatcher's_Run
-360,1865,"February 22, 1865",Battle of Wilmington ( North Carolina ),North Carolina,D,Union,Last Confederate port falls.,CWSAC-rated,https://en.wikipedia.org/wiki/Battle_of_Wilmington
-361,1865,"March 2, 1865","Battle of Waynesboro, Virginia",Virginia,B,Union,Remnants of Confederate Army of the Valley are destroyed.,CWSAC-rated,"https://en.wikipedia.org/wiki/Battle_of_Waynesboro,_Virginia"
-362,1865,"March 6, 1865",Battle of Natural Bridge,Florida,C,Confederate,Confederate victory in Florida prevents the capture of Tallahassee.,CWSAC-rated,https://en.wikipedia.org/wiki/Battle_of_Natural_Bridge
-363,1865,"March 7 –10, 1865",Battle of Wyse Fork,North Carolina,D,Union,Confederate attacks repelled by Union artillery.,CWSAC-rated,https://en.wikipedia.org/wiki/Battle_of_Wyse_Fork
-364,1865,"March 10, 1865",Battle of Monroe's Cross Roads,North Carolina,D,Inconclusive,Confederates delayed Federal Cavalry movement towards Fayetteville .,CWSAC-rated,https://en.wikipedia.org/wiki/Battle_of_Monroe's_Cross_Roads
-365,1865,"March 16, 1865",Battle of Averasborough,North Carolina,C,Inconclusive,"Union and Confederate forces attack one another in turn, both attacks fail.",CWSAC-rated,https://en.wikipedia.org/wiki/Battle_of_Averasborough
-366,1865,"March 19 –21, 1865",Battle of Bentonville,North Carolina,A,Union,Sherman defeats Confederates,CWSAC-rated,https://en.wikipedia.org/wiki/Battle_of_Bentonville
-367,1865,"March 25, 1865",Battle of Fort Stedman,Virginia,A,Union,Lee attempts to break siege.,CWSAC-rated,https://en.wikipedia.org/wiki/Battle_of_Fort_Stedman
-368,1865,"March 27 – April 8, 1865",Battle of Spanish Fort,Alabama,B,Union,Union forces capture fort just east of Mobile.,CWSAC-rated,https://en.wikipedia.org/wiki/Battle_of_Spanish_Fort
-369,1865,"March 29, 1865",Battle of Lewis's Farm,Virginia,C,Union,Union forces capture Confederate earthworks.,CWSAC-rated,https://en.wikipedia.org/wiki/Battle_of_Lewis's_Farm
-370,1865,"March 31, 1865",Battle of White Oak Road,Virginia,B,Union,Confederate forces under Richard H. Anderson defeated.,CWSAC-rated,https://en.wikipedia.org/wiki/Battle_of_White_Oak_Road
-371,1865,"March 31, 1865",Battle of Dinwiddie Court House,Virginia,C,Confederate,Pickett defeats Sheridan.,CWSAC-rated,https://en.wikipedia.org/wiki/Battle_of_Dinwiddie_Court_House
-372,1865,"April 1, 1865",Battle of Five Forks,Virginia,A,Union,Sheridan routs Confederates.,CWSAC-rated,https://en.wikipedia.org/wiki/Battle_of_Five_Forks
-373,1865,"April 2, 1865",Battle of Selma,Alabama,B,Union,Wilson defeats Forrest.,CWSAC-rated,https://en.wikipedia.org/wiki/Battle_of_Selma
-374,1865,"April 2, 1865",Third Battle of Petersburg,Virginia,A,Union,Grant defeats Lee.,CWSAC-rated,https://en.wikipedia.org/wiki/Third_Battle_of_Petersburg
-375,1865,"April 2, 1865",Battle of Sutherland's Station,Virginia,C,Union,Lee's supply lines are cut.,CWSAC-rated,https://en.wikipedia.org/wiki/Battle_of_Sutherland's_Station
-376,1865,"April 3, 1865",Battle of Namozine Church,Virginia,D,Inconclusive,"Several Confederates captured, Custer 's brother earns Medal of Honor.",CWSAC-rated,https://en.wikipedia.org/wiki/Battle_of_Namozine_Church
-377,1865,"April 5, 1865",Battle of Amelia Springs,Virginia,C,Inconclusive,"Confederates forced Union troops to retreat, however Union forces linked up and prevented another counter-attack.",CWSAC-rated,https://en.wikipedia.org/wiki/Battle_of_Amelia_Springs
-378,1865,"April 6, 1865",Battle of Rice's Station,Virginia,D,Union,Confederate forces are caught off guard by John Gibbon 's forces.,CWSAC-rated,https://en.wikipedia.org/wiki/Battle_of_Rice's_Station
-379,1865,"April 6, 1865",Battle of Sayler's Creek (or Sailor's Creek),Virginia,B,Union,Lee realizes his army is on the verge of defeat.,CWSAC-rated,https://en.wikipedia.org/wiki/Battle_of_Sayler's_Creek
-380,1865,"April 6 –7, 1865",Battle of High Bridge,Virginia,C,Inconclusive,"Union forces thwart Lee's attempts to burn bridges and to resupply, Grant proposes that Lee surrender, but he refuses.",CWSAC-rated,https://en.wikipedia.org/wiki/Battle_of_High_Bridge
-381,1865,"April 7, 1865",Battle of Cumberland Church,Virginia,C,Confederate,"Union forces attack Confederate rearguard, but darkness cuts the attack short.",CWSAC-rated,https://en.wikipedia.org/wiki/Battle_of_Cumberland_Church
-382,1865,"April 8, 1865",Battle of Appomattox Station,Virginia,B,Union,Union forces thwart Lee's final attempt to resupply.,CWSAC-rated,https://en.wikipedia.org/wiki/Battle_of_Appomattox_Station
-383,1865,"April 9, 1865",Battle of Appomattox Court House,Virginia,A,Union,Lee's forces surrounded. He subsequently surrenders.,CWSAC-rated,https://en.wikipedia.org/wiki/Battle_of_Appomattox_Court_House
-384,1865,"April 9 , 1865",Battle of Fort Blakeley,Alabama,A,Union,Union forces capture fort east of Mobile.,CWSAC-rated,https://en.wikipedia.org/wiki/Battle_of_Fort_Blakeley
-385,1865,"May 12 –13, 1865",Battle of Palmito Ranch,Texas,D,Confederate,Last battle in Texas during final phases of the Civil War. Southernmost battle on land in Civil War.,CWSAC-rated,https://en.wikipedia.org/wiki/Battle_of_Palmito_Ranch
-461,1865,"January 23 –25, 1865",Battle of Trent's Reach,Virginia,,Union,One of the last naval battles of the war.,Other USA/CSA,https://en.wikipedia.org/wiki/Battle_of_Trent's_Reach
-462,1865,"February 2, 1865",Battle of Broxton Bridge,South Carolina,,Union,Confederate forces forced to retreat from Broxton Bridge after a failed defense. [ 3 ],Other USA/CSA,https://en.wikipedia.org/wiki/Battle_of_Broxton_Bridge
-463,1865,"February 11, 1865",Battle of Aiken,South Carolina,,Confederate,Cavalry action between Union Maj. Gen. Hugh Judson Kilpatrick and Confederate Maj. Gen. Joseph Wheeler.,Other USA/CSA,https://en.wikipedia.org/wiki/Battle_of_Aiken
-464,1865,"February 20, 1865",Battle of Fort Myers,Florida,,Union,Southernmost land battle in Florida of the war.,Other USA/CSA,https://en.wikipedia.org/wiki/Battle_of_Fort_Myers
-465,1865,"April 13 –15, 1865",Battle of Morrisville,North Carolina,,Union,Last cavalry battle of the War.,Other USA/CSA,https://en.wikipedia.org/wiki/Battle_of_Morrisville
-466,1865,"April 16, 1865",Battle of West Point,Georgia,,Union,Union victory during final phase of U.S. Civil War.,Other USA/CSA,https://en.wikipedia.org/wiki/Battle_of_West_Point
-467,1865,"April 16, 1865",Battle of Columbus (1865) (Battle of Girard),Georgia,,Union,Union forces massacred retreating Confederates.,Other USA/CSA,https://en.wikipedia.org/wiki/Battle_of_Columbus_(1865)
-468,1865,"April 23, 1865",Battle of Munford,Alabama,,Union,Croxton's Raid in northeast Alabama.,Other USA/CSA,https://en.wikipedia.org/wiki/Battle_of_Munford
-469,1865,"May 1, 1865",Battle of Anderson,South Carolina,,Confederate,"Minor skirmish, Union and Confederates clashed, Confederate forces repelled Union troops, with cavalry and cadet forces.",Other USA/CSA,https://en.wikipedia.org/wiki/Battle_of_Anderson
-479,1865,"January 8, 1865",Battle of Dove Creek,Texas,,Kickapoo victory: Texas State Militia and CS troops are defeated by Kickapoo Indians .,,American Indian Wars,https://en.wikipedia.org/wiki/Battle_of_Dove_Creek
-480,1865,"February 17, 1865",Battle of Fort Buchanan,Arizona ( Arizona Territory at the time),,Apache victory. Fort Buchanan destroyed.,,American Indian Wars,https://en.wikipedia.org/wiki/Battle_of_Fort_Buchanan
+sequence,year,date_original,battle_title,battle_title_zh,state,cwsac,outcome,notes,category,source_url,source_url_zh
+357,1865,"January 13 –15, 1865",Second Battle of Fort Fisher,,North Carolina,A,Union,Union takes fort.,CWSAC-rated,https://en.wikipedia.org/wiki/Second_Battle_of_Fort_Fisher,
+358,1865,"February 3, 1865",Battle of Rivers' Bridge,,South Carolina,D,Union,Union forces capture river crossing.,CWSAC-rated,https://en.wikipedia.org/wiki/Battle_of_Rivers'_Bridge,
+359,1865,"February 5 –7, 1865",Battle of Hatcher's Run,,Virginia,B,Union,Union force launch unexpected attack.,CWSAC-rated,https://en.wikipedia.org/wiki/Battle_of_Hatcher's_Run,
+360,1865,"February 22, 1865",Battle of Wilmington ( North Carolina ),,North Carolina,D,Union,Last Confederate port falls.,CWSAC-rated,https://en.wikipedia.org/wiki/Battle_of_Wilmington,
+361,1865,"March 2, 1865","Battle of Waynesboro, Virginia",,Virginia,B,Union,Remnants of Confederate Army of the Valley are destroyed.,CWSAC-rated,"https://en.wikipedia.org/wiki/Battle_of_Waynesboro,_Virginia",
+362,1865,"March 6, 1865",Battle of Natural Bridge,,Florida,C,Confederate,Confederate victory in Florida prevents the capture of Tallahassee.,CWSAC-rated,https://en.wikipedia.org/wiki/Battle_of_Natural_Bridge,
+363,1865,"March 7 –10, 1865",Battle of Wyse Fork,,North Carolina,D,Union,Confederate attacks repelled by Union artillery.,CWSAC-rated,https://en.wikipedia.org/wiki/Battle_of_Wyse_Fork,
+364,1865,"March 10, 1865",Battle of Monroe's Cross Roads,,North Carolina,D,Inconclusive,Confederates delayed Federal Cavalry movement towards Fayetteville .,CWSAC-rated,https://en.wikipedia.org/wiki/Battle_of_Monroe's_Cross_Roads,
+365,1865,"March 16, 1865",Battle of Averasborough,,North Carolina,C,Inconclusive,"Union and Confederate forces attack one another in turn, both attacks fail.",CWSAC-rated,https://en.wikipedia.org/wiki/Battle_of_Averasborough,
+366,1865,"March 19 –21, 1865",Battle of Bentonville,,North Carolina,A,Union,Sherman defeats Confederates,CWSAC-rated,https://en.wikipedia.org/wiki/Battle_of_Bentonville,
+367,1865,"March 25, 1865",Battle of Fort Stedman,,Virginia,A,Union,Lee attempts to break siege.,CWSAC-rated,https://en.wikipedia.org/wiki/Battle_of_Fort_Stedman,
+368,1865,"March 27 – April 8, 1865",Battle of Spanish Fort,,Alabama,B,Union,Union forces capture fort just east of Mobile.,CWSAC-rated,https://en.wikipedia.org/wiki/Battle_of_Spanish_Fort,
+369,1865,"March 29, 1865",Battle of Lewis's Farm,,Virginia,C,Union,Union forces capture Confederate earthworks.,CWSAC-rated,https://en.wikipedia.org/wiki/Battle_of_Lewis's_Farm,
+370,1865,"March 31, 1865",Battle of White Oak Road,,Virginia,B,Union,Confederate forces under Richard H. Anderson defeated.,CWSAC-rated,https://en.wikipedia.org/wiki/Battle_of_White_Oak_Road,
+371,1865,"March 31, 1865",Battle of Dinwiddie Court House,,Virginia,C,Confederate,Pickett defeats Sheridan.,CWSAC-rated,https://en.wikipedia.org/wiki/Battle_of_Dinwiddie_Court_House,
+372,1865,"April 1, 1865",Battle of Five Forks,,Virginia,A,Union,Sheridan routs Confederates.,CWSAC-rated,https://en.wikipedia.org/wiki/Battle_of_Five_Forks,
+373,1865,"April 2, 1865",Battle of Selma,,Alabama,B,Union,Wilson defeats Forrest.,CWSAC-rated,https://en.wikipedia.org/wiki/Battle_of_Selma,
+374,1865,"April 2, 1865",Third Battle of Petersburg,,Virginia,A,Union,Grant defeats Lee.,CWSAC-rated,https://en.wikipedia.org/wiki/Third_Battle_of_Petersburg,
+375,1865,"April 2, 1865",Battle of Sutherland's Station,,Virginia,C,Union,Lee's supply lines are cut.,CWSAC-rated,https://en.wikipedia.org/wiki/Battle_of_Sutherland's_Station,
+376,1865,"April 3, 1865",Battle of Namozine Church,,Virginia,D,Inconclusive,"Several Confederates captured, Custer 's brother earns Medal of Honor.",CWSAC-rated,https://en.wikipedia.org/wiki/Battle_of_Namozine_Church,
+377,1865,"April 5, 1865",Battle of Amelia Springs,,Virginia,C,Inconclusive,"Confederates forced Union troops to retreat, however Union forces linked up and prevented another counter-attack.",CWSAC-rated,https://en.wikipedia.org/wiki/Battle_of_Amelia_Springs,
+378,1865,"April 6, 1865",Battle of Rice's Station,,Virginia,D,Union,Confederate forces are caught off guard by John Gibbon 's forces.,CWSAC-rated,https://en.wikipedia.org/wiki/Battle_of_Rice's_Station,
+379,1865,"April 6, 1865",Battle of Sayler's Creek (or Sailor's Creek),,Virginia,B,Union,Lee realizes his army is on the verge of defeat.,CWSAC-rated,https://en.wikipedia.org/wiki/Battle_of_Sayler's_Creek,
+380,1865,"April 6 –7, 1865",Battle of High Bridge,,Virginia,C,Inconclusive,"Union forces thwart Lee's attempts to burn bridges and to resupply, Grant proposes that Lee surrender, but he refuses.",CWSAC-rated,https://en.wikipedia.org/wiki/Battle_of_High_Bridge,
+381,1865,"April 7, 1865",Battle of Cumberland Church,,Virginia,C,Confederate,"Union forces attack Confederate rearguard, but darkness cuts the attack short.",CWSAC-rated,https://en.wikipedia.org/wiki/Battle_of_Cumberland_Church,
+382,1865,"April 8, 1865",Battle of Appomattox Station,,Virginia,B,Union,Union forces thwart Lee's final attempt to resupply.,CWSAC-rated,https://en.wikipedia.org/wiki/Battle_of_Appomattox_Station,
+383,1865,"April 9, 1865",Battle of Appomattox Court House,,Virginia,A,Union,Lee's forces surrounded. He subsequently surrenders.,CWSAC-rated,https://en.wikipedia.org/wiki/Battle_of_Appomattox_Court_House,
+384,1865,"April 9 , 1865",Battle of Fort Blakeley,,Alabama,A,Union,Union forces capture fort east of Mobile.,CWSAC-rated,https://en.wikipedia.org/wiki/Battle_of_Fort_Blakeley,
+385,1865,"May 12 –13, 1865",Battle of Palmito Ranch,,Texas,D,Confederate,Last battle in Texas during final phases of the Civil War. Southernmost battle on land in Civil War.,CWSAC-rated,https://en.wikipedia.org/wiki/Battle_of_Palmito_Ranch,
+461,1865,"January 23 –25, 1865",Battle of Trent's Reach,,Virginia,,Union,One of the last naval battles of the war.,Other USA/CSA,https://en.wikipedia.org/wiki/Battle_of_Trent's_Reach,
+462,1865,"February 2, 1865",Battle of Broxton Bridge,,South Carolina,,Union,Confederate forces forced to retreat from Broxton Bridge after a failed defense. [ 3 ],Other USA/CSA,https://en.wikipedia.org/wiki/Battle_of_Broxton_Bridge,
+463,1865,"February 11, 1865",Battle of Aiken,,South Carolina,,Confederate,Cavalry action between Union Maj. Gen. Hugh Judson Kilpatrick and Confederate Maj. Gen. Joseph Wheeler.,Other USA/CSA,https://en.wikipedia.org/wiki/Battle_of_Aiken,
+464,1865,"February 20, 1865",Battle of Fort Myers,,Florida,,Union,Southernmost land battle in Florida of the war.,Other USA/CSA,https://en.wikipedia.org/wiki/Battle_of_Fort_Myers,
+465,1865,"April 13 –15, 1865",Battle of Morrisville,,North Carolina,,Union,Last cavalry battle of the War.,Other USA/CSA,https://en.wikipedia.org/wiki/Battle_of_Morrisville,
+466,1865,"April 16, 1865",Battle of West Point,,Georgia,,Union,Union victory during final phase of U.S. Civil War.,Other USA/CSA,https://en.wikipedia.org/wiki/Battle_of_West_Point,
+467,1865,"April 16, 1865",Battle of Columbus (1865) (Battle of Girard),,Georgia,,Union,Union forces massacred retreating Confederates.,Other USA/CSA,https://en.wikipedia.org/wiki/Battle_of_Columbus_(1865),
+468,1865,"April 23, 1865",Battle of Munford,,Alabama,,Union,Croxton's Raid in northeast Alabama.,Other USA/CSA,https://en.wikipedia.org/wiki/Battle_of_Munford,
+469,1865,"May 1, 1865",Battle of Anderson,,South Carolina,,Confederate,"Minor skirmish, Union and Confederates clashed, Confederate forces repelled Union troops, with cavalry and cadet forces.",Other USA/CSA,https://en.wikipedia.org/wiki/Battle_of_Anderson,
+479,1865,"January 8, 1865",Battle of Dove Creek,,Texas,,Kickapoo victory: Texas State Militia and CS troops are defeated by Kickapoo Indians .,,American Indian Wars,https://en.wikipedia.org/wiki/Battle_of_Dove_Creek,
+480,1865,"February 17, 1865",Battle of Fort Buchanan,,Arizona ( Arizona Territory at the time),,Apache victory. Fort Buchanan destroyed.,,American Indian Wars,https://en.wikipedia.org/wiki/Battle_of_Fort_Buchanan,

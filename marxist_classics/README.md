@@ -99,6 +99,7 @@ The two reading projects should share the project dictionary, a reference librar
 ## Supplementary readings staged
 
 - [《马克思恩格斯列宁论无产阶级专政（33条语录及注释）》](proletarian_dictatorship_33_quotes/README.md) — a 1975 anthology and commentary collection republished online in 2011; 46,441 characters, organized as eight recommended review batches.
+- [《马克思、恩格斯论美国内战》](american_civil_war/README.md) — 113 篇论文、通信与附录的专题目录，与美国内战战役年表交叉链接。
 
 ## Review principles
 

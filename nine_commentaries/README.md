@@ -1,5 +1,7 @@
 # 📚 Nine Commentaries Study Materials
 
+Related online source catalog: [中苏论战与九评文献目录](source_index/README.md), containing 49 Chinese-side, Nine Commentaries, and Soviet-side documents.
+
 This directory is for processing Wu Lengxi's 《十年论战：1956-1966中苏关系回忆录》
 in the same general style as the `practice/jianshang` workflow: extract text,
 split it into stable reading units, clean and verify the text, build a focused
@@ -415,5 +417,4 @@ Current pilot status:
 
 Use the PDF and generated materials for personal study processing only. Do not
 redistribute OCR text, cleaned chapter text, or generated annotated PDFs.
-
 
