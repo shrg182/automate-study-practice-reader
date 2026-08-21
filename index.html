@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>校读书房 · 阅读编辑器目录</title>
+<title>校读书斋 · 阅读编辑器目录</title>
 <style>
 :root{--ink:#25231f;--muted:#716d64;--paper:#f8f5ed;--panel:#fffdf8;--line:#d9d2c4;--red:#83372f;--blue:#315b73;--gold:#b28335}
 *{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:#e9e4d9;color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Noto Sans CJK SC",sans-serif}
@@ -13,8 +13,8 @@ a{color:inherit}.masthead{background:#27251f;color:#fff}.masthead-inner{width:mi
 .shell{width:min(1180px,calc(100% - 36px));margin:0 auto 70px}.controls{position:sticky;top:0;z-index:5;display:grid;grid-template-columns:minmax(240px,1fr) minmax(0,2fr);gap:14px;margin:0 -12px;padding:16px 12px;background:#e9e4d9ed;backdrop-filter:blur(10px)}
 .search{display:flex;align-items:center;gap:10px;padding:0 14px;background:var(--panel);border:1px solid var(--line);border-radius:8px}.search svg{width:18px;color:var(--muted)}.search input{width:100%;height:46px;border:0;outline:0;background:transparent;color:var(--ink);font-size:15px}
 .collection-nav{display:flex;gap:7px;overflow:auto;padding-bottom:1px;scrollbar-width:thin}.collection-nav a{display:flex;gap:10px;align-items:center;white-space:nowrap;padding:10px 13px;border:1px solid var(--line);border-radius:8px;background:var(--panel);text-decoration:none;font-size:13px}.collection-nav a:hover{border-color:var(--red);color:var(--red)}.collection-nav b{display:grid;min-width:24px;height:24px;place-items:center;border-radius:12px;background:#eee8dc;font-size:11px}
-.collection{margin-top:34px;scroll-margin-top:90px}.collection-header{display:flex;justify-content:space-between;gap:25px;align-items:end;padding:0 3px 15px;border-bottom:2px solid var(--ink)}.collection-header p{margin:0 0 6px;color:var(--red);font-size:11px;font-weight:800;letter-spacing:.16em}.collection-header h2{margin:0;font:700 28px/1.25 "Songti SC","STSong",serif}.collection-header span{display:block;margin-top:7px;color:var(--muted);font-size:13px}.collection-header strong{white-space:nowrap;color:var(--muted);font-size:13px}
-.collection-meta{display:flex;gap:10px;align-items:center}.collection-tool{padding:7px 10px;border:1px solid var(--line);border-radius:6px;background:var(--panel);color:var(--red);text-decoration:none;font-size:12px;font-weight:700}
+.collection{margin-top:34px;scroll-margin-top:90px}.collection-header{display:flex;justify-content:space-between;gap:25px;align-items:end;padding:0 3px 15px;border-bottom:2px solid var(--ink)}.collection-eyebrow{margin:0 0 6px!important;color:var(--red)!important;font-size:11px!important;font-weight:800;letter-spacing:.16em}.collection-title{margin:0!important;color:inherit!important;font:700 28px/1.25 "Songti SC","STSong",serif!important}.collection-description{display:block;margin-top:7px;color:var(--muted);font-size:13px}.collection-header strong{white-space:nowrap;color:var(--muted);font-size:13px}.collection-toggle{display:flex;min-width:0;flex:1;align-items:center;justify-content:space-between;gap:16px;padding:0;border:0;background:transparent;color:inherit;text-align:left;cursor:pointer}.collection-toggle-copy{display:block;min-width:0}.collection-toggle i{font-style:normal;font-size:18px;transition:transform .2s}.collection.collapsed .collection-toggle i{transform:rotate(-90deg)}.collection.collapsed .entries,.collection.collapsed .collection-resources{display:none}
+.collection-meta{display:flex;gap:10px;align-items:center}.collection-tool,.collection-resource{padding:7px 10px;border:1px solid var(--line);border-radius:6px;background:var(--panel);color:var(--red);text-decoration:none;font-size:12px;font-weight:700}.collection-resources{padding:8px 12px;border:1px solid var(--line);border-bottom:0;background:#fff}
 .entries{background:var(--panel);border:1px solid var(--line);border-top:0}.entry{display:grid;grid-template-columns:54px minmax(0,1fr) auto;gap:16px;align-items:center;min-height:84px;padding:13px 17px;border-bottom:1px solid #e6e0d5}.entry:last-child{border-bottom:0}.entry:hover{background:#f7f1e6}.entry-number{color:#a49b8c;font:600 12px/1 Georgia,serif}.entry-copy span{color:var(--blue);font-size:11px;font-weight:750;letter-spacing:.06em}.entry-copy h3{margin:5px 0 0;font:650 18px/1.35 "Songti SC","STSong",serif}
 .entry-actions{display:flex;gap:7px}.entry-actions a{padding:8px 11px;border-radius:6px;text-decoration:none;font-size:12px;font-weight:700}.entry-actions .primary{background:var(--red);color:#fff}.entry-actions .primary:hover{background:#692a25}.entry-actions .secondary{border:1px solid var(--line);background:#fff}.entry-actions .secondary:hover{border-color:var(--blue);color:var(--blue)}
 .empty{display:none;margin:70px 0;padding:28px;text-align:center;color:var(--muted);background:var(--panel);border:1px dashed var(--line)}footer{padding:36px 18px;text-align:center;color:var(--muted);font-size:12px}
@@ -24,7 +24,7 @@ a{color:inherit}.masthead{background:#27251f;color:#fff}.masthead-inner{width:mi
 :root{--ink:#202124;--muted:#5f6368;--paper:#fff;--panel:#fff;--line:#dadce0;--red:#188038;--blue:#1a73e8;--gold:#f9ab00}
 body{background:#f8f9fa;font-family:Arial,"PingFang SC","Noto Sans CJK SC",sans-serif}
 .masthead{background:#fff;color:var(--ink);border-bottom:1px solid var(--line)}
-.masthead-inner{width:100%;padding:14px 24px;grid-template-columns:minmax(0,1fr) auto;gap:24px;align-items:center}
+.masthead-inner{width:100%;padding:14px 24px;grid-template-columns:minmax(0,1fr) auto;gap:24px;align-items:center}.masthead-books{grid-column:1/-1;padding-top:8px;border-top:1px solid var(--line)}.masthead-books .collection-nav{display:flex;flex-wrap:wrap;overflow:visible}
 .masthead-inner>div:first-child{position:relative;padding-left:48px}
 .masthead-inner>div:first-child::before{position:absolute;left:0;top:2px;width:34px;height:34px;border-radius:7px;background:linear-gradient(135deg,#34a853 0 52%,#0f9d58 52%);box-shadow:inset 0 0 0 1px #00000012;content:""}
 .kicker{margin:0 0 2px;color:#137333;font-size:10px;letter-spacing:.12em}
@@ -33,14 +33,14 @@ h1{font:500 20px/1.25 Arial,"PingFang SC",sans-serif;letter-spacing:0}
 .count{min-width:120px;padding:9px 14px;border:1px solid var(--line);border-radius:18px;background:#e6f4ea}
 .count b{display:inline;margin-right:6px;color:#137333;font:600 20px/1 Arial,sans-serif}.count span{color:#137333;font-size:11px}
 .shell{width:100%;margin:0 auto 48px;padding:0 18px}
-.controls{top:0;grid-template-columns:minmax(260px,520px) minmax(0,1fr);gap:10px;margin:0;padding:8px 6px;background:#fff;border-bottom:1px solid var(--line);backdrop-filter:none}
+.controls{top:0;display:block;margin:0;padding:8px 6px;background:#fff;border-bottom:1px solid var(--line);backdrop-filter:none}
 .search{height:38px;border-color:var(--line);border-radius:20px;background:#f1f3f4}.search:focus-within{background:#fff;box-shadow:0 1px 3px #3c404340}
 .search input{height:36px;font-size:13px}.collection-nav{gap:4px;align-items:center}
 .collection-nav a{padding:7px 10px;border-color:transparent;border-radius:18px;background:#f1f3f4;font-size:12px}.collection-nav a:hover{border-color:#aecbfa;background:#e8f0fe;color:#174ea6}
 .collection-nav b{height:20px;min-width:20px;background:#fff;font-size:10px}
 .collection{margin-top:18px;scroll-margin-top:62px}
 .collection-header{min-height:54px;padding:8px 12px;align-items:center;border:1px solid var(--line);border-bottom:0;background:#f8f9fa}
-.collection-header p{display:none}.collection-header h2{font:600 16px/1.3 Arial,"PingFang SC",sans-serif}.collection-header span{margin-top:2px;font-size:11px}
+.collection-eyebrow{display:none}.collection-title{font:600 16px/1.3 Arial,"PingFang SC",sans-serif!important}.collection-description{margin-top:2px;font-size:11px}
 .collection-meta{gap:8px}.collection-tool{padding:7px 11px;border-color:#c4d8f3;border-radius:18px;background:#e8f0fe;color:#174ea6}
 .entries{border-color:var(--line);box-shadow:0 1px 2px #3c40431a}
 .entry{grid-template-columns:52px minmax(260px,1fr) 190px;min-height:48px;padding:0;border-color:var(--line);gap:0;background:#fff}
@@ -58,7 +58,7 @@ html[data-workspace-skin="reading"] .kicker{margin:0 0 12px;color:#d8b775;font-s
 html[data-workspace-skin="reading"] .count{min-width:150px;padding:20px 22px;border-color:#ffffff2d;border-radius:10px;background:#ffffff0b}html[data-workspace-skin="reading"] .count b{display:block;margin:0;color:#f1d293;font:700 44px/1 Georgia,serif}html[data-workspace-skin="reading"] .count span{color:#cfc9bd;font-size:13px}
 html[data-workspace-skin="reading"] .shell{width:min(1180px,calc(100% - 36px));padding:0;margin:0 auto 70px}html[data-workspace-skin="reading"] .controls{grid-template-columns:minmax(240px,1fr) minmax(0,2fr);gap:14px;margin:0 -12px;padding:16px 12px;background:#e9e4d9ed;backdrop-filter:blur(10px)}html[data-workspace-skin="reading"] .search{height:auto;border-radius:8px;background:var(--panel)}html[data-workspace-skin="reading"] .search input{height:46px;font-size:15px}
 html[data-workspace-skin="reading"] .collection-nav{gap:7px}html[data-workspace-skin="reading"] .collection-nav a{padding:10px 13px;border-color:var(--line);border-radius:8px;background:var(--panel);font-size:13px}html[data-workspace-skin="reading"] .collection-nav b{height:24px;min-width:24px;background:#eee8dc;font-size:11px}
-html[data-workspace-skin="reading"] .collection{margin-top:34px;scroll-margin-top:90px}html[data-workspace-skin="reading"] .collection-header{padding:0 3px 15px;align-items:end;border:0;border-bottom:2px solid var(--ink);background:transparent}html[data-workspace-skin="reading"] .collection-header p{display:block}html[data-workspace-skin="reading"] .collection-header h2{font:700 28px/1.25 "Songti SC","STSong",serif}html[data-workspace-skin="reading"] .collection-header span{margin-top:7px;font-size:13px}html[data-workspace-skin="reading"] .collection-tool{border-radius:6px;background:var(--panel);color:var(--red)}
+html[data-workspace-skin="reading"] .collection{margin-top:34px;scroll-margin-top:90px}html[data-workspace-skin="reading"] .collection-header{padding:0 3px 15px;align-items:end;border:0;border-bottom:2px solid var(--ink);background:transparent}html[data-workspace-skin="reading"] .collection-eyebrow{display:block}html[data-workspace-skin="reading"] .collection-title{font:700 28px/1.25 "Songti SC","STSong",serif!important}html[data-workspace-skin="reading"] .collection-description{margin-top:7px;font-size:13px}html[data-workspace-skin="reading"] .collection-tool{border-radius:6px;background:var(--panel);color:var(--red)}
 html[data-workspace-skin="reading"] .entries{box-shadow:none}html[data-workspace-skin="reading"] .entry{grid-template-columns:54px minmax(0,1fr) auto;gap:16px;min-height:84px;padding:13px 17px;border-color:#e6e0d5}html[data-workspace-skin="reading"] .entry-number{display:block;align-self:auto;background:transparent;border:0;color:#a49b8c;font:600 12px/1 Georgia,serif}html[data-workspace-skin="reading"] .entry-copy{display:block;align-self:auto;border:0}html[data-workspace-skin="reading"] .entry-copy span{padding:0;color:var(--blue);font-size:11px;letter-spacing:.06em}html[data-workspace-skin="reading"] .entry-copy h3{margin:5px 0 0;padding:0;border:0;font:650 18px/1.35 "Songti SC","STSong",serif}html[data-workspace-skin="reading"] .entry-actions{padding:0}html[data-workspace-skin="reading"] .entry-actions a{padding:8px 11px;border-radius:6px;font-size:12px}html[data-workspace-skin="reading"] .entry-actions .primary{background:var(--red)}
 /* Separate editor and PDF into aligned spreadsheet columns. */
 .entry{grid-template-columns:52px minmax(260px,1fr) 145px 145px 140px 72px}
@@ -71,15 +71,16 @@ html[data-workspace-skin="reading"] .entry{grid-template-columns:54px minmax(0,1
 <script src="workspace_skin.js"></script>
 </head>
 <body>
-<header class="masthead"><div class="masthead-inner"><div><p class="kicker">Reading workspace</p><h1>校读书房</h1><p class="lede">文章、古籍与课程材料的阅读编辑器目录。搜索篇名，或按系列进入清稿、注音、脚注、按语与札记工作区。</p></div><div class="count"><b>87</b><span>个阅读编辑器</span></div></div></header>
+<header class="masthead"><div class="masthead-inner"><div><p class="kicker">Reading workspace</p><h1>校读书斋</h1><p class="lede">文章、古籍与课程材料的阅读编辑器目录。搜索篇名，或按系列进入清稿、注音、脚注、按语与札记工作区。</p></div><div class="count"><b>115</b><span>个阅读编辑器</span></div><nav class="masthead-books" aria-label="书目分组"><div class="collection-nav"><a href="#rongzhai_suibi"><span>《容斋随笔》</span><b>24</b></a><a href="#guwen_guanzhi"><span>《古文观止》</span><b>3</b></a><a href="#chinese_wars"><span>中国历代战争</span><b>21</b></a><a href="#american_civil_war"><span>American Civil War</span><b>5</b></a><a href="#laozi"><span>《老子》</span><b>5</b></a><a href="#sunzi"><span>《孙子兵法》</span><b>3</b></a><a href="#thirty_six_stratagems"><span>《三十六计》</span><b>3</b></a><a href="#liaozhai_stories"><span>《聊斋志异》</span><b>4</b></a><a href="#shiji"><span>《史记》</span><b>7</b></a><a href="#jianshang"><span>《翦商》</span><b>30</b></a><a href="#nine_commentaries"><span>九评</span><b>2</b></a><a href="#marxist_classics"><span>马克思主义经典</span><b>2</b></a><a href="#ai_course"><span>AI 课程</span><b>6</b></a></div></nav></div></header>
 <main class="shell">
-  <div class="controls"><label class="search"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></svg><input id="catalogSearch" type="search" placeholder="搜索文章、篇章或系列…" autocomplete="off"></label><nav class="collection-nav"><a href="#rongzhai_suibi"><span>《容斋随笔》</span><b>24</b></a><a href="#guwen_guanzhi"><span>《古文观止》</span><b>3</b></a><a href="#laozi"><span>《老子》</span><b>5</b></a><a href="#sunzi"><span>《孙子兵法》</span><b>3</b></a><a href="#thirty_six_stratagems"><span>《三十六计》</span><b>3</b></a><a href="#liaozhai_stories"><span>《聊斋志异》</span><b>4</b></a><a href="#shiji"><span>《史记》</span><b>7</b></a><a href="#jianshang"><span>《翦商》</span><b>30</b></a><a href="#nine_commentaries"><span>《九评共产党》</span><b>1</b></a><a href="#marxist_classics"><span>马克思主义经典</span><b>1</b></a><a href="#ai_course"><span>AI 课程</span><b>6</b></a></nav></div>
+  <div class="controls"><label class="search"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></svg><input id="catalogSearch" type="search" placeholder="搜索文章、篇章或系列…" autocomplete="off"></label></div>
   <section class="collection" id="rongzhai_suibi" data-collection>
   <header class="collection-header">
-    <div><p>宋代笔记</p><h2>《容斋随笔》</h2><span>南宋笔记短札：原文、来源注释与校读材料</span></div>
+    <button class="collection-toggle" type="button" aria-expanded="true" aria-controls="rongzhai_suibi-entries"><span class="collection-toggle-copy"><span class="collection-eyebrow">宋代笔记</span><span class="collection-title">《容斋随笔》</span><span class="collection-description">南宋笔记短札：原文、来源注释与校读材料</span></span><i aria-hidden="true">▾</i></button>
     <div class="collection-meta"><a class="collection-tool" href="rongzhai_suibi/select_articles.html">选择更多篇目</a><strong>24 篇</strong></div>
   </header>
-  <div class="entries"><article class="entry" data-search="《容斋随笔·欧率更帖》 rongzhai_suibi/volume_01/001_ou_lvgeng_tie/editor.html 《容斋随笔》" data-editor-path="rongzhai_suibi/volume_01/001_ou_lvgeng_tie/editor.html">
+
+  <div class="entries" id="rongzhai_suibi-entries"><article class="entry" data-search="《容斋随笔·欧率更帖》 rongzhai_suibi/volume_01/001_ou_lvgeng_tie/editor.html 《容斋随笔》" data-editor-path="rongzhai_suibi/volume_01/001_ou_lvgeng_tie/editor.html">
       <div class="entry-number">01</div>
       <div class="entry-copy"><span>卷1</span><h3><a class="entry-title-link" href="rongzhai_suibi/volume_01/001_ou_lvgeng_tie/editor.html?view=annotated" target="_blank" rel="noopener">《容斋随笔·欧率更帖》</a></h3></div>
       <div class="entry-reading"><strong>未读</strong><time></time></div>
@@ -250,10 +251,11 @@ html[data-workspace-skin="reading"] .entry{grid-template-columns:54px minmax(0,1
     </article></div>
 </section><section class="collection" id="guwen_guanzhi" data-collection>
   <header class="collection-header">
-    <div><p>古文选本</p><h2>《古文观止》</h2><span>十二卷古代散文选本：原文、来源注释与校读材料</span></div>
+    <button class="collection-toggle" type="button" aria-expanded="true" aria-controls="guwen_guanzhi-entries"><span class="collection-toggle-copy"><span class="collection-eyebrow">古文选本</span><span class="collection-title">《古文观止》</span><span class="collection-description">十二卷古代散文选本：原文、来源注释与校读材料</span></span><i aria-hidden="true">▾</i></button>
     <div class="collection-meta"><a class="collection-tool" href="guwen_guanzhi/select_articles.html">选择更多篇目</a><strong>3 篇</strong></div>
   </header>
-  <div class="entries"><article class="entry" data-search="《古文观止·信陵君救赵论》 guwen_guanzhi/volume_12/215_article_12005/editor.html 《古文观止》" data-editor-path="guwen_guanzhi/volume_12/215_article_12005/editor.html">
+
+  <div class="entries" id="guwen_guanzhi-entries"><article class="entry" data-search="《古文观止·信陵君救赵论》 guwen_guanzhi/volume_12/215_article_12005/editor.html 《古文观止》" data-editor-path="guwen_guanzhi/volume_12/215_article_12005/editor.html">
       <div class="entry-number">25</div>
       <div class="entry-copy"><span>阅读材料</span><h3><a class="entry-title-link" href="guwen_guanzhi/volume_12/215_article_12005/editor.html?view=annotated" target="_blank" rel="noopener">《古文观止·信陵君救赵论》</a></h3></div>
       <div class="entry-reading"><strong>未读</strong><time></time></div>
@@ -275,41 +277,238 @@ html[data-workspace-skin="reading"] .entry{grid-template-columns:54px minmax(0,1
       <div class="entry-action entry-editor"><a class="primary" href="guwen_guanzhi/volume_12/220_article_12010/editor.html?view=annotated" target="_blank" rel="noopener">打开编辑器</a></div>
       <div class="entry-action entry-pdf"><span class="action-empty" aria-label="暂无 PDF">—</span></div>
     </article></div>
+</section><section class="collection" id="chinese_wars" data-collection>
+  <header class="collection-header">
+    <button class="collection-toggle" type="button" aria-expanded="true" aria-controls="chinese_wars-entries"><span class="collection-toggle-copy"><span class="collection-eyebrow">历史年表</span><span class="collection-title">中国历代战争</span><span class="collection-description">按历史时期整理的战争条目、年代与存疑说明</span></span><i aria-hidden="true">▾</i></button>
+    <div class="collection-meta"><a class="collection-tool" href="chinese_wars/select_entries.html">选择更多篇目</a><strong>21 篇</strong></div>
+  </header>
+
+  <div class="entries" id="chinese_wars-entries"><article class="entry" data-search="《中国历代战争·史前与夏朝》 chinese_wars/periods/01_ancient_xia/editor.html 中国历代战争" data-editor-path="chinese_wars/periods/01_ancient_xia/editor.html">
+      <div class="entry-number">28</div>
+      <div class="entry-copy"><span>史前与夏</span><h3><a class="entry-title-link" href="chinese_wars/periods/01_ancient_xia/editor.html?view=annotated" target="_blank" rel="noopener">《中国历代战争·史前与夏朝》</a></h3></div>
+      <div class="entry-reading"><strong>未读</strong><time></time></div>
+      <div class="entry-editing"><strong>未编辑</strong><time></time></div>
+      <div class="entry-action entry-editor"><a class="primary" href="chinese_wars/periods/01_ancient_xia/editor.html?view=annotated" target="_blank" rel="noopener">打开编辑器</a></div>
+      <div class="entry-action entry-pdf"><span class="action-empty" aria-label="暂无 PDF">—</span></div>
+    </article><article class="entry" data-search="《中国历代战争·商朝（前1600年－前1046年）》 chinese_wars/periods/02_shang/editor.html 中国历代战争" data-editor-path="chinese_wars/periods/02_shang/editor.html">
+      <div class="entry-number">29</div>
+      <div class="entry-copy"><span>商朝</span><h3><a class="entry-title-link" href="chinese_wars/periods/02_shang/editor.html?view=annotated" target="_blank" rel="noopener">《中国历代战争·商朝（前1600年－前1046年）》</a></h3></div>
+      <div class="entry-reading"><strong>未读</strong><time></time></div>
+      <div class="entry-editing"><strong>未编辑</strong><time></time></div>
+      <div class="entry-action entry-editor"><a class="primary" href="chinese_wars/periods/02_shang/editor.html?view=annotated" target="_blank" rel="noopener">打开编辑器</a></div>
+      <div class="entry-action entry-pdf"><span class="action-empty" aria-label="暂无 PDF">—</span></div>
+    </article><article class="entry" data-search="《中国历代战争·西周（前1046年－前771年）》 chinese_wars/periods/03_western_zhou/editor.html 中国历代战争" data-editor-path="chinese_wars/periods/03_western_zhou/editor.html">
+      <div class="entry-number">30</div>
+      <div class="entry-copy"><span>西周</span><h3><a class="entry-title-link" href="chinese_wars/periods/03_western_zhou/editor.html?view=annotated" target="_blank" rel="noopener">《中国历代战争·西周（前1046年－前771年）》</a></h3></div>
+      <div class="entry-reading"><strong>未读</strong><time></time></div>
+      <div class="entry-editing"><strong>未编辑</strong><time></time></div>
+      <div class="entry-action entry-editor"><a class="primary" href="chinese_wars/periods/03_western_zhou/editor.html?view=annotated" target="_blank" rel="noopener">打开编辑器</a></div>
+      <div class="entry-action entry-pdf"><span class="action-empty" aria-label="暂无 PDF">—</span></div>
+    </article><article class="entry" data-search="《中国历代战争·春秋时期（前770年－前476年）》 chinese_wars/periods/04_spring_autumn/editor.html 中国历代战争" data-editor-path="chinese_wars/periods/04_spring_autumn/editor.html">
+      <div class="entry-number">31</div>
+      <div class="entry-copy"><span>春秋</span><h3><a class="entry-title-link" href="chinese_wars/periods/04_spring_autumn/editor.html?view=annotated" target="_blank" rel="noopener">《中国历代战争·春秋时期（前770年－前476年）》</a></h3></div>
+      <div class="entry-reading"><strong>未读</strong><time></time></div>
+      <div class="entry-editing"><strong>未编辑</strong><time></time></div>
+      <div class="entry-action entry-editor"><a class="primary" href="chinese_wars/periods/04_spring_autumn/editor.html?view=annotated" target="_blank" rel="noopener">打开编辑器</a></div>
+      <div class="entry-action entry-pdf"><span class="action-empty" aria-label="暂无 PDF">—</span></div>
+    </article><article class="entry" data-search="《中国历代战争·战国时期（前475年－前221年）－秦朝（前221年－前207年）》 chinese_wars/periods/05_warring_states_qin/editor.html 中国历代战争" data-editor-path="chinese_wars/periods/05_warring_states_qin/editor.html">
+      <div class="entry-number">32</div>
+      <div class="entry-copy"><span>战国至秦</span><h3><a class="entry-title-link" href="chinese_wars/periods/05_warring_states_qin/editor.html?view=annotated" target="_blank" rel="noopener">《中国历代战争·战国时期（前475年－前221年）－秦朝（前221年－前207年）》</a></h3></div>
+      <div class="entry-reading"><strong>未读</strong><time></time></div>
+      <div class="entry-editing"><strong>未编辑</strong><time></time></div>
+      <div class="entry-action entry-editor"><a class="primary" href="chinese_wars/periods/05_warring_states_qin/editor.html?view=annotated" target="_blank" rel="noopener">打开编辑器</a></div>
+      <div class="entry-action entry-pdf"><span class="action-empty" aria-label="暂无 PDF">—</span></div>
+    </article><article class="entry" data-search="《中国历代战争·秦汉（前221－220）》 chinese_wars/periods/06_qin_han/editor.html 中国历代战争" data-editor-path="chinese_wars/periods/06_qin_han/editor.html">
+      <div class="entry-number">33</div>
+      <div class="entry-copy"><span>秦汉</span><h3><a class="entry-title-link" href="chinese_wars/periods/06_qin_han/editor.html?view=annotated" target="_blank" rel="noopener">《中国历代战争·秦汉（前221－220）》</a></h3></div>
+      <div class="entry-reading"><strong>未读</strong><time></time></div>
+      <div class="entry-editing"><strong>未编辑</strong><time></time></div>
+      <div class="entry-action entry-editor"><a class="primary" href="chinese_wars/periods/06_qin_han/editor.html?view=annotated" target="_blank" rel="noopener">打开编辑器</a></div>
+      <div class="entry-action entry-pdf"><span class="action-empty" aria-label="暂无 PDF">—</span></div>
+    </article><article class="entry" data-search="《中国历代战争·三国（184－280）》 chinese_wars/periods/07_three_kingdoms/editor.html 中国历代战争" data-editor-path="chinese_wars/periods/07_three_kingdoms/editor.html">
+      <div class="entry-number">34</div>
+      <div class="entry-copy"><span>三国</span><h3><a class="entry-title-link" href="chinese_wars/periods/07_three_kingdoms/editor.html?view=annotated" target="_blank" rel="noopener">《中国历代战争·三国（184－280）》</a></h3></div>
+      <div class="entry-reading"><strong>未读</strong><time></time></div>
+      <div class="entry-editing"><strong>未编辑</strong><time></time></div>
+      <div class="entry-action entry-editor"><a class="primary" href="chinese_wars/periods/07_three_kingdoms/editor.html?view=annotated" target="_blank" rel="noopener">打开编辑器</a></div>
+      <div class="entry-action entry-pdf"><span class="action-empty" aria-label="暂无 PDF">—</span></div>
+    </article><article class="entry" data-search="《中国历代战争·晋朝（265－420）与五胡十六国（304－439）》 chinese_wars/periods/08_jin_sixteen_kingdoms/editor.html 中国历代战争" data-editor-path="chinese_wars/periods/08_jin_sixteen_kingdoms/editor.html">
+      <div class="entry-number">35</div>
+      <div class="entry-copy"><span>晋与十六国</span><h3><a class="entry-title-link" href="chinese_wars/periods/08_jin_sixteen_kingdoms/editor.html?view=annotated" target="_blank" rel="noopener">《中国历代战争·晋朝（265－420）与五胡十六国（304－439）》</a></h3></div>
+      <div class="entry-reading"><strong>未读</strong><time></time></div>
+      <div class="entry-editing"><strong>未编辑</strong><time></time></div>
+      <div class="entry-action entry-editor"><a class="primary" href="chinese_wars/periods/08_jin_sixteen_kingdoms/editor.html?view=annotated" target="_blank" rel="noopener">打开编辑器</a></div>
+      <div class="entry-action entry-pdf"><span class="action-empty" aria-label="暂无 PDF">—</span></div>
+    </article><article class="entry" data-search="《中国历代战争·南北朝时期（420－589）》 chinese_wars/periods/09_northern_southern/editor.html 中国历代战争" data-editor-path="chinese_wars/periods/09_northern_southern/editor.html">
+      <div class="entry-number">36</div>
+      <div class="entry-copy"><span>南北朝</span><h3><a class="entry-title-link" href="chinese_wars/periods/09_northern_southern/editor.html?view=annotated" target="_blank" rel="noopener">《中国历代战争·南北朝时期（420－589）》</a></h3></div>
+      <div class="entry-reading"><strong>未读</strong><time></time></div>
+      <div class="entry-editing"><strong>未编辑</strong><time></time></div>
+      <div class="entry-action entry-editor"><a class="primary" href="chinese_wars/periods/09_northern_southern/editor.html?view=annotated" target="_blank" rel="noopener">打开编辑器</a></div>
+      <div class="entry-action entry-pdf"><span class="action-empty" aria-label="暂无 PDF">—</span></div>
+    </article><article class="entry" data-search="《中国历代战争·隋朝（589－618）》 chinese_wars/periods/10_sui/editor.html 中国历代战争" data-editor-path="chinese_wars/periods/10_sui/editor.html">
+      <div class="entry-number">37</div>
+      <div class="entry-copy"><span>隋朝</span><h3><a class="entry-title-link" href="chinese_wars/periods/10_sui/editor.html?view=annotated" target="_blank" rel="noopener">《中国历代战争·隋朝（589－618）》</a></h3></div>
+      <div class="entry-reading"><strong>未读</strong><time></time></div>
+      <div class="entry-editing"><strong>未编辑</strong><time></time></div>
+      <div class="entry-action entry-editor"><a class="primary" href="chinese_wars/periods/10_sui/editor.html?view=annotated" target="_blank" rel="noopener">打开编辑器</a></div>
+      <div class="entry-action entry-pdf"><span class="action-empty" aria-label="暂无 PDF">—</span></div>
+    </article><article class="entry" data-search="《中国历代战争·唐朝（618－907，含武周时期）》 chinese_wars/periods/11_tang/editor.html 中国历代战争" data-editor-path="chinese_wars/periods/11_tang/editor.html">
+      <div class="entry-number">38</div>
+      <div class="entry-copy"><span>唐朝</span><h3><a class="entry-title-link" href="chinese_wars/periods/11_tang/editor.html?view=annotated" target="_blank" rel="noopener">《中国历代战争·唐朝（618－907，含武周时期）》</a></h3></div>
+      <div class="entry-reading"><strong>未读</strong><time></time></div>
+      <div class="entry-editing"><strong>未编辑</strong><time></time></div>
+      <div class="entry-action entry-editor"><a class="primary" href="chinese_wars/periods/11_tang/editor.html?view=annotated" target="_blank" rel="noopener">打开编辑器</a></div>
+      <div class="entry-action entry-pdf"><span class="action-empty" aria-label="暂无 PDF">—</span></div>
+    </article><article class="entry" data-search="《中国历代战争·五代时期（907－979）》 chinese_wars/periods/12_five_dynasties/editor.html 中国历代战争" data-editor-path="chinese_wars/periods/12_five_dynasties/editor.html">
+      <div class="entry-number">39</div>
+      <div class="entry-copy"><span>五代</span><h3><a class="entry-title-link" href="chinese_wars/periods/12_five_dynasties/editor.html?view=annotated" target="_blank" rel="noopener">《中国历代战争·五代时期（907－979）》</a></h3></div>
+      <div class="entry-reading"><strong>未读</strong><time></time></div>
+      <div class="entry-editing"><strong>未编辑</strong><time></time></div>
+      <div class="entry-action entry-editor"><a class="primary" href="chinese_wars/periods/12_five_dynasties/editor.html?view=annotated" target="_blank" rel="noopener">打开编辑器</a></div>
+      <div class="entry-action entry-pdf"><span class="action-empty" aria-label="暂无 PDF">—</span></div>
+    </article><article class="entry" data-search="《中国历代战争·北宋（960－1127）》 chinese_wars/periods/13_northern_song/editor.html 中国历代战争" data-editor-path="chinese_wars/periods/13_northern_song/editor.html">
+      <div class="entry-number">40</div>
+      <div class="entry-copy"><span>北宋</span><h3><a class="entry-title-link" href="chinese_wars/periods/13_northern_song/editor.html?view=annotated" target="_blank" rel="noopener">《中国历代战争·北宋（960－1127）》</a></h3></div>
+      <div class="entry-reading"><strong>未读</strong><time></time></div>
+      <div class="entry-editing"><strong>未编辑</strong><time></time></div>
+      <div class="entry-action entry-editor"><a class="primary" href="chinese_wars/periods/13_northern_song/editor.html?view=annotated" target="_blank" rel="noopener">打开编辑器</a></div>
+      <div class="entry-action entry-pdf"><span class="action-empty" aria-label="暂无 PDF">—</span></div>
+    </article><article class="entry" data-search="《中国历代战争·宋金战争（1125－1234）》 chinese_wars/periods/14_song_jin/editor.html 中国历代战争" data-editor-path="chinese_wars/periods/14_song_jin/editor.html">
+      <div class="entry-number">41</div>
+      <div class="entry-copy"><span>宋金战争</span><h3><a class="entry-title-link" href="chinese_wars/periods/14_song_jin/editor.html?view=annotated" target="_blank" rel="noopener">《中国历代战争·宋金战争（1125－1234）》</a></h3></div>
+      <div class="entry-reading"><strong>未读</strong><time></time></div>
+      <div class="entry-editing"><strong>未编辑</strong><time></time></div>
+      <div class="entry-action entry-editor"><a class="primary" href="chinese_wars/periods/14_song_jin/editor.html?view=annotated" target="_blank" rel="noopener">打开编辑器</a></div>
+      <div class="entry-action entry-pdf"><span class="action-empty" aria-label="暂无 PDF">—</span></div>
+    </article><article class="entry" data-search="《中国历代战争·蒙古征战（1189－1279）》 chinese_wars/periods/15_mongol_conquests/editor.html 中国历代战争" data-editor-path="chinese_wars/periods/15_mongol_conquests/editor.html">
+      <div class="entry-number">42</div>
+      <div class="entry-copy"><span>蒙古征战</span><h3><a class="entry-title-link" href="chinese_wars/periods/15_mongol_conquests/editor.html?view=annotated" target="_blank" rel="noopener">《中国历代战争·蒙古征战（1189－1279）》</a></h3></div>
+      <div class="entry-reading"><strong>未读</strong><time></time></div>
+      <div class="entry-editing"><strong>未编辑</strong><time></time></div>
+      <div class="entry-action entry-editor"><a class="primary" href="chinese_wars/periods/15_mongol_conquests/editor.html?view=annotated" target="_blank" rel="noopener">打开编辑器</a></div>
+      <div class="entry-action entry-pdf"><span class="action-empty" aria-label="暂无 PDF">—</span></div>
+    </article><article class="entry" data-search="《中国历代战争·元朝（1271－1368）》 chinese_wars/periods/16_yuan/editor.html 中国历代战争" data-editor-path="chinese_wars/periods/16_yuan/editor.html">
+      <div class="entry-number">43</div>
+      <div class="entry-copy"><span>元朝</span><h3><a class="entry-title-link" href="chinese_wars/periods/16_yuan/editor.html?view=annotated" target="_blank" rel="noopener">《中国历代战争·元朝（1271－1368）》</a></h3></div>
+      <div class="entry-reading"><strong>未读</strong><time></time></div>
+      <div class="entry-editing"><strong>未编辑</strong><time></time></div>
+      <div class="entry-action entry-editor"><a class="primary" href="chinese_wars/periods/16_yuan/editor.html?view=annotated" target="_blank" rel="noopener">打开编辑器</a></div>
+      <div class="entry-action entry-pdf"><span class="action-empty" aria-label="暂无 PDF">—</span></div>
+    </article><article class="entry" data-search="《中国历代战争·明朝（1368－1644）》 chinese_wars/periods/17_ming/editor.html 中国历代战争" data-editor-path="chinese_wars/periods/17_ming/editor.html">
+      <div class="entry-number">44</div>
+      <div class="entry-copy"><span>明朝</span><h3><a class="entry-title-link" href="chinese_wars/periods/17_ming/editor.html?view=annotated" target="_blank" rel="noopener">《中国历代战争·明朝（1368－1644）》</a></h3></div>
+      <div class="entry-reading"><strong>未读</strong><time></time></div>
+      <div class="entry-editing"><strong>未编辑</strong><time></time></div>
+      <div class="entry-action entry-editor"><a class="primary" href="chinese_wars/periods/17_ming/editor.html?view=annotated" target="_blank" rel="noopener">打开编辑器</a></div>
+      <div class="entry-action entry-pdf"><span class="action-empty" aria-label="暂无 PDF">—</span></div>
+    </article><article class="entry" data-search="《中国历代战争·明清战争（1618－1659）》 chinese_wars/periods/18_ming_qing/editor.html 中国历代战争" data-editor-path="chinese_wars/periods/18_ming_qing/editor.html">
+      <div class="entry-number">45</div>
+      <div class="entry-copy"><span>明清战争</span><h3><a class="entry-title-link" href="chinese_wars/periods/18_ming_qing/editor.html?view=annotated" target="_blank" rel="noopener">《中国历代战争·明清战争（1618－1659）》</a></h3></div>
+      <div class="entry-reading"><strong>未读</strong><time></time></div>
+      <div class="entry-editing"><strong>未编辑</strong><time></time></div>
+      <div class="entry-action entry-editor"><a class="primary" href="chinese_wars/periods/18_ming_qing/editor.html?view=annotated" target="_blank" rel="noopener">打开编辑器</a></div>
+      <div class="entry-action entry-pdf"><span class="action-empty" aria-label="暂无 PDF">—</span></div>
+    </article><article class="entry" data-search="《中国历代战争·清朝（1644－1911）》 chinese_wars/periods/19_qing/editor.html 中国历代战争" data-editor-path="chinese_wars/periods/19_qing/editor.html">
+      <div class="entry-number">46</div>
+      <div class="entry-copy"><span>清朝</span><h3><a class="entry-title-link" href="chinese_wars/periods/19_qing/editor.html?view=annotated" target="_blank" rel="noopener">《中国历代战争·清朝（1644－1911）》</a></h3></div>
+      <div class="entry-reading"><strong>未读</strong><time></time></div>
+      <div class="entry-editing"><strong>未编辑</strong><time></time></div>
+      <div class="entry-action entry-editor"><a class="primary" href="chinese_wars/periods/19_qing/editor.html?view=annotated" target="_blank" rel="noopener">打开编辑器</a></div>
+      <div class="entry-action entry-pdf"><span class="action-empty" aria-label="暂无 PDF">—</span></div>
+    </article><article class="entry" data-search="《中国历代战争·中华民国大陆时期（1912－1949）》 chinese_wars/periods/20_republic_of_china/editor.html 中国历代战争" data-editor-path="chinese_wars/periods/20_republic_of_china/editor.html">
+      <div class="entry-number">47</div>
+      <div class="entry-copy"><span>中华民国大陆时期</span><h3><a class="entry-title-link" href="chinese_wars/periods/20_republic_of_china/editor.html?view=annotated" target="_blank" rel="noopener">《中国历代战争·中华民国大陆时期（1912－1949）》</a></h3></div>
+      <div class="entry-reading"><strong>未读</strong><time></time></div>
+      <div class="entry-editing"><strong>未编辑</strong><time></time></div>
+      <div class="entry-action entry-editor"><a class="primary" href="chinese_wars/periods/20_republic_of_china/editor.html?view=annotated" target="_blank" rel="noopener">打开编辑器</a></div>
+      <div class="entry-action entry-pdf"><span class="action-empty" aria-label="暂无 PDF">—</span></div>
+    </article><article class="entry" data-search="《中国历代战争·中华人民共和国参与的战争（1949年10月－至今）》 chinese_wars/periods/21_prc/editor.html 中国历代战争" data-editor-path="chinese_wars/periods/21_prc/editor.html">
+      <div class="entry-number">48</div>
+      <div class="entry-copy"><span>中华人民共和国时期</span><h3><a class="entry-title-link" href="chinese_wars/periods/21_prc/editor.html?view=annotated" target="_blank" rel="noopener">《中国历代战争·中华人民共和国参与的战争（1949年10月－至今）》</a></h3></div>
+      <div class="entry-reading"><strong>未读</strong><time></time></div>
+      <div class="entry-editing"><strong>未编辑</strong><time></time></div>
+      <div class="entry-action entry-editor"><a class="primary" href="chinese_wars/periods/21_prc/editor.html?view=annotated" target="_blank" rel="noopener">打开编辑器</a></div>
+      <div class="entry-action entry-pdf"><span class="action-empty" aria-label="暂无 PDF">—</span></div>
+    </article></div>
+</section><section class="collection" id="american_civil_war" data-collection>
+  <header class="collection-header">
+    <button class="collection-toggle" type="button" aria-expanded="true" aria-controls="american_civil_war-entries"><span class="collection-toggle-copy"><span class="collection-eyebrow">World History</span><span class="collection-title">American Civil War</span><span class="collection-description">1861–1865 battles, classifications, outcomes, and reading notes</span></span><i aria-hidden="true">▾</i></button>
+    <div class="collection-meta"><a class="collection-tool" href="american_civil_war/select_battles.html">选择更多篇目</a><strong>5 篇</strong></div>
+  </header>
+
+  <div class="entries" id="american_civil_war-entries"><article class="entry" data-search="american civil war battles · 1861 american_civil_war/years/1861/editor.html american civil war" data-editor-path="american_civil_war/years/1861/editor.html">
+      <div class="entry-number">49</div>
+      <div class="entry-copy"><span>1861</span><h3><a class="entry-title-link" href="american_civil_war/years/1861/editor.html?view=annotated" target="_blank" rel="noopener">American Civil War Battles · 1861</a></h3></div>
+      <div class="entry-reading"><strong>未读</strong><time></time></div>
+      <div class="entry-editing"><strong>未编辑</strong><time></time></div>
+      <div class="entry-action entry-editor"><a class="primary" href="american_civil_war/years/1861/editor.html?view=annotated" target="_blank" rel="noopener">打开编辑器</a></div>
+      <div class="entry-action entry-pdf"><span class="action-empty" aria-label="暂无 PDF">—</span></div>
+    </article><article class="entry" data-search="american civil war battles · 1862 american_civil_war/years/1862/editor.html american civil war" data-editor-path="american_civil_war/years/1862/editor.html">
+      <div class="entry-number">50</div>
+      <div class="entry-copy"><span>1862</span><h3><a class="entry-title-link" href="american_civil_war/years/1862/editor.html?view=annotated" target="_blank" rel="noopener">American Civil War Battles · 1862</a></h3></div>
+      <div class="entry-reading"><strong>未读</strong><time></time></div>
+      <div class="entry-editing"><strong>未编辑</strong><time></time></div>
+      <div class="entry-action entry-editor"><a class="primary" href="american_civil_war/years/1862/editor.html?view=annotated" target="_blank" rel="noopener">打开编辑器</a></div>
+      <div class="entry-action entry-pdf"><span class="action-empty" aria-label="暂无 PDF">—</span></div>
+    </article><article class="entry" data-search="american civil war battles · 1863 american_civil_war/years/1863/editor.html american civil war" data-editor-path="american_civil_war/years/1863/editor.html">
+      <div class="entry-number">51</div>
+      <div class="entry-copy"><span>1863</span><h3><a class="entry-title-link" href="american_civil_war/years/1863/editor.html?view=annotated" target="_blank" rel="noopener">American Civil War Battles · 1863</a></h3></div>
+      <div class="entry-reading"><strong>未读</strong><time></time></div>
+      <div class="entry-editing"><strong>未编辑</strong><time></time></div>
+      <div class="entry-action entry-editor"><a class="primary" href="american_civil_war/years/1863/editor.html?view=annotated" target="_blank" rel="noopener">打开编辑器</a></div>
+      <div class="entry-action entry-pdf"><span class="action-empty" aria-label="暂无 PDF">—</span></div>
+    </article><article class="entry" data-search="american civil war battles · 1864 american_civil_war/years/1864/editor.html american civil war" data-editor-path="american_civil_war/years/1864/editor.html">
+      <div class="entry-number">52</div>
+      <div class="entry-copy"><span>1864</span><h3><a class="entry-title-link" href="american_civil_war/years/1864/editor.html?view=annotated" target="_blank" rel="noopener">American Civil War Battles · 1864</a></h3></div>
+      <div class="entry-reading"><strong>未读</strong><time></time></div>
+      <div class="entry-editing"><strong>未编辑</strong><time></time></div>
+      <div class="entry-action entry-editor"><a class="primary" href="american_civil_war/years/1864/editor.html?view=annotated" target="_blank" rel="noopener">打开编辑器</a></div>
+      <div class="entry-action entry-pdf"><span class="action-empty" aria-label="暂无 PDF">—</span></div>
+    </article><article class="entry" data-search="american civil war battles · 1865 american_civil_war/years/1865/editor.html american civil war" data-editor-path="american_civil_war/years/1865/editor.html">
+      <div class="entry-number">53</div>
+      <div class="entry-copy"><span>1865</span><h3><a class="entry-title-link" href="american_civil_war/years/1865/editor.html?view=annotated" target="_blank" rel="noopener">American Civil War Battles · 1865</a></h3></div>
+      <div class="entry-reading"><strong>未读</strong><time></time></div>
+      <div class="entry-editing"><strong>未编辑</strong><time></time></div>
+      <div class="entry-action entry-editor"><a class="primary" href="american_civil_war/years/1865/editor.html?view=annotated" target="_blank" rel="noopener">打开编辑器</a></div>
+      <div class="entry-action entry-pdf"><span class="action-empty" aria-label="暂无 PDF">—</span></div>
+    </article></div>
 </section><section class="collection" id="laozi" data-collection>
   <header class="collection-header">
-    <div><p>先秦道家</p><h2>《老子》</h2><span>道经与德经八十一章选读</span></div>
+    <button class="collection-toggle" type="button" aria-expanded="true" aria-controls="laozi-entries"><span class="collection-toggle-copy"><span class="collection-eyebrow">先秦道家</span><span class="collection-title">《老子》</span><span class="collection-description">道经与德经八十一章选读</span></span><i aria-hidden="true">▾</i></button>
     <div class="collection-meta"><a class="collection-tool" href="laozi/select_chapters.html">选择更多篇目</a><strong>5 篇</strong></div>
   </header>
-  <div class="entries"><article class="entry" data-search="《老子·道经·第一章》 laozi/01_chapter_01/editor.html 《老子》" data-editor-path="laozi/01_chapter_01/editor.html">
-      <div class="entry-number">28</div>
+
+  <div class="entries" id="laozi-entries"><article class="entry" data-search="《老子·道经·第一章》 laozi/01_chapter_01/editor.html 《老子》" data-editor-path="laozi/01_chapter_01/editor.html">
+      <div class="entry-number">54</div>
       <div class="entry-copy"><span>阅读材料</span><h3><a class="entry-title-link" href="laozi/01_chapter_01/editor.html?view=annotated" target="_blank" rel="noopener">《老子·道经·第一章》</a></h3></div>
       <div class="entry-reading"><strong>未读</strong><time></time></div>
       <div class="entry-editing"><strong>未编辑</strong><time></time></div>
       <div class="entry-action entry-editor"><a class="primary" href="laozi/01_chapter_01/editor.html?view=annotated" target="_blank" rel="noopener">打开编辑器</a></div>
       <div class="entry-action entry-pdf"><span class="action-empty" aria-label="暂无 PDF">—</span></div>
     </article><article class="entry" data-search="《老子·道经·第二章》 laozi/02_chapter_02/editor.html 《老子》" data-editor-path="laozi/02_chapter_02/editor.html">
-      <div class="entry-number">29</div>
+      <div class="entry-number">55</div>
       <div class="entry-copy"><span>阅读材料</span><h3><a class="entry-title-link" href="laozi/02_chapter_02/editor.html?view=annotated" target="_blank" rel="noopener">《老子·道经·第二章》</a></h3></div>
       <div class="entry-reading"><strong>未读</strong><time></time></div>
       <div class="entry-editing"><strong>未编辑</strong><time></time></div>
       <div class="entry-action entry-editor"><a class="primary" href="laozi/02_chapter_02/editor.html?view=annotated" target="_blank" rel="noopener">打开编辑器</a></div>
       <div class="entry-action entry-pdf"><span class="action-empty" aria-label="暂无 PDF">—</span></div>
     </article><article class="entry" data-search="《老子·道经·第三章》 laozi/03_chapter_03/editor.html 《老子》" data-editor-path="laozi/03_chapter_03/editor.html">
-      <div class="entry-number">30</div>
+      <div class="entry-number">56</div>
       <div class="entry-copy"><span>阅读材料</span><h3><a class="entry-title-link" href="laozi/03_chapter_03/editor.html?view=annotated" target="_blank" rel="noopener">《老子·道经·第三章》</a></h3></div>
       <div class="entry-reading"><strong>未读</strong><time></time></div>
       <div class="entry-editing"><strong>未编辑</strong><time></time></div>
       <div class="entry-action entry-editor"><a class="primary" href="laozi/03_chapter_03/editor.html?view=annotated" target="_blank" rel="noopener">打开编辑器</a></div>
       <div class="entry-action entry-pdf"><span class="action-empty" aria-label="暂无 PDF">—</span></div>
     </article><article class="entry" data-search="《老子·道经·第四章》 laozi/04_chapter_04/editor.html 《老子》" data-editor-path="laozi/04_chapter_04/editor.html">
-      <div class="entry-number">31</div>
+      <div class="entry-number">57</div>
       <div class="entry-copy"><span>阅读材料</span><h3><a class="entry-title-link" href="laozi/04_chapter_04/editor.html?view=annotated" target="_blank" rel="noopener">《老子·道经·第四章》</a></h3></div>
       <div class="entry-reading"><strong>未读</strong><time></time></div>
       <div class="entry-editing"><strong>未编辑</strong><time></time></div>
       <div class="entry-action entry-editor"><a class="primary" href="laozi/04_chapter_04/editor.html?view=annotated" target="_blank" rel="noopener">打开编辑器</a></div>
       <div class="entry-action entry-pdf"><span class="action-empty" aria-label="暂无 PDF">—</span></div>
     </article><article class="entry" data-search="《老子·道经·第五章》 laozi/05_chapter_05/editor.html 《老子》" data-editor-path="laozi/05_chapter_05/editor.html">
-      <div class="entry-number">32</div>
+      <div class="entry-number">58</div>
       <div class="entry-copy"><span>阅读材料</span><h3><a class="entry-title-link" href="laozi/05_chapter_05/editor.html?view=annotated" target="_blank" rel="noopener">《老子·道经·第五章》</a></h3></div>
       <div class="entry-reading"><strong>未读</strong><time></time></div>
       <div class="entry-editing"><strong>未编辑</strong><time></time></div>
@@ -318,25 +517,26 @@ html[data-workspace-skin="reading"] .entry{grid-template-columns:54px minmax(0,1
     </article></div>
 </section><section class="collection" id="sunzi" data-collection>
   <header class="collection-header">
-    <div><p>先秦兵家</p><h2>《孙子兵法》</h2><span>兵法十三篇选读</span></div>
+    <button class="collection-toggle" type="button" aria-expanded="true" aria-controls="sunzi-entries"><span class="collection-toggle-copy"><span class="collection-eyebrow">先秦兵家</span><span class="collection-title">《孙子兵法》</span><span class="collection-description">兵法十三篇选读</span></span><i aria-hidden="true">▾</i></button>
     <div class="collection-meta"><a class="collection-tool" href="sunzi/select_entries.html">选择更多篇目</a><strong>3 篇</strong></div>
   </header>
-  <div class="entries"><article class="entry" data-search="《孙子兵法·始计篇第一》 sunzi/01_entry_01/editor.html 《孙子兵法》" data-editor-path="sunzi/01_entry_01/editor.html">
-      <div class="entry-number">33</div>
+
+  <div class="entries" id="sunzi-entries"><article class="entry" data-search="《孙子兵法·始计篇第一》 sunzi/01_entry_01/editor.html 《孙子兵法》" data-editor-path="sunzi/01_entry_01/editor.html">
+      <div class="entry-number">59</div>
       <div class="entry-copy"><span>阅读材料</span><h3><a class="entry-title-link" href="sunzi/01_entry_01/editor.html?view=annotated" target="_blank" rel="noopener">《孙子兵法·始计篇第一》</a></h3></div>
       <div class="entry-reading"><strong>未读</strong><time></time></div>
       <div class="entry-editing"><strong>未编辑</strong><time></time></div>
       <div class="entry-action entry-editor"><a class="primary" href="sunzi/01_entry_01/editor.html?view=annotated" target="_blank" rel="noopener">打开编辑器</a></div>
       <div class="entry-action entry-pdf"><span class="action-empty" aria-label="暂无 PDF">—</span></div>
     </article><article class="entry" data-search="《孙子兵法·作战篇第二》 sunzi/02_entry_02/editor.html 《孙子兵法》" data-editor-path="sunzi/02_entry_02/editor.html">
-      <div class="entry-number">34</div>
+      <div class="entry-number">60</div>
       <div class="entry-copy"><span>阅读材料</span><h3><a class="entry-title-link" href="sunzi/02_entry_02/editor.html?view=annotated" target="_blank" rel="noopener">《孙子兵法·作战篇第二》</a></h3></div>
       <div class="entry-reading"><strong>未读</strong><time></time></div>
       <div class="entry-editing"><strong>未编辑</strong><time></time></div>
       <div class="entry-action entry-editor"><a class="primary" href="sunzi/02_entry_02/editor.html?view=annotated" target="_blank" rel="noopener">打开编辑器</a></div>
       <div class="entry-action entry-pdf"><span class="action-empty" aria-label="暂无 PDF">—</span></div>
     </article><article class="entry" data-search="《孙子兵法·谋攻篇第三》 sunzi/03_entry_03/editor.html 《孙子兵法》" data-editor-path="sunzi/03_entry_03/editor.html">
-      <div class="entry-number">35</div>
+      <div class="entry-number">61</div>
       <div class="entry-copy"><span>阅读材料</span><h3><a class="entry-title-link" href="sunzi/03_entry_03/editor.html?view=annotated" target="_blank" rel="noopener">《孙子兵法·谋攻篇第三》</a></h3></div>
       <div class="entry-reading"><strong>未读</strong><time></time></div>
       <div class="entry-editing"><strong>未编辑</strong><time></time></div>
@@ -345,25 +545,26 @@ html[data-workspace-skin="reading"] .entry{grid-template-columns:54px minmax(0,1
     </article></div>
 </section><section class="collection" id="thirty_six_stratagems" data-collection>
   <header class="collection-header">
-    <div><p>兵法策略</p><h2>《三十六计》</h2><span>六套三十六策选读</span></div>
+    <button class="collection-toggle" type="button" aria-expanded="true" aria-controls="thirty_six_stratagems-entries"><span class="collection-toggle-copy"><span class="collection-eyebrow">兵法策略</span><span class="collection-title">《三十六计》</span><span class="collection-description">六套三十六策选读</span></span><i aria-hidden="true">▾</i></button>
     <div class="collection-meta"><a class="collection-tool" href="thirty_six_stratagems/select_entries.html">选择更多篇目</a><strong>3 篇</strong></div>
   </header>
-  <div class="entries"><article class="entry" data-search="《三十六计·瞒天过海第一》 thirty_six_stratagems/01_entry_01/editor.html 《三十六计》" data-editor-path="thirty_six_stratagems/01_entry_01/editor.html">
-      <div class="entry-number">36</div>
+
+  <div class="entries" id="thirty_six_stratagems-entries"><article class="entry" data-search="《三十六计·瞒天过海第一》 thirty_six_stratagems/01_entry_01/editor.html 《三十六计》" data-editor-path="thirty_six_stratagems/01_entry_01/editor.html">
+      <div class="entry-number">62</div>
       <div class="entry-copy"><span>阅读材料</span><h3><a class="entry-title-link" href="thirty_six_stratagems/01_entry_01/editor.html?view=annotated" target="_blank" rel="noopener">《三十六计·瞒天过海第一》</a></h3></div>
       <div class="entry-reading"><strong>未读</strong><time></time></div>
       <div class="entry-editing"><strong>未编辑</strong><time></time></div>
       <div class="entry-action entry-editor"><a class="primary" href="thirty_six_stratagems/01_entry_01/editor.html?view=annotated" target="_blank" rel="noopener">打开编辑器</a></div>
       <div class="entry-action entry-pdf"><span class="action-empty" aria-label="暂无 PDF">—</span></div>
     </article><article class="entry" data-search="《三十六计·围魏救赵第二》 thirty_six_stratagems/02_entry_02/editor.html 《三十六计》" data-editor-path="thirty_six_stratagems/02_entry_02/editor.html">
-      <div class="entry-number">37</div>
+      <div class="entry-number">63</div>
       <div class="entry-copy"><span>阅读材料</span><h3><a class="entry-title-link" href="thirty_six_stratagems/02_entry_02/editor.html?view=annotated" target="_blank" rel="noopener">《三十六计·围魏救赵第二》</a></h3></div>
       <div class="entry-reading"><strong>未读</strong><time></time></div>
       <div class="entry-editing"><strong>未编辑</strong><time></time></div>
       <div class="entry-action entry-editor"><a class="primary" href="thirty_six_stratagems/02_entry_02/editor.html?view=annotated" target="_blank" rel="noopener">打开编辑器</a></div>
       <div class="entry-action entry-pdf"><span class="action-empty" aria-label="暂无 PDF">—</span></div>
     </article><article class="entry" data-search="《三十六计·借刀杀人第三》 thirty_six_stratagems/03_entry_03/editor.html 《三十六计》" data-editor-path="thirty_six_stratagems/03_entry_03/editor.html">
-      <div class="entry-number">38</div>
+      <div class="entry-number">64</div>
       <div class="entry-copy"><span>阅读材料</span><h3><a class="entry-title-link" href="thirty_six_stratagems/03_entry_03/editor.html?view=annotated" target="_blank" rel="noopener">《三十六计·借刀杀人第三》</a></h3></div>
       <div class="entry-reading"><strong>未读</strong><time></time></div>
       <div class="entry-editing"><strong>未编辑</strong><time></time></div>
@@ -372,32 +573,33 @@ html[data-workspace-skin="reading"] .entry{grid-template-columns:54px minmax(0,1
     </article></div>
 </section><section class="collection" id="liaozhai_stories" data-collection>
   <header class="collection-header">
-    <div><p>文言小说</p><h2>《聊斋志异》</h2><span>文言小说选篇与注音校读材料</span></div>
+    <button class="collection-toggle" type="button" aria-expanded="true" aria-controls="liaozhai_stories-entries"><span class="collection-toggle-copy"><span class="collection-eyebrow">文言小说</span><span class="collection-title">《聊斋志异》</span><span class="collection-description">文言小说选篇与注音校读材料</span></span><i aria-hidden="true">▾</i></button>
     <div class="collection-meta"><strong>4 篇</strong></div>
   </header>
-  <div class="entries"><article class="entry" data-search="《聊斋志异·劳山道士》 liaozhai_stories/laoshan_daoshi/editor.html 《聊斋志异》" data-editor-path="liaozhai_stories/laoshan_daoshi/editor.html">
-      <div class="entry-number">39</div>
+
+  <div class="entries" id="liaozhai_stories-entries"><article class="entry" data-search="《聊斋志异·劳山道士》 liaozhai_stories/laoshan_daoshi/editor.html 《聊斋志异》" data-editor-path="liaozhai_stories/laoshan_daoshi/editor.html">
+      <div class="entry-number">65</div>
       <div class="entry-copy"><span>阅读材料</span><h3><a class="entry-title-link" href="liaozhai_stories/laoshan_daoshi/editor.html?view=annotated" target="_blank" rel="noopener">《聊斋志异·劳山道士》</a></h3></div>
       <div class="entry-reading"><strong>未读</strong><time></time></div>
       <div class="entry-editing"><strong>未编辑</strong><time></time></div>
       <div class="entry-action entry-editor"><a class="primary" href="liaozhai_stories/laoshan_daoshi/editor.html?view=annotated" target="_blank" rel="noopener">打开编辑器</a></div>
       <div class="entry-action entry-pdf"><a class="secondary" href="liaozhai_stories/laoshan_daoshi/laoshan_daoshi_annotated.pdf" target="_blank" rel="noopener">PDF</a></div>
     </article><article class="entry" data-search="《聊斋志异·陆判》 liaozhai_stories/lupan/editor.html 《聊斋志异》" data-editor-path="liaozhai_stories/lupan/editor.html">
-      <div class="entry-number">40</div>
+      <div class="entry-number">66</div>
       <div class="entry-copy"><span>阅读材料</span><h3><a class="entry-title-link" href="liaozhai_stories/lupan/editor.html?view=annotated" target="_blank" rel="noopener">《聊斋志异·陆判》</a></h3></div>
       <div class="entry-reading"><strong>未读</strong><time></time></div>
       <div class="entry-editing"><strong>未编辑</strong><time></time></div>
       <div class="entry-action entry-editor"><a class="primary" href="liaozhai_stories/lupan/editor.html?view=annotated" target="_blank" rel="noopener">打开编辑器</a></div>
       <div class="entry-action entry-pdf"><a class="secondary" href="liaozhai_stories/lupan/lupan_annotated.pdf" target="_blank" rel="noopener">PDF</a></div>
     </article><article class="entry" data-search="《聊斋志异·聂小倩》 liaozhai_stories/nie_xiaoqian/editor.html 《聊斋志异》" data-editor-path="liaozhai_stories/nie_xiaoqian/editor.html">
-      <div class="entry-number">41</div>
+      <div class="entry-number">67</div>
       <div class="entry-copy"><span>阅读材料</span><h3><a class="entry-title-link" href="liaozhai_stories/nie_xiaoqian/editor.html?view=annotated" target="_blank" rel="noopener">《聊斋志异·聂小倩》</a></h3></div>
       <div class="entry-reading"><strong>未读</strong><time></time></div>
       <div class="entry-editing"><strong>未编辑</strong><time></time></div>
       <div class="entry-action entry-editor"><a class="primary" href="liaozhai_stories/nie_xiaoqian/editor.html?view=annotated" target="_blank" rel="noopener">打开编辑器</a></div>
       <div class="entry-action entry-pdf"><a class="secondary" href="liaozhai_stories/nie_xiaoqian/nie_xiaoqian_annotated.pdf" target="_blank" rel="noopener">PDF</a></div>
     </article><article class="entry" data-search="《聊斋志异·婴宁》 liaozhai_stories/yingning/editor.html 《聊斋志异》" data-editor-path="liaozhai_stories/yingning/editor.html">
-      <div class="entry-number">42</div>
+      <div class="entry-number">68</div>
       <div class="entry-copy"><span>阅读材料</span><h3><a class="entry-title-link" href="liaozhai_stories/yingning/editor.html?view=annotated" target="_blank" rel="noopener">《聊斋志异·婴宁》</a></h3></div>
       <div class="entry-reading"><strong>未读</strong><time></time></div>
       <div class="entry-editing"><strong>未编辑</strong><time></time></div>
@@ -406,53 +608,54 @@ html[data-workspace-skin="reading"] .entry{grid-template-columns:54px minmax(0,1
     </article></div>
 </section><section class="collection" id="shiji" data-collection>
   <header class="collection-header">
-    <div><p>史传经典</p><h2>《史记》</h2><span>本纪、世家与列传选读</span></div>
+    <button class="collection-toggle" type="button" aria-expanded="true" aria-controls="shiji-entries"><span class="collection-toggle-copy"><span class="collection-eyebrow">史传经典</span><span class="collection-title">《史记》</span><span class="collection-description">本纪、世家与列传选读</span></span><i aria-hidden="true">▾</i></button>
     <div class="collection-meta"><strong>7 篇</strong></div>
   </header>
-  <div class="entries"><article class="entry" data-search="七十列传·范雎蔡泽列传第十九 shiji/shiji_fanju_caize/editor.html 《史记》" data-editor-path="shiji/shiji_fanju_caize/editor.html">
-      <div class="entry-number">43</div>
+
+  <div class="entries" id="shiji-entries"><article class="entry" data-search="七十列传·范雎蔡泽列传第十九 shiji/shiji_fanju_caize/editor.html 《史记》" data-editor-path="shiji/shiji_fanju_caize/editor.html">
+      <div class="entry-number">69</div>
       <div class="entry-copy"><span>阅读材料</span><h3><a class="entry-title-link" href="shiji/shiji_fanju_caize/editor.html?view=annotated" target="_blank" rel="noopener">七十列传·范雎蔡泽列传第十九</a></h3></div>
       <div class="entry-reading"><strong>未读</strong><time></time></div>
       <div class="entry-editing"><strong>未编辑</strong><time></time></div>
       <div class="entry-action entry-editor"><a class="primary" href="shiji/shiji_fanju_caize/editor.html?view=annotated" target="_blank" rel="noopener">打开编辑器</a></div>
       <div class="entry-action entry-pdf"><span class="action-empty" aria-label="暂无 PDF">—</span></div>
     </article><article class="entry" data-search="七十列传·淮阴侯列传第三十二 shiji/shiji_huaiyin_hou/editor.html 《史记》" data-editor-path="shiji/shiji_huaiyin_hou/editor.html">
-      <div class="entry-number">44</div>
+      <div class="entry-number">70</div>
       <div class="entry-copy"><span>阅读材料</span><h3><a class="entry-title-link" href="shiji/shiji_huaiyin_hou/editor.html?view=annotated" target="_blank" rel="noopener">七十列传·淮阴侯列传第三十二</a></h3></div>
       <div class="entry-reading"><strong>未读</strong><time></time></div>
       <div class="entry-editing"><strong>未编辑</strong><time></time></div>
       <div class="entry-action entry-editor"><a class="primary" href="shiji/shiji_huaiyin_hou/editor.html?view=annotated" target="_blank" rel="noopener">打开编辑器</a></div>
       <div class="entry-action entry-pdf"><a class="secondary" href="shiji/shiji_huaiyin_hou/huaiyin_hou_annotated.pdf" target="_blank" rel="noopener">PDF</a></div>
     </article><article class="entry" data-search="七十列传·廉颇蔺相如列传第二十一 shiji/shiji_lianpo_linxiangru/editor.html 《史记》" data-editor-path="shiji/shiji_lianpo_linxiangru/editor.html">
-      <div class="entry-number">45</div>
+      <div class="entry-number">71</div>
       <div class="entry-copy"><span>阅读材料</span><h3><a class="entry-title-link" href="shiji/shiji_lianpo_linxiangru/editor.html?view=annotated" target="_blank" rel="noopener">七十列传·廉颇蔺相如列传第二十一</a></h3></div>
       <div class="entry-reading"><strong>未读</strong><time></time></div>
       <div class="entry-editing"><strong>未编辑</strong><time></time></div>
       <div class="entry-action entry-editor"><a class="primary" href="shiji/shiji_lianpo_linxiangru/editor.html?view=annotated" target="_blank" rel="noopener">打开编辑器</a></div>
       <div class="entry-action entry-pdf"><a class="secondary" href="shiji/shiji_lianpo_linxiangru/lianpo_linxiangru_annotated.pdf" target="_blank" rel="noopener">PDF</a></div>
     </article><article class="entry" data-search="七十列传·郦生陆贾列传第三十七 shiji/shiji_lisheng_lujia/editor.html 《史记》" data-editor-path="shiji/shiji_lisheng_lujia/editor.html">
-      <div class="entry-number">46</div>
+      <div class="entry-number">72</div>
       <div class="entry-copy"><span>阅读材料</span><h3><a class="entry-title-link" href="shiji/shiji_lisheng_lujia/editor.html?view=annotated" target="_blank" rel="noopener">七十列传·郦生陆贾列传第三十七</a></h3></div>
       <div class="entry-reading"><strong>未读</strong><time></time></div>
       <div class="entry-editing"><strong>未编辑</strong><time></time></div>
       <div class="entry-action entry-editor"><a class="primary" href="shiji/shiji_lisheng_lujia/editor.html?view=annotated" target="_blank" rel="noopener">打开编辑器</a></div>
       <div class="entry-action entry-pdf"><a class="secondary" href="shiji/shiji_lisheng_lujia/lisheng_lujia_annotated.pdf" target="_blank" rel="noopener">PDF</a></div>
     </article><article class="entry" data-search="十二本纪·秦本纪第五 shiji/shiji_qin_benji/editor.html 《史记》" data-editor-path="shiji/shiji_qin_benji/editor.html">
-      <div class="entry-number">47</div>
+      <div class="entry-number">73</div>
       <div class="entry-copy"><span>阅读材料</span><h3><a class="entry-title-link" href="shiji/shiji_qin_benji/editor.html?view=annotated" target="_blank" rel="noopener">十二本纪·秦本纪第五</a></h3></div>
       <div class="entry-reading"><strong>未读</strong><time></time></div>
       <div class="entry-editing"><strong>未编辑</strong><time></time></div>
       <div class="entry-action entry-editor"><a class="primary" href="shiji/shiji_qin_benji/editor.html?view=annotated" target="_blank" rel="noopener">打开编辑器</a></div>
       <div class="entry-action entry-pdf"><a class="secondary" href="shiji/shiji_qin_benji/qin_benji_annotated.pdf" target="_blank" rel="noopener">PDF</a></div>
     </article><article class="entry" data-search="七十列传·商君列传第八 shiji/shiji_shangjun/editor.html 《史记》" data-editor-path="shiji/shiji_shangjun/editor.html">
-      <div class="entry-number">48</div>
+      <div class="entry-number">74</div>
       <div class="entry-copy"><span>阅读材料</span><h3><a class="entry-title-link" href="shiji/shiji_shangjun/editor.html?view=annotated" target="_blank" rel="noopener">七十列传·商君列传第八</a></h3></div>
       <div class="entry-reading"><strong>未读</strong><time></time></div>
       <div class="entry-editing"><strong>未编辑</strong><time></time></div>
       <div class="entry-action entry-editor"><a class="primary" href="shiji/shiji_shangjun/editor.html?view=annotated" target="_blank" rel="noopener">打开编辑器</a></div>
       <div class="entry-action entry-pdf"><a class="secondary" href="shiji/shiji_shangjun/shangjun_annotated.pdf" target="_blank" rel="noopener">PDF</a></div>
     </article><article class="entry" data-search="三十世家·赵世家第十三 shiji/shiji_zhao_shijia/editor.html 《史记》" data-editor-path="shiji/shiji_zhao_shijia/editor.html">
-      <div class="entry-number">49</div>
+      <div class="entry-number">75</div>
       <div class="entry-copy"><span>阅读材料</span><h3><a class="entry-title-link" href="shiji/shiji_zhao_shijia/editor.html?view=annotated" target="_blank" rel="noopener">三十世家·赵世家第十三</a></h3></div>
       <div class="entry-reading"><strong>未读</strong><time></time></div>
       <div class="entry-editing"><strong>未编辑</strong><time></time></div>
@@ -461,288 +664,306 @@ html[data-workspace-skin="reading"] .entry{grid-template-columns:54px minmax(0,1
     </article></div>
 </section><section class="collection" id="jianshang" data-collection>
   <header class="collection-header">
-    <div><p>历史阅读</p><h2>《翦商》</h2><span>章节校读、注释与阅读记录</span></div>
+    <button class="collection-toggle" type="button" aria-expanded="true" aria-controls="jianshang-entries"><span class="collection-toggle-copy"><span class="collection-eyebrow">历史阅读</span><span class="collection-title">《翦商》</span><span class="collection-description">章节校读、注释与阅读记录</span></span><i aria-hidden="true">▾</i></button>
     <div class="collection-meta"><strong>30 篇</strong></div>
   </header>
-  <div class="entries"><article class="entry" data-search="《翦商》后记 ocr 手工校订 jianshang/afterword/editor.html 《翦商》" data-editor-path="jianshang/afterword/editor.html">
-      <div class="entry-number">50</div>
-      <div class="entry-copy"><span>后记</span><h3><a class="entry-title-link" href="jianshang/afterword/editor.html?view=annotated" target="_blank" rel="noopener">《翦商》后记 OCR 手工校订</a></h3></div>
+<div class="collection-resources"><a class="collection-resource" href="jianshang/翦商.pdf" target="_blank" rel="noopener">原书 PDF</a></div>
+  <div class="entries" id="jianshang-entries"><article class="entry" data-search="《翦商》引子 ocr 手工校订 jianshang/intro/editor.html 《翦商》" data-editor-path="jianshang/intro/editor.html">
+      <div class="entry-number">76</div>
+      <div class="entry-copy"><span>导言</span><h3><a class="entry-title-link" href="jianshang/intro/editor.html?view=annotated" target="_blank" rel="noopener">《翦商》引子 OCR 手工校订</a></h3></div>
       <div class="entry-reading"><strong>未读</strong><time></time></div>
       <div class="entry-editing"><strong>未编辑</strong><time></time></div>
-      <div class="entry-action entry-editor"><a class="primary" href="jianshang/afterword/editor.html?view=annotated" target="_blank" rel="noopener">打开编辑器</a></div>
-      <div class="entry-action entry-pdf"><a class="secondary" href="jianshang/afterword/afterword_annotated.pdf" target="_blank" rel="noopener">PDF</a></div>
+      <div class="entry-action entry-editor"><a class="primary" href="jianshang/intro/editor.html?view=annotated" target="_blank" rel="noopener">打开编辑器</a></div>
+      <div class="entry-action entry-pdf"><a class="secondary" href="jianshang/intro/intro_annotated.pdf" target="_blank" rel="noopener">PDF</a></div>
     </article><article class="entry" data-search="《翦商》第一章 新石器时代的社会升级 ocr 手工校订 jianshang/chapter_01/editor.html 《翦商》" data-editor-path="jianshang/chapter_01/editor.html">
-      <div class="entry-number">51</div>
+      <div class="entry-number">77</div>
       <div class="entry-copy"><span>第1章</span><h3><a class="entry-title-link" href="jianshang/chapter_01/editor.html?view=annotated" target="_blank" rel="noopener">《翦商》第一章 新石器时代的社会升级 OCR 手工校订</a></h3></div>
       <div class="entry-reading"><strong>未读</strong><time></time></div>
       <div class="entry-editing"><strong>未编辑</strong><time></time></div>
       <div class="entry-action entry-editor"><a class="primary" href="jianshang/chapter_01/editor.html?view=annotated" target="_blank" rel="noopener">打开编辑器</a></div>
       <div class="entry-action entry-pdf"><a class="secondary" href="jianshang/chapter_01/chapter_01_annotated.pdf" target="_blank" rel="noopener">PDF</a></div>
     </article><article class="entry" data-search="《翦商》第二章 大禹治水真相：稻与龙 ocr 手工校订 jianshang/chapter_02/editor.html 《翦商》" data-editor-path="jianshang/chapter_02/editor.html">
-      <div class="entry-number">52</div>
+      <div class="entry-number">78</div>
       <div class="entry-copy"><span>第2章</span><h3><a class="entry-title-link" href="jianshang/chapter_02/editor.html?view=annotated" target="_blank" rel="noopener">《翦商》第二章 大禹治水真相：稻与龙 OCR 手工校订</a></h3></div>
       <div class="entry-reading"><strong>未读</strong><time></time></div>
       <div class="entry-editing"><strong>未编辑</strong><time></time></div>
       <div class="entry-action entry-editor"><a class="primary" href="jianshang/chapter_02/editor.html?view=annotated" target="_blank" rel="noopener">打开编辑器</a></div>
       <div class="entry-action entry-pdf"><a class="secondary" href="jianshang/chapter_02/chapter_02_annotated.pdf" target="_blank" rel="noopener">PDF</a></div>
     </article><article class="entry" data-search="《翦商》第三章 二里头：青铜铸造王权 ocr 手工校订 jianshang/chapter_03/editor.html 《翦商》" data-editor-path="jianshang/chapter_03/editor.html">
-      <div class="entry-number">53</div>
+      <div class="entry-number">79</div>
       <div class="entry-copy"><span>第3章</span><h3><a class="entry-title-link" href="jianshang/chapter_03/editor.html?view=annotated" target="_blank" rel="noopener">《翦商》第三章 二里头：青铜铸造王权 OCR 手工校订</a></h3></div>
       <div class="entry-reading"><strong>未读</strong><time></time></div>
       <div class="entry-editing"><strong>未编辑</strong><time></time></div>
       <div class="entry-action entry-editor"><a class="primary" href="jianshang/chapter_03/editor.html?view=annotated" target="_blank" rel="noopener">打开编辑器</a></div>
       <div class="entry-action entry-pdf"><a class="secondary" href="jianshang/chapter_03/chapter_03_annotated.pdf" target="_blank" rel="noopener">PDF</a></div>
     </article><article class="entry" data-search="《翦商》第四章 异族占领二里头 ocr 手工校订 jianshang/chapter_04/editor.html 《翦商》" data-editor-path="jianshang/chapter_04/editor.html">
-      <div class="entry-number">54</div>
+      <div class="entry-number">80</div>
       <div class="entry-copy"><span>第4章</span><h3><a class="entry-title-link" href="jianshang/chapter_04/editor.html?view=annotated" target="_blank" rel="noopener">《翦商》第四章 异族占领二里头 OCR 手工校订</a></h3></div>
       <div class="entry-reading"><strong>未读</strong><time></time></div>
       <div class="entry-editing"><strong>未编辑</strong><time></time></div>
       <div class="entry-action entry-editor"><a class="primary" href="jianshang/chapter_04/editor.html?view=annotated" target="_blank" rel="noopener">打开编辑器</a></div>
       <div class="entry-action entry-pdf"><a class="secondary" href="jianshang/chapter_04/chapter_04_annotated.pdf" target="_blank" rel="noopener">PDF</a></div>
     </article><article class="entry" data-search="《翦商》第五章 商族来源之谜 ocr 手工校订 jianshang/chapter_05/editor.html 《翦商》" data-editor-path="jianshang/chapter_05/editor.html">
-      <div class="entry-number">55</div>
+      <div class="entry-number">81</div>
       <div class="entry-copy"><span>第5章</span><h3><a class="entry-title-link" href="jianshang/chapter_05/editor.html?view=annotated" target="_blank" rel="noopener">《翦商》第五章 商族来源之谜 OCR 手工校订</a></h3></div>
       <div class="entry-reading"><strong>未读</strong><time></time></div>
       <div class="entry-editing"><strong>未编辑</strong><time></time></div>
       <div class="entry-action entry-editor"><a class="primary" href="jianshang/chapter_05/editor.html?view=annotated" target="_blank" rel="noopener">打开编辑器</a></div>
       <div class="entry-action entry-pdf"><a class="secondary" href="jianshang/chapter_05/chapter_05_annotated.pdf" target="_blank" rel="noopener">PDF</a></div>
     </article><article class="entry" data-search="《翦商》第六章 早商：仓城奇观 ocr 手工校订 jianshang/chapter_06/editor.html 《翦商》" data-editor-path="jianshang/chapter_06/editor.html">
-      <div class="entry-number">56</div>
+      <div class="entry-number">82</div>
       <div class="entry-copy"><span>第6章</span><h3><a class="entry-title-link" href="jianshang/chapter_06/editor.html?view=annotated" target="_blank" rel="noopener">《翦商》第六章 早商：仓城奇观 OCR 手工校订</a></h3></div>
       <div class="entry-reading"><strong>未读</strong><time></time></div>
       <div class="entry-editing"><strong>未编辑</strong><time></time></div>
       <div class="entry-action entry-editor"><a class="primary" href="jianshang/chapter_06/editor.html?view=annotated" target="_blank" rel="noopener">打开编辑器</a></div>
       <div class="entry-action entry-pdf"><a class="secondary" href="jianshang/chapter_06/chapter_06_annotated.pdf" target="_blank" rel="noopener">PDF</a></div>
     </article><article class="entry" data-search="《翦商》第七章 人祭繁荣与宗教改革运动 ocr 手工校订 jianshang/chapter_07/editor.html 《翦商》" data-editor-path="jianshang/chapter_07/editor.html">
-      <div class="entry-number">57</div>
+      <div class="entry-number">83</div>
       <div class="entry-copy"><span>第7章</span><h3><a class="entry-title-link" href="jianshang/chapter_07/editor.html?view=annotated" target="_blank" rel="noopener">《翦商》第七章 人祭繁荣与宗教改革运动 OCR 手工校订</a></h3></div>
       <div class="entry-reading"><strong>未读</strong><time></time></div>
       <div class="entry-editing"><strong>未编辑</strong><time></time></div>
       <div class="entry-action entry-editor"><a class="primary" href="jianshang/chapter_07/editor.html?view=annotated" target="_blank" rel="noopener">打开编辑器</a></div>
       <div class="entry-action entry-pdf"><a class="secondary" href="jianshang/chapter_07/chapter_07_annotated.pdf" target="_blank" rel="noopener">PDF</a></div>
     </article><article class="entry" data-search="《翦商》第八章 武德沦丧南土：盘龙城 ocr 手工校订 jianshang/chapter_08/editor.html 《翦商》" data-editor-path="jianshang/chapter_08/editor.html">
-      <div class="entry-number">58</div>
+      <div class="entry-number">84</div>
       <div class="entry-copy"><span>第8章</span><h3><a class="entry-title-link" href="jianshang/chapter_08/editor.html?view=annotated" target="_blank" rel="noopener">《翦商》第八章 武德沦丧南土：盘龙城 OCR 手工校订</a></h3></div>
       <div class="entry-reading"><strong>未读</strong><time></time></div>
       <div class="entry-editing"><strong>未编辑</strong><time></time></div>
       <div class="entry-action entry-editor"><a class="primary" href="jianshang/chapter_08/editor.html?view=annotated" target="_blank" rel="noopener">打开编辑器</a></div>
       <div class="entry-action entry-pdf"><a class="secondary" href="jianshang/chapter_08/chapter_08_annotated.pdf" target="_blank" rel="noopener">PDF</a></div>
     </article><article class="entry" data-search="《翦商》第九章 3300年前的军营：台西 ocr 手工校订 jianshang/chapter_09/editor.html 《翦商》" data-editor-path="jianshang/chapter_09/editor.html">
-      <div class="entry-number">59</div>
+      <div class="entry-number">85</div>
       <div class="entry-copy"><span>第9章</span><h3><a class="entry-title-link" href="jianshang/chapter_09/editor.html?view=annotated" target="_blank" rel="noopener">《翦商》第九章 3300年前的军营：台西 OCR 手工校订</a></h3></div>
       <div class="entry-reading"><strong>未读</strong><time></time></div>
       <div class="entry-editing"><strong>未编辑</strong><time></time></div>
       <div class="entry-action entry-editor"><a class="primary" href="jianshang/chapter_09/editor.html?view=annotated" target="_blank" rel="noopener">打开编辑器</a></div>
       <div class="entry-action entry-pdf"><a class="secondary" href="jianshang/chapter_09/chapter_09_annotated.pdf" target="_blank" rel="noopener">PDF</a></div>
     </article><article class="entry" data-search="《翦商》第十章 殷都王室的人祭 ocr 手工校订 jianshang/chapter_10/editor.html 《翦商》" data-editor-path="jianshang/chapter_10/editor.html">
-      <div class="entry-number">60</div>
+      <div class="entry-number">86</div>
       <div class="entry-copy"><span>第10章</span><h3><a class="entry-title-link" href="jianshang/chapter_10/editor.html?view=annotated" target="_blank" rel="noopener">《翦商》第十章 殷都王室的人祭 OCR 手工校订</a></h3></div>
       <div class="entry-reading"><strong>未读</strong><time></time></div>
       <div class="entry-editing"><strong>未编辑</strong><time></time></div>
       <div class="entry-action entry-editor"><a class="primary" href="jianshang/chapter_10/editor.html?view=annotated" target="_blank" rel="noopener">打开编辑器</a></div>
       <div class="entry-action entry-pdf"><a class="secondary" href="jianshang/chapter_10/chapter_10_annotated.pdf" target="_blank" rel="noopener">PDF</a></div>
     </article><article class="entry" data-search="《翦商》第十一章 商人的思维与国家 ocr 手工校订 jianshang/chapter_11/editor.html 《翦商》" data-editor-path="jianshang/chapter_11/editor.html">
-      <div class="entry-number">61</div>
+      <div class="entry-number">87</div>
       <div class="entry-copy"><span>第11章</span><h3><a class="entry-title-link" href="jianshang/chapter_11/editor.html?view=annotated" target="_blank" rel="noopener">《翦商》第十一章 商人的思维与国家 OCR 手工校订</a></h3></div>
       <div class="entry-reading"><strong>未读</strong><time></time></div>
       <div class="entry-editing"><strong>未编辑</strong><time></time></div>
       <div class="entry-action entry-editor"><a class="primary" href="jianshang/chapter_11/editor.html?view=annotated" target="_blank" rel="noopener">打开编辑器</a></div>
       <div class="entry-action entry-pdf"><a class="secondary" href="jianshang/chapter_11/chapter_11_annotated.pdf" target="_blank" rel="noopener">PDF</a></div>
     </article><article class="entry" data-search="《翦商》第十二章 王后的社交圈 ocr 手工校订 jianshang/chapter_12/editor.html 《翦商》" data-editor-path="jianshang/chapter_12/editor.html">
-      <div class="entry-number">62</div>
+      <div class="entry-number">88</div>
       <div class="entry-copy"><span>第12章</span><h3><a class="entry-title-link" href="jianshang/chapter_12/editor.html?view=annotated" target="_blank" rel="noopener">《翦商》第十二章 王后的社交圈 OCR 手工校订</a></h3></div>
       <div class="entry-reading"><strong>未读</strong><time></time></div>
       <div class="entry-editing"><strong>未编辑</strong><time></time></div>
       <div class="entry-action entry-editor"><a class="primary" href="jianshang/chapter_12/editor.html?view=annotated" target="_blank" rel="noopener">打开编辑器</a></div>
       <div class="entry-action entry-pdf"><a class="secondary" href="jianshang/chapter_12/chapter_12_annotated.pdf" target="_blank" rel="noopener">PDF</a></div>
     </article><article class="entry" data-search="《翦商》第十三章 大学与王子 ocr 手工校订 jianshang/chapter_13/editor.html 《翦商》" data-editor-path="jianshang/chapter_13/editor.html">
-      <div class="entry-number">63</div>
+      <div class="entry-number">89</div>
       <div class="entry-copy"><span>第13章</span><h3><a class="entry-title-link" href="jianshang/chapter_13/editor.html?view=annotated" target="_blank" rel="noopener">《翦商》第十三章 大学与王子 OCR 手工校订</a></h3></div>
       <div class="entry-reading"><strong>未读</strong><time></time></div>
       <div class="entry-editing"><strong>未编辑</strong><time></time></div>
       <div class="entry-action entry-editor"><a class="primary" href="jianshang/chapter_13/editor.html?view=annotated" target="_blank" rel="noopener">打开编辑器</a></div>
       <div class="entry-action entry-pdf"><a class="secondary" href="jianshang/chapter_13/chapter_13_annotated.pdf" target="_blank" rel="noopener">PDF</a></div>
     </article><article class="entry" data-search="《翦商》第十四章 西土拉锯战：老牛坡 ocr 手工校订 jianshang/chapter_14/editor.html 《翦商》" data-editor-path="jianshang/chapter_14/editor.html">
-      <div class="entry-number">64</div>
+      <div class="entry-number">90</div>
       <div class="entry-copy"><span>第14章</span><h3><a class="entry-title-link" href="jianshang/chapter_14/editor.html?view=annotated" target="_blank" rel="noopener">《翦商》第十四章 西土拉锯战：老牛坡 OCR 手工校订</a></h3></div>
       <div class="entry-reading"><strong>未读</strong><time></time></div>
       <div class="entry-editing"><strong>未编辑</strong><time></time></div>
       <div class="entry-action entry-editor"><a class="primary" href="jianshang/chapter_14/editor.html?view=annotated" target="_blank" rel="noopener">打开编辑器</a></div>
       <div class="entry-action entry-pdf"><a class="secondary" href="jianshang/chapter_14/chapter_14_annotated.pdf" target="_blank" rel="noopener">PDF</a></div>
     </article><article class="entry" data-search="《翦商》第十五章 周族的起源史诗与考古 ocr 手工校订 jianshang/chapter_15/editor.html 《翦商》" data-editor-path="jianshang/chapter_15/editor.html">
-      <div class="entry-number">65</div>
+      <div class="entry-number">91</div>
       <div class="entry-copy"><span>第15章</span><h3><a class="entry-title-link" href="jianshang/chapter_15/editor.html?view=annotated" target="_blank" rel="noopener">《翦商》第十五章 周族的起源史诗与考古 OCR 手工校订</a></h3></div>
       <div class="entry-reading"><strong>未读</strong><time></time></div>
       <div class="entry-editing"><strong>未编辑</strong><time></time></div>
       <div class="entry-action entry-editor"><a class="primary" href="jianshang/chapter_15/editor.html?view=annotated" target="_blank" rel="noopener">打开编辑器</a></div>
       <div class="entry-action entry-pdf"><a class="secondary" href="jianshang/chapter_15/chapter_15_annotated.pdf" target="_blank" rel="noopener">PDF</a></div>
     </article><article class="entry" data-search="《翦商》第十六章 成为商朝爪牙：去周原 ocr 手工校订 jianshang/chapter_16/editor.html 《翦商》" data-editor-path="jianshang/chapter_16/editor.html">
-      <div class="entry-number">66</div>
+      <div class="entry-number">92</div>
       <div class="entry-copy"><span>第16章</span><h3><a class="entry-title-link" href="jianshang/chapter_16/editor.html?view=annotated" target="_blank" rel="noopener">《翦商》第十六章 成为商朝爪牙：去周原 OCR 手工校订</a></h3></div>
       <div class="entry-reading"><strong>未读</strong><time></time></div>
       <div class="entry-editing"><strong>未编辑</strong><time></time></div>
       <div class="entry-action entry-editor"><a class="primary" href="jianshang/chapter_16/editor.html?view=annotated" target="_blank" rel="noopener">打开编辑器</a></div>
       <div class="entry-action entry-pdf"><a class="secondary" href="jianshang/chapter_16/chapter_16_annotated.pdf" target="_blank" rel="noopener">PDF</a></div>
     </article><article class="entry" data-search="《翦商》第十七章 周文王地窖里的秘密 ocr 手工校订 jianshang/chapter_17/editor.html 《翦商》" data-editor-path="jianshang/chapter_17/editor.html">
-      <div class="entry-number">67</div>
+      <div class="entry-number">93</div>
       <div class="entry-copy"><span>第17章</span><h3><a class="entry-title-link" href="jianshang/chapter_17/editor.html?view=annotated" target="_blank" rel="noopener">《翦商》第十七章 周文王地窖里的秘密 OCR 手工校订</a></h3></div>
       <div class="entry-reading"><strong>未读</strong><time></time></div>
       <div class="entry-editing"><strong>未编辑</strong><time></time></div>
       <div class="entry-action entry-editor"><a class="primary" href="jianshang/chapter_17/editor.html?view=annotated" target="_blank" rel="noopener">打开编辑器</a></div>
       <div class="entry-action entry-pdf"><a class="secondary" href="jianshang/chapter_17/chapter_17_annotated.pdf" target="_blank" rel="noopener">PDF</a></div>
     </article><article class="entry" data-search="《翦商》第十八章 《易经》里的猎俘与献俘 ocr 手工校订 jianshang/chapter_18/editor.html 《翦商》" data-editor-path="jianshang/chapter_18/editor.html">
-      <div class="entry-number">68</div>
+      <div class="entry-number">94</div>
       <div class="entry-copy"><span>第18章</span><h3><a class="entry-title-link" href="jianshang/chapter_18/editor.html?view=annotated" target="_blank" rel="noopener">《翦商》第十八章 《易经》里的猎俘与献俘 OCR 手工校订</a></h3></div>
       <div class="entry-reading"><strong>未读</strong><time></time></div>
       <div class="entry-editing"><strong>未编辑</strong><time></time></div>
       <div class="entry-action entry-editor"><a class="primary" href="jianshang/chapter_18/editor.html?view=annotated" target="_blank" rel="noopener">打开编辑器</a></div>
       <div class="entry-action entry-pdf"><a class="secondary" href="jianshang/chapter_18/chapter_18_annotated.pdf" target="_blank" rel="noopener">PDF</a></div>
     </article><article class="entry" data-search="《翦商》第十九章 羑里牢狱记忆 ocr 手工校订 jianshang/chapter_19/editor.html 《翦商》" data-editor-path="jianshang/chapter_19/editor.html">
-      <div class="entry-number">69</div>
+      <div class="entry-number">95</div>
       <div class="entry-copy"><span>第19章</span><h3><a class="entry-title-link" href="jianshang/chapter_19/editor.html?view=annotated" target="_blank" rel="noopener">《翦商》第十九章 羑里牢狱记忆 OCR 手工校订</a></h3></div>
       <div class="entry-reading"><strong>未读</strong><time></time></div>
       <div class="entry-editing"><strong>未编辑</strong><time></time></div>
       <div class="entry-action entry-editor"><a class="primary" href="jianshang/chapter_19/editor.html?view=annotated" target="_blank" rel="noopener">打开编辑器</a></div>
       <div class="entry-action entry-pdf"><a class="secondary" href="jianshang/chapter_19/chapter_19_annotated.pdf" target="_blank" rel="noopener">PDF</a></div>
     </article><article class="entry" data-search="《翦商》第二十章 翦商与《易经》的世界观 ocr 手工校订 jianshang/chapter_20/editor.html 《翦商》" data-editor-path="jianshang/chapter_20/editor.html">
-      <div class="entry-number">70</div>
+      <div class="entry-number">96</div>
       <div class="entry-copy"><span>第20章</span><h3><a class="entry-title-link" href="jianshang/chapter_20/editor.html?view=annotated" target="_blank" rel="noopener">《翦商》第二十章 翦商与《易经》的世界观 OCR 手工校订</a></h3></div>
       <div class="entry-reading"><strong>未读</strong><time></time></div>
       <div class="entry-editing"><strong>未编辑</strong><time></time></div>
       <div class="entry-action entry-editor"><a class="primary" href="jianshang/chapter_20/editor.html?view=annotated" target="_blank" rel="noopener">打开编辑器</a></div>
       <div class="entry-action entry-pdf"><a class="secondary" href="jianshang/chapter_20/chapter_20_annotated.pdf" target="_blank" rel="noopener">PDF</a></div>
     </article><article class="entry" data-search="《翦商》第二十一章 殷都民间的人祭 ocr 手工校订 jianshang/chapter_21/editor.html 《翦商》" data-editor-path="jianshang/chapter_21/editor.html">
-      <div class="entry-number">71</div>
+      <div class="entry-number">97</div>
       <div class="entry-copy"><span>第21章</span><h3><a class="entry-title-link" href="jianshang/chapter_21/editor.html?view=annotated" target="_blank" rel="noopener">《翦商》第二十一章 殷都民间的人祭 OCR 手工校订</a></h3></div>
       <div class="entry-reading"><strong>未读</strong><time></time></div>
       <div class="entry-editing"><strong>未编辑</strong><time></time></div>
       <div class="entry-action entry-editor"><a class="primary" href="jianshang/chapter_21/editor.html?view=annotated" target="_blank" rel="noopener">打开编辑器</a></div>
       <div class="entry-action entry-pdf"><a class="secondary" href="jianshang/chapter_21/chapter_21_annotated.pdf" target="_blank" rel="noopener">PDF</a></div>
     </article><article class="entry" data-search="《翦商》第二十二章 纣王的东南战争 ocr 手工校订 jianshang/chapter_22/editor.html 《翦商》" data-editor-path="jianshang/chapter_22/editor.html">
-      <div class="entry-number">72</div>
+      <div class="entry-number">98</div>
       <div class="entry-copy"><span>第22章</span><h3><a class="entry-title-link" href="jianshang/chapter_22/editor.html?view=annotated" target="_blank" rel="noopener">《翦商》第二十二章 纣王的东南战争 OCR 手工校订</a></h3></div>
       <div class="entry-reading"><strong>未读</strong><time></time></div>
       <div class="entry-editing"><strong>未编辑</strong><time></time></div>
       <div class="entry-action entry-editor"><a class="primary" href="jianshang/chapter_22/editor.html?view=annotated" target="_blank" rel="noopener">打开编辑器</a></div>
       <div class="entry-action entry-pdf"><a class="secondary" href="jianshang/chapter_22/chapter_22_annotated.pdf" target="_blank" rel="noopener">PDF</a></div>
     </article><article class="entry" data-search="《翦商》第二十三章 姜太公与周方伯 ocr 手工校订 jianshang/chapter_23/editor.html 《翦商》" data-editor-path="jianshang/chapter_23/editor.html">
-      <div class="entry-number">73</div>
+      <div class="entry-number">99</div>
       <div class="entry-copy"><span>第23章</span><h3><a class="entry-title-link" href="jianshang/chapter_23/editor.html?view=annotated" target="_blank" rel="noopener">《翦商》第二十三章 姜太公与周方伯 OCR 手工校订</a></h3></div>
       <div class="entry-reading"><strong>未读</strong><time></time></div>
       <div class="entry-editing"><strong>未编辑</strong><time></time></div>
       <div class="entry-action entry-editor"><a class="primary" href="jianshang/chapter_23/editor.html?view=annotated" target="_blank" rel="noopener">打开编辑器</a></div>
       <div class="entry-action entry-pdf"><a class="secondary" href="jianshang/chapter_23/chapter_23_annotated.pdf" target="_blank" rel="noopener">PDF</a></div>
     </article><article class="entry" data-search="《翦商》第二十四章 西土之人 ocr 手工校订 jianshang/chapter_24/editor.html 《翦商》" data-editor-path="jianshang/chapter_24/editor.html">
-      <div class="entry-number">74</div>
+      <div class="entry-number">100</div>
       <div class="entry-copy"><span>第24章</span><h3><a class="entry-title-link" href="jianshang/chapter_24/editor.html?view=annotated" target="_blank" rel="noopener">《翦商》第二十四章 西土之人 OCR 手工校订</a></h3></div>
       <div class="entry-reading"><strong>未读</strong><time></time></div>
       <div class="entry-editing"><strong>未编辑</strong><time></time></div>
       <div class="entry-action entry-editor"><a class="primary" href="jianshang/chapter_24/editor.html?view=annotated" target="_blank" rel="noopener">打开编辑器</a></div>
       <div class="entry-action entry-pdf"><a class="secondary" href="jianshang/chapter_24/chapter_24_annotated.pdf" target="_blank" rel="noopener">PDF</a></div>
     </article><article class="entry" data-search="《翦商》第二十五章 牧野鹰扬 ocr 手工校订 jianshang/chapter_25/editor.html 《翦商》" data-editor-path="jianshang/chapter_25/editor.html">
-      <div class="entry-number">75</div>
+      <div class="entry-number">101</div>
       <div class="entry-copy"><span>第25章</span><h3><a class="entry-title-link" href="jianshang/chapter_25/editor.html?view=annotated" target="_blank" rel="noopener">《翦商》第二十五章 牧野鹰扬 OCR 手工校订</a></h3></div>
       <div class="entry-reading"><strong>未读</strong><time></time></div>
       <div class="entry-editing"><strong>未编辑</strong><time></time></div>
       <div class="entry-action entry-editor"><a class="primary" href="jianshang/chapter_25/editor.html?view=annotated" target="_blank" rel="noopener">打开编辑器</a></div>
       <div class="entry-action entry-pdf"><a class="secondary" href="jianshang/chapter_25/chapter_25_annotated.pdf" target="_blank" rel="noopener">PDF</a></div>
     </article><article class="entry" data-search="《翦商》第二十六章 周公新时代 ocr 手工校订 jianshang/chapter_26/editor.html 《翦商》" data-editor-path="jianshang/chapter_26/editor.html">
-      <div class="entry-number">76</div>
+      <div class="entry-number">102</div>
       <div class="entry-copy"><span>第26章</span><h3><a class="entry-title-link" href="jianshang/chapter_26/editor.html?view=annotated" target="_blank" rel="noopener">《翦商》第二十六章 周公新时代 OCR 手工校订</a></h3></div>
       <div class="entry-reading"><strong>未读</strong><time></time></div>
       <div class="entry-editing"><strong>未编辑</strong><time></time></div>
       <div class="entry-action entry-editor"><a class="primary" href="jianshang/chapter_26/editor.html?view=annotated" target="_blank" rel="noopener">打开编辑器</a></div>
       <div class="entry-action entry-pdf"><a class="secondary" href="jianshang/chapter_26/chapter_26_annotated.pdf" target="_blank" rel="noopener">PDF</a></div>
     </article><article class="entry" data-search="《翦商》第二十七章 诸神远去之后 ocr 手工校订 jianshang/chapter_27/editor.html 《翦商》" data-editor-path="jianshang/chapter_27/editor.html">
-      <div class="entry-number">77</div>
+      <div class="entry-number">103</div>
       <div class="entry-copy"><span>第27章</span><h3><a class="entry-title-link" href="jianshang/chapter_27/editor.html?view=annotated" target="_blank" rel="noopener">《翦商》第二十七章 诸神远去之后 OCR 手工校订</a></h3></div>
       <div class="entry-reading"><strong>未读</strong><time></time></div>
       <div class="entry-editing"><strong>未编辑</strong><time></time></div>
       <div class="entry-action entry-editor"><a class="primary" href="jianshang/chapter_27/editor.html?view=annotated" target="_blank" rel="noopener">打开编辑器</a></div>
       <div class="entry-action entry-pdf"><a class="secondary" href="jianshang/chapter_27/chapter_27_annotated.pdf" target="_blank" rel="noopener">PDF</a></div>
     </article><article class="entry" data-search="《翦商》尾声：周公到孔子 ocr 手工校订 jianshang/epilogue/editor.html 《翦商》" data-editor-path="jianshang/epilogue/editor.html">
-      <div class="entry-number">78</div>
+      <div class="entry-number">104</div>
       <div class="entry-copy"><span>尾声</span><h3><a class="entry-title-link" href="jianshang/epilogue/editor.html?view=annotated" target="_blank" rel="noopener">《翦商》尾声：周公到孔子 OCR 手工校订</a></h3></div>
       <div class="entry-reading"><strong>未读</strong><time></time></div>
       <div class="entry-editing"><strong>未编辑</strong><time></time></div>
       <div class="entry-action entry-editor"><a class="primary" href="jianshang/epilogue/editor.html?view=annotated" target="_blank" rel="noopener">打开编辑器</a></div>
       <div class="entry-action entry-pdf"><a class="secondary" href="jianshang/epilogue/epilogue_annotated.pdf" target="_blank" rel="noopener">PDF</a></div>
-    </article><article class="entry" data-search="《翦商》引子 ocr 手工校订 jianshang/intro/editor.html 《翦商》" data-editor-path="jianshang/intro/editor.html">
-      <div class="entry-number">79</div>
-      <div class="entry-copy"><span>导言</span><h3><a class="entry-title-link" href="jianshang/intro/editor.html?view=annotated" target="_blank" rel="noopener">《翦商》引子 OCR 手工校订</a></h3></div>
+    </article><article class="entry" data-search="《翦商》后记 ocr 手工校订 jianshang/afterword/editor.html 《翦商》" data-editor-path="jianshang/afterword/editor.html">
+      <div class="entry-number">105</div>
+      <div class="entry-copy"><span>后记</span><h3><a class="entry-title-link" href="jianshang/afterword/editor.html?view=annotated" target="_blank" rel="noopener">《翦商》后记 OCR 手工校订</a></h3></div>
       <div class="entry-reading"><strong>未读</strong><time></time></div>
       <div class="entry-editing"><strong>未编辑</strong><time></time></div>
-      <div class="entry-action entry-editor"><a class="primary" href="jianshang/intro/editor.html?view=annotated" target="_blank" rel="noopener">打开编辑器</a></div>
-      <div class="entry-action entry-pdf"><a class="secondary" href="jianshang/intro/intro_annotated.pdf" target="_blank" rel="noopener">PDF</a></div>
+      <div class="entry-action entry-editor"><a class="primary" href="jianshang/afterword/editor.html?view=annotated" target="_blank" rel="noopener">打开编辑器</a></div>
+      <div class="entry-action entry-pdf"><a class="secondary" href="jianshang/afterword/afterword_annotated.pdf" target="_blank" rel="noopener">PDF</a></div>
     </article></div>
 </section><section class="collection" id="nine_commentaries" data-collection>
   <header class="collection-header">
-    <div><p>专题阅读</p><h2>《九评共产党》</h2><span>章节阅读与校读材料</span></div>
-    <div class="collection-meta"><strong>1 篇</strong></div>
+    <button class="collection-toggle" type="button" aria-expanded="true" aria-controls="nine_commentaries-entries"><span class="collection-toggle-copy"><span class="collection-eyebrow">专题阅读</span><span class="collection-title">九评</span><span class="collection-description">章节阅读与校读材料</span></span><i aria-hidden="true">▾</i></button>
+    <div class="collection-meta"><a class="collection-tool" href="nine_commentaries/source_index/select_readings.html">选择更多篇目</a><strong>2 篇</strong></div>
   </header>
-  <div class="entries"><article class="entry" data-search="《十年论战》第一章 ocr 编辑器 nine_commentaries/chapter_01/editor.html 《九评共产党》" data-editor-path="nine_commentaries/chapter_01/editor.html">
-      <div class="entry-number">80</div>
+<div class="collection-resources"><a class="collection-resource" href="nine_commentaries/吴冷西：十年论战——1956-1966中苏关系回忆录.pdf" target="_blank" rel="noopener">原书 PDF</a></div>
+  <div class="entries" id="nine_commentaries-entries"><article class="entry" data-search="《十年论战》第一章 ocr 编辑器 nine_commentaries/chapter_01/editor.html 九评" data-editor-path="nine_commentaries/chapter_01/editor.html">
+      <div class="entry-number">106</div>
       <div class="entry-copy"><span>阅读材料</span><h3><a class="entry-title-link" href="nine_commentaries/chapter_01/editor.html?view=annotated" target="_blank" rel="noopener">《十年论战》第一章 OCR 编辑器</a></h3></div>
       <div class="entry-reading"><strong>未读</strong><time></time></div>
       <div class="entry-editing"><strong>未编辑</strong><time></time></div>
       <div class="entry-action entry-editor"><a class="primary" href="nine_commentaries/chapter_01/editor.html?view=annotated" target="_blank" rel="noopener">打开编辑器</a></div>
       <div class="entry-action entry-pdf"><span class="action-empty" aria-label="暂无 PDF">—</span></div>
+    </article><article class="entry" data-search="九评 中苏论战 中方文献 苏方文献 苏共中央公开信 专题目录" data-editor-path="nine_commentaries/source_index/select_readings.html">
+      <div class="entry-number">107</div>
+      <div class="entry-copy"><span>专题目录</span><h3><a class="entry-title-link" href="nine_commentaries/source_index/select_readings.html" target="_blank" rel="noopener">中苏论战与九评文献目录（49篇）</a></h3></div>
+      <div class="entry-reading"><strong>未读</strong><time></time></div>
+      <div class="entry-editing"><strong>未编辑</strong><time></time></div>
+      <div class="entry-action entry-editor"><a class="primary" href="nine_commentaries/source_index/select_readings.html" target="_blank" rel="noopener">打开目录</a></div>
+      <div class="entry-action entry-pdf"><span class="action-empty" aria-label="暂无 PDF">—</span></div>
     </article></div>
 </section><section class="collection" id="marxist_classics" data-collection>
   <header class="collection-header">
-    <div><p>理论文献</p><h2>马克思主义经典</h2><span>经典文本专题摘录与注释</span></div>
-    <div class="collection-meta"><strong>1 篇</strong></div>
+    <button class="collection-toggle" type="button" aria-expanded="true" aria-controls="marxist_classics-entries"><span class="collection-toggle-copy"><span class="collection-eyebrow">理论文献</span><span class="collection-title">马克思主义经典</span><span class="collection-description">经典文本专题摘录与注释</span></span><i aria-hidden="true">▾</i></button>
+    <div class="collection-meta"><a class="collection-tool" href="marxist_classics/american_civil_war/select_readings.html">选择更多篇目</a><strong>2 篇</strong></div>
   </header>
-  <div class="entries"><article class="entry" data-search="马克思恩格斯列宁论无产阶级专政（33条语录及注释） marxist_classics/proletarian_dictatorship_33_quotes/editor.html 马克思主义经典" data-editor-path="marxist_classics/proletarian_dictatorship_33_quotes/editor.html">
-      <div class="entry-number">81</div>
+
+  <div class="entries" id="marxist_classics-entries"><article class="entry" data-search="马克思恩格斯列宁论无产阶级专政（33条语录及注释） marxist_classics/proletarian_dictatorship_33_quotes/editor.html 马克思主义经典" data-editor-path="marxist_classics/proletarian_dictatorship_33_quotes/editor.html">
+      <div class="entry-number">108</div>
       <div class="entry-copy"><span>阅读材料</span><h3><a class="entry-title-link" href="marxist_classics/proletarian_dictatorship_33_quotes/editor.html?view=annotated" target="_blank" rel="noopener">马克思恩格斯列宁论无产阶级专政（33条语录及注释）</a></h3></div>
       <div class="entry-reading"><strong>未读</strong><time></time></div>
       <div class="entry-editing"><strong>未编辑</strong><time></time></div>
       <div class="entry-action entry-editor"><a class="primary" href="marxist_classics/proletarian_dictatorship_33_quotes/editor.html?view=annotated" target="_blank" rel="noopener">打开编辑器</a></div>
       <div class="entry-action entry-pdf"><span class="action-empty" aria-label="暂无 PDF">—</span></div>
+    </article><article class="entry" data-search="马克思 恩格斯 美国内战 南北战争 论文 通信 专题目录" data-editor-path="marxist_classics/american_civil_war/select_readings.html">
+      <div class="entry-number">109</div>
+      <div class="entry-copy"><span>专题目录</span><h3><a class="entry-title-link" href="marxist_classics/american_civil_war/select_readings.html" target="_blank" rel="noopener">马克思、恩格斯论美国内战（113篇目录）</a></h3></div>
+      <div class="entry-reading"><strong>未读</strong><time></time></div>
+      <div class="entry-editing"><strong>未编辑</strong><time></time></div>
+      <div class="entry-action entry-editor"><a class="primary" href="marxist_classics/american_civil_war/select_readings.html" target="_blank" rel="noopener">打开目录</a></div>
+      <div class="entry-action entry-pdf"><span class="action-empty" aria-label="暂无 PDF">—</span></div>
     </article></div>
 </section><section class="collection" id="ai_course" data-collection>
   <header class="collection-header">
-    <div><p>课程资料</p><h2>AI 课程</h2><span>课程文章、讲义与学习笔记</span></div>
+    <button class="collection-toggle" type="button" aria-expanded="true" aria-controls="ai_course-entries"><span class="collection-toggle-copy"><span class="collection-eyebrow">课程资料</span><span class="collection-title">AI 课程</span><span class="collection-description">课程文章、讲义与学习笔记</span></span><i aria-hidden="true">▾</i></button>
     <div class="collection-meta"><strong>6 篇</strong></div>
   </header>
-  <div class="entries"><article class="entry" data-search="how ai works · lessons 1–2 ai_course/articles/article_1_lessons_1_2/editor.html ai 课程" data-editor-path="ai_course/articles/article_1_lessons_1_2/editor.html">
-      <div class="entry-number">82</div>
+
+  <div class="entries" id="ai_course-entries"><article class="entry" data-search="how ai works · lessons 1–2 ai_course/articles/article_1_lessons_1_2/editor.html ai 课程" data-editor-path="ai_course/articles/article_1_lessons_1_2/editor.html">
+      <div class="entry-number">110</div>
       <div class="entry-copy"><span>课程文章</span><h3><a class="entry-title-link" href="ai_course/articles/article_1_lessons_1_2/editor.html?view=annotated" target="_blank" rel="noopener">How AI Works · Lessons 1–2</a></h3></div>
       <div class="entry-reading"><strong>未读</strong><time></time></div>
       <div class="entry-editing"><strong>未编辑</strong><time></time></div>
       <div class="entry-action entry-editor"><a class="primary" href="ai_course/articles/article_1_lessons_1_2/editor.html?view=annotated" target="_blank" rel="noopener">打开编辑器</a></div>
       <div class="entry-action entry-pdf"><span class="action-empty" aria-label="暂无 PDF">—</span></div>
     </article><article class="entry" data-search="how ai learns · lessons 3–4 ai_course/articles/article_2_lessons_3_4/editor.html ai 课程" data-editor-path="ai_course/articles/article_2_lessons_3_4/editor.html">
-      <div class="entry-number">83</div>
+      <div class="entry-number">111</div>
       <div class="entry-copy"><span>课程文章</span><h3><a class="entry-title-link" href="ai_course/articles/article_2_lessons_3_4/editor.html?view=annotated" target="_blank" rel="noopener">How AI Learns · Lessons 3–4</a></h3></div>
       <div class="entry-reading"><strong>未读</strong><time></time></div>
       <div class="entry-editing"><strong>未编辑</strong><time></time></div>
       <div class="entry-action entry-editor"><a class="primary" href="ai_course/articles/article_2_lessons_3_4/editor.html?view=annotated" target="_blank" rel="noopener">打开编辑器</a></div>
       <div class="entry-action entry-pdf"><a class="secondary" href="ai_course/articles/article_2_lessons_3_4/ai_course_article_2_lessons_3_4.pdf" target="_blank" rel="noopener">PDF</a></div>
     </article><article class="entry" data-search="how ai uses language · lessons 5–6 ai_course/articles/article_3_lessons_5_6/editor.html ai 课程" data-editor-path="ai_course/articles/article_3_lessons_5_6/editor.html">
-      <div class="entry-number">84</div>
+      <div class="entry-number">112</div>
       <div class="entry-copy"><span>课程文章</span><h3><a class="entry-title-link" href="ai_course/articles/article_3_lessons_5_6/editor.html?view=annotated" target="_blank" rel="noopener">How AI Uses Language · Lessons 5–6</a></h3></div>
       <div class="entry-reading"><strong>未读</strong><time></time></div>
       <div class="entry-editing"><strong>未编辑</strong><time></time></div>
       <div class="entry-action entry-editor"><a class="primary" href="ai_course/articles/article_3_lessons_5_6/editor.html?view=annotated" target="_blank" rel="noopener">打开编辑器</a></div>
       <div class="entry-action entry-pdf"><a class="secondary" href="ai_course/articles/article_3_lessons_5_6/ai_course_article_3_lessons_5_6.pdf" target="_blank" rel="noopener">PDF</a></div>
     </article><article class="entry" data-search="using ai responsibly · lesson 7 and summary ai_course/articles/article_4_lesson_7_summary/editor.html ai 课程" data-editor-path="ai_course/articles/article_4_lesson_7_summary/editor.html">
-      <div class="entry-number">85</div>
+      <div class="entry-number">113</div>
       <div class="entry-copy"><span>课程文章</span><h3><a class="entry-title-link" href="ai_course/articles/article_4_lesson_7_summary/editor.html?view=annotated" target="_blank" rel="noopener">Using AI Responsibly · Lesson 7 and Summary</a></h3></div>
       <div class="entry-reading"><strong>未读</strong><time></time></div>
       <div class="entry-editing"><strong>未编辑</strong><time></time></div>
       <div class="entry-action entry-editor"><a class="primary" href="ai_course/articles/article_4_lesson_7_summary/editor.html?view=annotated" target="_blank" rel="noopener">打开编辑器</a></div>
       <div class="entry-action entry-pdf"><a class="secondary" href="ai_course/articles/article_4_lesson_7_summary/ai_course_article_4_lesson_7_summary.pdf" target="_blank" rel="noopener">PDF</a></div>
     </article><article class="entry" data-search="how a question became an ai course ai_course/articles/article_5_making_the_course/editor.html ai 课程" data-editor-path="ai_course/articles/article_5_making_the_course/editor.html">
-      <div class="entry-number">86</div>
+      <div class="entry-number">114</div>
       <div class="entry-copy"><span>课程文章</span><h3><a class="entry-title-link" href="ai_course/articles/article_5_making_the_course/editor.html?view=annotated" target="_blank" rel="noopener">How a Question Became an AI Course</a></h3></div>
       <div class="entry-reading"><strong>未读</strong><time></time></div>
       <div class="entry-editing"><strong>未编辑</strong><time></time></div>
       <div class="entry-action entry-editor"><a class="primary" href="ai_course/articles/article_5_making_the_course/editor.html?view=annotated" target="_blank" rel="noopener">打开编辑器</a></div>
       <div class="entry-action entry-pdf"><a class="secondary" href="ai_course/articles/article_5_making_the_course/ai_course_article_5_making_the_course.pdf" target="_blank" rel="noopener">PDF</a></div>
     </article><article class="entry" data-search="ai course · how ai works ai_course/editor.html ai 课程" data-editor-path="ai_course/editor.html">
-      <div class="entry-number">87</div>
+      <div class="entry-number">115</div>
       <div class="entry-copy"><span>阅读材料</span><h3><a class="entry-title-link" href="ai_course/editor.html?view=annotated" target="_blank" rel="noopener">AI Course · How AI Works</a></h3></div>
       <div class="entry-reading"><strong>未读</strong><time></time></div>
       <div class="entry-editing"><strong>未编辑</strong><time></time></div>
@@ -752,11 +973,13 @@ html[data-workspace-skin="reading"] .entry{grid-template-columns:54px minmax(0,1
 </section>
   <p class="empty" id="emptyState">没有找到匹配的阅读材料。</p>
 </main>
-<footer><strong>教育用途说明：</strong>本站仅供个人阅读、校读与学习，不隶属于所引用的原文来源网站；原始资料的权利归其相应权利人所有。<br>目录由 <code>practice/build_index.py</code> 自动生成 · 新增编辑器后重新运行即可更新</footer>
+<footer><strong>教育用途说明：</strong>本站仅供个人阅读、校读与学习，不隶属于所引用的原文来源网站；原始资料的权利归其相应权利人所有。<br><span>Mobile Reader v1.2.1 · &copy; 2026 Ruixing Shi. All rights reserved.</span><br>目录由 <code>practice/build_index.py</code> 自动生成 · 新增编辑器后重新运行即可更新</footer>
 <script>
 const search=document.getElementById('catalogSearch'),empty=document.getElementById('emptyState');
 const readingHistoryKey='reading-workspace-history-v1',editingHistoryKey='reading-workspace-editing-history-v1';
-function filterCatalog(){const query=search.value.trim().toLocaleLowerCase();let visibleTotal=0;document.querySelectorAll('[data-collection]').forEach(section=>{let count=0;section.querySelectorAll('.entry').forEach(entry=>{const show=!query||entry.dataset.search.includes(query);entry.hidden=!show;if(show)count++});section.hidden=count===0;visibleTotal+=count});empty.style.display=visibleTotal?'none':'block'}
+function setCollectionCollapsed(section,collapsed,persist=true){section.classList.toggle('collapsed',collapsed);section.querySelector('.collection-toggle')?.setAttribute('aria-expanded',String(!collapsed));if(persist){const state=JSON.parse(localStorage.getItem('reading-workspace-collapsed-collections')||'{}');state[section.id]=collapsed;localStorage.setItem('reading-workspace-collapsed-collections',JSON.stringify(state))}}
+function installCollectionToggles(){let state={};try{state=JSON.parse(localStorage.getItem('reading-workspace-collapsed-collections')||'{}')}catch{}document.querySelectorAll('[data-collection]').forEach(section=>{setCollectionCollapsed(section,Boolean(state[section.id]),false);section.querySelector('.collection-toggle')?.addEventListener('click',()=>setCollectionCollapsed(section,!section.classList.contains('collapsed')))})}
+function filterCatalog(){const query=search.value.trim().toLocaleLowerCase();let visibleTotal=0;document.querySelectorAll('[data-collection]').forEach(section=>{let count=0;section.querySelectorAll('.entry').forEach(entry=>{const show=!query||entry.dataset.search.includes(query);entry.hidden=!show;if(show)count++});section.hidden=count===0;if(query&&count)setCollectionCollapsed(section,false,false);visibleTotal+=count});empty.style.display=visibleTotal?'none':'block'}
 function renderReadingHistory(){let history={};try{history=JSON.parse(localStorage.getItem(readingHistoryKey)||'{}')}catch{}const formatter=new Intl.DateTimeFormat('zh-CN',{year:'numeric',month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit'});document.querySelectorAll('.entry[data-editor-path]').forEach(entry=>{const cell=entry.querySelector('.entry-reading'),record=history[entry.dataset.editorPath];cell.classList.toggle('read',Boolean(record));cell.querySelector('strong').textContent=record?`已读 ${record.count||1} 次`:'未读';cell.querySelector('time').textContent=record?.lastRead?formatter.format(new Date(record.lastRead)):''})}
 function renderEditingHistory(){let history={};try{history=JSON.parse(localStorage.getItem(editingHistoryKey)||'{}')}catch{}const formatter=new Intl.DateTimeFormat('zh-CN',{year:'numeric',month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit'});document.querySelectorAll('.entry[data-editor-path]').forEach(entry=>{const cell=entry.querySelector('.entry-editing'),record=history[entry.dataset.editorPath];cell.classList.toggle('edited',Boolean(record));cell.querySelector('strong').textContent=record?`已编辑 ${record.sessions||1} 次`:'未编辑';cell.querySelector('time').textContent=record?.lastEdited?formatter.format(new Date(record.lastEdited)):'';cell.title=record?`首次编辑：${formatter.format(new Date(record.firstEdited))}
 最近编辑：${formatter.format(new Date(record.lastEdited))}
@@ -765,7 +988,7 @@ function renderEditingHistory(){let history={};try{history=JSON.parse(localStora
 function renderHistory(){renderReadingHistory();renderEditingHistory()}
 search.addEventListener('input',filterCatalog);
 document.addEventListener('click',event=>{if(event.target.closest('.entry-editor a,.entry-title-link'))sessionStorage.setItem('shiji-editor-view','annotated')});
-window.addEventListener('focus',renderHistory);window.addEventListener('storage',renderHistory);renderHistory();
+window.addEventListener('focus',renderHistory);window.addEventListener('storage',renderHistory);installCollectionToggles();renderHistory();
 </script>
 </body>
 </html>

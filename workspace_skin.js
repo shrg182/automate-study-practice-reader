@@ -143,37 +143,44 @@
     });
   }
 
-  function installContentFontControls() {
-    if (document.querySelector(".content-font-controls")) return;
+  function installReadingEnvironment() {
+    if (document.querySelector(".reading-environment")) return;
     const content = document.querySelector(".editor, .rich-editor");
     const host = document.querySelector(".toolbar") || document.querySelector("jianshang-editor-header .view-tools") || document.querySelector(".actions");
     if (!content || !host) return;
-    const key = "reading-workspace-content-font-size";
-    const defaultSize = Number.parseFloat(getComputedStyle(content).fontSize) || 18;
-    let size = Number(localStorage.getItem(key)) || defaultSize;
-    const minimum = 12, maximum = 34;
+    const key = "reading-workspace-environment-v1";
+    const defaults = { fontSize: Number.parseFloat(getComputedStyle(content).fontSize) || 18, lineHeight: 1.85, background: "#fffdfa" };
+    let settings = defaults;
+    try { settings = { ...defaults, ...JSON.parse(localStorage.getItem(key) || "{}") }; } catch {}
     const style = document.createElement("style");
-    style.textContent = `.editor,.rich-editor{font-size:var(--reading-content-font-size)!important}.content-font-controls{display:inline-flex;align-items:center;gap:2px;padding:2px;border:1px solid #c9d2df;border-radius:6px;background:#fff;color:#3c4043;font:12px/1 Arial,"PingFang SC",sans-serif}.content-font-controls button{min-width:29px;min-height:27px!important;padding:3px 6px!important;border:0!important;border-radius:4px!important;background:transparent!important;color:inherit!important;font:inherit!important;cursor:pointer}.content-font-controls button:hover{background:#edf2fa!important}.content-font-size{min-width:34px;text-align:center;color:#5f6368;font-variant-numeric:tabular-nums}@media print{.content-font-controls{display:none!important}}`;
-    style.textContent += ".workspace{width:100%!important;max-width:none!important}";
+    style.textContent = `.editor,.rich-editor{font-size:var(--reading-content-font-size)!important;line-height:var(--reading-content-line-height)!important;background:var(--reading-content-background)!important}.paper,.editor-panel,.page-card{background:var(--reading-content-background,#fffdfa)!important}.reading-environment{position:relative;display:inline-flex}.reading-environment-trigger{min-height:30px!important;padding:4px 9px!important;border:1px solid #c9d2df!important;border-radius:5px!important;background:#fff!important;color:#202124!important;cursor:pointer}.reading-environment-panel{position:absolute;z-index:340;top:calc(100% + 6px);right:0;display:none;width:260px;padding:14px;border:1px solid #dadce0;border-radius:10px;background:#fff;color:#202124;box-shadow:0 10px 30px #0003;font:12px/1.4 Arial,"PingFang SC",sans-serif}.reading-environment.open .reading-environment-panel{display:grid;gap:12px}.reading-setting{display:grid;grid-template-columns:70px 1fr 42px;gap:8px;align-items:center}.reading-setting input{min-width:0;width:100%}.reading-colors{display:flex;gap:8px}.reading-color{width:30px;height:30px!important;min-height:30px!important;padding:0!important;border:2px solid #dadce0!important;border-radius:50%!important}.reading-color.active{border-color:#1a73e8!important;box-shadow:0 0 0 2px #d2e3fc}.reading-reset{justify-self:start}@media print{.reading-environment{display:none!important}}`;
     document.head.appendChild(style);
     const controls = document.createElement("div");
-    controls.className = "content-font-controls";
-    controls.setAttribute("role", "group");
-    controls.setAttribute("aria-label", "正文字号");
-    controls.innerHTML = '<button type="button" data-font-change="-1" title="减小正文字号">A−</button><span class="content-font-size"></span><button type="button" data-font-change="1" title="增大正文字号">A+</button><button type="button" data-font-reset title="恢复默认正文字号">重置</button>';
-    const apply = (next, persist = true) => {
-      size = Math.max(minimum, Math.min(maximum, next));
-      document.documentElement.style.setProperty("--reading-content-font-size", `${size}px`);
-      controls.querySelector(".content-font-size").textContent = `${size}px`;
-      if (persist) localStorage.setItem(key, String(size));
+    controls.className = "reading-environment";
+    controls.innerHTML = `<button type="button" class="reading-environment-trigger" aria-expanded="false">阅读设置</button><div class="reading-environment-panel"><label class="reading-setting"><span>字号</span><input data-reading-setting="fontSize" type="range" min="12" max="34" step="1"><output data-reading-output="fontSize"></output></label><label class="reading-setting"><span>行距</span><input data-reading-setting="lineHeight" type="range" min="1.3" max="2.6" step="0.05"><output data-reading-output="lineHeight"></output></label><div><div style="margin-bottom:7px">背景颜色</div><div class="reading-colors"><button class="reading-color" data-reading-color="#ffffff" style="background:#fff" title="白色"></button><button class="reading-color" data-reading-color="#fffdfa" style="background:#fffdfa" title="米白"></button><button class="reading-color" data-reading-color="#f3eedf" style="background:#f3eedf" title="羊皮纸"></button><button class="reading-color" data-reading-color="#eaf2e7" style="background:#eaf2e7" title="护眼绿"></button><button class="reading-color" data-reading-color="#e9f0f5" style="background:#e9f0f5" title="浅蓝"></button></div></div><button type="button" class="reading-reset">恢复默认</button></div>`;
+    const apply = (persist = true) => {
+      settings.fontSize = Math.max(12, Math.min(34, Number(settings.fontSize) || defaults.fontSize));
+      settings.lineHeight = Math.max(1.3, Math.min(2.6, Number(settings.lineHeight) || defaults.lineHeight));
+      document.documentElement.style.setProperty("--reading-content-font-size", `${settings.fontSize}px`);
+      document.documentElement.style.setProperty("--reading-content-line-height", String(settings.lineHeight));
+      document.documentElement.style.setProperty("--reading-content-background", settings.background);
+      controls.querySelector('[data-reading-setting="fontSize"]').value = settings.fontSize;
+      controls.querySelector('[data-reading-setting="lineHeight"]').value = settings.lineHeight;
+      controls.querySelector('[data-reading-output="fontSize"]').textContent = `${settings.fontSize}px`;
+      controls.querySelector('[data-reading-output="lineHeight"]').textContent = settings.lineHeight.toFixed(2);
+      controls.querySelectorAll("[data-reading-color]").forEach(button => button.classList.toggle("active", button.dataset.readingColor === settings.background));
+      if (persist) localStorage.setItem(key, JSON.stringify(settings));
     };
-    controls.addEventListener("click", (event) => {
-      const change = event.target.closest("[data-font-change]");
-      if (change) apply(size + Number(change.dataset.fontChange));
-      if (event.target.closest("[data-font-reset]")) { localStorage.removeItem(key); apply(defaultSize, false); }
+    controls.addEventListener("input", event => { const name = event.target.dataset.readingSetting; if (name) { settings[name] = Number(event.target.value); apply(); } });
+    controls.addEventListener("click", event => {
+      const trigger = event.target.closest(".reading-environment-trigger");
+      if (trigger) { const open = controls.classList.toggle("open"); trigger.setAttribute("aria-expanded", String(open)); }
+      const color = event.target.closest("[data-reading-color]"); if (color) { settings.background = color.dataset.readingColor; apply(); }
+      if (event.target.closest(".reading-reset")) { settings = { ...defaults }; apply(); }
     });
-    host.appendChild(controls);
-    apply(size, false);
+    document.addEventListener("click", event => { if (!controls.contains(event.target)) controls.classList.remove("open"); });
+    host.appendChild(controls); apply(false);
+    window.ReadingWorkspace ||= {}; window.ReadingWorkspace.openSettings = () => controls.querySelector(".reading-environment-trigger").click();
   }
 
   function installFileMenu() {
@@ -331,7 +338,53 @@
     }, true);
   }
 
-  function installWorkspaceControls() { installSwitch(); installContentFontControls(); installFileMenu(); installInsertMenu(); installUserNotesAccess(); }
+  function installImmersiveMode() {
+    if (!document.querySelector(".editor, .rich-editor") || document.querySelector(".reader-quick-nav")) return;
+    const style = document.createElement("style");
+    style.textContent = `.reader-quick-nav{position:fixed;z-index:330;left:14px;top:14px;display:flex;gap:4px;padding:5px;border:1px solid #dadce0;border-radius:22px;background:#fff;box-shadow:0 4px 18px #0002;font:12px/1 Arial,"PingFang SC",sans-serif}.reader-quick-nav button,.reader-quick-nav a{display:grid;place-items:center;min-height:32px;padding:7px 10px;border:0;border-radius:16px;background:transparent;color:#3c4043;text-decoration:none;cursor:pointer;font:inherit}.reader-quick-nav button:hover,.reader-quick-nav a:hover{background:#edf2fa}.reader-quick-nav .active{background:#e6f4ea;color:#137333;font-weight:700}body.reading-immersive{background:var(--reading-content-background,#fffdfa)!important}body.reading-immersive .toolbar,body.reading-immersive .topbar,body.reading-immersive .masthead,body.reading-immersive jianshang-editor-header,body.reading-immersive .sidebar,body.reading-immersive .notes-dock,body.reading-immersive .export-dock{display:none!important}body.reading-immersive .workspace,body.reading-immersive .main-content,body.reading-immersive .editor-shell,body.reading-immersive .content-grid{display:block!important;width:100%!important;max-width:none!important;margin:0!important;padding:0!important}body.reading-immersive .paper,body.reading-immersive .editor-panel{width:min(900px,100%)!important;max-width:900px!important;min-height:100vh!important;margin:0 auto!important;padding:clamp(24px,5vw,64px)!important;border:0!important;box-shadow:none!important}body.reading-immersive .editor,body.reading-immersive .rich-editor{min-height:100vh!important;border:0!important;box-shadow:none!important}@media(max-width:760px){.reader-quick-nav button{display:none}.reader-quick-nav{left:8px;top:8px;padding:3px}.reader-quick-nav a{min-height:30px;padding:6px 9px}}@media print{.reader-quick-nav{display:none!important}}`;
+    document.head.appendChild(style);
+    const nav = document.createElement("nav");
+    nav.className = "reader-quick-nav"; nav.setAttribute("aria-label", "阅读快捷导航");
+    nav.innerHTML = `<a href="${new URL("index.html", workspaceRoot).href}">目录</a><button type="button" data-reader-action="immersive" aria-pressed="false">沉浸</button><button type="button" data-reader-action="settings">设置</button><button type="button" data-reader-action="sync">同步</button>`;
+    const setImmersive = async enabled => {
+      document.body.classList.toggle("reading-immersive", enabled);
+      const button = nav.querySelector('[data-reader-action="immersive"]'); button.classList.toggle("active", enabled); button.setAttribute("aria-pressed", String(enabled)); button.textContent = enabled ? "退出沉浸" : "沉浸";
+      if (enabled && document.documentElement.requestFullscreen && !document.fullscreenElement) await document.documentElement.requestFullscreen().catch(() => {});
+      if (!enabled && document.fullscreenElement) await document.exitFullscreen().catch(() => {});
+    };
+    nav.addEventListener("click", event => {
+      const action = event.target.closest("[data-reader-action]")?.dataset.readerAction;
+      if (action === "immersive") setImmersive(!document.body.classList.contains("reading-immersive"));
+      if (action === "settings") window.ReadingWorkspace?.openSettings?.();
+      if (action === "sync") window.ReadingWorkspace?.openSync?.();
+    });
+    document.addEventListener("fullscreenchange", () => { if (!document.fullscreenElement && document.body.classList.contains("reading-immersive")) setImmersive(false); });
+    document.addEventListener("keydown", event => { if (event.key === "Escape" && document.body.classList.contains("reading-immersive")) setImmersive(false); });
+    document.body.appendChild(nav);
+    window.ReadingWorkspace ||= {}; window.ReadingWorkspace.toggleImmersive = () => setImmersive(!document.body.classList.contains("reading-immersive"));
+  }
+
+  function installAnnotationSync() {
+    if (!document.querySelector(".editor, .rich-editor") || document.querySelector(".reading-sync-dialog")) return;
+    const configKey = "reading-workspace-sync-config-v1";
+    const syncable = key => /(notes?|annotation|highlight|marker|editor-v\d|reading-lexicon-entry-overrides)/i.test(key) && !/(log|history|difficulty|environment|sync-config)/i.test(key);
+    const snapshot = () => { const data = {}; for (let i = 0; i < localStorage.length; i++) { const key = localStorage.key(i); if (key && syncable(key)) data[key] = localStorage.getItem(key); } return data; };
+    const style = document.createElement("style"); style.textContent = `.reading-sync-dialog{width:min(520px,calc(100% - 28px));padding:0;border:0;border-radius:12px;box-shadow:0 18px 60px #0005;color:#202124}.reading-sync-dialog::backdrop{background:#0006}.reading-sync-form{display:grid;gap:12px;padding:20px;font:13px/1.45 Arial,"PingFang SC",sans-serif}.reading-sync-form h2{margin:0;font-size:18px}.reading-sync-form p{margin:0;color:#5f6368}.reading-sync-form label{display:grid;gap:5px}.reading-sync-form input{width:100%;min-width:0;padding:9px;border:1px solid #bdc1c6;border-radius:6px;font:inherit}.reading-sync-actions{display:flex;flex-wrap:wrap;gap:8px}.reading-sync-actions button{min-height:34px;padding:7px 11px;border:1px solid #c7d3e3;border-radius:6px;background:#fff;color:#174ea6;cursor:pointer}.reading-sync-actions .primary{background:#1a73e8;color:#fff}.reading-sync-status{min-height:20px;color:#137333!important}@media print{.reading-sync-dialog{display:none!important}}`; document.head.appendChild(style);
+    const dialog = document.createElement("dialog"); dialog.className = "reading-sync-dialog";
+    dialog.innerHTML = `<form class="reading-sync-form" method="dialog"><h2>跨设备批注同步</h2><p>填写支持 GET 和 PUT 的 WebDAV 或 JSON 文件地址。数据仅在此地址与您的设备之间传输。</p><label>同步文件地址<input name="url" type="url" placeholder="https://cloud.example.com/reader-notes.json"></label><label>Bearer 令牌（可选）<input name="token" type="password" autocomplete="off"></label><label><span><input name="automatic" type="checkbox" style="width:auto"> 打开阅读器时自动下载，编辑后定期上传</span></label><p class="reading-sync-status" role="status"></p><div class="reading-sync-actions"><button type="button" data-sync="pull">从云端下载</button><button type="button" data-sync="push" class="primary">上传到云端</button><button type="button" data-sync="save">保存设置</button><button value="close">关闭</button></div></form>`;
+    document.body.appendChild(dialog); const form = dialog.querySelector("form"), status = dialog.querySelector(".reading-sync-status");
+    const getConfig = () => { try { return JSON.parse(localStorage.getItem(configKey) || "{}"); } catch { return {}; } };
+    const readForm = () => ({ url: form.elements.url.value.trim(), token: form.elements.token.value.trim(), automatic: form.elements.automatic.checked });
+    const headers = config => ({ "Content-Type": "application/json", ...(config.token ? { Authorization: `Bearer ${config.token}` } : {}) });
+    const pull = async (quiet = false) => { const config = readForm(); if (!config.url) throw new Error("请先填写同步文件地址"); status.textContent = "正在下载…"; const response = await fetch(config.url, { headers: headers(config), cache: "no-store" }); if (!response.ok) throw new Error(`下载失败（HTTP ${response.status}）`); const payload = await response.json(); Object.entries(payload.data || {}).forEach(([key, value]) => { if (syncable(key) && typeof value === "string") localStorage.setItem(key, value); }); localStorage.setItem("reading-workspace-last-sync", new Date().toISOString()); status.textContent = "下载完成；刷新页面后显示云端批注。"; if (!quiet) setTimeout(() => location.reload(), 700); };
+    const push = async () => { const config = readForm(); if (!config.url) throw new Error("请先填写同步文件地址"); status.textContent = "正在上传…"; const response = await fetch(config.url, { method: "PUT", headers: headers(config), body: JSON.stringify({ version: 1, updatedAt: new Date().toISOString(), data: snapshot() }) }); if (!response.ok) throw new Error(`上传失败（HTTP ${response.status}）`); localStorage.setItem("reading-workspace-last-sync", new Date().toISOString()); status.textContent = "批注与高亮已上传。"; };
+    dialog.addEventListener("click", async event => { const action = event.target.closest("[data-sync]")?.dataset.sync; if (!action) return; try { if (action === "save") { localStorage.setItem(configKey, JSON.stringify(readForm())); status.textContent = "同步设置已保存。"; } if (action === "pull") await pull(); if (action === "push") await push(); } catch (error) { status.textContent = error.message; } });
+    const open = () => { const config = getConfig(); form.elements.url.value = config.url || ""; form.elements.token.value = config.token || ""; form.elements.automatic.checked = Boolean(config.automatic); status.textContent = ""; dialog.showModal(); };
+    window.ReadingWorkspace ||= {}; window.ReadingWorkspace.openSync = open;
+    const config = getConfig(); if (config.automatic && config.url) { form.elements.url.value = config.url; form.elements.token.value = config.token || ""; form.elements.automatic.checked = true; pull(true).catch(error => console.warn("Reader sync pull failed", error)); window.setInterval(() => push().catch(error => console.warn("Reader sync push failed", error)), 60000); }
+  }
+
+  function installWorkspaceControls() { installSwitch(); installReadingEnvironment(); installFileMenu(); installInsertMenu(); installUserNotesAccess(); installAnnotationSync(); installImmersiveMode(); }
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", installWorkspaceControls);
   else installWorkspaceControls();
 })();

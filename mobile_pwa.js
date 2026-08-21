@@ -15,15 +15,15 @@
         body.mobile-pwa{padding-bottom:64px!important}
         body.mobile-pwa .masthead-inner,body.mobile-pwa .workspace,body.mobile-pwa .main-content,body.mobile-pwa .editor-shell,body.mobile-pwa .content-grid{display:block!important;width:100%!important;min-width:0!important;max-width:100%!important;padding-left:0!important;padding-right:0!important}
         body.mobile-pwa .paper{box-sizing:border-box!important;width:100%!important;min-width:0!important;max-width:100%!important;min-height:100vh!important;padding:24px 18px 88px!important;border:0!important;box-shadow:none!important}
-        body.mobile-pwa .editor,body.mobile-pwa .rich-editor{box-sizing:border-box!important;width:100%!important;min-width:0!important;max-width:100%!important;font-size:var(--reading-content-font-size,18px)!important;line-height:1.9!important;overflow-wrap:anywhere!important}
+        body.mobile-pwa .editor,body.mobile-pwa .rich-editor{box-sizing:border-box!important;width:100%!important;min-width:0!important;max-width:100%!important;font-size:var(--reading-content-font-size,18px)!important;line-height:var(--reading-content-line-height,1.9)!important;overflow-wrap:anywhere!important}
         body.mobile-pwa.mobile-read-mode .toolbar{display:none!important}
         body.mobile-pwa.mobile-read-mode .sidebar{display:none!important}
         body.mobile-pwa.mobile-panel-open .sidebar{display:flex!important;position:fixed!important;z-index:220;inset:54px 0 62px!important;max-height:none!important;padding:12px;background:#f8f9fa;overflow:auto}
         body.mobile-pwa.mobile-edit-mode .toolbar{display:flex!important;position:fixed!important;z-index:210;inset:0 0 auto!important;max-height:52vh;overflow:auto;box-shadow:0 5px 20px #0003}
         body.mobile-pwa.mobile-edit-mode .workspace{padding-top:54px!important}
-        .mobile-pwa-bar{box-sizing:border-box!important;position:fixed;z-index:300;left:0;right:auto;bottom:0;display:grid;width:100vw!important;min-width:0!important;max-width:100vw!important;grid-template-columns:repeat(5,minmax(0,1fr));min-height:58px;padding:max(4px,env(safe-area-inset-bottom)) 4px env(safe-area-inset-bottom);border-top:1px solid #dadce0;background:#fff;color:#3c4043;box-shadow:0 -2px 12px #0002}
+        .mobile-pwa-bar{box-sizing:border-box!important;position:fixed;z-index:300;left:0;right:auto;bottom:0;display:flex;width:100vw!important;min-width:0!important;max-width:100vw!important;min-height:58px;padding:max(4px,env(safe-area-inset-bottom)) 4px env(safe-area-inset-bottom);border-top:1px solid #dadce0;background:#fff;color:#3c4043;box-shadow:0 -2px 12px #0002;overflow-x:auto}
         .mobile-pwa-bar.mobile-home-bar{grid-template-columns:repeat(2,minmax(0,1fr))}
-        .mobile-pwa-bar button{display:grid!important;place-items:center;min-width:0!important;min-height:48px!important;padding:4px 2px!important;border:0!important;background:transparent!important;color:inherit!important;font:11px/1.2 Arial,"PingFang SC",sans-serif!important}
+        .mobile-pwa-bar button{display:grid!important;flex:1 0 62px;place-items:center;min-width:62px!important;min-height:48px!important;padding:4px 2px!important;border:0!important;background:transparent!important;color:inherit!important;font:11px/1.2 Arial,"PingFang SC",sans-serif!important}
         .mobile-pwa-bar button.active{color:#137333!important;background:#e6f4ea!important;border-radius:12px!important;font-weight:700!important}
         .mobile-pwa-toast{position:fixed;z-index:400;left:50%;bottom:74px;display:block;max-width:calc(100% - 32px);padding:9px 14px;border-radius:18px;background:#202124;color:#fff;font:12px/1.4 Arial,"PingFang SC",sans-serif;transform:translateX(-50%);opacity:0;pointer-events:none;transition:opacity .2s}
         .mobile-pwa-toast.show{opacity:1}
@@ -94,13 +94,16 @@
     if (!mobile.matches || document.querySelector(".mobile-pwa-bar")) return;
     style(); document.body.classList.add("mobile-pwa");
     const buttons = isEditor
-      ? '<button data-mobile-action="home">首页</button><button data-mobile-action="notes">札记</button><button data-mobile-action="edit">编辑</button><button data-mobile-action="offline">离线</button><button data-mobile-action="install">安装</button>'
+      ? '<button data-mobile-action="home">目录</button><button data-mobile-action="immersive">沉浸</button><button data-mobile-action="settings">设置</button><button data-mobile-action="notes">札记</button><button data-mobile-action="sync">同步</button><button data-mobile-action="edit">编辑</button><button data-mobile-action="offline">离线</button><button data-mobile-action="install">安装</button>'
       : '<button data-mobile-action="home" class="active">目录</button><button data-mobile-action="install">安装</button>';
     document.body.insertAdjacentHTML("beforeend", `<div class="mobile-pwa-toast" role="status"></div><nav class="mobile-pwa-bar${isEditor ? "" : " mobile-home-bar"}" aria-label="移动阅读工具">${buttons}</nav>`);
     document.querySelector(".mobile-pwa-bar").addEventListener("click", async event => {
       const action = event.target.closest("button")?.dataset.mobileAction;
       if (action === "home") location.href = new URL("index.html", scriptRoot).href;
+      if (action === "immersive") window.ReadingWorkspace?.toggleImmersive?.();
+      if (action === "settings") window.ReadingWorkspace?.openSettings?.();
       if (action === "notes") showPanel("notes");
+      if (action === "sync") window.ReadingWorkspace?.openSync?.();
       if (action === "edit") setEditing(!editing);
       if (action === "offline") cacheArticle();
       if (action === "install") install();
