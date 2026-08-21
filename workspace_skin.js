@@ -348,7 +348,7 @@
     nav.className = "reader-quick-nav"; nav.setAttribute("aria-label", "阅读快捷导航");
     const contextualHome = [...document.querySelectorAll("a[href]")].find(link => /返回首页|返回目录|书目|篇目/.test(link.textContent || ""));
     const directoryHref = contextualHome?.href || new URL("index.html", workspaceRoot).href;
-    nav.innerHTML = `<a href="${directoryHref}">目录</a><button type="button" data-reader-action="immersive" aria-pressed="false">沉浸</button><button type="button" data-reader-action="settings">设置</button><button type="button" data-reader-action="sync">同步</button>`;
+    nav.innerHTML = `<a href="${directoryHref}">书目</a><button type="button" data-reader-action="immersive" aria-pressed="false">沉浸</button><button type="button" data-reader-action="settings">设置</button><button type="button" data-reader-action="sync">同步</button>`;
     const setImmersive = async enabled => {
       document.body.classList.toggle("reading-immersive", enabled);
       const button = nav.querySelector('[data-reader-action="immersive"]'); button.classList.toggle("active", enabled); button.setAttribute("aria-pressed", String(enabled)); button.textContent = enabled ? "退出沉浸" : "沉浸";
@@ -387,7 +387,25 @@
     const config = getConfig(); if (config.automatic && config.url) { form.elements.url.value = config.url; form.elements.token.value = config.token || ""; form.elements.automatic.checked = true; pull(true).catch(error => console.warn("Reader sync pull failed", error)); window.setInterval(() => push().catch(error => console.warn("Reader sync push failed", error)), 60000); }
   }
 
-  function installWorkspaceControls() { installSwitch(); installReadingEnvironment(); installFileMenu(); installInsertMenu(); installUserNotesAccess(); installAnnotationSync(); installImmersiveMode(); }
+  function installContextNavigation() {
+    const editor = document.querySelector(".editor, .rich-editor");
+    if (!editor) return;
+    const relativePath = decodeURIComponent(location.pathname).replace(decodeURIComponent(workspaceRoot.pathname), "").replace(/^\/+/, "");
+    const collection = relativePath.split("/")[0];
+    const menuHref = collection && !collection.endsWith(".html")
+      ? new URL(`index.html#${encodeURIComponent(collection)}`, workspaceRoot).href
+      : new URL("index.html", workspaceRoot).href;
+    const homeLink = [...document.querySelectorAll("a[href]")].find(link => /返回首页|返回目录|书目|篇目/.test(link.textContent || ""));
+    if (!homeLink) return;
+    homeLink.href = menuHref;
+    homeLink.textContent = "书目";
+    homeLink.title = "返回本书目录";
+    homeLink.classList.add("book-menu-link");
+    const toolbar = homeLink.closest(".toolbar") || document.querySelector(".toolbar");
+    if (toolbar) toolbar.prepend(homeLink);
+  }
+
+  function installWorkspaceControls() { installContextNavigation(); installSwitch(); installReadingEnvironment(); installFileMenu(); installInsertMenu(); installUserNotesAccess(); installAnnotationSync(); installImmersiveMode(); }
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", installWorkspaceControls);
   else installWorkspaceControls();
 })();
