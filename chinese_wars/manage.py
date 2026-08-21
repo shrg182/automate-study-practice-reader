@@ -148,7 +148,7 @@ def period_dir(period_id: str) -> Path:
 
 
 def war_table(rows: list[dict[str, str]]) -> str:
-    headings = ("年代", "战争／战役", "说明", "可靠性", "中文维基", "百度百科", "人工补充")
+    headings = ("年代", "战争／战役", "说明", "中文维基", "百度百科", "人工补充")
     parts = ['<div class="chinese-war-table-wrap"><table class="chinese-war-table"><thead><tr>']
     parts.extend(f'<th scope="col">{heading}</th>' for heading in headings)
     parts.append('</tr></thead><tbody>')
@@ -161,15 +161,14 @@ def war_table(rows: list[dict[str, str]]) -> str:
         baidu_label = "打开条目 ↗" if baidu_direct else "搜索同名条目 ↗"
         cells = (
             html.escape(row["date_original"]), title_link, html.escape(row["source_note"] or "—"),
-            html.escape(row["reliability"]),
             f'<a href="{source}" target="_blank" rel="noopener" contenteditable="false">打开条目 ↗</a>',
             f'<a href="{html.escape(baidu_url, quote=True)}" target="_blank" rel="noopener" contenteditable="false" data-baidu-verified="{str(bool(baidu_direct)).lower()}">{baidu_label}</a>',
             "",
         )
-        parts.append(f'<tr data-paragraph="{number}">')
+        parts.append(f'<tr data-paragraph="{number}" data-entry-id="{html.escape(row["sequence"], quote=True)}">')
         for heading, cell in zip(headings, cells):
-            cell_class = ' class="manual-cell" data-placeholder="手动添加链接或评论"' if heading == "人工补充" else ""
-            parts.append(f'<td data-label="{heading}"{cell_class}>{cell}</td>')
+            attributes = ' class="reader-editable-cell" contenteditable="true" spellcheck="true" data-field="supplement" data-placeholder="手动添加链接或评论"' if heading == "人工补充" else ""
+            parts.append(f'<td data-label="{heading}"{attributes}>{cell}</td>')
         parts.append('</tr>')
     parts.append('</tbody></table></div>')
     return "".join(parts)
@@ -198,11 +197,38 @@ def build_period(period_id: str, rows: list[dict[str, str]]) -> None:
     terms = load_terms(terms_file)
     output = build_html(text, terms, SOURCE_URL, chapter_title=f"《中国历代战争·{period_title}》", editor_title=f"《中国历代战争·{period_title}》校读编辑器", storage_key=f"chinese-wars-{period_id}-editor-v2", file_stem=f"chinese_wars_{period_id}", global_terms=load_global_terms(PRACTICE_DIR / "project_dictionary" / "dictionary.csv", text, terms), home_href="../../../index.html", theme_href="../../../workspace_theme.css", shared_library_href="", source_site_label="文学城", body_html=war_table(rows))
     table_styles = '''<style>
-.chinese-war-table-wrap{width:100%;overflow-x:auto}.chinese-war-table{width:100%;min-width:1320px;border-collapse:collapse;font:14px/1.5 Arial,"PingFang SC",sans-serif}.chinese-war-table th,.chinese-war-table td{padding:9px 10px;border:1px solid #dadce0;text-align:left;vertical-align:top}.chinese-war-table th{position:sticky;top:0;z-index:1;background:#f1f3f4;color:#5f6368;font-size:12px}.chinese-war-table td:nth-child(1){min-width:165px}.chinese-war-table td:nth-child(2){min-width:240px;font-weight:700}.chinese-war-table td:nth-child(3){min-width:260px}.chinese-war-table td:nth-child(4){min-width:85px}.chinese-war-table td:nth-child(5),.chinese-war-table td:nth-child(6){min-width:120px}.chinese-war-table td:nth-child(7){min-width:220px}.chinese-war-table a{color:#174ea6;text-decoration:none}.chinese-war-table a:hover{text-decoration:underline}.chinese-war-table td:nth-child(4){color:#5f6368;font-weight:700}.chinese-war-table td:nth-child(5) a,.chinese-war-table td:nth-child(6) a{display:inline-block;padding:3px 7px;border:1px solid #c7d5e8;border-radius:12px;background:#f7faff;white-space:nowrap}.manual-cell:empty::after{content:attr(data-placeholder);color:#9aa0a6;font-style:italic}
+.chinese-war-table-wrap{width:100%;overflow-x:auto}.chinese-war-table{width:100%;min-width:1180px;border-collapse:collapse;font:14px/1.5 Arial,"PingFang SC",sans-serif}.chinese-war-table th,.chinese-war-table td{padding:9px 10px;border:1px solid #dadce0;text-align:left;vertical-align:top}.chinese-war-table th{position:sticky;top:0;z-index:1;background:#f1f3f4;color:#5f6368;font-size:12px}.chinese-war-table td:nth-child(1){min-width:165px}.chinese-war-table td:nth-child(2){min-width:240px;font-weight:700}.chinese-war-table td:nth-child(3){min-width:260px}.chinese-war-table td:nth-child(4),.chinese-war-table td:nth-child(5){min-width:120px}.chinese-war-table td:nth-child(6){min-width:220px}.chinese-war-table a{color:#174ea6;text-decoration:none}.chinese-war-table a:hover{text-decoration:underline}.chinese-war-table td:nth-child(4) a,.chinese-war-table td:nth-child(5) a{display:inline-block;padding:3px 7px;border:1px solid #c7d5e8;border-radius:12px;background:#f7faff;white-space:nowrap}.chinese-war-table .reader-editable-cell{background:#fffdf4;outline:none}.chinese-war-table .reader-editable-cell:focus{background:#fff;border-color:#1a73e8;box-shadow:inset 0 0 0 2px #d2e3fc}.chinese-war-table .reader-editable-cell:empty::after{content:attr(data-placeholder);color:#9aa0a6;font-style:italic;pointer-events:none}
 html[data-workspace-skin="reading"] .chinese-war-table{display:block;min-width:0;font:18px/1.75 "Songti SC","STSong",serif}html[data-workspace-skin="reading"] .chinese-war-table thead{display:none}html[data-workspace-skin="reading"] .chinese-war-table tbody{display:grid;gap:18px}html[data-workspace-skin="reading"] .chinese-war-table tr{display:grid;padding:18px 20px;border:1px solid #ded6c7;border-radius:8px;background:#fffdfa}html[data-workspace-skin="reading"] .chinese-war-table td{display:grid;grid-template-columns:88px minmax(0,1fr);gap:12px;padding:5px 0;border:0}html[data-workspace-skin="reading"] .chinese-war-table td::before{content:attr(data-label);color:#8a8174;font:700 11px/1.5 Arial,"PingFang SC",sans-serif;letter-spacing:.08em}html[data-workspace-skin="reading"] .chinese-war-table td[data-label="战争／战役"]{font-size:22px}html[data-workspace-skin="reading"] .chinese-war-table td[data-label="说明"]{margin-top:4px;padding-top:12px;border-top:1px solid #e8e0d2}
 @media(max-width:760px){html[data-workspace-skin="reading"] .chinese-war-table tr{padding:14px}html[data-workspace-skin="reading"] .chinese-war-table td{grid-template-columns:68px minmax(0,1fr);gap:8px}.chinese-war-table{font-size:12px}}
 </style>'''
     output = output.replace("</head>", table_styles + "</head>", 1)
+    entry_ids = json.dumps([row["sequence"] for row in rows])
+    table_storage = f'''<script>
+(() => {{
+  const editor = document.getElementById("editor"), key = "chinese-wars-{period_id}-table-notes-v1", entryIds = {entry_ids};
+  const read = () => {{ try {{ return JSON.parse(localStorage.getItem(key) || "{{}}"); }} catch {{ return {{}}; }} }};
+  function normalizeAndRestore() {{
+    const saved = read();
+    editor.querySelectorAll(".chinese-war-table th").forEach(th => {{ if (th.textContent.trim() === "可靠性") th.remove(); }});
+    editor.querySelectorAll(".chinese-war-table tbody tr").forEach((row, index) => {{
+      row.dataset.entryId ||= entryIds[index] || String(index + 1);
+      row.querySelector('[data-label="可靠性"]')?.remove();
+      const cell = row.querySelector('[data-field="supplement"]') || row.querySelector('[data-label="人工补充"]');
+      if (!cell) return;
+      cell.dataset.field = "supplement"; cell.dataset.placeholder = "手动添加链接或评论";
+      cell.className = "reader-editable-cell"; cell.contentEditable = "true"; cell.spellcheck = true;
+      if (saved[row.dataset.entryId]?.supplement) cell.innerHTML = saved[row.dataset.entryId].supplement;
+    }});
+  }}
+  editor.addEventListener("input", event => {{
+    const cell = event.target.closest('.reader-editable-cell[data-field="supplement"]'); if (!cell) return;
+    const row = cell.closest("tr[data-entry-id]"), saved = read(); saved[row.dataset.entryId] ||= {{}};
+    saved[row.dataset.entryId].supplement = cell.innerHTML; localStorage.setItem(key, JSON.stringify(saved));
+  }});
+  normalizeAndRestore();
+}})();
+</script>'''
+    output = output.replace("</body>", table_storage + "</body>", 1)
     (target / "editor.html").write_text(output, encoding="utf-8")
 
 
