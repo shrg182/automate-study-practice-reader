@@ -58,7 +58,13 @@
     document.body.classList.remove("mobile-panel-open");
     const nodes = editableNodes();
     if (!originalEditable.length) originalEditable = nodes.map(node => node.getAttribute("contenteditable"));
-    nodes.forEach((node, index) => node.setAttribute("contenteditable", enabled ? (originalEditable[index] || "true") : "false"));
+    nodes.forEach((node, index) => {
+      if (node.matches(".reader-editable-cell")) {
+        node.setAttribute("contenteditable", "true");
+        return;
+      }
+      node.setAttribute("contenteditable", enabled ? (originalEditable[index] || "true") : "false");
+    });
     document.querySelector('[data-mobile-action="edit"]')?.classList.toggle("active", enabled);
     if (!silent) toast(enabled ? "已进入轻编辑模式" : "已返回受保护的阅读模式");
   }
