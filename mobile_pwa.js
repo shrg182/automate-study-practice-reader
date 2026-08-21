@@ -3,6 +3,8 @@
   const isEditor = /\/editor\.html$/.test(location.pathname);
   const scriptRoot = document.currentScript?.src ? new URL(".", document.currentScript.src) : new URL("./", location.href);
   let installPrompt = null;
+  let registration = null;
+  let reloadingForUpdate = false;
   let editing = false;
   let originalEditable = [];
 
@@ -10,6 +12,8 @@
     const element = document.createElement("style");
     element.textContent = `
       .mobile-pwa-bar,.mobile-pwa-toast{display:none}
+      .mobile-pwa-update{position:fixed;z-index:500;top:14px;left:50%;display:none;max-width:calc(100% - 28px);padding:10px 12px 10px 16px;align-items:center;gap:12px;border:1px solid #aecbfa;border-radius:24px;background:#e8f0fe;color:#174ea6;box-shadow:0 5px 20px #0003;font:13px/1.35 Arial,"PingFang SC",sans-serif;transform:translateX(-50%)}
+      .mobile-pwa-update.show{display:flex}.mobile-pwa-update button{min-height:32px;padding:6px 11px;border:0;border-radius:16px;background:#1a73e8;color:#fff;cursor:pointer;font:inherit;font-weight:700;white-space:nowrap}
       @media(max-width:760px){
         html,body.mobile-pwa{max-width:100%!important;overflow-x:hidden!important}
         body.mobile-pwa{padding-bottom:64px!important}
@@ -27,6 +31,11 @@
         .mobile-pwa-bar button.active{color:#137333!important;background:#e6f4ea!important;border-radius:12px!important;font-weight:700!important}
         .mobile-pwa-toast{position:fixed;z-index:400;left:50%;bottom:74px;display:block;max-width:calc(100% - 32px);padding:9px 14px;border-radius:18px;background:#202124;color:#fff;font:12px/1.4 Arial,"PingFang SC",sans-serif;transform:translateX(-50%);opacity:0;pointer-events:none;transition:opacity .2s}
         .mobile-pwa-toast.show{opacity:1}
+      }
+      @media(min-width:761px){
+        body.mobile-pwa{padding-bottom:64px!important}
+        .mobile-pwa-bar{box-sizing:border-box!important;position:fixed;z-index:300;left:50%;bottom:14px;display:flex;max-width:min(760px,calc(100vw - 28px));padding:5px;border:1px solid #dadce0;border-radius:24px;background:#fff;color:#3c4043;box-shadow:0 4px 18px #0002;transform:translateX(-50%)}
+        .mobile-pwa-bar.mobile-home-bar{max-width:260px}.mobile-pwa-bar button{display:grid!important;flex:1 1 auto;place-items:center;min-width:66px!important;min-height:38px!important;padding:5px 8px!important;border:0!important;border-radius:16px!important;background:transparent!important;color:inherit!important;font:11px/1.2 Arial,"PingFang SC",sans-serif!important}.mobile-pwa-bar button.active{color:#137333!important;background:#e6f4ea!important;font-weight:700!important}
       }
       @media print{.mobile-pwa-bar,.mobile-pwa-toast{display:none!important}}
     `;
@@ -91,12 +100,14 @@
   }
 
   function mount() {
-    if (!mobile.matches || document.querySelector(".mobile-pwa-bar")) return;
+    if (document.querySelector(".mobile-pwa-bar")) return;
     style(); document.body.classList.add("mobile-pwa");
     const buttons = isEditor
       ? '<button data-mobile-action="home">目录</button><button data-mobile-action="immersive">沉浸</button><button data-mobile-action="settings">设置</button><button data-mobile-action="notes">札记</button><button data-mobile-action="sync">同步</button><button data-mobile-action="edit">编辑</button><button data-mobile-action="offline">离线</button><button data-mobile-action="install">安装</button>'
       : '<button data-mobile-action="home" class="active">目录</button><button data-mobile-action="install">安装</button>';
-    document.body.insertAdjacentHTML("beforeend", `<div class="mobile-pwa-toast" role="status"></div><nav class="mobile-pwa-bar${isEditor ? "" : " mobile-home-bar"}" aria-label="移动阅读工具">${buttons}</nav>`);
+    document.body.insertAdjacentHTML("beforeend", `<div class="mobile-pwa-toast" role="status"></div><div class="mobile-pwa-update" role="status"><span>发现新版 Mobile Reader</span><button type="button">立即更新</button></div><nav class="mobile-pwa-bar${isEditor ? "" : " mobile-home-bar"}" aria-label="阅读工具">${buttons}</nav>`);
+    if (registration?.waiting && navigator.serviceWorker.controller) document.querySelector(".mobile-pwa-update").classList.add("show");
+    document.querySelector(".mobile-pwa-update button").addEventListener("click", () => { reloadingForUpdate = true; registration?.waiting?.postMessage({type: "SKIP_WAITING"}); });
     document.querySelector(".mobile-pwa-bar").addEventListener("click", async event => {
       const action = event.target.closest("button")?.dataset.mobileAction;
       if (action === "home") location.href = new URL("index.html", scriptRoot).href;
@@ -117,6 +128,16 @@
     if (event.data?.type === "ARTICLE_CACHED") toast(`本篇已保存离线 · ${await storageLabel()}`);
     if (event.data?.type === "CACHE_ERROR") toast(`离线保存失败：${event.data.message}`);
   });
-  if ("serviceWorker" in navigator && /^(https?:)$/.test(location.protocol)) navigator.serviceWorker.register(new URL("service-worker.js", scriptRoot), {scope: scriptRoot.pathname}).catch(error => console.warn("PWA service worker registration failed", error));
+  function announceUpdate(worker) { if (worker && navigator.serviceWorker.controller) document.querySelector(".mobile-pwa-update")?.classList.add("show"); }
+  if ("serviceWorker" in navigator && /^(https?:)$/.test(location.protocol)) {
+    navigator.serviceWorker.register(new URL("service-worker.js", scriptRoot), {scope: scriptRoot.pathname}).then(value => {
+      registration = value; announceUpdate(registration.waiting);
+      registration.addEventListener("updatefound", () => { const worker = registration.installing; worker?.addEventListener("statechange", () => { if (worker.state === "installed") announceUpdate(worker); }); });
+      window.setInterval(() => registration.update().catch(() => {}), 60 * 60 * 1000);
+    }).catch(error => console.warn("PWA service worker registration failed", error));
+    navigator.serviceWorker.addEventListener("controllerchange", () => { if (reloadingForUpdate) location.reload(); });
+    document.addEventListener("visibilitychange", () => { if (document.visibilityState === "visible") registration?.update().catch(() => {}); });
+    window.addEventListener("online", () => registration?.update().catch(() => {}));
+  }
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", mount); else mount();
 })();

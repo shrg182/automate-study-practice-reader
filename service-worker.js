@@ -1,4 +1,4 @@
-const VERSION = "reading-room-v5";
+const VERSION = "reading-room-v6";
 const CORE_CACHE = `${VERSION}-core`;
 const ARTICLE_CACHE = `${VERSION}-articles`;
 const root = new URL("./", self.registration.scope);
@@ -8,7 +8,7 @@ const coreFiles = [
 ].map(path => new URL(path, root).href);
 
 self.addEventListener("install", event => {
-  event.waitUntil(caches.open(CORE_CACHE).then(cache => cache.addAll(coreFiles)).then(() => self.skipWaiting()));
+  event.waitUntil(caches.open(CORE_CACHE).then(cache => cache.addAll(coreFiles)));
 });
 
 self.addEventListener("activate", event => {
@@ -31,6 +31,7 @@ self.addEventListener("fetch", event => {
 
 self.addEventListener("message", event => {
   const data = event.data || {};
+  if (data.type === "SKIP_WAITING") self.skipWaiting();
   if (data.type === "CACHE_ARTICLE") {
     event.waitUntil(caches.open(ARTICLE_CACHE).then(cache => cache.addAll(data.urls)).then(() => event.source?.postMessage({type: "ARTICLE_CACHED", url: data.urls[0]})).catch(error => event.source?.postMessage({type: "CACHE_ERROR", message: error.message})));
   }
