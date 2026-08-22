@@ -154,11 +154,19 @@
     let settings = defaults;
     try { settings = { ...defaults, ...JSON.parse(localStorage.getItem(key) || "{}") }; } catch {}
     const style = document.createElement("style");
-    style.textContent = `.editor,.rich-editor{font-size:var(--reading-content-font-size)!important;line-height:var(--reading-content-line-height)!important;background:var(--reading-content-background)!important}.paper,.editor-panel,.page-card{background:var(--reading-content-background,#fffdfa)!important}.reading-environment{position:relative;display:inline-flex}.reading-environment-trigger{min-height:30px!important;padding:4px 9px!important;border:1px solid #c9d2df!important;border-radius:5px!important;background:#fff!important;color:#202124!important;cursor:pointer}.reading-environment-panel{position:absolute;z-index:340;top:calc(100% + 6px);right:0;display:none;width:260px;padding:14px;border:1px solid #dadce0;border-radius:10px;background:#fff;color:#202124;box-shadow:0 10px 30px #0003;font:12px/1.4 Arial,"PingFang SC",sans-serif}.reading-environment.open .reading-environment-panel{display:grid;gap:12px}.reading-setting{display:grid;grid-template-columns:70px 1fr 42px;gap:8px;align-items:center}.reading-setting input{min-width:0;width:100%}.reading-colors{display:flex;gap:8px}.reading-color{width:30px;height:30px!important;min-height:30px!important;padding:0!important;border:2px solid #dadce0!important;border-radius:50%!important}.reading-color.active{border-color:#1a73e8!important;box-shadow:0 0 0 2px #d2e3fc}.reading-reset{justify-self:start}@media print{.reading-environment{display:none!important}}`;
+    style.textContent = `.editor,.rich-editor{font-size:var(--reading-content-font-size)!important;line-height:var(--reading-content-line-height)!important;background:var(--reading-content-background)!important}.paper,.editor-panel,.page-card{background:var(--reading-content-background,#fffdfa)!important}.reading-environment{position:relative;display:inline-flex}.reading-environment-trigger{min-height:30px!important;padding:4px 9px!important;border:1px solid #c9d2df!important;border-radius:5px!important;background:#fff!important;color:#202124!important;cursor:pointer}.reading-environment-panel{position:absolute;z-index:340;top:calc(100% + 6px);left:0;right:auto;display:none;width:min(260px,calc(100vw - 24px));padding:14px;border:1px solid #dadce0;border-radius:10px;background:#fff;color:#202124;box-shadow:0 10px 30px #0003;font:12px/1.4 Arial,"PingFang SC",sans-serif}.reading-environment.open .reading-environment-panel{display:grid;gap:12px}.reading-setting{display:grid;grid-template-columns:70px 1fr 42px;gap:8px;align-items:center}.reading-setting input{min-width:0;width:100%}.reading-colors{display:flex;gap:8px}.reading-color{width:30px;height:30px!important;min-height:30px!important;padding:0!important;border:2px solid #dadce0!important;border-radius:50%!important}.reading-color.active{border-color:#1a73e8!important;box-shadow:0 0 0 2px #d2e3fc}.reading-reset{justify-self:start}@media print{.reading-environment{display:none!important}}`;
     document.head.appendChild(style);
     const controls = document.createElement("div");
     controls.className = "reading-environment";
     controls.innerHTML = `<button type="button" class="reading-environment-trigger" aria-expanded="false">阅读设置</button><div class="reading-environment-panel"><label class="reading-setting"><span>字号</span><input data-reading-setting="fontSize" type="range" min="12" max="34" step="1"><output data-reading-output="fontSize"></output></label><label class="reading-setting"><span>行距</span><input data-reading-setting="lineHeight" type="range" min="1.3" max="2.6" step="0.05"><output data-reading-output="lineHeight"></output></label><div><div style="margin-bottom:7px">背景颜色</div><div class="reading-colors"><button class="reading-color" data-reading-color="#ffffff" style="background:#fff" title="白色"></button><button class="reading-color" data-reading-color="#fffdfa" style="background:#fffdfa" title="米白"></button><button class="reading-color" data-reading-color="#f3eedf" style="background:#f3eedf" title="羊皮纸"></button><button class="reading-color" data-reading-color="#eaf2e7" style="background:#eaf2e7" title="护眼绿"></button><button class="reading-color" data-reading-color="#e9f0f5" style="background:#e9f0f5" title="浅蓝"></button></div></div><button type="button" class="reading-reset">恢复默认</button></div>`;
+    const trigger = controls.querySelector(".reading-environment-trigger");
+    const panel = controls.querySelector(".reading-environment-panel");
+    const positionPanel = () => {
+      panel.style.left = "0px";
+      const rect = panel.getBoundingClientRect();
+      const left = Math.max(12 - rect.left, Math.min(0, innerWidth - 12 - rect.right));
+      panel.style.left = `${left}px`;
+    };
     const apply = (persist = true) => {
       settings.fontSize = Math.max(12, Math.min(34, Number(settings.fontSize) || defaults.fontSize));
       settings.lineHeight = Math.max(1.3, Math.min(2.6, Number(settings.lineHeight) || defaults.lineHeight));
@@ -174,12 +182,13 @@
     };
     controls.addEventListener("input", event => { const name = event.target.dataset.readingSetting; if (name) { settings[name] = Number(event.target.value); apply(); } });
     controls.addEventListener("click", event => {
-      const trigger = event.target.closest(".reading-environment-trigger");
-      if (trigger) { const open = controls.classList.toggle("open"); trigger.setAttribute("aria-expanded", String(open)); }
+      const triggerButton = event.target.closest(".reading-environment-trigger");
+      if (triggerButton) { const open = controls.classList.toggle("open"); triggerButton.setAttribute("aria-expanded", String(open)); if (open) requestAnimationFrame(positionPanel); }
       const color = event.target.closest("[data-reading-color]"); if (color) { settings.background = color.dataset.readingColor; apply(); }
       if (event.target.closest(".reading-reset")) { settings = { ...defaults }; apply(); }
     });
-    document.addEventListener("click", event => { if (!controls.contains(event.target)) controls.classList.remove("open"); });
+    document.addEventListener("click", event => { if (!controls.contains(event.target)) { controls.classList.remove("open"); trigger.setAttribute("aria-expanded", "false"); } });
+    window.addEventListener("resize", () => { if (controls.classList.contains("open")) positionPanel(); });
     host.appendChild(controls); apply(false);
     window.ReadingWorkspace ||= {}; window.ReadingWorkspace.openSettings = () => controls.querySelector(".reading-environment-trigger").click();
   }
