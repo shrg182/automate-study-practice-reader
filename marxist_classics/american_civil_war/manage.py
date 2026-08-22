@@ -77,8 +77,16 @@ def read_catalog() -> list[dict[str, str]]:
 
 
 def build_selector(rows: list[dict[str, str]]) -> None:
+    editors = {
+        path.parent.name.split("_", 1)[0].lstrip("0") or "0": path.relative_to(BASE_DIR).as_posix()
+        for path in (BASE_DIR / "readings").glob("*/editor.html")
+    }
+    rows = [{**row, "editor_url": editors.get(row["sequence"], "")} for row in rows]
     payload = json.dumps(rows, ensure_ascii=False).replace("</", "<\\/")
-    (BASE_DIR / "select_readings.html").write_text(SELECTOR.replace("__ENTRIES__", payload), encoding="utf-8")
+    source_link = '<a href="${esc(x.source_url)}" target="_blank" rel="noreferrer">阅读原文</a>'
+    editor_link = '${x.editor_url?`<a href="${esc(x.editor_url)}">打开编辑器</a>`:\'\'}' + source_link
+    selector = SELECTOR.replace(source_link, editor_link).replace("__ENTRIES__", payload)
+    (BASE_DIR / "select_readings.html").write_text(selector, encoding="utf-8")
     print(f"Wrote selector with {len(rows)} Marx–Engels readings")
 
 
