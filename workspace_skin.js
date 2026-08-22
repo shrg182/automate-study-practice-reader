@@ -405,7 +405,31 @@
     if (toolbar) toolbar.prepend(homeLink);
   }
 
-  function installWorkspaceControls() { installContextNavigation(); installSwitch(); installReadingEnvironment(); installFileMenu(); installInsertMenu(); installUserNotesAccess(); installAnnotationSync(); installImmersiveMode(); }
+  function installExpandingReviewFields() {
+    const selector = ".annotation-register .register-row textarea";
+    const style = document.createElement("style");
+    style.textContent = `${selector}{min-height:96px!important;overflow-y:hidden;resize:vertical}`;
+    document.head.appendChild(style);
+    const resize = (area) => {
+      area.style.height = "auto";
+      area.style.height = `${Math.max(area.scrollHeight + 2, 96)}px`;
+    };
+    const resizeWithin = (root) => {
+      if (root.matches?.(selector)) resize(root);
+      root.querySelectorAll?.(selector).forEach(resize);
+    };
+    document.addEventListener("input", (event) => {
+      if (event.target.matches?.(selector)) resize(event.target);
+    });
+    new MutationObserver((changes) => {
+      changes.forEach((change) => change.addedNodes.forEach((node) => {
+        if (node.nodeType === Node.ELEMENT_NODE) resizeWithin(node);
+      }));
+    }).observe(document.body, { childList: true, subtree: true });
+    resizeWithin(document);
+  }
+
+  function installWorkspaceControls() { installContextNavigation(); installSwitch(); installReadingEnvironment(); installFileMenu(); installInsertMenu(); installUserNotesAccess(); installExpandingReviewFields(); installAnnotationSync(); installImmersiveMode(); }
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", installWorkspaceControls);
   else installWorkspaceControls();
 })();
