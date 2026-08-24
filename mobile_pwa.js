@@ -105,6 +105,38 @@
     alert(ios ? "请在 Safari 中点按“分享”，再选择“添加到主屏幕”。" : "请打开浏览器菜单并选择“安装应用”或“添加到主屏幕”。");
   }
 
+  function waitForInstalled(worker) {
+    if (!worker || worker.state === "installed") return Promise.resolve(worker);
+    return new Promise(resolve => worker.addEventListener("statechange", () => {
+      if (worker.state === "installed" || worker.state === "redundant") resolve(worker);
+    }));
+  }
+
+  async function updateApp() {
+    if (!registration) return toast("更新服务正在启动，请稍后再试");
+    toast("正在检查并刷新应用…");
+    try {
+      await registration.update();
+      const installing = registration.installing;
+      if (installing) await waitForInstalled(installing);
+      const waiting = registration.waiting;
+      if (waiting) {
+        reloadingForUpdate = true;
+        waiting.postMessage({type: "SKIP_WAITING"});
+        return;
+      }
+      if (navigator.serviceWorker.controller) {
+        reloadingForUpdate = true;
+        navigator.serviceWorker.controller.postMessage({type: "REFRESH_APP"});
+        return;
+      }
+      location.reload();
+    } catch (error) {
+      reloadingForUpdate = false;
+      toast(navigator.onLine ? "更新失败，请稍后再试" : "当前离线，联网后再更新");
+    }
+  }
+
   function mount() {
     if (document.querySelector(".mobile-pwa-bar")) return;
     style(); document.body.classList.add("mobile-pwa");
@@ -113,7 +145,7 @@
       : '<button data-mobile-action="home" class="active">目录</button><button data-mobile-action="update">更新</button><button data-mobile-action="install">安装</button>';
     document.body.insertAdjacentHTML("beforeend", `<div class="mobile-pwa-toast" role="status"></div><div class="mobile-pwa-update" role="status"><span>发现新版 Mobile Reader</span><button type="button">立即更新</button></div><nav class="mobile-pwa-bar${isEditor ? "" : " mobile-home-bar"}" aria-label="阅读工具">${buttons}</nav>`);
     if (registration?.waiting && navigator.serviceWorker.controller) document.querySelector(".mobile-pwa-update").classList.add("show");
-    document.querySelector(".mobile-pwa-update button").addEventListener("click", () => { reloadingForUpdate = true; registration?.waiting?.postMessage({type: "SKIP_WAITING"}); });
+    document.querySelector(".mobile-pwa-update button").addEventListener("click", updateApp);
     document.querySelector(".mobile-pwa-bar").addEventListener("click", async event => {
       const action = event.target.closest("button")?.dataset.mobileAction;
       if (action === "home") location.href = new URL("index.html", scriptRoot).href;
@@ -123,12 +155,7 @@
       if (action === "sync") window.ReadingWorkspace?.openSync?.();
       if (action === "edit") setEditing(!editing);
       if (action === "offline") cacheArticle();
-      if (action === "update") {
-        if (!registration) return toast("更新服务正在启动，请稍后再试");
-        await registration.update().catch(() => null);
-        if (registration.waiting) announceUpdate(registration.waiting);
-        else toast(registration.installing ? "正在下载新版…" : "当前已是最新版本");
-      }
+      if (action === "update") updateApp();
       if (action === "install") install();
     });
     if (isEditor) setEditing(false, true);
@@ -139,6 +166,8 @@
   navigator.serviceWorker?.addEventListener("message", async event => {
     if (event.data?.type === "ARTICLE_CACHED") toast(`本篇已保存离线 · ${await storageLabel()}`);
     if (event.data?.type === "CACHE_ERROR") toast(`离线保存失败：${event.data.message}`);
+    if (event.data?.type === "APP_REFRESHED") location.reload();
+    if (event.data?.type === "APP_REFRESH_ERROR") { reloadingForUpdate = false; toast("更新失败，请稍后再试"); }
   });
   function announceUpdate(worker) { if (worker && navigator.serviceWorker.controller) document.querySelector(".mobile-pwa-update")?.classList.add("show"); }
   if ("serviceWorker" in navigator && /^(https?:)$/.test(location.protocol)) {

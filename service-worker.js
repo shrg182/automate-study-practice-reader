@@ -1,4 +1,4 @@
-const VERSION = "reading-room-v25";
+const VERSION = "reading-room-v26";
 const CORE_CACHE = `${VERSION}-core`;
 const ARTICLE_CACHE = `${VERSION}-articles`;
 const root = new URL("./", self.registration.scope);
@@ -32,6 +32,13 @@ self.addEventListener("fetch", event => {
 self.addEventListener("message", event => {
   const data = event.data || {};
   if (data.type === "SKIP_WAITING") self.skipWaiting();
+  if (data.type === "REFRESH_APP") {
+    event.waitUntil(caches.delete(CORE_CACHE)
+      .then(() => caches.open(CORE_CACHE))
+      .then(cache => cache.addAll(coreFiles.map(url => new Request(url, {cache: "reload"}))))
+      .then(() => event.source?.postMessage({type: "APP_REFRESHED"}))
+      .catch(error => event.source?.postMessage({type: "APP_REFRESH_ERROR", message: error.message})));
+  }
   if (data.type === "CACHE_ARTICLE") {
     event.waitUntil(caches.open(ARTICLE_CACHE).then(cache => cache.addAll(data.urls)).then(() => event.source?.postMessage({type: "ARTICLE_CACHED", url: data.urls[0]})).catch(error => event.source?.postMessage({type: "CACHE_ERROR", message: error.message})));
   }
