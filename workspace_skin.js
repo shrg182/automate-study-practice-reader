@@ -204,10 +204,10 @@
     const importLabel = importInput ? document.querySelector(`label[for="${importInput.id}"]`) : null;
     if (!controls.length) return;
     const style = document.createElement("style");
-    style.textContent = `.workspace-file-menu{position:relative;display:inline-flex;align-items:center}.workspace-file-trigger{min-height:30px!important;padding:4px 9px!important;border:1px solid #c9d2df!important;border-radius:5px!important;background:#fff!important;color:#202124!important;white-space:nowrap;cursor:pointer}.workspace-file-trigger::after{content:" ▾";font-size:10px}.workspace-file-popover{position:absolute;z-index:100;top:calc(100% + 5px);right:0;display:none;width:210px;padding:6px;border:1px solid #dadce0;border-radius:8px;background:#fff;box-shadow:0 8px 24px #3c404333}.workspace-file-menu.open .workspace-file-popover{display:grid;gap:2px}.workspace-file-popover button,.workspace-file-popover label{display:flex!important;width:100%;min-height:32px!important;padding:6px 9px!important;align-items:center;border:0!important;border-radius:4px!important;background:#fff!important;color:#202124!important;text-align:left;font:12px/1.3 Arial,"PingFang SC",sans-serif!important;cursor:pointer}.workspace-file-popover button:hover,.workspace-file-popover label:hover{background:#edf2fa!important}.workspace-file-popover .export-all-action{margin-bottom:5px;border-bottom:1px solid #e3e7ed!important;border-radius:4px 4px 0 0!important;background:#e8f0fe!important;color:#174ea6!important;font-weight:700!important}.workspace-file-popover .danger-action{margin-top:5px;border-top:1px solid #eee!important;border-radius:0 0 4px 4px!important;color:#b3261e!important}.workspace-file-popover input{display:none!important}@media print{.workspace-file-menu{display:none!important}}`;
+    style.textContent = `.workspace-file-menu{position:relative;display:inline-flex;align-items:center}.workspace-file-trigger{min-height:30px!important;padding:4px 9px!important;border:1px solid #c9d2df!important;border-radius:5px!important;background:#fff!important;color:#202124!important;white-space:nowrap;cursor:pointer}.workspace-file-trigger::after{content:" ▾";font-size:10px}.workspace-file-popover{position:absolute;z-index:100;top:calc(100% + 5px);left:0;right:auto;display:none;width:min(210px,calc(100vw - 24px));padding:6px;border:1px solid #dadce0;border-radius:8px;background:#fff;box-shadow:0 8px 24px #3c404333}.workspace-file-menu.open .workspace-file-popover{display:grid;gap:2px}.workspace-file-popover button,.workspace-file-popover label{display:flex!important;width:100%;min-height:32px!important;padding:6px 9px!important;align-items:center;border:0!important;border-radius:4px!important;background:#fff!important;color:#202124!important;text-align:left;font:12px/1.3 Arial,"PingFang SC",sans-serif!important;cursor:pointer}.workspace-file-popover button:hover,.workspace-file-popover label:hover{background:#edf2fa!important}.workspace-file-popover .export-all-action{margin-bottom:5px;border-bottom:1px solid #e3e7ed!important;border-radius:4px 4px 0 0!important;background:#e8f0fe!important;color:#174ea6!important;font-weight:700!important}.workspace-file-popover .danger-action{margin-top:5px;border-top:1px solid #eee!important;border-radius:0 0 4px 4px!important;color:#b3261e!important}.workspace-file-popover input{display:none!important}@media print{.workspace-file-menu{display:none!important}}`;
     document.head.appendChild(style);
     const menu = document.createElement("div"), trigger = document.createElement("button"), popover = document.createElement("div");
-    menu.className = "workspace-file-menu"; trigger.className = "workspace-file-trigger"; trigger.type = "button"; trigger.textContent = "文件与备份"; trigger.setAttribute("aria-expanded", "false");
+    menu.className = "workspace-file-menu"; trigger.className = "workspace-file-trigger"; trigger.type = "button"; trigger.textContent = "文件与备份"; trigger.setAttribute("aria-haspopup", "menu"); trigger.setAttribute("aria-expanded", "false");
     popover.className = "workspace-file-popover"; popover.setAttribute("role", "menu");
     const exportAll = document.createElement("button");
     exportAll.type = "button"; exportAll.className = "export-all-action"; exportAll.textContent = "一键导出全部";
@@ -222,11 +222,23 @@
     if (importLabel) popover.insertBefore(importLabel, popover.querySelector(".danger-action"));
     if (importInput) popover.appendChild(importInput);
     menu.append(trigger, popover); pdf.insertAdjacentElement("afterend", menu);
-    trigger.addEventListener("click", (event) => { event.stopPropagation(); const open = menu.classList.toggle("open"); trigger.setAttribute("aria-expanded", String(open)); });
+    const positionPopover = () => {
+      popover.style.left = "0px";
+      const rect = popover.getBoundingClientRect();
+      const offset = Math.max(12 - rect.left, Math.min(0, innerWidth - 12 - rect.right));
+      popover.style.left = `${offset}px`;
+    };
+    trigger.addEventListener("click", (event) => {
+      event.stopPropagation();
+      const open = menu.classList.toggle("open");
+      trigger.setAttribute("aria-expanded", String(open));
+      if (open) requestAnimationFrame(positionPopover);
+    });
     popover.addEventListener("click", (event) => { if (!event.target.closest("label")) { menu.classList.remove("open"); trigger.setAttribute("aria-expanded", "false"); } });
     importInput?.addEventListener("change", () => { menu.classList.remove("open"); trigger.setAttribute("aria-expanded", "false"); });
     document.addEventListener("click", (event) => { if (!menu.contains(event.target)) { menu.classList.remove("open"); trigger.setAttribute("aria-expanded", "false"); } });
     document.addEventListener("keydown", (event) => { if (event.key === "Escape") { menu.classList.remove("open"); trigger.setAttribute("aria-expanded", "false"); } });
+    window.addEventListener("resize", () => { if (menu.classList.contains("open")) positionPopover(); });
   }
 
   function installInsertMenu() {
