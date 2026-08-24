@@ -165,19 +165,6 @@ def collect_entries() -> dict[str, list[dict[str, str | None]]]:
                 "direct_link": None,
             }
         )
-    marx_civil_war = BASE_DIR / "marxist_classics" / "american_civil_war" / "select_readings.html"
-    if marx_civil_war.exists():
-        grouped["marxist_classics"].append(
-            {
-                "title": "马克思、恩格斯论美国内战（113篇目录）",
-                "context": "专题目录",
-                "editor": marx_civil_war.relative_to(BASE_DIR).as_posix(),
-                "pdf": None,
-                "search": "马克思 恩格斯 美国内战 南北战争 论文 通信 专题目录",
-                "action_label": "打开目录",
-                "direct_link": "yes",
-            }
-        )
     nine_sources = BASE_DIR / "nine_commentaries" / "source_index" / "select_readings.html"
     nine_book_pdf = BASE_DIR / "nine_commentaries" / "吴冷西：十年论战——1956-1966中苏关系回忆录.pdf"
     if nine_book_pdf.exists():
@@ -229,6 +216,71 @@ def entry_card(entry: dict[str, str | None], number: int) -> str:
     </article>'''
 
 
+def marxist_book_groups(entries: list[dict[str, str | None]]) -> list[dict[str, object]]:
+    """Arrange Marxist readings as book -> contents -> selected article."""
+    groups: list[dict[str, object]] = [
+        {
+            "key": "american-civil-war",
+            "title": "《马克思恩格斯论美国内战》",
+            "meta": "马克思、恩格斯 · 1861–1865",
+            "contents": "文献目录",
+            "catalog_total": 113,
+            "tool": "marxist_classics/american_civil_war/select_readings.html",
+            "tool_label": "浏览完整目录",
+            "prefix": "marxist_classics/american_civil_war/",
+        },
+        {
+            "key": "capital-volume-one",
+            "title": "《资本论》第一卷",
+            "meta": "卡尔·马克思 · English-first reader",
+            "contents": "序言与第一章〈商品〉",
+            "tool": "marxist_classics/capital/select_readings.html",
+            "tool_label": "浏览阅读计划",
+            "prefix": "marxist_classics/capital/",
+        },
+        {
+            "key": "proletarian-dictatorship",
+            "title": "《马克思恩格斯列宁论无产阶级专政》",
+            "meta": "理论语录与注释",
+            "contents": "33条语录及注释",
+            "prefix": "marxist_classics/proletarian_dictatorship_33_quotes/",
+        },
+    ]
+    for group in groups:
+        prefix = str(group.pop("prefix"))
+        group["entries"] = [entry for entry in entries if str(entry["editor"]).startswith(prefix)]
+    return groups
+
+
+def marxist_books_html(entries: list[dict[str, str | None]], start_number: int) -> str:
+    books = []
+    next_number = start_number
+    for group in marxist_book_groups(entries):
+        selected = list(group["entries"])
+        cards = []
+        for entry in selected:
+            next_number += 1
+            cards.append(entry_card(entry, next_number))
+        total = group.get("catalog_total")
+        count_label = f'已选 {len(selected)} / 全部 {total} 篇' if total else f'已选 {len(selected)} 篇'
+        tool = (
+            f'<a class="book-tool" href="{escape(str(group["tool"]), quote=True)}">{escape(str(group["tool_label"]))}</a>'
+            if group.get("tool") else ""
+        )
+        tool_line = f"\n      {tool}" if tool else ""
+        book_search = f"{group['title']} {group['meta']} {group['contents']}".casefold()
+        books.append(f'''<section class="book-group" data-book data-search="{escape(book_search, quote=True)}">
+    <header class="book-header">
+      <button class="book-toggle" type="button" aria-expanded="true" aria-controls="{group['key']}-contents"><span><span class="book-level">01 · 书名</span><strong>{escape(str(group['title']))}</strong><small>{escape(str(group['meta']))}</small></span><i aria-hidden="true">▾</i></button>{tool_line}
+    </header>
+    <div class="book-contents" id="{group['key']}-contents">
+      <button class="contents-toggle" type="button" aria-expanded="true"><span><span class="book-level">02 · 本书目录</span><strong>{escape(str(group['contents']))}</strong></span><b>{count_label}</b><i aria-hidden="true">▾</i></button>
+      <div class="selected-articles"><div class="articles-label"><span>03 · 已选篇目</span><small>阅读与校读工作区</small></div>{''.join(cards)}</div>
+    </div>
+  </section>''')
+    return '<div class="book-library">' + "".join(books) + '</div>'
+
+
 def build_html(grouped: dict[str, list[dict[str, str | None]]]) -> str:
     total = sum(len(entries) for entries in grouped.values())
     active = [(key, entries) for key, entries in grouped.items() if entries or key in {"guwen_guanzhi", "chinese_wars", "american_civil_war", "laozi", "sunzi", "thirty_six_stratagems"}]
@@ -240,23 +292,28 @@ def build_html(grouped: dict[str, list[dict[str, str | None]]]) -> str:
     running_number = 0
     for key, entries in active:
         collection = COLLECTIONS[key]
-        selector_links = {"rongzhai_suibi": "rongzhai_suibi/select_articles.html", "guwen_guanzhi": "guwen_guanzhi/select_articles.html", "chinese_wars": "chinese_wars/select_entries.html", "american_civil_war": "american_civil_war/select_battles.html", "laozi": "laozi/select_chapters.html", "sunzi": "sunzi/select_entries.html", "thirty_six_stratagems": "thirty_six_stratagems/select_entries.html", "liaozhai_stories": "liaozhai_stories/select_articles.html", "shiji": "shiji/select_articles.html", "nine_commentaries": "nine_commentaries/source_index/select_readings.html", "marxist_classics": "marxist_classics/american_civil_war/select_readings.html"}
+        selector_links = {"rongzhai_suibi": "rongzhai_suibi/select_articles.html", "guwen_guanzhi": "guwen_guanzhi/select_articles.html", "chinese_wars": "chinese_wars/select_entries.html", "american_civil_war": "american_civil_war/select_battles.html", "laozi": "laozi/select_chapters.html", "sunzi": "sunzi/select_entries.html", "thirty_six_stratagems": "thirty_six_stratagems/select_entries.html", "liaozhai_stories": "liaozhai_stories/select_articles.html", "shiji": "shiji/select_articles.html", "nine_commentaries": "nine_commentaries/source_index/select_readings.html"}
         selector_link = (f'<a class="collection-tool" href="{selector_links[key]}">选择更多篇目</a>' if key in selector_links else "")
         resource_links = {
             "jianshang": '<a class="collection-resource" href="jianshang/翦商.pdf" target="_blank" rel="noopener">原书 PDF</a>',
         }.get(key, "")
         resources_block = f'<div class="collection-resources">{resource_links}</div>' if resource_links else ""
-        cards = []
-        for entry in entries:
-            running_number += 1
-            cards.append(entry_card(entry, running_number))
+        if key == "marxist_classics":
+            cards_html = marxist_books_html(entries, running_number)
+            running_number += len(entries)
+        else:
+            cards = []
+            for entry in entries:
+                running_number += 1
+                cards.append(entry_card(entry, running_number))
+            cards_html = "".join(cards)
         sections.append(f'''<section class="collection" id="{key}" data-collection>
   <header class="collection-header">
     <button class="collection-toggle" type="button" aria-expanded="true" aria-controls="{key}-entries"><span class="collection-toggle-copy"><span class="collection-eyebrow">{escape(collection.eyebrow)}</span><span class="collection-title">{escape(collection.title)}</span><span class="collection-description">{escape(collection.description)}</span></span><i aria-hidden="true">▾</i></button>
     <div class="collection-meta">{selector_link}<strong>{len(entries)} 篇</strong></div>
   </header>
 {resources_block}
-  <div class="entries" id="{key}-entries">{"".join(cards)}</div>
+  <div class="entries{' hierarchical-entries' if key == 'marxist_classics' else ''}" id="{key}-entries">{cards_html}</div>
 </section>''')
     return f'''<!doctype html>
 <html lang="zh-CN">
@@ -277,6 +334,7 @@ a{{color:inherit}}.masthead{{background:#27251f;color:#fff}}.masthead-inner{{wid
 .collection-meta{{display:flex;gap:10px;align-items:center}}.collection-tool,.collection-resource{{padding:7px 10px;border:1px solid var(--line);border-radius:6px;background:var(--panel);color:var(--red);text-decoration:none;font-size:12px;font-weight:700}}.collection-resources{{padding:8px 12px;border:1px solid var(--line);border-bottom:0;background:#fff}}
 .entries{{background:var(--panel);border:1px solid var(--line);border-top:0}}.entry{{display:grid;grid-template-columns:54px minmax(0,1fr) auto;gap:16px;align-items:center;min-height:84px;padding:13px 17px;border-bottom:1px solid #e6e0d5}}.entry:last-child{{border-bottom:0}}.entry:hover{{background:#f7f1e6}}.entry-number{{color:#a49b8c;font:600 12px/1 Georgia,serif}}.entry-copy span{{color:var(--blue);font-size:11px;font-weight:750;letter-spacing:.06em}}.entry-copy h3{{margin:5px 0 0;font:650 18px/1.35 "Songti SC","STSong",serif}}
 .entry-actions{{display:flex;gap:7px}}.entry-actions a{{padding:8px 11px;border-radius:6px;text-decoration:none;font-size:12px;font-weight:700}}.entry-actions .primary{{background:var(--red);color:#fff}}.entry-actions .primary:hover{{background:#692a25}}.entry-actions .secondary{{border:1px solid var(--line);background:#fff}}.entry-actions .secondary:hover{{border-color:var(--blue);color:var(--blue)}}
+.hierarchical-entries{{border:0;background:transparent;box-shadow:none}}.book-library{{display:grid;gap:12px}}.book-group{{border:1px solid var(--line);border-radius:8px;overflow:hidden;background:#fff;box-shadow:0 1px 2px #3c40431a}}.book-header{{display:flex;align-items:center;gap:12px;padding:0 12px;background:#f8f9fa}}.book-toggle{{display:flex;min-width:0;flex:1;align-items:center;justify-content:space-between;padding:13px 0;border:0;background:transparent;text-align:left;cursor:pointer}}.book-toggle>span,.contents-toggle>span{{display:grid;gap:3px}}.book-toggle strong{{font-size:15px;font-weight:600}}.book-toggle small{{color:var(--muted);font-size:11px}}.book-level{{color:#137333;font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase}}.book-toggle i,.contents-toggle i{{font-style:normal;transition:transform .2s}}.book-tool{{padding:7px 11px;border:1px solid #c4d8f3;border-radius:18px;background:#e8f0fe;color:#174ea6;text-decoration:none;font-size:11px;font-weight:700;white-space:nowrap}}.book-contents{{border-top:1px solid var(--line)}}.contents-toggle{{display:grid;width:100%;grid-template-columns:minmax(0,1fr) auto 20px;gap:14px;align-items:center;padding:10px 16px;border:0;border-bottom:1px solid var(--line);background:#f1f3f4;text-align:left;cursor:pointer}}.contents-toggle strong{{font-size:13px}}.contents-toggle b{{color:var(--muted);font-size:11px}}.articles-label{{display:flex;justify-content:space-between;padding:8px 16px;border-bottom:1px solid var(--line);color:#174ea6;font-size:10px;font-weight:700;letter-spacing:.06em}}.articles-label small{{color:var(--muted);font-weight:400;letter-spacing:0}}.book-group.book-collapsed .book-contents,.book-group.contents-collapsed .selected-articles{{display:none}}.book-group.book-collapsed .book-toggle i,.book-group.contents-collapsed .contents-toggle i{{transform:rotate(-90deg)}}.selected-articles .entry:last-child{{border-bottom:0}}
 .empty{{display:none;margin:70px 0;padding:28px;text-align:center;color:var(--muted);background:var(--panel);border:1px dashed var(--line)}}footer{{padding:36px 18px;text-align:center;color:var(--muted);font-size:12px}}
 @media(max-width:760px){{.masthead-inner{{grid-template-columns:1fr;padding-top:45px}}.count{{display:none}}.controls{{grid-template-columns:1fr}}.entry{{grid-template-columns:38px 1fr}}.entry-actions{{grid-column:2;justify-content:flex-start}}.collection-header span{{display:none}}}}
 @media print{{.masthead{{background:#fff;color:#000}}.lede,.controls,.entry-actions,footer{{display:none}}.shell{{width:100%;margin:0}}.collection{{break-inside:avoid}}.entry{{min-height:0;padding:7px 10px}}}}
@@ -327,6 +385,7 @@ html[data-workspace-skin="reading"] .entries{{box-shadow:none}}html[data-workspa
 .entry-action{{display:flex;align-self:stretch;align-items:center;justify-content:center;padding:6px 8px;border-right:1px solid var(--line)}}.entry-pdf{{border-right:0}}.entry-action a{{padding:6px 10px;border-radius:16px;text-decoration:none;font-size:11px;font-weight:700;white-space:nowrap}}.entry-action .primary{{background:#188038;color:#fff}}.entry-action .primary:hover{{background:#137333}}.entry-action .secondary{{border:1px solid var(--line);background:#fff}}.entry-action .secondary:hover{{border-color:var(--blue);color:var(--blue)}}.action-empty{{color:#9aa0a6}}
 html[data-workspace-skin="reading"] .entry{{grid-template-columns:54px minmax(0,1fr) 145px 145px 132px 72px}}html[data-workspace-skin="reading"] .entry-action{{padding:0;border-right:1px solid var(--line)}}html[data-workspace-skin="reading"] .entry-pdf{{border-right:0}}html[data-workspace-skin="reading"] .entry-action a{{padding:8px 11px;border-radius:6px;font-size:12px}}html[data-workspace-skin="reading"] .entry-action .primary{{background:var(--red)}}
 @media(max-width:760px){{.entry,html[data-workspace-skin="reading"] .entry{{grid-template-columns:38px minmax(180px,1fr) 125px 125px 126px 62px}}.entry-copy{{border-right:1px solid var(--line)}}.entry-reading,.entry-editing{{padding:5px 7px}}.entry-action{{padding:5px 6px}}}}
+@media(max-width:760px){{.book-header{{align-items:flex-start;flex-direction:column;padding-bottom:10px}}.book-tool{{margin-left:0}}.contents-toggle{{grid-template-columns:minmax(0,1fr) auto}}.contents-toggle i{{display:none}}}}
 @media print{{.entry-action{{display:none}}}}
 </style>
 <script src="workspace_skin.js"></script>
@@ -344,13 +403,14 @@ const search=document.getElementById('catalogSearch'),empty=document.getElementB
 const readingHistoryKey='reading-workspace-history-v1',editingHistoryKey='reading-workspace-editing-history-v1';
 function setCollectionCollapsed(section,collapsed,persist=true){{section.classList.toggle('collapsed',collapsed);section.querySelector('.collection-toggle')?.setAttribute('aria-expanded',String(!collapsed));if(persist){{const state=JSON.parse(localStorage.getItem('reading-workspace-collapsed-collections')||'{{}}');state[section.id]=collapsed;localStorage.setItem('reading-workspace-collapsed-collections',JSON.stringify(state))}}}}
 function installCollectionToggles(){{document.querySelectorAll('[data-collection]').forEach(section=>{{setCollectionCollapsed(section,true,false);section.querySelector('.collection-toggle')?.addEventListener('click',()=>setCollectionCollapsed(section,true,false))}});document.querySelectorAll('.masthead-books a[href^="#"]').forEach(link=>link.addEventListener('click',event=>{{event.preventDefault();const section=document.querySelector(link.getAttribute('href')),opening=section?.classList.contains('collapsed');document.querySelectorAll('[data-collection]').forEach(item=>setCollectionCollapsed(item,true,false));if(opening&&section){{setCollectionCollapsed(section,false,false);history.replaceState(null,'',link.getAttribute('href'));section.scrollIntoView({{behavior:'smooth',block:'start'}})}}}}));const linked=location.hash&&document.querySelector(location.hash);if(linked?.matches('[data-collection]'))setCollectionCollapsed(linked,false,false)}}
-function filterCatalog(){{const query=search.value.trim().toLocaleLowerCase();let visibleTotal=0;document.querySelectorAll('[data-collection]').forEach(section=>{{let count=0;section.querySelectorAll('.entry').forEach(entry=>{{const show=!query||entry.dataset.search.includes(query);entry.hidden=!show;if(show)count++}});section.hidden=count===0;if(query&&count)setCollectionCollapsed(section,false,false);visibleTotal+=count}});empty.style.display=visibleTotal?'none':'block'}}
+function installBookToggles(){{document.querySelectorAll('[data-book]').forEach(book=>{{book.querySelector('.book-toggle')?.addEventListener('click',()=>{{const collapsed=book.classList.toggle('book-collapsed');book.querySelector('.book-toggle').setAttribute('aria-expanded',String(!collapsed))}});book.querySelector('.contents-toggle')?.addEventListener('click',()=>{{const collapsed=book.classList.toggle('contents-collapsed');book.querySelector('.contents-toggle').setAttribute('aria-expanded',String(!collapsed))}})}})}}
+function filterCatalog(){{const query=search.value.trim().toLocaleLowerCase();let visibleTotal=0;document.querySelectorAll('[data-collection]').forEach(section=>{{let count=0;const books=section.querySelectorAll('[data-book]');if(books.length){{books.forEach(book=>{{const bookMatch=query&&book.dataset.search.includes(query);let bookCount=0;book.querySelectorAll('.entry').forEach(entry=>{{const show=!query||bookMatch||entry.dataset.search.includes(query);entry.hidden=!show;if(show)bookCount++}});book.hidden=bookCount===0;if(query&&bookCount){{book.classList.remove('book-collapsed','contents-collapsed');book.querySelectorAll('.book-toggle,.contents-toggle').forEach(toggle=>toggle.setAttribute('aria-expanded','true'))}}count+=bookCount}})}}else{{section.querySelectorAll('.entry').forEach(entry=>{{const show=!query||entry.dataset.search.includes(query);entry.hidden=!show;if(show)count++}})}}section.hidden=count===0;if(query&&count)setCollectionCollapsed(section,false,false);visibleTotal+=count}});empty.style.display=visibleTotal?'none':'block'}}
 function renderReadingHistory(){{let history={{}};try{{history=JSON.parse(localStorage.getItem(readingHistoryKey)||'{{}}')}}catch{{}}const formatter=new Intl.DateTimeFormat('zh-CN',{{year:'numeric',month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit'}});document.querySelectorAll('.entry[data-editor-path]').forEach(entry=>{{const cell=entry.querySelector('.entry-reading'),record=history[entry.dataset.editorPath];cell.classList.toggle('read',Boolean(record));cell.querySelector('strong').textContent=record?`已读 ${{record.count||1}} 次`:'未读';cell.querySelector('time').textContent=record?.lastRead?formatter.format(new Date(record.lastRead)):''}})}}
 function renderEditingHistory(){{let history={{}};try{{history=JSON.parse(localStorage.getItem(editingHistoryKey)||'{{}}')}}catch{{}}const formatter=new Intl.DateTimeFormat('zh-CN',{{year:'numeric',month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit'}});document.querySelectorAll('.entry[data-editor-path]').forEach(entry=>{{const cell=entry.querySelector('.entry-editing'),record=history[entry.dataset.editorPath];cell.classList.toggle('edited',Boolean(record));cell.querySelector('strong').textContent=record?`已编辑 ${{record.sessions||1}} 次`:'未编辑';cell.querySelector('time').textContent=record?.lastEdited?formatter.format(new Date(record.lastEdited)):'';cell.title=record?`首次编辑：${{formatter.format(new Date(record.firstEdited))}}\n最近编辑：${{formatter.format(new Date(record.lastEdited))}}\n修改批次：${{record.changes||1}}\n内容类型：${{(record.kinds||[]).join('、')||'正文'}}`:''}})}}
 function renderHistory(){{renderReadingHistory();renderEditingHistory()}}
 search.addEventListener('input',filterCatalog);
 document.addEventListener('click',event=>{{if(event.target.closest('.entry-editor a,.entry-title-link'))sessionStorage.setItem('shiji-editor-view','annotated')}});
-window.addEventListener('focus',renderHistory);window.addEventListener('storage',renderHistory);installCollectionToggles();renderHistory();
+window.addEventListener('focus',renderHistory);window.addEventListener('storage',renderHistory);installCollectionToggles();installBookToggles();renderHistory();
 </script>
 </body>
 </html>'''
