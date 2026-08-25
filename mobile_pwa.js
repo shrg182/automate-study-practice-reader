@@ -153,7 +153,7 @@
     document.querySelector(".mobile-pwa-update button").addEventListener("click", updateApp);
     document.querySelector(".mobile-pwa-bar").addEventListener("click", async event => {
       const action = event.target.closest("button")?.dataset.mobileAction;
-      if (action === "home") location.href = new URL("index.html", scriptRoot).href;
+      if (action === "home") location.href = window.ReadingWorkspace?.directoryHref || new URL("index.html", scriptRoot).href;
       if (action === "immersive") window.ReadingWorkspace?.toggleImmersive?.();
       if (action === "settings") window.ReadingWorkspace?.openSettings?.();
       if (action === "notes") showPanel("notes");

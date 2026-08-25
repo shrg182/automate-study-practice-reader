@@ -364,31 +364,24 @@
   }
 
   function installImmersiveMode() {
-    if (!document.querySelector(".editor, .rich-editor") || document.querySelector(".reader-quick-nav")) return;
+    if (!document.querySelector(".editor, .rich-editor")) return;
     const style = document.createElement("style");
-    style.textContent = `.reader-quick-nav{position:fixed;z-index:330;left:14px;top:14px;display:flex;gap:4px;padding:5px;border:1px solid #dadce0;border-radius:22px;background:#fff;box-shadow:0 4px 18px #0002;font:12px/1 Arial,"PingFang SC",sans-serif}.reader-quick-nav button,.reader-quick-nav a{display:grid;place-items:center;min-height:32px;padding:7px 10px;border:0;border-radius:16px;background:transparent;color:#3c4043;text-decoration:none;cursor:pointer;font:inherit}.reader-quick-nav button:hover,.reader-quick-nav a:hover{background:#edf2fa}.reader-quick-nav .active{background:#e6f4ea;color:#137333;font-weight:700}body.reading-immersive{background:var(--reading-content-background,#fffdfa)!important}body.reading-immersive .toolbar,body.reading-immersive .topbar,body.reading-immersive .masthead,body.reading-immersive jianshang-editor-header,body.reading-immersive .sidebar,body.reading-immersive .notes-dock,body.reading-immersive .export-dock{display:none!important}body.reading-immersive .workspace,body.reading-immersive .main-content,body.reading-immersive .editor-shell,body.reading-immersive .content-grid{display:block!important;width:100%!important;max-width:none!important;margin:0!important;padding:0!important}body.reading-immersive .paper,body.reading-immersive .editor-panel{width:min(900px,100%)!important;max-width:900px!important;min-height:100vh!important;margin:0 auto!important;padding:clamp(24px,5vw,64px)!important;border:0!important;box-shadow:none!important}body.reading-immersive .editor,body.reading-immersive .rich-editor{min-height:100vh!important;border:0!important;box-shadow:none!important}@media(max-width:760px){.reader-quick-nav button{display:none}.reader-quick-nav{left:8px;top:8px;padding:3px}.reader-quick-nav a{min-height:30px;padding:6px 9px}}@media print{.reader-quick-nav{display:none!important}}`;
+    style.textContent = `body.reading-immersive{background:var(--reading-content-background,#fffdfa)!important}body.reading-immersive .toolbar,body.reading-immersive .topbar,body.reading-immersive .masthead,body.reading-immersive jianshang-editor-header,body.reading-immersive .sidebar,body.reading-immersive .notes-dock,body.reading-immersive .export-dock{display:none!important}body.reading-immersive .workspace,body.reading-immersive .main-content,body.reading-immersive .editor-shell,body.reading-immersive .content-grid{display:block!important;width:100%!important;max-width:none!important;margin:0!important;padding:0!important}body.reading-immersive .paper,body.reading-immersive .editor-panel{width:min(900px,100%)!important;max-width:900px!important;min-height:100vh!important;margin:0 auto!important;padding:clamp(24px,5vw,64px)!important;border:0!important;box-shadow:none!important}body.reading-immersive .editor,body.reading-immersive .rich-editor{min-height:100vh!important;border:0!important;box-shadow:none!important}`;
     document.head.appendChild(style);
-    const nav = document.createElement("nav");
-    nav.className = "reader-quick-nav"; nav.setAttribute("aria-label", "阅读快捷导航");
     const contextualHome = [...document.querySelectorAll("a[href]")].find(link => /返回首页|返回目录|书目|篇目/.test(link.textContent || ""));
     const directoryHref = contextualHome?.href || new URL("index.html", workspaceRoot).href;
-    nav.innerHTML = `<a href="${directoryHref}">书目</a><button type="button" data-reader-action="immersive" aria-pressed="false">沉浸</button><button type="button" data-reader-action="settings">设置</button><button type="button" data-reader-action="sync">同步</button>`;
     const setImmersive = async enabled => {
       document.body.classList.toggle("reading-immersive", enabled);
-      const button = nav.querySelector('[data-reader-action="immersive"]'); button.classList.toggle("active", enabled); button.setAttribute("aria-pressed", String(enabled)); button.textContent = enabled ? "退出沉浸" : "沉浸";
+      const button = document.querySelector('[data-mobile-action="immersive"]');
+      if (button) { button.classList.toggle("active", enabled); button.setAttribute("aria-pressed", String(enabled)); button.textContent = enabled ? "退出沉浸" : "沉浸"; }
       if (enabled && document.documentElement.requestFullscreen && !document.fullscreenElement) await document.documentElement.requestFullscreen().catch(() => {});
       if (!enabled && document.fullscreenElement) await document.exitFullscreen().catch(() => {});
     };
-    nav.addEventListener("click", event => {
-      const action = event.target.closest("[data-reader-action]")?.dataset.readerAction;
-      if (action === "immersive") setImmersive(!document.body.classList.contains("reading-immersive"));
-      if (action === "settings") window.ReadingWorkspace?.openSettings?.();
-      if (action === "sync") window.ReadingWorkspace?.openSync?.();
-    });
     document.addEventListener("fullscreenchange", () => { if (!document.fullscreenElement && document.body.classList.contains("reading-immersive")) setImmersive(false); });
     document.addEventListener("keydown", event => { if (event.key === "Escape" && document.body.classList.contains("reading-immersive")) setImmersive(false); });
-    document.body.appendChild(nav);
-    window.ReadingWorkspace ||= {}; window.ReadingWorkspace.toggleImmersive = () => setImmersive(!document.body.classList.contains("reading-immersive"));
+    window.ReadingWorkspace ||= {};
+    window.ReadingWorkspace.directoryHref = directoryHref;
+    window.ReadingWorkspace.toggleImmersive = () => setImmersive(!document.body.classList.contains("reading-immersive"));
   }
 
   function installAnnotationSync() {
@@ -419,6 +412,8 @@
     const menuHref = collection && !collection.endsWith(".html")
       ? new URL(`index.html#${encodeURIComponent(collection)}`, workspaceRoot).href
       : new URL("index.html", workspaceRoot).href;
+    window.ReadingWorkspace ||= {};
+    window.ReadingWorkspace.directoryHref = menuHref;
     const homeLink = [...document.querySelectorAll("a[href]")].find(link => /返回首页|返回目录|书目|篇目/.test(link.textContent || ""));
     if (!homeLink) return;
     homeLink.href = menuHref;
