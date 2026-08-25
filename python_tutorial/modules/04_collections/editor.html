@@ -3,9 +3,9 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Practical Python Foundations — Course Proposal · Reader</title>
-<link rel="stylesheet" href="../../workspace_theme.css">
-<script src="../../workspace_skin.js"></script>
+<title>Module 4: Collections · Reader</title>
+<link rel="stylesheet" href="../../../workspace_theme.css">
+<script src="../../../workspace_skin.js"></script>
 <style>
 .inline-media figcaption:empty::before{content:attr(data-placeholder);color:#aaa}
 .inline-media{position:relative;clear:both;margin:1.2em auto;padding:10px;border:1px solid var(--line);border-radius:7px;background:#fff;text-align:center;text-indent:0!important}.inline-media[data-size="small"]{max-width:320px}.inline-media[data-size="medium"]{max-width:560px}.inline-media[data-size="large"]{max-width:820px}.inline-media[data-size="full"]{max-width:none}.inline-media img{display:block;width:100%;max-height:70vh;object-fit:contain}.inline-media figcaption{min-height:1.5em;margin-top:7px;color:var(--muted);font:13px/1.5 system-ui,sans-serif}.inline-media-tools{display:flex;gap:5px;justify-content:center;margin-top:7px}.inline-media-tools button{padding:3px 7px;font-size:11px}.clean-view .inline-media{display:none!important}
@@ -29,393 +29,72 @@ button,input,select,textarea{font:inherit}.app{min-height:100vh;display:grid;gri
 <style>#editor{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;line-height:1.75}#editor h2{margin:2em 0 .6em;border-bottom:1px solid var(--line)}#editor h3{color:var(--blue)}#editor p{margin:.75em 0;text-indent:0}#editor li{margin:.35em 0}#editor code{background:#eef1f4;padding:.12em .35em;border-radius:4px}#editor pre{padding:16px;border:1px solid #d4dbe2;border-radius:8px;background:#f6f8fa;overflow:auto;white-space:pre}#editor pre code{padding:0;background:transparent}</style></head>
 <body class="clean-view">
 <div class="app">
-  <header class="topbar"><div class="brand">Practical Python Foundations — Course Proposal · Reader</div><a class="source" id="sourceLink" target="_blank" rel="noreferrer">查看原文来源 ↗</a><div class="status" id="saveStatus">尚未修改</div></header>
+  <header class="topbar"><div class="brand">Module 4: Collections · Reader</div><a class="source" id="sourceLink" target="_blank" rel="noreferrer">查看原文来源 ↗</a><div class="status" id="saveStatus">尚未修改</div></header>
   <nav class="toolbar" aria-label="编辑工具栏">
-    <a class="file-label book-menu-link" href="../../index.html" title="返回本书目录">书目</a>
+    <a class="file-label book-menu-link" href="../../../index.html" title="返回本书目录">书目</a>
     <button type="button" id="toolbarToggle" class="toolbar-toggle" aria-expanded="true" title="收起工具栏以扩大正文区域">收起工具栏</button>
     <div class="group"><button type="button" id="viewToggle" class="primary">切换为注音稿</button><span class="view-badge" id="viewBadge">当前：清稿</span></div>
     <div class="group"><button type="button" data-command="undo" title="撤销 Ctrl/⌘+Z">撤销</button><button type="button" data-command="redo">重做</button></div>
     <div class="group" role="search"><input class="content-search" id="contentSearch" type="search" placeholder="搜索正文关键词" aria-label="搜索正文关键词"><button type="button" id="searchPrevBtn" title="上一个匹配">↑</button><button type="button" id="searchNextBtn" title="下一个匹配">↓</button><span class="search-status" id="contentSearchStatus" aria-live="polite"></span></div>
     <div class="group" aria-label="文字样式"><div class="format-menu" id="formatMenu"><button type="button" class="format-menu-trigger" id="formatMenuBtn" aria-haspopup="menu" aria-expanded="false" title="高亮与划线"><span class="marker-icon" aria-hidden="true"></span><span class="hidden">高亮与划线</span></button><div class="format-popover" id="formatPopover" role="menu" aria-label="高亮与划线"><button type="button" class="format-option" role="menuitem" data-command="hiliteColor" data-value="#fff1a8" data-label="黄色高亮"><span class="format-dot" style="background:#f4c542"></span>黄色</button><button type="button" class="format-option" role="menuitem" data-command="hiliteColor" data-value="#dff0d2" data-label="绿色高亮"><span class="format-dot" style="background:#78c56b"></span>绿色</button><button type="button" class="format-option" role="menuitem" data-command="hiliteColor" data-value="#dcebf7" data-label="蓝色高亮"><span class="format-dot" style="background:#68afe0"></span>蓝色</button><button type="button" class="format-option" role="menuitem" data-command="hiliteColor" data-value="#f8d7e4" data-label="粉色高亮"><span class="format-dot" style="background:#ef78a6"></span>粉色</button><button type="button" class="format-option" role="menuitem" data-command="hiliteColor" data-value="#e7d8f2" data-label="紫色高亮"><span class="format-dot" style="background:#b879cc"></span>紫色</button><div class="format-divider" role="separator"></div><button type="button" class="format-option" role="menuitem" data-command="underline" data-label="下划线"><span class="format-symbol"><u>U</u></span>下划线</button><button type="button" class="format-option" role="menuitem" data-command="strikeThrough" data-label="删除线"><span class="format-symbol"><s>S</s></span>删除线</button></div></div><button type="button" id="boldBtn" title="加粗所选文字"><strong>B</strong><span class="hidden">粗体</span></button></div>
-    <div class="group"><button type="button" id="notationBtn">添加注音/简注</button><button type="button" id="interlinearBtn">添加行间注</button><button type="button" id="footnoteBtn">添加脚注</button><button type="button" id="commentBtn">插入按语</button><button type="button" id="insertImageBtn">插入图片</button><input class="hidden" id="inlineImageInput" type="file" accept="image/jpeg,image/png,image/webp,image/gif"><button type="button" id="doubtBtn">标为待核</button><button type="button" id="clearBtn">清除所选格式</button><a class="file-label" href="../../../project_dictionary/index.html" target="_blank">全书词典</a><a class="file-label" href="../index.html" target="_blank">Python Course</a></div>
+    <div class="group"><button type="button" id="notationBtn">添加注音/简注</button><button type="button" id="interlinearBtn">添加行间注</button><button type="button" id="footnoteBtn">添加脚注</button><button type="button" id="commentBtn">插入按语</button><button type="button" id="insertImageBtn">插入图片</button><input class="hidden" id="inlineImageInput" type="file" accept="image/jpeg,image/png,image/webp,image/gif"><button type="button" id="doubtBtn">标为待核</button><button type="button" id="clearBtn">清除所选格式</button><a class="file-label" href="../../../../project_dictionary/index.html" target="_blank">全书词典</a><a class="file-label" href="../../index.html" target="_blank">Python Course</a></div>
     <div class="group"><button type="button" id="speakBtn" class="primary">朗读选中/全文</button><button type="button" id="pauseBtn" disabled>暂停</button><button type="button" id="stopBtn" disabled>停止</button><select id="voiceSelect" aria-label="朗读声音"><option value="">系统默认声音</option></select><label class="rate">语速 <input id="rate" type="range" min="0.5" max="1.5" step="0.1" value="0.8"><span id="rateValue">0.8×</span></label></div>
     <div class="group"><button type="button" id="saveBtn">保存到浏览器</button><button type="button" id="printPdfBtn">导出 PDF</button><button type="button" id="exportTxtBtn">导出 TXT</button><button type="button" id="exportHtmlBtn">导出 HTML</button><button type="button" id="exportJsonBtn">导出备份</button><button type="button" id="exportLogBtn">导出日志</button><label class="file-label" for="importJson">导入备份</label><input class="hidden" id="importJson" type="file" accept="application/json,.json"></div>
     <div class="group"><button type="button" id="globalHintsBtn" class="active" aria-pressed="true">全书词典提示：开</button><label class="difficulty-control">阅读难度 <select id="difficultyLevel" aria-label="阅读文章的最低词语难度"><option value="1">1+ Common</option><option value="2">2+ Intermediate</option><option value="3" selected>3+ Advanced</option><option value="4">4+ Rare</option><option value="5">5 Specialist</option></select></label></div><button type="button" id="resetBtn">恢复初始文本</button>
   </nav>
   <main class="workspace">
     <article class="paper">
-      <h1>Practical Python Foundations — Course Proposal</h1><div class="subtitle">正文可直接编辑；选择文字后可从标记菜单设置高亮与划线，也可加粗，或添加注音、行间注、脚注、按语与待核标记</div>
-      <section id="editor" class="editor" contenteditable="true" spellcheck="false" aria-label="正文编辑区"><h2>Practical Python Foundations — Course Proposal</h2>
+      <h1>Module 4: Collections</h1><div class="subtitle">正文可直接编辑；选择文字后可从标记菜单设置高亮与划线，也可加粗，或添加注音、行间注、脚注、按语与待核标记</div>
+      <section id="editor" class="editor" contenteditable="true" spellcheck="false" aria-label="正文编辑区"><h2>Module 4: Collections</h2>
 <h3>Purpose</h3>
-<p>This document proposes an original Python tutorial course for the Reader app, using Hans-Petter Halvorsen&#x27;s *Python Programming* as a reference and sequencing aid rather than reproducing the textbook.</p>
+<p>Choose appropriate collections and build a word-frequency analyzer.</p>
+<h3>Learning objectives</h3>
 <ul>
-<li>Reference PDF: <a href="https://www.halvorsen.blog/documents/programming/python/resources/Python%20Programming.pdf" target="_blank" rel="noreferrer">Python Programming</a></li>
-<li>Author: Hans-Petter Halvorsen</li>
-<li>Examined edition: June 12, 2026</li>
-<li>Length: 143 pages</li>
-<li>Proposed course title: **Practical Python Foundations**</li>
-<li>Intended audience: beginning Python learners, including readers who benefit</li>
+<li>Use lists for ordered mutable items.</li>
+<li>Use tuples for fixed records.</li>
+<li>Use dictionaries for lookup.</li>
+<li>Use sets for uniqueness.</li>
 </ul>
-<p>from English–Chinese study support</p>
-<h3>Overall Recommendation</h3>
-<p>The PDF is suitable as a supporting textbook, but it should not be imported verbatim or used as the sole curriculum.</p>
-<p>The Reader course should:</p>
+<h3>Core lesson</h3>
+<p>Read code as data moving through explicit decisions. Before running the example, identify inputs, predict output, and locate validation. Execute it and use differences between prediction and result to refine your mental model.</p>
+<p>Keep each program small enough to explain from top to bottom. Names reveal intent, functions expose inputs and outputs, and demonstrations belong under the main guard. These habits scale to the capstone.</p>
+<h3>Runnable example</h3>
+<pre><code>import re
+
+def word_frequencies(text: str) -&gt; dict[str, int]:
+    counts: dict[str, int] = {}
+    for word in re.findall(r&quot;[A-Za-z&#x27;]+&quot;, text.lower()):
+        counts[word] = counts.get(word, 0) + 1
+    return counts
+
+if __name__ == &quot;__main__&quot;:
+    print(sorted(word_frequencies(&quot;Read code, run code, explain code.&quot;).items()))</code></pre>
+<p>Run <code>python3 example.py</code> from this lesson directory.</p>
+<h3>Guided lab</h3>
 <ol>
-<li>Link to the original PDF and identify relevant page ranges.</li>
-<li>Present original explanations, code examples, exercises, and solutions.</li>
-<li>Preserve the useful beginner progression found in the PDF.</li>
-<li>Reorganize topics into a clearer modern learning sequence.</li>
-<li>Add current Python practices that receive little or no treatment in the PDF.</li>
-<li>Use the Reader app&#x27;s bilingual study pane for Chinese support, code, exercises,</li>
+<li>List the extracted words.</li>
+<li>Explain lowercase normalization.</li>
+<li>Find the five most frequent words.</li>
+<li>Report unique vocabulary size.</li>
 </ol>
-<p>hints, notes, and references.</p>
-<h3>Evaluation of the PDF</h3>
-<h4>Strengths</h4>
-<ul>
-<li>Introduces Python gradually for beginners.</li>
-<li>Covers installation and running Python on common operating systems.</li>
-<li>Introduces variables, strings, functions, conditions, loops, classes, modules,</li>
-</ul>
-<p>files, exceptions, packages, mathematics, statistics, and plotting.</p>
-<ul>
-<li>Contains many short examples and self-paced exercises.</li>
-<li>Includes solutions to exercises near the end of the book.</li>
-<li>Provides companion source code, web resources, and videos through the</li>
-</ul>
-<p>author&#x27;s website.</p>
-<ul>
-<li>Gives useful attention to numerical and scientific applications.</li>
-<li>Can serve as a stable external reading reference for each course lesson.</li>
-</ul>
-<h4>Limitations</h4>
-<ul>
-<li>Some material remains historically dated despite the 2026 edition. Examples</li>
-</ul>
-<p>include 2018 popularity surveys, the Windows 10 Store, Enthought Canopy, and Microsoft Azure Notebooks.</p>
-<ul>
-<li>A large portion of the book discusses distributions and individual editors.</li>
-</ul>
-<p>Beginners need some setup guidance, but not this much tool-specific material.</p>
-<ul>
-<li>Plotting is introduced before control flow, which is not the clearest sequence</li>
-</ul>
-<p>for a foundations course.</p>
-<ul>
-<li>Classes, exception handling, modules, and file handling are comparatively</li>
-</ul>
-<p>brief.</p>
-<ul>
-<li>The book emphasizes syntax examples more than problem decomposition, program</li>
-</ul>
-<p>design, testing, and complete projects.</p>
-<ul>
-<li>Some terminology and English prose would benefit from clarification for</li>
-</ul>
-<p>language learners.</p>
-<h4>Modern Material to Add</h4>
-<p>The Reader course should add or strengthen:</p>
-<ul>
-<li>f-strings</li>
-<li>list, dictionary, and set comprehensions</li>
-<li>dictionaries and sets as core collection types</li>
-<li><code>pathlib</code></li>
-<li><code>with open(...)</code> and context management</li>
-<li>structured CSV and JSON processing</li>
-<li>type hints</li>
-<li>dataclasses as an optional introduction</li>
-<li>automated tests</li>
-<li>assertions and debugging from tracebacks</li>
-<li>Git fundamentals</li>
-<li>project structure</li>
-<li><code>.venv</code> virtual environments</li>
-<li><code>python -m pip</code></li>
-<li>dependency records such as <code>requirements.txt</code></li>
-<li>separation of program logic from user input and output</li>
-<li>incremental development and refactoring</li>
-</ul>
-<p>For environment and package guidance, the course should follow the <a href="https://packaging.python.org/en/latest/guides/installing-using-pip-and-virtual-environments/" target="_blank" rel="noreferrer">Python Packaging User Guide</a>, which recommends isolated project environments when using third-party packages.</p>
-<h3>Proposed Course Structure</h3>
-<h4>Module 1 — Getting Ready</h4>
-<p>Topics:</p>
-<ul>
-<li>What Python is and where it is useful</li>
-<li>Installing a current Python 3 release</li>
-<li>Choosing one simple editor</li>
-<li>Terminal and command-prompt fundamentals</li>
-<li>Running the interactive interpreter</li>
-<li>Running a <code>.py</code> file</li>
-<li>Creating and activating <code>.venv</code></li>
-<li>Reading errors without fear</li>
-</ul>
-<p>Outcome: the learner can create a project folder and run a small Python program.</p>
-<h4>Module 2 — Values, Variables, and Expressions</h4>
-<p>Topics:</p>
-<ul>
-<li>Integers and floating-point numbers</li>
-<li>Strings and Boolean values</li>
-<li>Variables and assignment</li>
-<li>Arithmetic and comparison operators</li>
-<li>Type conversion</li>
-<li><code>input()</code> and <code>print()</code></li>
-<li>f-strings</li>
-<li>Naming and formatting conventions</li>
-</ul>
-<p>Outcome: the learner can write a small interactive calculation program.</p>
-<h4>Module 3 — Decisions and Repetition</h4>
-<p>Topics:</p>
-<ul>
-<li>Boolean expressions</li>
-<li><code>if</code>, <code>elif</code>, and <code>else</code></li>
-<li><code>for</code> loops</li>
-<li><code>while</code> loops</li>
-<li><code>range()</code></li>
-<li><code>break</code> and <code>continue</code></li>
-<li>Nested control flow</li>
-<li>Avoiding infinite loops</li>
-</ul>
-<p>Outcome: the learner can express conditional and repeated behavior clearly.</p>
-<h4>Module 4 — Collections</h4>
-<p>Topics:</p>
-<ul>
-<li>Lists</li>
-<li>Tuples</li>
-<li>Dictionaries</li>
-<li>Sets</li>
-<li>Indexing and slicing</li>
-<li>Adding, updating, and removing values</li>
-<li>Iterating through collections</li>
-<li>Comprehensions</li>
-<li>Choosing the correct collection type</li>
-</ul>
-<p>Outcome: the learner can organize and process groups of related values.</p>
-<h4>Module 5 — Functions and Program Design</h4>
-<p>Topics:</p>
-<ul>
-<li>Defining and calling functions</li>
-<li>Parameters and arguments</li>
-<li>Return values</li>
-<li>Local and global scope</li>
-<li>Default and keyword arguments</li>
-<li>Docstrings</li>
-<li>Type hints</li>
-<li>Breaking a problem into smaller functions</li>
-<li>Separating calculations from input and display</li>
-</ul>
-<p>Outcome: the learner can divide a program into reusable, testable components.</p>
-<h4>Module 6 — Files and Reliable Programs</h4>
-<p>Topics:</p>
-<ul>
-<li>Paths and <code>pathlib</code></li>
-<li>Reading and writing text with <code>with open(...)</code></li>
-<li>CSV files</li>
-<li>JSON files</li>
-<li>Data validation</li>
-<li>Syntax errors and exceptions</li>
-<li><code>try</code>, <code>except</code>, <code>else</code>, and <code>finally</code></li>
-<li>Basic logging</li>
-</ul>
-<p>Outcome: the learner can safely load, validate, transform, and save data.</p>
-<h4>Module 7 — Classes and Data Models</h4>
-<p>Topics:</p>
-<ul>
-<li>Objects and classes</li>
-<li>Attributes and methods</li>
-<li><code>__init__</code></li>
-<li>Instance behavior</li>
-<li>Composition</li>
-<li>Choosing between a function, dictionary, and class</li>
-<li>Optional introduction to dataclasses</li>
-</ul>
-<p>Outcome: the learner can represent a small real-world concept as a Python data model without overusing classes.</p>
-<h4>Module 8 — Modules, Environments, and Packages</h4>
-<p>Topics:</p>
-<ul>
-<li>Importing standard-library modules</li>
-<li>Creating a local module</li>
-<li><code>if __name__ == &quot;__main__&quot;</code></li>
-<li>Packages versus modules</li>
-<li>Virtual environments</li>
-<li>Installing packages with <code>python -m pip</code></li>
-<li>Recording dependencies</li>
-<li>Reproducing a project environment</li>
-</ul>
-<p>Outcome: the learner can organize a multi-file program and manage its dependencies safely.</p>
-<h4>Module 9 — Debugging and Testing</h4>
-<p>Topics:</p>
-<ul>
-<li>Reading tracebacks</li>
-<li>Reproducing a defect</li>
-<li>Strategic diagnostic output</li>
-<li>Editor debugger fundamentals</li>
-<li>Assertions</li>
-<li>Unit tests</li>
-<li>Testing ordinary cases and boundary cases</li>
-<li>Refactoring after tests pass</li>
-</ul>
-<p>Outcome: the learner can investigate defects systematically and protect working behavior with tests.</p>
-<h4>Module 10 — Numerical Python</h4>
-<p>Topics:</p>
-<ul>
-<li>Standard-library mathematics</li>
-<li>NumPy arrays</li>
-<li>Basic descriptive statistics</li>
-<li>Matplotlib charts</li>
-<li>Separating data preparation from visualization</li>
-<li>Interpreting results rather than merely producing a graph</li>
-</ul>
-<p>Outcome: the learner can perform and explain a small numerical analysis.</p>
-<h4>Module 11 — Capstone Project</h4>
-<p>Recommended project: **Reader Selection Report**.</p>
-<p>The learner builds a program that:</p>
+<h3>Independent practice</h3>
 <ol>
-<li>Opens a Reader selection JSON file.</li>
-<li>Validates its required fields.</li>
-<li>Counts selections, notes, terms, and source articles.</li>
-<li>Groups results by collection or difficulty.</li>
-<li>Writes a Markdown or CSV study report.</li>
-<li>Handles missing or malformed data gracefully.</li>
-<li>Includes automated tests for its core transformations.</li>
+<li>Exclude common stop words.</li>
+<li>Group words by first letter.</li>
 </ol>
-<p>This project connects Python instruction to the learner&#x27;s existing Reader app workflow while exercising files, JSON, collections, functions, validation, exceptions, reporting, and tests.</p>
-<h3>Reader App Information Architecture</h3>
-<p>Use three navigational levels:</p>
-<pre><code>Practical Python Foundations
-├── Module
-│   ├── Lesson
-│   ├── Guided lab
-│   └── Exercises
-└── Capstone project</code></pre>
-<p>The collection page should show modules first. Opening a module should reveal its table of contents. The table of contents should then link to individual lessons, labs, exercises, and project checkpoints.</p>
-<h3>Recommended Lesson Template</h3>
-<p>Every lesson should include:</p>
-<ol>
-<li>**Learning objectives** — two to four observable outcomes.</li>
-<li>**Original English explanation** — concise and written for the Reader course.</li>
-<li>**Chinese support** — explanatory support rather than an unreviewed literal</li>
-</ol>
-<p>translation.</p>
-<ol>
-<li>**Vocabulary** — important Python and general English terms.</li>
-<li>**Code examples** — small examples that can be copied and run.</li>
-<li>**Prediction questions** — ask what the program will do before it is run.</li>
-<li>**Guided lab** — a task completed in small verified steps.</li>
-<li>**Independent exercise** — a related task without a complete walkthrough.</li>
-<li>**Common mistakes** — likely errors and how to read their tracebacks.</li>
-<li>**Checkpoint** — a short self-assessment.</li>
-<li>**Hints and solutions** — separated from the exercise so they are not shown</li>
-</ol>
-<p>prematurely.</p>
-<ol>
-<li>**References** — precise PDF pages and current official documentation.</li>
-</ol>
-<h3>Study Pane Design</h3>
-<p>The bilingual study pane can be adapted for programming lessons with these tabs:</p>
+<h3>Hints</h3>
 <ul>
-<li>**中文** — Chinese explanations and terminology support</li>
-<li>**代码** — copyable complete examples</li>
-<li>**练习** — the current guided or independent task</li>
-<li>**提示** — progressive hints</li>
-<li>**札记** — the learner&#x27;s saved notes</li>
-<li>**参考** — PDF page ranges and official documentation</li>
+<li>Test membership in a set.</li>
+<li>Try <code>setdefault</code>.</li>
 </ul>
-<p>The existing five layout modes remain useful:</p>
-<ul>
-<li>English only</li>
-<li>English focus</li>
-<li>Balanced</li>
-<li>Study-pane focus</li>
-<li>Study pane only</li>
-</ul>
-<p>For programming lessons, “study pane only” can be used to concentrate on code, an exercise, or Chinese support. The slider should continue to allow custom proportions and remember the learner&#x27;s choice.</p>
-<h3>Exercise Design Principles</h3>
-<ul>
-<li>Exercises should be newly written for this course.</li>
-<li>Each exercise should concentrate on one main skill before combining skills.</li>
-<li>Examples should use meaningful names rather than unexplained single letters.</li>
-<li>Early exercises should provide sample input and expected output.</li>
-<li>Later exercises should require the learner to identify requirements and edge</li>
-</ul>
-<p>cases.</p>
-<ul>
-<li>Hints should be progressive: conceptual hint, structural hint, then partial</li>
-</ul>
-<p>code only when necessary.</p>
-<ul>
-<li>Complete solutions should explain decisions, not merely display code.</li>
-<li>More than one correct solution should be acknowledged when appropriate.</li>
-<li>Every module should end with a small usable program.</li>
-</ul>
-<h3>Technical Baseline</h3>
-<ul>
-<li>Target a current supported Python 3 release.</li>
-<li>Prefer standard-library solutions during the foundations modules.</li>
-<li>Use <code>.venv</code> for lessons that require third-party packages.</li>
-<li>Use UTF-8 consistently.</li>
-<li>Provide commands for both macOS/Linux and Windows when they differ.</li>
-<li>Keep code examples in separate <code>.py</code> files as well as displaying them in the</li>
-</ul>
-<p>Reader.</p>
-<ul>
-<li>Run every published example and automated test before release.</li>
-<li>Avoid depending on one editor except where an editor-specific lesson is</li>
-</ul>
-<p>explicitly identified.</p>
-<h3>Copyright and Attribution</h3>
-<p>The examined PDF displays the author&#x27;s copyright, and no open-content license was identified during the evaluation. The public Reader course should therefore not reproduce full chapters, illustrations, or exercise sets without permission.</p>
-<p>The course should instead:</p>
-<ul>
-<li>Credit Hans-Petter Halvorsen and link to the original PDF.</li>
-<li>Reference relevant page ranges.</li>
-<li>Write original lesson explanations.</li>
-<li>Create original code examples, exercises, hints, and solutions.</li>
-<li>Use only brief quotations when necessary for commentary.</li>
-<li>Link to current official Python documentation for authoritative technical</li>
-</ul>
-<p>guidance.</p>
-<ul>
-<li>Record the source and purpose of every external image or substantial excerpt.</li>
-</ul>
-<h3>Suggested Implementation Phases</h3>
-<h4>Phase 1 — Pilot</h4>
-<p>Build Modules 1 and 2 with:</p>
-<ul>
-<li>one collection page</li>
-<li>two module tables of contents</li>
-<li>four to six short lessons</li>
-<li>runnable example files</li>
-<li>bilingual study-pane tabs</li>
-<li>exercises and separate solutions</li>
-<li>local progress and notes</li>
-</ul>
-<h4>Phase 2 — Core Programming</h4>
-<p>Add Modules 3 through 6 and validate the workflow with actual learner notes and exported backups.</p>
-<h4>Phase 3 — Program Structure</h4>
-<p>Add Modules 7 through 9, including modules, classes, environments, debugging, and tests.</p>
-<h4>Phase 4 — Applications</h4>
-<p>Add numerical Python and the Reader Selection Report capstone.</p>
-<h4>Phase 5 — Review and Publication</h4>
-<ul>
-<li>Run every example and test.</li>
-<li>Verify desktop and mobile layouts.</li>
-<li>Check English and Chinese terminology.</li>
-<li>Confirm source attribution and copyright compliance.</li>
-<li>Generate the course index.</li>
-<li>Publish the completed modules to the online Reader app.</li>
-</ul>
-<h3>Acceptance Criteria for the Pilot</h3>
-<p>The pilot is ready for publication when:</p>
-<ul>
-<li>A new learner can install or locate Python and run the first program.</li>
-<li>Every displayed code example has been executed successfully.</li>
-<li>Exercises can be understood without consulting unpublished instructions.</li>
-<li>English-only, bilingual, and study-pane-only layouts work.</li>
-<li>Notes and progress survive a reload and an export/import cycle.</li>
-<li>Mobile controls do not obscure code or exercise text.</li>
-<li>PDF references link to the original source and identify page ranges.</li>
-<li>No copyrighted chapter or exercise has been reproduced wholesale.</li>
-</ul>
-<h3>Final Recommendation</h3>
-<p>Proceed with an original Reader-native companion course rather than a direct PDF conversion. The PDF should provide background, selected reading assignments, and one perspective on sequencing. The Reader course should supply the modern technical baseline, bilingual support, interactive study structure, original practice, testing discipline, and capstone project.</p></section>
+<h3>Solution guidance</h3>
+<p>Filter before incrementing. For grouping, use <code>groups.setdefault(word[0], []).append(word)</code>.</p>
+<h3>中文学习支持</h3>
+<p>比较 list、tuple、dictionary、set；选择时考虑顺序、修改、查找和去重。</p>
+<p>学习方法：先用英文说明输入、处理和输出，再用中文复述；最后修改一个条件并预测结果。</p>
+<h3>Textbook cross-reference</h3>
+<p>Supporting reference: Hans-Petter Halvorsen, *Python Programming*, pp. 87–120. Page numbers refer to the linked PDF edition; this lesson and its exercises are original course material.</p>
+<p><a href="https://www.halvorsen.blog/documents/programming/python/resources/Python%20Programming.pdf" target="_blank" rel="noreferrer">Open the supporting PDF</a></p></section>
       <section class="footnotes" id="footnotes"><h2>脚注</h2><div id="footnoteList"></div></section>
       <section class="annotation-register" id="interlinearRegister"><h2>行间注 <small>Inline Notes</small></h2><div id="interlinearList"></div></section>
       <section class="annotation-register" id="commentRegister"><h2>按语 <small>Editorial Notes</small></h2><div id="commentList"></div></section>
@@ -425,7 +104,7 @@ button,input,select,textarea{font:inherit}.app{min-height:100vh;display:grid;gri
       <section class="card"><h2>原文来源</h2><a class="source-card-link" id="sourceCardLink" target="_blank" rel="noreferrer">在Source Markdown打开原文 <span aria-hidden="true">↗</span></a><p class="source-url" id="sourceUrl"></p></section>
       <section class="card"><h2>当前选择</h2><div class="selection" id="selectionText">请先在正文中选择文字。</div></section>
       <section class="card" id="globalDictionaryCard"><h2>全书词典释义</h2><div class="global-definition" id="globalDefinition">正文中带浅色点线的词语已收录于全书词典。点击词语可在这里查看释义。</div></section>
-      <section class="card"><h2>本篇词典</h2><div class="dictionary-actions"><a class="file-label" href="../../../project_dictionary/index.html" target="_blank">打开全书词典</a><button type="button" id="exportTermsBtn">导出本篇 CSV</button></div><input class="term-search" id="termSearch" placeholder="搜索词语、拼音或简注"><div class="term-list" id="termList"></div></section>
+      <section class="card"><h2>本篇词典</h2><div class="dictionary-actions"><a class="file-label" href="../../../../project_dictionary/index.html" target="_blank">打开全书词典</a><button type="button" id="exportTermsBtn">导出本篇 CSV</button></div><input class="term-search" id="termSearch" placeholder="搜索词语、拼音或简注"><div class="term-list" id="termList"></div></section>
       <section class="card"><h2>文档统计</h2><div class="stats"><span>正文字符 <b id="charCount">0</b></span><span>段落 <b id="paragraphCount">0</b></span><span>注音 <b id="notationCount">0</b></span><span>行间注 <b id="interlinearCount">0</b></span><span>脚注 <b id="footnoteCount">0</b></span><span>按语 <b id="commentCount">0</b></span><span>待核 <b id="doubtCount">0</b></span></div></section>
       <section class="card"><h2>用户札记</h2><textarea class="note-input" id="userNoteInput" placeholder="记录阅读心得；也可直接粘贴图片或视频"></textarea><div class="media-strip" id="userNoteMedia"></div><div class="note-actions"><button type="button" id="addUserNoteMediaBtn">添加图片/视频</button><button type="button" id="addUserNoteBtn">添加札记</button><button type="button" id="exportNotesBtn">导出札记</button></div><input class="hidden" id="userNoteMediaInput" type="file" multiple accept="image/jpeg,image/png,image/webp,image/gif,video/mp4,video/webm"><p class="media-limit">图片每张 2 MB、视频每段 10 MB；每篇合计 25 MB。图片最长边自动缩至 1600 px。</p><div class="note-list" id="userNoteList"></div></section>
       <section class="card"><h2>编辑日志</h2><div class="note-actions"><button type="button" id="clearLogBtn">清空日志</button></div><div class="log-list" id="editLogList"></div></section>
@@ -434,7 +113,7 @@ button,input,select,textarea{font:inherit}.app{min-height:100vh;display:grid;gri
   </main>
 </div>
 <script>
-const TERMS=[]; const GLOBAL_TERMS=[]; const SOURCE_URL="../COURSE_PROPOSAL.md"; const INITIAL_FOOTNOTES=[]; const INITIAL_READING_NOTES=[]; const INITIAL_MEDIA=[]; const STORAGE_KEY='python-tutorial-course-proposal-v1'; const LOG_KEY=STORAGE_KEY+'-log-v1'; const NOTES_KEY=STORAGE_KEY+'-notes-v1'; const PROJECT_DICTIONARY_OVERRIDES_KEY='reading-lexicon-entry-overrides-v1';
+const TERMS=[]; const GLOBAL_TERMS=[]; const SOURCE_URL="lesson.md"; const INITIAL_FOOTNOTES=[]; const INITIAL_READING_NOTES=[]; const INITIAL_MEDIA=[]; const STORAGE_KEY='python-tutorial-04_collections-v1'; const LOG_KEY=STORAGE_KEY+'-log-v1'; const NOTES_KEY=STORAGE_KEY+'-notes-v1'; const PROJECT_DICTIONARY_OVERRIDES_KEY='reading-lexicon-entry-overrides-v1';
 const editor=document.getElementById('editor'), footnoteList=document.getElementById('footnoteList'), saveStatus=document.getElementById('saveStatus');const INLINE_GLOSS_LIMIT=36,INTERLINEAR_NOTE_LIMIT=60;
 const initialHTML=editor.innerHTML,GLOBAL_TERM_DEFAULTS=GLOBAL_TERMS.map(entry=>({...entry})); let savedRange=null, saveTimer=null, voices=[];
 document.getElementById('sourceLink').href=SOURCE_URL;
@@ -542,10 +221,10 @@ document.getElementById('globalDefinition').onclick=event=>{const edit=event.tar
 document.getElementById('globalDefinition').onsubmit=event=>{if(event.target.id!=='globalTermEditForm')return;event.preventDefault();const form=event.target,entry=GLOBAL_TERMS.find(item=>item.term===form.dataset.term);if(!entry)return;const values=new FormData(form);entry.pinyin=String(values.get('pinyin')||'').trim();entry.difficulty=String(Number(values.get('difficulty'))||3);entry.annotation=String(values.get('definition')||'').trim();persistGlobalDictionaryTerm(entry);ensureGlobalDictionaryHints();showGlobalDictionaryTerm(entry.term);addLog('编辑全书词典',`${entry.term}：Level ${entry.difficulty}`)};
 const formatMenu=document.getElementById('formatMenu'),formatMenuBtn=document.getElementById('formatMenuBtn');function closeFormatMenu(){formatMenu.classList.remove('open');formatMenuBtn.setAttribute('aria-expanded','false')}formatMenuBtn.onclick=event=>{event.stopPropagation();const opening=!formatMenu.classList.contains('open');closeFormatMenu();if(opening){formatMenu.classList.add('open');formatMenuBtn.setAttribute('aria-expanded','true')}};document.getElementById('formatPopover').onclick=event=>{const option=event.target.closest('.format-option');if(!option)return;applyTextStyle(option.dataset.command,option.dataset.value||null,option.dataset.label);closeFormatMenu()};document.addEventListener('click',event=>{if(!formatMenu.contains(event.target))closeFormatMenu()});document.addEventListener('keydown',event=>{if(event.key==='Escape')closeFormatMenu()});document.getElementById('boldBtn').onclick=()=>applyTextStyle('bold',null,'粗体');
 document.getElementById('notationBtn').onclick=()=>addNotation();document.getElementById('interlinearBtn').onclick=()=>{addInterlinearNote();renderAnnotationRegisters()};document.getElementById('footnoteBtn').onclick=addFootnote;document.getElementById('commentBtn').onclick=()=>{addComment();renderAnnotationRegisters()};document.getElementById('insertImageBtn').onclick=()=>document.getElementById('inlineImageInput').click();document.getElementById('inlineImageInput').onchange=async event=>{const file=event.target.files[0];if(file)await insertInlineImage(file);event.target.value=''};document.getElementById('doubtBtn').onclick=()=>{const note=prompt('待核原因（可留空）：','')||'';wrapSelection('doubt',{issue:note});renderAnnotationRegisters()};document.getElementById('clearBtn').onclick=()=>{clearFormatting();renderAnnotationRegisters()};
-document.getElementById('saveBtn').onclick=()=>saveLocal(false);document.getElementById('printPdfBtn').onclick=exportPdf;document.getElementById('exportTxtBtn').onclick=()=>download('python_tutorial_course_proposal_clean_edited.txt','text/plain;charset=utf-8',plainText());document.getElementById('exportJsonBtn').onclick=async()=>{const data=state();data.media=await exportMedia();download('python_tutorial_course_proposal_editor_backup.json','application/json',JSON.stringify(data,null,2))};document.getElementById('exportHtmlBtn').onclick=()=>download('python_tutorial_course_proposal_edited.html','text/html;charset=utf-8',exportStandalone());
-document.getElementById('exportLogBtn').onclick=()=>{download('python_tutorial_course_proposal_edit_log.txt','text/plain;charset=utf-8',getStored(LOG_KEY).map(item=>`${item.time}\t${item.action}\t${visibleLogDetail(item)}`).join('\n')+'\n');addLog('导出编辑日志')};
+document.getElementById('saveBtn').onclick=()=>saveLocal(false);document.getElementById('printPdfBtn').onclick=exportPdf;document.getElementById('exportTxtBtn').onclick=()=>download('python_tutorial_04_collections_clean_edited.txt','text/plain;charset=utf-8',plainText());document.getElementById('exportJsonBtn').onclick=async()=>{const data=state();data.media=await exportMedia();download('python_tutorial_04_collections_editor_backup.json','application/json',JSON.stringify(data,null,2))};document.getElementById('exportHtmlBtn').onclick=()=>download('python_tutorial_04_collections_edited.html','text/html;charset=utf-8',exportStandalone());
+document.getElementById('exportLogBtn').onclick=()=>{download('python_tutorial_04_collections_edit_log.txt','text/plain;charset=utf-8',getStored(LOG_KEY).map(item=>`${item.time}\t${item.action}\t${visibleLogDetail(item)}`).join('\n')+'\n');addLog('导出编辑日志')};
 async function attachDraftFiles(files){try{draftMediaIds.push(...await addMediaFiles(files));renderDraftMedia()}catch(error){alert(error.message)}};document.getElementById('addUserNoteMediaBtn').onclick=()=>document.getElementById('userNoteMediaInput').click();document.getElementById('userNoteMediaInput').onchange=async event=>{await attachDraftFiles([...event.target.files]);event.target.value=''};document.getElementById('userNoteInput').addEventListener('paste',async event=>{const files=[...event.clipboardData.files];if(!files.length)return;event.preventDefault();await attachDraftFiles(files)});document.getElementById('addUserNoteBtn').onclick=()=>{const input=document.getElementById('userNoteInput'),text=input.value.trim();if(!text&&!draftMediaIds.length)return;const notes=getStored(NOTES_KEY);notes.unshift({time:new Date().toISOString(),text,mediaIds:[...draftMediaIds]});localStorage.setItem(NOTES_KEY,JSON.stringify(notes));input.value='';draftMediaIds=[];renderDraftMedia();renderNotes();addLog('添加用户札记')};
-document.getElementById('exportNotesBtn').onclick=()=>download('python_tutorial_course_proposal_reading_notes.txt','text/plain;charset=utf-8',getStored(NOTES_KEY).map(item=>`${item.time}\t${item.text}`).join('\n')+'\n');
+document.getElementById('exportNotesBtn').onclick=()=>download('python_tutorial_04_collections_reading_notes.txt','text/plain;charset=utf-8',getStored(NOTES_KEY).map(item=>`${item.time}\t${item.text}`).join('\n')+'\n');
 document.getElementById('clearLogBtn').onclick=()=>{if(confirm('清空本浏览器保存的编辑日志？')){localStorage.removeItem(LOG_KEY);renderLog()}};
 document.getElementById('importJson').onchange=event=>{const file=event.target.files[0];if(!file)return;const reader=new FileReader();reader.onload=async()=>{try{const data=JSON.parse(reader.result);await importMedia(data.media||[]);loadState(data);saveLocal(false);renderNotes();renderAnnotationRegisters()}catch(error){alert('无法导入备份：'+error.message)}};reader.readAsText(file)};
 document.getElementById('resetBtn').onclick=()=>{if(confirm('恢复初始文本会清除当前浏览器内的编辑记录。确定继续吗？')){localStorage.removeItem(STORAGE_KEY);editor.innerHTML=initialHTML;footnoteList.innerHTML='';INITIAL_FOOTNOTES.forEach(item=>addFootnoteRow(item.id,item.note,item.mediaIds||[]));renumberFootnotes();renderAnnotationRegisters();changed()}};

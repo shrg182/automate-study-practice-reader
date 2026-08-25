@@ -95,6 +95,12 @@ def natural_key(path: Path) -> tuple[object, ...]:
 def entry_context(path: Path, collection_key: str) -> str:
     relative = path.relative_to(BASE_DIR / collection_key)
     parts = relative.parts[:-1]
+    if collection_key == "python_tutorial" and parts:
+        if parts[-1] == "course_proposal":
+            return "Course plan"
+        match = re.match(r"(\d+)_", parts[-1])
+        if match:
+            return f"Module {int(match.group(1))}"
     if collection_key == "rongzhai_suibi" and parts:
         volume = next((part for part in parts if part.startswith("volume_")), "")
         if volume:
