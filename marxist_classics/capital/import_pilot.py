@@ -140,17 +140,18 @@ def add_chinese_support(output: str, chinese_text: str, row: dict[str, str]) -> 
   const findCard=title=>[...sidebar.querySelectorAll(':scope > .card')].find(card=>card.querySelector(':scope > h2')?.textContent.trim()===title);
   const sourceCard=findCard('原文来源'),selectionCard=findCard('当前选择'),globalCard=document.getElementById('globalDictionaryCard'),termCard=document.getElementById('termList')?.closest('.card'),notesCard=findCard('用户札记'),footnotes=document.getElementById('footnotes');
   const pane=document.createElement('aside');pane.className='study-pane sidebar';pane.setAttribute('aria-label','双语学习窗格');
-  pane.innerHTML='<div class="study-pane-header"><div class="study-pane-title"><span>学习窗格</span><small id="studyLayoutSummary"></small></div><div class="study-pane-tabs" role="tablist"><button type="button" class="study-pane-tab" data-study-tab="chinese">中文</button><button type="button" class="study-pane-tab" data-study-tab="footnotes">脚注</button><button type="button" class="study-pane-tab" data-study-tab="notes">札记</button><button type="button" class="study-pane-tab" data-study-tab="dictionary">词典</button><button type="button" class="study-pane-tab" data-study-tab="source">来源</button></div></div><div class="study-pane-body"></div>';
+  pane.innerHTML='<div class="study-pane-header"><div class="study-pane-title"><span>学习窗格</span><small id="studyLayoutSummary"></small></div><div class="study-pane-tabs" role="tablist"><button type="button" class="study-pane-tab" data-study-tab="chinese">中文</button><button type="button" class="study-pane-tab" data-study-tab="footnotes">全部注释</button><button type="button" class="study-pane-tab" data-study-tab="notes">札记</button><button type="button" class="study-pane-tab" data-study-tab="dictionary">词典</button><button type="button" class="study-pane-tab" data-study-tab="source">来源</button></div></div><div class="study-pane-body"></div>';
   const body=pane.querySelector('.study-pane-body'),panels={};
   ['chinese','footnotes','notes','dictionary','source'].forEach(name=>{const panel=document.createElement('section');panel.className='study-panel';panel.dataset.studyPanel=name;panel.setAttribute('role','tabpanel');body.append(panel);panels[name]=panel});
+  chineseCard.querySelector('details')?.setAttribute('open','');
   panels.chinese.append(chineseCard);
-  if(footnotes){const back=document.createElement('button');back.type='button';back.className='footnote-return';back.textContent='返回正文';footnotes.insertBefore(back,footnotes.firstChild);panels.footnotes.append(footnotes)}else panels.footnotes.innerHTML='<p class="study-panel-empty">本篇暂无脚注。</p>';
+  const allNotesMount=document.createElement('div');allNotesMount.id='allNotesMount';panels.footnotes.append(allNotesMount);
   if(notesCard)panels.notes.append(notesCard);else panels.notes.innerHTML='<p class="study-panel-empty">本篇暂无札记工具。</p>';
   [selectionCard,globalCard,termCard].filter(Boolean).forEach(card=>panels.dictionary.append(card));
   if(sourceCard)panels.source.append(sourceCard);
   [...sidebar.children].forEach(node=>panels.source.append(node));
   sidebar.replaceWith(pane);workspace.classList.add('study-layout');
-  const tabNames={chinese:'中文',footnotes:'脚注',notes:'札记',dictionary:'词典',source:'来源'};
+  const tabNames={chinese:'中文',footnotes:'全部注释',notes:'札记',dictionary:'词典',source:'来源'};
   function activateTab(name,persist=true){if(!panels[name])name='chinese';pane.querySelectorAll('.study-pane-tab').forEach(button=>{const active=button.dataset.studyTab===name;button.classList.toggle('active',active);button.setAttribute('aria-selected',String(active))});Object.entries(panels).forEach(([key,panel])=>panel.classList.toggle('active',key===name));if(persist)localStorage.setItem(tabKey,name)}
   pane.querySelector('.study-pane-tabs').addEventListener('click',event=>{const button=event.target.closest('[data-study-tab]');if(button)activateTab(button.dataset.studyTab)});
   activateTab(localStorage.getItem(tabKey)||'chinese',false);
@@ -168,7 +169,7 @@ def add_chinese_support(output: str, chinese_text: str, row: dict[str, str]) -> 
   let returnTarget=null;
   document.addEventListener('click',event=>{const reference=event.target.closest('.footnote-ref');if(reference){returnTarget=reference;activateTab('footnotes');if(workspace.classList.contains('study-english-only'))applyShare(30)}},true);
   document.addEventListener('click',event=>{if(event.target.closest('.global-term-anchor,.term-anchor')){activateTab('dictionary');if(workspace.classList.contains('study-english-only'))applyShare(30)}},true);
-  footnotes?.querySelector('.footnote-return')?.addEventListener('click',()=>{if(returnTarget?.isConnected){returnTarget.scrollIntoView({behavior:'smooth',block:'center'});returnTarget.focus?.({preventScroll:true})}});
+  allNotesMount.addEventListener('click',event=>{if(event.target.closest('[data-all-notes-return]')&&returnTarget?.isConnected){returnTarget.scrollIntoView({behavior:'smooth',block:'center'});returnTarget.focus?.({preventScroll:true})}});
   window.BilingualStudyPane={activateTab,applyShare};
 })();
 </script>

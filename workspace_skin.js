@@ -453,7 +453,102 @@
     resizeWithin(document);
   }
 
-  function installWorkspaceControls() { installContextNavigation(); installSwitch(); installReadingEnvironment(); installFileMenu(); installInsertMenu(); installUserNotesAccess(); installExpandingReviewFields(); installAnnotationSync(); installImmersiveMode(); }
+  function installAllNotesView() {
+    const footnotes = document.getElementById("footnotes");
+    const registers = [
+      ["行间注", document.getElementById("interlinearList")],
+      ["按语", document.getElementById("commentList")],
+      ["待核", document.getElementById("doubtList")],
+    ];
+    if (!footnotes && !registers.some(([, list]) => list)) return;
+    if (!document.getElementById("allNotesStyle")) {
+      const style = document.createElement("style");
+      style.id = "allNotesStyle";
+      style.textContent = `.all-notes-card h2{display:flex;gap:7px;align-items:center}.all-notes-card h2 small{color:var(--muted);font-size:11px}.all-notes-total,.all-notes-group h3 b{display:inline-grid;min-width:22px;height:22px;padding:0 5px;place-items:center;border-radius:12px;background:#e8f0fe;color:#174ea6;font:700 11px system-ui,sans-serif}.all-notes-return{margin:0 0 9px}.all-notes-groups{display:grid;gap:10px}.all-notes-group{padding-top:9px;border-top:1px solid var(--line)}.all-notes-group h3{display:flex;gap:6px;align-items:center;margin:0 0 7px;font:700 13px/1.4 system-ui,sans-serif}.all-notes-row{display:grid;grid-template-columns:minmax(60px,.5fr) minmax(120px,1fr);gap:6px;margin:6px 0;padding:7px;border:1px solid #d8e0e5;border-radius:6px;background:#fff}.all-notes-register-row{grid-template-columns:minmax(90px,.65fr) minmax(120px,1fr) auto}.all-notes-row textarea{width:100%;min-height:64px;padding:6px;border:1px solid var(--line);resize:vertical;font:12px/1.5 system-ui,sans-serif}.all-notes-source{min-width:0;padding:5px 7px;overflow-wrap:anywhere;text-align:left;font:12px/1.45 system-ui,sans-serif}.all-notes-actions{display:flex;flex-direction:column;gap:5px}.all-notes-empty{margin:0!important;padding:7px;color:var(--muted);background:var(--panel);font:12px system-ui,sans-serif}.study-panel #allNotesMount .all-notes-card{margin:0;box-shadow:none}@media(max-width:620px){.all-notes-row,.all-notes-register-row{grid-template-columns:1fr}.all-notes-actions{flex-direction:row}}`;
+      document.head.append(style);
+    }
+
+    document.querySelectorAll(".study-panel .chinese-support-card details").forEach(details => details.open = true);
+    let mount = document.getElementById("allNotesMount");
+    if (!mount) {
+      const sidebar = document.querySelector(".sidebar");
+      if (!sidebar) return;
+      mount = document.createElement("div");
+      mount.id = "allNotesMount";
+      sidebar.prepend(mount);
+    }
+    const card = document.createElement("section");
+    card.className = "card all-notes-card";
+    card.innerHTML = '<h2>全部注释 <small>All Notes</small> <b class="all-notes-total">0</b></h2><button type="button" class="all-notes-return" data-all-notes-return hidden>返回正文</button><div class="all-notes-groups"></div>';
+    mount.replaceChildren(card);
+    const groups = card.querySelector(".all-notes-groups");
+    let rendering = false;
+
+    function proxyTextarea(source) {
+      const area = document.createElement("textarea");
+      area.value = source.value;
+      area.setAttribute("aria-label", source.getAttribute("aria-label") || "注释内容");
+      area.addEventListener("input", () => {
+        source.value = area.value;
+        const event = new Event("input", { bubbles: true });
+        event.allNotesProxy = true;
+        source.dispatchEvent(event);
+      });
+      return area;
+    }
+    function actionButton(label, source, className = "") {
+      const button = document.createElement("button");
+      button.type = "button"; button.textContent = label; button.className = className;
+      button.addEventListener("click", () => { source?.click(); queueMicrotask(render); });
+      return button;
+    }
+    function section(title, rows) {
+      const block = document.createElement("section");
+      block.className = "all-notes-group";
+      block.innerHTML = `<h3>${title} <b>${rows.length}</b></h3>`;
+      if (!rows.length) block.insertAdjacentHTML("beforeend", '<p class="all-notes-empty">暂无</p>');
+      rows.forEach(row => block.append(row));
+      groups.append(block);
+    }
+    function render() {
+      if (rendering) return;
+      rendering = true; groups.innerHTML = ""; let total = 0;
+      const footnoteRows = [...(document.getElementById("footnoteList")?.querySelectorAll(".footnote-item") || [])].map((sourceRow, index) => {
+        const row = document.createElement("div"); row.className = "all-notes-row";
+        const jump = actionButton(`${index + 1}.`, sourceRow.querySelector(".footnote-number"), "all-notes-source");
+        const sourceArea = sourceRow.querySelector("textarea");
+        row.append(jump, sourceArea ? proxyTextarea(sourceArea) : document.createTextNode(""));
+        return row;
+      });
+      total += footnoteRows.length; section("脚注", footnoteRows);
+      registers.forEach(([title, list]) => {
+        const rows = [...(list?.querySelectorAll(".register-row") || [])].map(sourceRow => {
+          const row = document.createElement("div"); row.className = "all-notes-row all-notes-register-row";
+          const sourceButton = sourceRow.querySelector(".register-source");
+          const jump = actionButton(sourceButton?.textContent.trim() || "定位正文", sourceButton, "all-notes-source");
+          const sourceArea = sourceRow.querySelector("textarea");
+          const actions = document.createElement("div"); actions.className = "all-notes-actions";
+          sourceRow.querySelectorAll(".register-actions button").forEach(button => actions.append(actionButton(button.textContent, button, button.classList.contains("register-delete") ? "all-notes-delete" : "")));
+          row.append(jump, sourceArea ? proxyTextarea(sourceArea) : document.createTextNode(""), actions);
+          return row;
+        });
+        total += rows.length; section(title, rows);
+      });
+      card.querySelector(".all-notes-total").textContent = String(total);
+      const returnButton = card.querySelector(".all-notes-return");
+      returnButton.hidden = !document.querySelector(".study-pane");
+      rendering = false;
+    }
+    let pending = false;
+    const schedule = () => { if (!pending) { pending = true; requestAnimationFrame(() => { pending = false; render(); }); } };
+    [document.getElementById("footnoteList"), ...registers.map(([, list]) => list)].filter(Boolean).forEach(list => {
+      new MutationObserver(schedule).observe(list, { childList: true, subtree: true, attributes: true });
+      list.addEventListener("input", event => { if (!event.allNotesProxy) schedule(); });
+    });
+    render();
+  }
+
+  function installWorkspaceControls() { installContextNavigation(); installSwitch(); installReadingEnvironment(); installFileMenu(); installInsertMenu(); installUserNotesAccess(); installExpandingReviewFields(); installAnnotationSync(); installAllNotesView(); installImmersiveMode(); }
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", installWorkspaceControls);
   else installWorkspaceControls();
 })();
