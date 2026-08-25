@@ -1,0 +1,64 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Intermediate 6: Relational Data and SQLite</title><style>*{box-sizing:border-box}body{margin:0;background:#f1f3f4;color:#202124;font-family:system-ui}header{position:sticky;top:0;z-index:2;display:flex;gap:8px;align-items:center;flex-wrap:wrap;padding:10px 16px;background:#fff;border-bottom:1px solid #dadce0}header strong{margin-right:auto}a,button{padding:7px 10px;border:1px solid #c8ccd0;border-radius:7px;background:#fff;color:#174ea6;text-decoration:none;font:inherit;cursor:pointer}main{width:min(980px,calc(100% - 24px));margin:18px auto;background:#fff;border:1px solid #dadce0;border-radius:12px;overflow:hidden}h1{margin:0;padding:24px 28px 0}.byline{padding:0 28px;color:#5f6368}textarea{display:block;width:100%;min-height:calc(100vh - 180px);padding:28px;border:0;border-top:1px solid #e5e7e9;resize:vertical;color:#202124;background:#fff;font:17px/1.75 ui-monospace,SFMono-Regular,Menlo,monospace}@media(max-width:600px){h1,.byline,textarea{padding-left:16px;padding-right:16px}}</style></head><body><header><strong>Python · Intermediate</strong><a href="../../../index.html">Course contents</a><a href="../../../../index.html">Reader library</a><button id="save">Save</button><button id="download">Download Markdown</button></header><main><h1>Intermediate 6: Relational Data and SQLite</h1><p class="byline">Author: Codex (OpenAI)</p><textarea id="lesson" spellcheck="false"># Intermediate 6: Relational Data and SQLite
+
+**Author: Codex (OpenAI)**
+
+## Purpose
+
+Use schemas, parameters, transactions, and queries safely.
+
+## Learning objectives
+
+- Explain the central abstraction and its tradeoffs.
+- Run, trace, test, and modify the example.
+- Separate domain logic from input, output, and infrastructure.
+- Recognize failure modes and validate boundaries.
+
+## Lesson
+
+Begin with a precise contract: identify the input, result, side effects, and possible failures. Read the example before running it. Trace the state changes, predict the output, and then use execution as evidence. Prefer the simplest design that preserves clarity, testability, and explicit ownership of resources.
+
+The feature in this module is useful only when it reduces complexity at the system boundary. Keep the core calculation small, isolate external effects, and make cleanup and error behavior visible. Add abstractions after repeated concrete cases demonstrate a need.
+
+## Runnable example
+
+```python
+import sqlite3
+
+def demo():
+    db = sqlite3.connect(&quot;:memory:&quot;)
+    db.execute(&quot;create table note(id integer primary key, text text not null)&quot;)
+    db.execute(&quot;insert into note(text) values (?)&quot;, (&quot;Read transactions&quot;,))
+    return db.execute(&quot;select text from note&quot;).fetchone()[0]
+if __name__ == &quot;__main__&quot;: print(demo())
+```
+
+Run `python3 example.py` from this module directory.
+
+## Guided lab
+
+1. Predict the output and identify every state transition.
+2. Run the example and explain any difference from the prediction.
+3. Add validation for one invalid or boundary input.
+4. Extract one pure function and write a focused test for it.
+5. Record one design tradeoff and one alternative implementation.
+
+## Independent practice
+
+1. Adapt the example to Reader study data.
+2. Add structured error reporting without hiding the original cause.
+3. Measure or test the property that matters most for this module.
+
+## Hints
+
+- Keep computation independent from display and file access.
+- Prefer deterministic inputs in tests.
+- Document why an abstraction exists, not merely how it is written.
+
+## Solution guidance
+
+A sound solution has a narrow public interface, validates data once at the boundary, and leaves the central transformation easy to test. Confirm ordinary, empty, boundary, and malformed cases. For extensions involving external services or optional packages, keep the standard-library example runnable and isolate the adapter.
+
+## Completion check
+
+You can complete this module when you can explain the design without reading the code, reproduce it in a smaller example, and justify where errors, cleanup, and tests belong.
+</textarea></main><script>const area=document.querySelector('#lesson'),key='python-intermediate-06_sqlite-v1';area.value=localStorage.getItem(key)||area.value;document.querySelector('#save').onclick=()=>localStorage.setItem(key,area.value);document.querySelector('#download').onclick=()=>{const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([area.value],{type:'text/markdown'}));a.download='lesson.md';a.click();setTimeout(()=>URL.revokeObjectURL(a.href),500)};area.addEventListener('input',()=>localStorage.setItem(key,area.value));</script></body></html>

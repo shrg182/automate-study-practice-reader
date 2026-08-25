@@ -40,8 +40,7 @@ COLLECTIONS = {
     "nine_commentaries": Collection("nine_commentaries", "九评", "章节阅读与校读材料", "专题阅读"),
     "marxist_classics": Collection("marxist_classics", "马克思主义经典", "经典文本专题摘录与注释", "理论文献"),
     "ai_course": Collection("ai_course", "AI 课程", "课程文章、讲义与学习笔记", "课程资料"),
-    "python_tutorial": Collection("python_tutorial", "Practical Python Foundations", "现代 Python 基础课程规划、讲义与实践项目", "Python 课程"),
-    "python_learning_path": Collection("python_learning_path", "Python Learning Path", "初级、中级与高级三级 Python 学习路线", "Python 三级课程"),
+    "python": Collection("python", "Python", "Beginning, Intermediate, and Advanced courses by Codex (OpenAI)", "Programming"),
 }
 
 COLLECTION_ORDER = list(COLLECTIONS)
@@ -96,14 +95,11 @@ def natural_key(path: Path) -> tuple[object, ...]:
 def entry_context(path: Path, collection_key: str) -> str:
     relative = path.relative_to(BASE_DIR / collection_key)
     parts = relative.parts[:-1]
-    if collection_key == "python_tutorial" and parts:
-        if parts[-1] == "course_proposal":
-            return "Course plan"
+    if collection_key == "python" and parts:
+        levels = {"beginning": "Beginning", "intermediate": "Intermediate", "advanced": "Advanced"}
+        level = next((levels[part] for part in parts if part in levels), "Python")
         match = re.match(r"(\d+)_", parts[-1])
-        if match:
-            return f"Module {int(match.group(1))}"
-    if collection_key == "python_learning_path" and parts:
-        return "Three-level book"
+        return f"{level} · Module {int(match.group(1))}" if match else level
     if collection_key == "rongzhai_suibi" and parts:
         volume = next((part for part in parts if part.startswith("volume_")), "")
         if volume:
@@ -302,7 +298,7 @@ def build_html(grouped: dict[str, list[dict[str, str | None]]]) -> str:
     running_number = 0
     for key, entries in active:
         collection = COLLECTIONS[key]
-        selector_links = {"rongzhai_suibi": "rongzhai_suibi/select_articles.html", "guwen_guanzhi": "guwen_guanzhi/select_articles.html", "chinese_wars": "chinese_wars/select_entries.html", "american_civil_war": "american_civil_war/select_battles.html", "laozi": "laozi/select_chapters.html", "sunzi": "sunzi/select_entries.html", "thirty_six_stratagems": "thirty_six_stratagems/select_entries.html", "liaozhai_stories": "liaozhai_stories/select_articles.html", "shiji": "shiji/select_articles.html", "nine_commentaries": "nine_commentaries/source_index/select_readings.html", "python_tutorial": "python_tutorial/index.html", "python_learning_path": "python_learning_path/index.html"}
+        selector_links = {"rongzhai_suibi": "rongzhai_suibi/select_articles.html", "guwen_guanzhi": "guwen_guanzhi/select_articles.html", "chinese_wars": "chinese_wars/select_entries.html", "american_civil_war": "american_civil_war/select_battles.html", "laozi": "laozi/select_chapters.html", "sunzi": "sunzi/select_entries.html", "thirty_six_stratagems": "thirty_six_stratagems/select_entries.html", "liaozhai_stories": "liaozhai_stories/select_articles.html", "shiji": "shiji/select_articles.html", "nine_commentaries": "nine_commentaries/source_index/select_readings.html", "python": "python/index.html"}
         selector_link = (f'<a class="collection-tool" href="{selector_links[key]}">选择更多篇目</a>' if key in selector_links else "")
         resource_links = {
             "jianshang": '<a class="collection-resource" href="jianshang/翦商.pdf" target="_blank" rel="noopener">原书 PDF</a>',

@@ -14,6 +14,8 @@ from bs4 import BeautifulSoup, Tag
 
 BASE_DIR = Path(__file__).resolve().parent
 SOURCE_URL = "https://www.marxists.org/chinese/marx-engels/subject/us-civilwar.htm"
+ENGLISH_INDEX_URL = "https://www.marxists.org/archive/marx/works/1861/us-civil-war/index.htm"
+ENGLISH_PDF_URL = "https://www.marxists.org/archive/marx/works/download/Marx_Engels_Writings_on_the_North_American_Civil_War.pdf"
 CATALOG = BASE_DIR / "catalog.csv"
 FIELDS = ["sequence", "section", "year", "author", "title", "featured", "source_url", "status"]
 
@@ -86,6 +88,15 @@ def build_selector(rows: list[dict[str, str]]) -> None:
     source_link = '<a href="${esc(x.source_url)}" target="_blank" rel="noreferrer">阅读原文</a>'
     editor_link = '${x.editor_url?`<a href="${esc(x.editor_url)}">打开编辑器</a>`:\'\'}' + source_link
     selector = SELECTOR.replace(source_link, editor_link).replace("__ENTRIES__", payload)
+    selector = selector.replace(
+        '<div class="header-links">',
+        f'<div class="header-links"><a href="{ENGLISH_INDEX_URL}" target="_blank" rel="noreferrer"><strong>English collection ↗</strong></a><a href="{ENGLISH_PDF_URL}" target="_blank" rel="noreferrer"><strong>English PDF ↗</strong></a>',
+        1,
+    ).replace(
+        '<h1>马克思、恩格斯论美国内战</h1>',
+        '<h1>马克思、恩格斯论美国内战</h1><p><strong>English is the preferred reading language.</strong> Use the English collection or consolidated PDF above; the Chinese catalog remains available as a reference and processing index.</p>',
+        1,
+    )
     (BASE_DIR / "select_readings.html").write_text(selector, encoding="utf-8")
     print(f"Wrote selector with {len(rows)} Marx–Engels readings")
 

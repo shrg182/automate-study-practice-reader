@@ -87,7 +87,13 @@
     .page-title { font-weight:700; }
     .page-title span { color:var(--muted); font-weight:500; margin-left:8px; }
     .page-tools { display:flex; gap:8px; flex-wrap:wrap; }
-    .workbench { display:grid; grid-template-columns:minmax(340px,1fr) minmax(300px,.82fr); gap:0; align-items:stretch; }
+    .source-layout-control { margin:12px auto; max-width:760px; padding:10px 14px; border:1px solid var(--line); border-radius:10px; background:#fff; display:flex; align-items:center; gap:10px; flex-wrap:wrap; }
+    .source-layout-control strong { margin-right:auto; }
+    .source-layout-control input { width:min(280px,48vw); }
+    .source-layout-control output { min-width:145px; color:var(--muted); font-size:.86rem; }
+    .workbench { display:grid; grid-template-columns:minmax(340px,var(--text-share,70fr)) minmax(300px,var(--pdf-share,30fr)); gap:0; align-items:stretch; }
+    body.text-only .workbench, body.pdf-only .workbench { grid-template-columns:1fr; }
+    body.text-only .scan, body.pdf-only .editor-wrap { display:none; }
     .editor-wrap { padding:12px; border-right:1px solid var(--line); display:flex; min-height:560px; }
     textarea { width:100%; min-height:0; border:1px solid var(--line); background:#fff; color:var(--ink); padding:14px; border-radius:6px; line-height:1.85; font-size:1.02rem; letter-spacing:0; overflow:auto; }
     .rich-editor { width:100%; min-height:536px; border:1px solid var(--line); background:#fff; color:var(--ink); padding:14px; border-radius:6px; line-height:1.85; font-size:1.02rem; letter-spacing:0; overflow:auto; white-space:pre-wrap; overflow-wrap:anywhere; }
@@ -118,7 +124,7 @@
     .export-dock { margin-top:18px; }
     #exportText { min-height:240px; border:0; border-radius:0; }
     .quick-note-jump { position:fixed; right:18px; bottom:18px; z-index:25; background:var(--accent); color:var(--accent-ink); border-color:var(--accent); box-shadow:0 8px 24px rgba(30,24,16,.18); }
-    @media (max-width:980px) { .topbar { grid-template-columns:1fr; } .actions { justify-content:flex-start; } .status { text-align:left; } .layout { grid-template-columns:1fr; } aside { position:static; max-height:none; } .toc-body, .note-grid { grid-template-columns:1fr; } .toc-links { grid-template-columns:1fr; } .reference-grid { grid-template-columns:1fr; } .workbench { grid-template-columns:1fr; } .editor-wrap { border-right:0; border-bottom:1px solid var(--line); } .rich-editor { min-height:520px; } .quick-note-jump { right:12px; bottom:12px; } }
+    @media (max-width:980px) { .topbar { grid-template-columns:1fr; } .actions { justify-content:flex-start; } .status { text-align:left; } .layout { grid-template-columns:1fr; } aside { position:static; max-height:none; } .toc-body, .note-grid { grid-template-columns:1fr; } .toc-links { grid-template-columns:1fr; } .reference-grid { grid-template-columns:1fr; } .workbench { grid-template-columns:1fr; } .editor-wrap { border-right:0; border-bottom:1px solid var(--line); } body.pdf-priority .scan { grid-row:1; } body.pdf-priority .editor-wrap { grid-row:2; } .rich-editor { min-height:520px; } .quick-note-jump { right:12px; bottom:12px; } }
   </style>
 </head>
 <body>
@@ -128,6 +134,15 @@
     reference-href="../reference_tables.html">
     <noscript>此编辑器需要启用 JavaScript。</noscript>
   </jianshang-editor-header>
+  <section class="source-layout-control" aria-label="正文与 PDF 布局">
+    <strong>正文 / PDF</strong>
+    <button type="button" data-pdf-share="0">仅正文</button>
+    <button type="button" data-pdf-share="30">正文优先</button>
+    <button type="button" data-pdf-share="50">均衡</button>
+    <button type="button" data-pdf-share="100">仅 PDF</button>
+    <input id="sourceLayoutSlider" type="range" min="0" max="100" step="5" aria-label="PDF 所占比例">
+    <output id="sourceLayoutOutput"></output>
+  </section>
   <main>
     <div class="layout">
       <aside>
@@ -1070,6 +1085,24 @@
     document.getElementById('clearLogBtn').addEventListener('click', () => { if (!confirm('清空本浏览器保存的编辑日志？')) return; localStorage.removeItem(LOG_KEY); renderLog(); setStatus('日志已清空', 'ok'); });
     document.getElementById('resetBtn').addEventListener('click', () => { if (!confirm('恢复 chapter clean 原稿会清除本浏览器保存的编辑内容。继续？')) return; clearTimeout(timer); allowSave = false; if (viewMode === 'annotated') setView('clean'); textareas().forEach(area => area.value = ORIGINAL_TEXTS[area.dataset.page] ?? ''); cleanViewTexts = { ...ORIGINAL_TEXTS }; cleanViewHtml = {}; localStorage.removeItem(STORAGE_KEY); sessionStorage.removeItem(`${STORAGE_KEY}:view`); viewMode = 'clean'; textareas().forEach(area => { area.readOnly = false; area.classList.remove('annotated-view'); }); document.getElementById('viewToggleBtn').textContent = '切换为注音稿'; modeBadgeEl.textContent = '当前：清稿'; modeBadgeEl.classList.remove('annotated'); allowSave = true; setStatus('已恢复 chapter clean 原稿', 'ok'); addLog('恢复 clean 原稿', '', currentPage()); });
     window.addEventListener('beforeunload', () => { if (allowSave) saveNow(false); });
+    const sourceLayoutSlider = document.getElementById('sourceLayoutSlider');
+    const sourceLayoutOutput = document.getElementById('sourceLayoutOutput');
+    const SOURCE_LAYOUT_KEY = 'jianshang-text-pdf-layout-v1';
+    function applySourceLayout(raw, persist=true) {
+      const pdf = Math.max(0, Math.min(100, Number(raw)));
+      const text = 100 - pdf;
+      document.documentElement.style.setProperty('--text-share', `${text || 1}fr`);
+      document.documentElement.style.setProperty('--pdf-share', `${pdf || 1}fr`);
+      document.body.classList.toggle('text-only', pdf === 0);
+      document.body.classList.toggle('pdf-only', pdf === 100);
+      document.body.classList.toggle('pdf-priority', pdf > 50 && pdf < 100);
+      sourceLayoutSlider.value = String(pdf);
+      sourceLayoutOutput.textContent = pdf === 0 ? '仅正文' : pdf === 100 ? '仅 PDF' : `正文 ${text}% · PDF ${pdf}%`;
+      if (persist) localStorage.setItem(SOURCE_LAYOUT_KEY, String(pdf));
+    }
+    sourceLayoutSlider.addEventListener('input', event => applySourceLayout(event.target.value));
+    document.querySelectorAll('[data-pdf-share]').forEach(button => button.addEventListener('click', () => applySourceLayout(button.dataset.pdfShare)));
+    applySourceLayout(localStorage.getItem(SOURCE_LAYOUT_KEY) ?? (matchMedia('(max-width:980px)').matches ? 0 : 30), false);
     populateNotePages();
     updateMarkerGuidance();
     loadSaved();
