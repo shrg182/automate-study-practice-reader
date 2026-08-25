@@ -340,7 +340,10 @@
     shortcut.title = "查看本篇用户札记";
     const rows = () => [...list.querySelectorAll(".note-item")];
     const updateCount = () => { shortcut.textContent = `札记（${rows().length}）`; };
-    shortcut.addEventListener("click", () => section.scrollIntoView({ behavior: "smooth", block: "start" }));
+    shortcut.addEventListener("click", () => {
+      window.BilingualStudyPane?.activateTab?.("notes");
+      section.scrollIntoView({ behavior: "smooth", block: "start" });
+    });
     host.appendChild(shortcut);
     new MutationObserver(updateCount).observe(list, { childList: true, subtree: true });
     updateCount();

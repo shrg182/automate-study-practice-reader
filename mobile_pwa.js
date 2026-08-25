@@ -93,6 +93,11 @@
   function showPanel(kind) {
     document.body.classList.add("mobile-panel-open");
     document.body.classList.remove("mobile-edit-mode");
+    if (window.BilingualStudyPane) {
+      window.BilingualStudyPane.activateTab(kind === "notes" ? "notes" : "dictionary");
+      document.querySelector(".study-pane")?.scrollIntoView({block: "start"});
+      return;
+    }
     const selector = kind === "notes" ? "#user-notes,.notes-dock,#notes" : ".sidebar,.term-list";
     document.querySelector(selector)?.scrollIntoView({block: "start"});
   }
