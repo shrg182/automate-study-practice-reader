@@ -1,1 +1,80 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Capital · English-First Pilot</title><link rel="stylesheet" href="../../workspace_theme.css"><style>body{margin:0;background:#eee9df;color:#28251f;font-family:Arial,sans-serif}main{width:min(980px,calc(100% - 32px));margin:30px auto 80px}.hero,.unit{background:#fffdf8;border:1px solid #d7cdbd}.hero{padding:28px}.hero h1{font:700 clamp(32px,6vw,58px)/1.05 Georgia,serif;margin:8px 0}.hero p{max-width:760px;line-height:1.7;color:#625d54}.hero a,.unit a{color:inherit}.units{display:grid;gap:10px;margin-top:18px}.unit{display:grid;grid-template-columns:44px 1fr auto;gap:14px;align-items:center;padding:16px}.unit strong{font:700 18px/1.3 Georgia,serif}.unit small{display:block;margin-top:5px;color:#756f64}.button{padding:8px 11px;border:1px solid #b7aa96;border-radius:7px;text-decoration:none}@media(max-width:650px){.unit{grid-template-columns:34px 1fr}.unit .button{grid-column:2;justify-self:start}}</style></head><body><main><section class="hero"><a href="../../index.html">← Reader library</a><h1>Capital, Volume I</h1><p>An English-first close-reading pilot. Read Marx in English, classify difficulties, use Chinese only as support, write an English paraphrase, and consult attributed companion materials afterward.</p><p><a href="PLAN.md">Design and reading plan</a> · <a href="https://www.marxists.org/archive/marx/works/1867-c1/" target="_blank" rel="noreferrer">English source ↗</a> · <a href="https://www.marxists.org/chinese/marx/capital/" target="_blank" rel="noreferrer">Chinese reference ↗</a></p></section><section class="units"><article class="unit"><span>01</span><div><strong>Preface to the First German Edition</strong><small>Purpose, method, difficulty, and the intended reader</small></div><a class="button" href="volume_01/00_preface_1867/editor.html">Open</a></article><article class="unit"><span>02</span><div><strong>Chapter 1 §1 — The Two Factors of a Commodity</strong><small>Use-value, value, and socially necessary labour-time</small></div><a class="button" href="volume_01/01_commodity_factors/editor.html">Open</a></article><article class="unit"><span>03</span><div><strong>Chapter 1 §2 — The Two-fold Character of Labour</strong><small>Concrete useful labour and abstract human labour</small></div><a class="button" href="volume_01/02_twofold_labour/editor.html">Open</a></article><article class="unit"><span>04</span><div><strong>Chapter 1 §3 — The Form of Value</strong><small>The long and difficult development from elementary value-form to money-form</small></div><a class="button" href="volume_01/03_form_of_value/editor.html">Open</a></article><article class="unit"><span>05</span><div><strong>Chapter 1 §4 — The Fetishism of Commodities</strong><small>The social character of labour appearing as a property of things</small></div><a class="button" href="volume_01/04_commodity_fetishism/editor.html">Open</a></article></section></main><script src="../../workspace_skin.js"></script><script src="../../mobile_pwa.js"></script></body></html>
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Capital · English-First Pilot</title>
+  <link rel="stylesheet" href="../../workspace_theme.css">
+  <style>
+    body{margin:0;background:#eee9df;color:#28251f;font-family:Arial,sans-serif}
+    main{width:min(980px,calc(100% - 32px));margin:30px auto 80px}
+    .hero,.unit,.table-heading{background:#fffdf8;border:1px solid #d7cdbd}
+    .hero{position:relative;padding:28px}
+    .hero h1{font:700 clamp(32px,6vw,58px)/1.05 Georgia,serif;margin:8px 0}
+    .hero p{max-width:760px;line-height:1.7;color:#625d54}
+    .hero a,.unit a{color:inherit}
+    .view-switch{position:absolute;top:20px;right:20px;display:inline-flex;padding:3px;border:1px solid #d2c8b9;border-radius:22px;background:#fff}
+    .view-switch button{min-height:32px;padding:5px 12px;border:0;border-radius:18px;background:transparent;color:#514b42;cursor:pointer;touch-action:manipulation}
+    .view-switch button.active{background:#dff3e5;color:#137333;font-weight:700}
+    .units{display:grid;gap:10px;margin-top:18px}
+    .unit{display:grid;grid-template-columns:44px 1fr auto;gap:14px;align-items:center;padding:16px}
+    .unit strong{font:700 18px/1.3 Georgia,serif}
+    .unit>div{grid-column:2;grid-row:1}.unit small{display:block;grid-column:2;grid-row:2;margin-top:-9px;color:#756f64}.button{grid-column:3;grid-row:1/3;padding:8px 11px;border:1px solid #b7aa96;border-radius:7px;text-decoration:none}
+    .table-heading{display:none;grid-template-columns:58px minmax(280px,1.35fr) minmax(220px,1fr) 72px;gap:12px;margin-top:18px;padding:10px 14px;background:#f3eee5;color:#665f55;font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.06em}
+    body.table-mode .table-heading{display:grid}
+    body.table-mode .units{gap:0;margin-top:0;border:1px solid #d7cdbd;border-top:0;background:#fffdf8}
+    body.table-mode .unit{grid-template-columns:44px minmax(280px,1.35fr) minmax(220px,1fr) 72px;gap:12px;padding:11px 14px;border:0;border-bottom:1px solid #e2dace}
+    body.table-mode .unit:last-child{border-bottom:0}
+    body.table-mode .unit strong{font:600 14px/1.35 Arial,sans-serif}
+    body.table-mode .unit>div{grid-column:2;grid-row:1}body.table-mode .unit small{grid-column:3;grid-row:1;margin:0;font-size:12px;line-height:1.4}body.table-mode .button{grid-column:4;grid-row:1;justify-self:start;padding:6px 10px}
+    @media(max-width:760px){
+      .hero{padding:70px 20px 22px}.view-switch{top:18px;left:20px;right:auto}
+      .unit{grid-template-columns:34px 1fr}.unit .button{grid-column:2;grid-row:3;justify-self:start}
+      .table-heading{grid-template-columns:34px minmax(0,1fr) 64px}.table-heading span:nth-child(3){display:none}
+      body.table-mode .unit{grid-template-columns:34px minmax(0,1fr) 64px;padding:11px 10px}
+      body.table-mode .unit small{grid-column:2;grid-row:2;display:block;margin-top:3px}
+      body.table-mode .button{grid-column:3;grid-row:1/3;align-self:center}
+    }
+  </style>
+</head>
+<body>
+<main>
+  <section class="hero">
+    <div class="view-switch" role="group" aria-label="View mode">
+      <button type="button" data-view="reading" class="active">阅读模式</button>
+      <button type="button" data-view="table">表格模式</button>
+    </div>
+    <a href="../../index.html">← Reader library</a>
+    <h1>Capital, Volume I</h1>
+    <p>An English-first close-reading pilot. Read Marx in English, classify difficulties, use Chinese only as support, write an English paraphrase, and consult attributed companion materials afterward.</p>
+    <p><a href="PLAN.md">Design and reading plan</a> · <a href="https://www.marxists.org/archive/marx/works/1867-c1/" target="_blank" rel="noreferrer">English source ↗</a> · <a href="https://www.marxists.org/chinese/marx/capital/" target="_blank" rel="noreferrer">Chinese reference ↗</a></p>
+  </section>
+  <div class="table-heading" aria-hidden="true"><span>No.</span><span>Reading</span><span>Focus</span><span>Action</span></div>
+  <section class="units">
+    <article class="unit"><span>01</span><div><strong>Preface to the First German Edition</strong></div><small>Purpose, method, difficulty, and the intended reader</small><a class="button" href="volume_01/00_preface_1867/editor.html">Open</a></article>
+    <article class="unit"><span>02</span><div><strong>Chapter 1 §1 — The Two Factors of a Commodity</strong></div><small>Use-value, value, and socially necessary labour-time</small><a class="button" href="volume_01/01_commodity_factors/editor.html">Open</a></article>
+    <article class="unit"><span>03</span><div><strong>Chapter 1 §2 — The Two-fold Character of Labour</strong></div><small>Concrete useful labour and abstract human labour</small><a class="button" href="volume_01/02_twofold_labour/editor.html">Open</a></article>
+    <article class="unit"><span>04</span><div><strong>Chapter 1 §3 — The Form of Value</strong></div><small>The long and difficult development from elementary value-form to money-form</small><a class="button" href="volume_01/03_form_of_value/editor.html">Open</a></article>
+    <article class="unit"><span>05</span><div><strong>Chapter 1 §4 — The Fetishism of Commodities</strong></div><small>The social character of labour appearing as a property of things</small><a class="button" href="volume_01/04_commodity_fetishism/editor.html">Open</a></article>
+  </section>
+</main>
+<script>
+  const viewKey='capital-volume-1-view-mode';
+  const viewButtons=document.querySelectorAll('[data-view]');
+  function setView(mode){
+    const table=mode==='table';
+    document.body.classList.toggle('table-mode',table);
+    viewButtons.forEach(button=>{
+      const active=button.dataset.view===mode;
+      button.classList.toggle('active',active);
+      button.setAttribute('aria-pressed',String(active));
+    });
+    localStorage.setItem(viewKey,mode);
+  }
+  viewButtons.forEach(button=>button.addEventListener('click',()=>setView(button.dataset.view)));
+  setView(localStorage.getItem(viewKey)==='table'?'table':'reading');
+</script>
+<script src="../../workspace_skin.js"></script>
+<script src="../../mobile_pwa.js"></script>
+</body>
+</html>
