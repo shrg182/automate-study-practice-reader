@@ -35,6 +35,7 @@ KEYWORDS = {
     "04_world_schematism": ["世界模式论", "数学 抽象", "世界的统一性"],
 }
 CHINESE_RANGES = {
+    "00_prefaces": ("三版序言", None),
     "01_introduction_general": ("一、概论", "二、杜林先生许下了什么诺言"),
     "02_what_duhring_promises": ("二、杜林先生许下了什么诺言", None),
     "03_classification_apriorism": ("三、分类。先验主义", "四、世界模式论"),
