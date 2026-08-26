@@ -146,7 +146,7 @@
     if (document.querySelector(".mobile-pwa-bar")) return;
     style(); document.body.classList.add("mobile-pwa");
     const buttons = isEditor
-      ? '<button data-mobile-action="home">目录</button><button data-mobile-action="immersive">沉浸</button><button data-mobile-action="settings">设置</button><button data-mobile-action="notes">札记</button><button data-mobile-action="sync">同步</button><button data-mobile-action="edit">编辑</button><button data-mobile-action="offline">离线</button><button data-mobile-action="install">安装</button>'
+      ? '<button data-mobile-action="home">目录</button><button data-mobile-action="book">书目</button><button data-mobile-action="immersive">沉浸</button><button data-mobile-action="settings">设置</button><button data-mobile-action="notes">札记</button><button data-mobile-action="sync">同步</button><button data-mobile-action="edit">编辑</button><button data-mobile-action="offline">离线</button><button data-mobile-action="install">安装</button>'
       : '<button data-mobile-action="home" class="active">目录</button><button data-mobile-action="update">更新</button><button data-mobile-action="install">安装</button>';
     document.body.insertAdjacentHTML("beforeend", `<div class="mobile-pwa-toast" role="status"></div><div class="mobile-pwa-update" role="status"><span>发现新版 Mobile Reader</span><button type="button">立即更新</button></div><nav class="mobile-pwa-bar${isEditor ? "" : " mobile-home-bar"}" aria-label="阅读工具">${buttons}</nav>`);
     if (registration?.waiting && navigator.serviceWorker.controller) document.querySelector(".mobile-pwa-update").classList.add("show");
@@ -154,6 +154,7 @@
     document.querySelector(".mobile-pwa-bar").addEventListener("click", async event => {
       const action = event.target.closest("button")?.dataset.mobileAction;
       if (action === "home") location.href = window.ReadingWorkspace?.directoryHref || new URL("index.html", scriptRoot).href;
+      if (action === "book") location.href = window.ReadingWorkspace?.bookDirectoryHref || window.ReadingWorkspace?.directoryHref || new URL("index.html", scriptRoot).href;
       if (action === "immersive") window.ReadingWorkspace?.toggleImmersive?.();
       if (action === "settings") window.ReadingWorkspace?.openSettings?.();
       if (action === "notes") showPanel("notes");

@@ -369,7 +369,7 @@
     style.textContent = `body.reading-immersive{background:var(--reading-content-background,#fffdfa)!important}body.reading-immersive .toolbar,body.reading-immersive .topbar,body.reading-immersive .masthead,body.reading-immersive jianshang-editor-header,body.reading-immersive .sidebar,body.reading-immersive .notes-dock,body.reading-immersive .export-dock{display:none!important}body.reading-immersive .workspace,body.reading-immersive .main-content,body.reading-immersive .editor-shell,body.reading-immersive .content-grid{display:block!important;width:100%!important;max-width:none!important;margin:0!important;padding:0!important}body.reading-immersive .paper,body.reading-immersive .editor-panel{width:min(900px,100%)!important;max-width:900px!important;min-height:100vh!important;margin:0 auto!important;padding:clamp(24px,5vw,64px)!important;border:0!important;box-shadow:none!important}body.reading-immersive .editor,body.reading-immersive .rich-editor{min-height:100vh!important;border:0!important;box-shadow:none!important}`;
     document.head.appendChild(style);
     const contextualHome = [...document.querySelectorAll("a[href]")].find(link => /返回首页|返回目录|书目|篇目/.test(link.textContent || ""));
-    const directoryHref = contextualHome?.href || new URL("index.html", workspaceRoot).href;
+    const directoryHref = window.ReadingWorkspace?.directoryHref || contextualHome?.href || new URL("index.html", workspaceRoot).href;
     const setImmersive = async enabled => {
       document.body.classList.toggle("reading-immersive", enabled);
       const button = document.querySelector('[data-mobile-action="immersive"]');
@@ -416,12 +416,12 @@
     window.ReadingWorkspace.directoryHref = menuHref;
     const homeLink = [...document.querySelectorAll("a[href]")].find(link => /返回首页|返回目录|书目|篇目/.test(link.textContent || ""));
     if (!homeLink) return;
-    homeLink.href = menuHref;
-    homeLink.textContent = "书目";
-    homeLink.title = "返回本书目录";
-    homeLink.classList.add("book-menu-link");
     const toolbar = homeLink.closest(".toolbar") || document.querySelector(".toolbar");
-    if (toolbar) toolbar.prepend(homeLink);
+    const bookContentsLink = [...(toolbar?.querySelectorAll("a[href]") || [])].find(link =>
+      link !== homeLink && /Reading Plan|Course|本书目录|阅读计划|完整目录/i.test(link.textContent || "")
+    );
+    window.ReadingWorkspace.bookDirectoryHref = bookContentsLink?.href || homeLink.href;
+    homeLink.remove();
   }
 
   function installExpandingReviewFields() {
