@@ -543,7 +543,30 @@
     render();
   }
 
-  function installWorkspaceControls() { installContextNavigation(); installSwitch(); installReadingEnvironment(); installFileMenu(); installInsertMenu(); installUserNotesAccess(); installExpandingReviewFields(); installAnnotationSync(); installAllNotesView(); installImmersiveMode(); }
+  function installGoogleVoicePriority() {
+    const select = document.getElementById("voiceSelect");
+    if (!select) return;
+    let arranging = false;
+    const arrange = () => {
+      if (arranging) return;
+      const options = [...select.options];
+      if (options.length < 2) return;
+      const first = options.shift();
+      const google = options.filter(option => /^google\b/i.test(option.textContent.trim()));
+      const others = options.filter(option => !/^google\b/i.test(option.textContent.trim()));
+      const ordered = [first, ...google, ...others];
+      if (ordered.every((option, index) => select.options[index] === option)) return;
+      const selected = select.value;
+      arranging = true;
+      select.replaceChildren(...ordered);
+      select.value = selected;
+      arranging = false;
+    };
+    new MutationObserver(arrange).observe(select, { childList: true });
+    arrange();
+  }
+
+  function installWorkspaceControls() { installContextNavigation(); installSwitch(); installReadingEnvironment(); installFileMenu(); installInsertMenu(); installUserNotesAccess(); installExpandingReviewFields(); installAnnotationSync(); installAllNotesView(); installImmersiveMode(); installGoogleVoicePriority(); }
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", installWorkspaceControls);
   else installWorkspaceControls();
 })();
