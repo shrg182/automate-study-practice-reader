@@ -1,0 +1,462 @@
+{
+  "schema_version": 1,
+  "book_id": "anti-duhring",
+  "title": "Anti-Dühring",
+  "author": "Frederick Engels",
+  "leading_language": "en",
+  "support_languages": [
+    "zh"
+  ],
+  "offline_ready": true,
+  "components": {
+    "english_pdf": {
+      "path": "assets/anti_duhring_en.pdf",
+      "source": "https://www.marxists.org/archive/marx/works/download/pdf/anti_duhring.pdf",
+      "bytes": 3022106
+    }
+  },
+  "units": [
+    {
+      "sequence": 1,
+      "part": "Front Matter",
+      "slug": "00_prefaces",
+      "title": "Prefaces",
+      "path": "readings/00_prefaces/editor.html",
+      "bytes": {
+        "source.txt": 24851,
+        "chinese_support.txt": 39551,
+        "editor.html": 162829,
+        "metadata.json": 765
+      }
+    },
+    {
+      "sequence": 2,
+      "part": "Introduction",
+      "slug": "01_introduction_general",
+      "title": "Introduction I — General",
+      "path": "readings/01_introduction_general/editor.html",
+      "bytes": {
+        "source.txt": 25242,
+        "chinese_support.txt": 24378,
+        "editor.html": 148359,
+        "metadata.json": 849
+      }
+    },
+    {
+      "sequence": 3,
+      "part": "Introduction",
+      "slug": "02_what_duhring_promises",
+      "title": "Introduction II — What Herr Dühring Promises",
+      "path": "readings/02_what_duhring_promises/editor.html",
+      "bytes": {
+        "source.txt": 12274,
+        "chinese_support.txt": 16327,
+        "editor.html": 127854,
+        "metadata.json": 816
+      }
+    },
+    {
+      "sequence": 4,
+      "part": "Part I — Philosophy",
+      "slug": "03_classification_apriorism",
+      "title": "Part I · Chapter III — Classification. Apriorism",
+      "path": "readings/03_classification_apriorism/editor.html",
+      "bytes": {
+        "source.txt": 16569,
+        "chinese_support.txt": 14535,
+        "editor.html": 129835,
+        "metadata.json": 845
+      }
+    },
+    {
+      "sequence": 5,
+      "part": "Part I — Philosophy",
+      "slug": "04_world_schematism",
+      "title": "Part I · Chapter IV — World Schematism",
+      "path": "readings/04_world_schematism/editor.html",
+      "bytes": {
+        "source.txt": 12296,
+        "chinese_support.txt": 11532,
+        "editor.html": 122958,
+        "metadata.json": 849
+      }
+    },
+    {
+      "sequence": 6,
+      "part": "Part I — Philosophy",
+      "slug": "05_time_space",
+      "title": "Part I · Chapter V — Time and Space",
+      "path": "readings/05_time_space/editor.html",
+      "bytes": {
+        "source.txt": 24789,
+        "chinese_support.txt": 21898,
+        "editor.html": 146018,
+        "metadata.json": 873
+      }
+    },
+    {
+      "sequence": 7,
+      "part": "Part I — Philosophy",
+      "slug": "06_cosmogony_physics_chemistry",
+      "title": "Part I · Chapter VI — Cosmogony Physics Chemistry",
+      "path": "readings/06_cosmogony_physics_chemistry/editor.html",
+      "bytes": {
+        "source.txt": 23100,
+        "chinese_support.txt": 19885,
+        "editor.html": 141892,
+        "metadata.json": 921
+      }
+    },
+    {
+      "sequence": 8,
+      "part": "Part I — Philosophy",
+      "slug": "07_organic_world",
+      "title": "Part I · Chapter VII — The Organic World",
+      "path": "readings/07_organic_world/editor.html",
+      "bytes": {
+        "source.txt": 24293,
+        "chinese_support.txt": 20450,
+        "editor.html": 144059,
+        "metadata.json": 829
+      }
+    },
+    {
+      "sequence": 9,
+      "part": "Part I — Philosophy",
+      "slug": "08_organic_world_conclusion",
+      "title": "Part I · Chapter VIII — The Organic World (Conclusion)",
+      "path": "readings/08_organic_world_conclusion/editor.html",
+      "bytes": {
+        "source.txt": 18985,
+        "chinese_support.txt": 16009,
+        "editor.html": 133947,
+        "metadata.json": 849
+      }
+    },
+    {
+      "sequence": 10,
+      "part": "Part I — Philosophy",
+      "slug": "09_eternal_truths",
+      "title": "Part I · Chapter IX — Eternal Truths",
+      "path": "readings/09_eternal_truths/editor.html",
+      "bytes": {
+        "source.txt": 28099,
+        "chinese_support.txt": 25398,
+        "editor.html": 152329,
+        "metadata.json": 840
+      }
+    },
+    {
+      "sequence": 11,
+      "part": "Part I — Philosophy",
+      "slug": "10_equality",
+      "title": "Part I · Chapter X — Equality",
+      "path": "readings/10_equality/editor.html",
+      "bytes": {
+        "source.txt": 29854,
+        "chinese_support.txt": 26617,
+        "editor.html": 155293,
+        "metadata.json": 820
+      }
+    },
+    {
+      "sequence": 12,
+      "part": "Part I — Philosophy",
+      "slug": "11_freedom_necessity",
+      "title": "Part I · Chapter XI — Freedom and Necessity",
+      "path": "readings/11_freedom_necessity/editor.html",
+      "bytes": {
+        "source.txt": 27934,
+        "chinese_support.txt": 23638,
+        "editor.html": 151418,
+        "metadata.json": 858
+      }
+    },
+    {
+      "sequence": 13,
+      "part": "Part I — Philosophy",
+      "slug": "12_quantity_quality",
+      "title": "Part I · Chapter XII — Quantity and Quality",
+      "path": "readings/12_quantity_quality/editor.html",
+      "bytes": {
+        "source.txt": 25130,
+        "chinese_support.txt": 21680,
+        "editor.html": 146372,
+        "metadata.json": 855
+      }
+    },
+    {
+      "sequence": 14,
+      "part": "Part I — Philosophy",
+      "slug": "13_negation_negation",
+      "title": "Part I · Chapter XIII — Negation of the Negation",
+      "path": "readings/13_negation_negation/editor.html",
+      "bytes": {
+        "source.txt": 34829,
+        "chinese_support.txt": 29433,
+        "editor.html": 163008,
+        "metadata.json": 839
+      }
+    },
+    {
+      "sequence": 15,
+      "part": "Part I — Philosophy",
+      "slug": "14_philosophy_conclusion",
+      "title": "Part I · Chapter XIV — Conclusion",
+      "path": "readings/14_philosophy_conclusion/editor.html",
+      "bytes": {
+        "source.txt": 5280,
+        "chinese_support.txt": 24715,
+        "editor.html": 128103,
+        "metadata.json": 798
+      }
+    },
+    {
+      "sequence": 16,
+      "part": "Part II — Political Economy",
+      "slug": "15_subject_method",
+      "title": "Part II · Chapter I — Subject Matter and Method",
+      "path": "readings/15_subject_method/editor.html",
+      "bytes": {
+        "source.txt": 29036,
+        "chinese_support.txt": 24450,
+        "editor.html": 152517,
+        "metadata.json": 840
+      }
+    },
+    {
+      "sequence": 17,
+      "part": "Part II — Political Economy",
+      "slug": "16_theory_force",
+      "title": "Part II · Chapter II — Theory of Force",
+      "path": "readings/16_theory_force/editor.html",
+      "bytes": {
+        "source.txt": 19418,
+        "chinese_support.txt": 15887,
+        "editor.html": 133473,
+        "metadata.json": 804
+      }
+    },
+    {
+      "sequence": 18,
+      "part": "Part II — Political Economy",
+      "slug": "17_theory_force_continued",
+      "title": "Part II · Chapter III — Theory of Force (Continuation)",
+      "path": "readings/17_theory_force_continued/editor.html",
+      "bytes": {
+        "source.txt": 20471,
+        "chinese_support.txt": 17888,
+        "editor.html": 136617,
+        "metadata.json": 843
+      }
+    },
+    {
+      "sequence": 19,
+      "part": "Part II — Political Economy",
+      "slug": "18_theory_force_conclusion",
+      "title": "Part II · Chapter IV — Theory of Force (Conclusion)",
+      "path": "readings/18_theory_force_conclusion/editor.html",
+      "bytes": {
+        "source.txt": 25972,
+        "chinese_support.txt": 22140,
+        "editor.html": 146624,
+        "metadata.json": 838
+      }
+    },
+    {
+      "sequence": 20,
+      "part": "Part II — Political Economy",
+      "slug": "19_theory_value",
+      "title": "Part II · Chapter V — Theory of Value",
+      "path": "readings/19_theory_value/editor.html",
+      "bytes": {
+        "source.txt": 29279,
+        "chinese_support.txt": 25214,
+        "editor.html": 153595,
+        "metadata.json": 810
+      }
+    },
+    {
+      "sequence": 21,
+      "part": "Part II — Political Economy",
+      "slug": "20_simple_compound_labour",
+      "title": "Part II · Chapter VI — Simple and Compound Labour",
+      "path": "readings/20_simple_compound_labour/editor.html",
+      "bytes": {
+        "source.txt": 13336,
+        "chinese_support.txt": 11861,
+        "editor.html": 123447,
+        "metadata.json": 859
+      }
+    },
+    {
+      "sequence": 22,
+      "part": "Part II — Political Economy",
+      "slug": "21_capital_surplus_value",
+      "title": "Part II · Chapter VII — Capital and Surplus-Value",
+      "path": "readings/21_capital_surplus_value/editor.html",
+      "bytes": {
+        "source.txt": 22357,
+        "chinese_support.txt": 19064,
+        "editor.html": 140371,
+        "metadata.json": 856
+      }
+    },
+    {
+      "sequence": 23,
+      "part": "Part II — Political Economy",
+      "slug": "22_capital_surplus_value_conclusion",
+      "title": "Part II · Chapter VIII — Capital and Surplus-Value (Conclusion)",
+      "path": "readings/22_capital_surplus_value_conclusion/editor.html",
+      "bytes": {
+        "source.txt": 23896,
+        "chinese_support.txt": 20546,
+        "editor.html": 143451,
+        "metadata.json": 899
+      }
+    },
+    {
+      "sequence": 24,
+      "part": "Part II — Political Economy",
+      "slug": "23_natural_laws_rent",
+      "title": "Part II · Chapter IX — Natural Laws of the Economy · Rent of Land",
+      "path": "readings/23_natural_laws_rent/editor.html",
+      "bytes": {
+        "source.txt": 15357,
+        "chinese_support.txt": 13394,
+        "editor.html": 127725,
+        "metadata.json": 883
+      }
+    },
+    {
+      "sequence": 25,
+      "part": "Part II — Political Economy",
+      "slug": "24_critical_history",
+      "title": "Part II · Chapter X — From Critical History",
+      "path": "readings/24_critical_history/editor.html",
+      "bytes": {
+        "source.txt": 66309,
+        "chinese_support.txt": 80379,
+        "editor.html": 250876,
+        "metadata.json": 825
+      }
+    },
+    {
+      "sequence": 26,
+      "part": "Part III — Socialism",
+      "slug": "25_historical",
+      "title": "Part III · Chapter I — Historical",
+      "path": "readings/25_historical/editor.html",
+      "bytes": {
+        "source.txt": 24557,
+        "chinese_support.txt": 21316,
+        "editor.html": 144538,
+        "metadata.json": 790
+      }
+    },
+    {
+      "sequence": 27,
+      "part": "Part III — Socialism",
+      "slug": "26_theoretical",
+      "title": "Part III · Chapter II — Theoretical",
+      "path": "readings/26_theoretical/editor.html",
+      "bytes": {
+        "source.txt": 41229,
+        "chinese_support.txt": 35544,
+        "editor.html": 175681,
+        "metadata.json": 828
+      }
+    },
+    {
+      "sequence": 28,
+      "part": "Part III — Socialism",
+      "slug": "27_production",
+      "title": "Part III · Chapter III — Production",
+      "path": "readings/27_production/editor.html",
+      "bytes": {
+        "source.txt": 34679,
+        "chinese_support.txt": 28201,
+        "editor.html": 162440,
+        "metadata.json": 783
+      }
+    },
+    {
+      "sequence": 29,
+      "part": "Part III — Socialism",
+      "slug": "28_distribution",
+      "title": "Part III · Chapter IV — Distribution",
+      "path": "readings/28_distribution/editor.html",
+      "bytes": {
+        "source.txt": 36467,
+        "chinese_support.txt": 32259,
+        "editor.html": 167699,
+        "metadata.json": 810
+      }
+    },
+    {
+      "sequence": 30,
+      "part": "Part III — Socialism",
+      "slug": "29_state_family_education",
+      "title": "Part III · Chapter V — State Family Education",
+      "path": "readings/29_state_family_education/editor.html",
+      "bytes": {
+        "source.txt": 30631,
+        "chinese_support.txt": 42916,
+        "editor.html": 173622,
+        "metadata.json": 845
+      }
+    },
+    {
+      "sequence": 31,
+      "part": "Supplementary Material",
+      "slug": "30_collected_works_notes",
+      "title": "Notes from Marx-Engels Collected Works",
+      "path": "readings/30_collected_works_notes/editor.html",
+      "bytes": {
+        "source.txt": 963,
+        "chinese_support.txt": 55,
+        "editor.html": 98600,
+        "metadata.json": 734
+      }
+    },
+    {
+      "sequence": 32,
+      "part": "Supplementary Material",
+      "slug": "31_engels_notes",
+      "title": "Notes by Engels",
+      "path": "readings/31_engels_notes/editor.html",
+      "bytes": {
+        "source.txt": 9112,
+        "chinese_support.txt": 30,
+        "editor.html": 107094,
+        "metadata.json": 666
+      }
+    },
+    {
+      "sequence": 33,
+      "part": "Supplementary Material",
+      "slug": "32_fragment_ireland",
+      "title": "Fragment on Ireland",
+      "path": "readings/32_fragment_ireland/editor.html",
+      "bytes": {
+        "source.txt": 1419,
+        "chinese_support.txt": 40,
+        "editor.html": 98974,
+        "metadata.json": 685
+      }
+    },
+    {
+      "sequence": 34,
+      "part": "Supplementary Material",
+      "slug": "33_fragment_thomas_more",
+      "title": "Fragment on Thomas More",
+      "path": "readings/33_fragment_thomas_more/editor.html",
+      "bytes": {
+        "source.txt": 380,
+        "chinese_support.txt": 47,
+        "editor.html": 98026,
+        "metadata.json": 708
+      }
+    }
+  ]
+}

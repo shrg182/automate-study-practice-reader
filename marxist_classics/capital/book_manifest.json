@@ -1,0 +1,501 @@
+{
+  "schema_version": 1,
+  "book_id": "capital-volume-1",
+  "title": "Capital, Volume I",
+  "author": "Karl Marx",
+  "leading_language": "en",
+  "support_languages": [
+    "zh"
+  ],
+  "offline_ready": true,
+  "components": {
+    "english_pdf": {
+      "path": "assets/capital_volume_1_en.pdf",
+      "source": "https://www.marxists.org/archive/marx/works/download/pdf/Capital-Volume-I.pdf",
+      "bytes": 4332746
+    }
+  },
+  "units": [
+    {
+      "sequence": 1,
+      "part": "Front Matter",
+      "slug": "00_preface_1867",
+      "title": "Preface to the First German Edition",
+      "path": "volume_01/00_preface_1867/editor.html",
+      "bytes": {
+        "source.txt": 9774,
+        "chinese_support.txt": 7608,
+        "editor.html": 116088,
+        "metadata.json": 460
+      }
+    },
+    {
+      "sequence": 2,
+      "part": "Part I — Commodities and Money",
+      "slug": "01_commodity_factors",
+      "title": "Chapter 1 §1 — The Two Factors of a Commodity",
+      "path": "volume_01/01_commodity_factors/editor.html",
+      "bytes": {
+        "source.txt": 13279,
+        "chinese_support.txt": 11891,
+        "editor.html": 124802,
+        "metadata.json": 482
+      }
+    },
+    {
+      "sequence": 3,
+      "part": "Part I — Commodities and Money",
+      "slug": "02_twofold_labour",
+      "title": "Chapter 1 §2 — The Two-fold Character of Labour",
+      "path": "volume_01/02_twofold_labour/editor.html",
+      "bytes": {
+        "source.txt": 12957,
+        "chinese_support.txt": 10280,
+        "editor.html": 122282,
+        "metadata.json": 481
+      }
+    },
+    {
+      "sequence": 4,
+      "part": "Part I — Commodities and Money",
+      "slug": "03_form_of_value",
+      "title": "Chapter 1 §3 — The Form of Value",
+      "path": "volume_01/03_form_of_value/editor.html",
+      "bytes": {
+        "source.txt": 53433,
+        "chinese_support.txt": 44906,
+        "editor.html": 200485,
+        "metadata.json": 465
+      }
+    },
+    {
+      "sequence": 5,
+      "part": "Part I — Commodities and Money",
+      "slug": "04_commodity_fetishism",
+      "title": "Chapter 1 §4 — The Fetishism of Commodities",
+      "path": "volume_01/04_commodity_fetishism/editor.html",
+      "bytes": {
+        "source.txt": 26521,
+        "chinese_support.txt": 20863,
+        "editor.html": 146500,
+        "metadata.json": 482
+      }
+    },
+    {
+      "sequence": 6,
+      "part": "Part I — Commodities and Money",
+      "slug": "05_chapter_02_the_process_of_exchange",
+      "title": "Chapter 2 — The Process of Exchange",
+      "path": "volume_01/05_chapter_02_the_process_of_exchange/editor.html",
+      "bytes": {
+        "source.txt": 26947,
+        "chinese_support.txt": 23221,
+        "editor.html": 148580,
+        "metadata.json": 596
+      }
+    },
+    {
+      "sequence": 7,
+      "part": "Part I — Commodities and Money",
+      "slug": "06_chapter_03_money_or_the_circulation_of_commodities",
+      "title": "Chapter 3 — Money, or the Circulation of Commodities",
+      "path": "volume_01/06_chapter_03_money_or_the_circulation_of_commodities/editor.html",
+      "bytes": {
+        "source.txt": 150346,
+        "chinese_support.txt": 126008,
+        "editor.html": 375865,
+        "metadata.json": 646
+      }
+    },
+    {
+      "sequence": 8,
+      "part": "Part II — Transformation of Money into Capital",
+      "slug": "07_chapter_04_the_general_formula_for_capital",
+      "title": "Chapter 4 — The General Formula for Capital",
+      "path": "volume_01/07_chapter_04_the_general_formula_for_capital/editor.html",
+      "bytes": {
+        "source.txt": 26962,
+        "chinese_support.txt": 2812,
+        "editor.html": 128529,
+        "metadata.json": 636
+      }
+    },
+    {
+      "sequence": 9,
+      "part": "Part II — Transformation of Money into Capital",
+      "slug": "08_chapter_05_contradictions_in_the_general_formula_of_capital",
+      "title": "Chapter 5 — Contradictions in the General Formula of Capital",
+      "path": "volume_01/08_chapter_05_contradictions_in_the_general_formula_of_capital/editor.html",
+      "bytes": {
+        "source.txt": 31109,
+        "chinese_support.txt": 2812,
+        "editor.html": 133176,
+        "metadata.json": 687
+      }
+    },
+    {
+      "sequence": 10,
+      "part": "Part II — Transformation of Money into Capital",
+      "slug": "09_chapter_06_the_buying_and_selling_of_labour_power",
+      "title": "Chapter 6 — The Buying and Selling of Labour-Power",
+      "path": "volume_01/09_chapter_06_the_buying_and_selling_of_labour_power/editor.html",
+      "bytes": {
+        "source.txt": 27620,
+        "chinese_support.txt": 2812,
+        "editor.html": 128842,
+        "metadata.json": 658
+      }
+    },
+    {
+      "sequence": 11,
+      "part": "Part III — Production of Absolute Surplus-Value",
+      "slug": "10_chapter_07_the_labour_process_and_the_process_of_producing_",
+      "title": "Chapter 7 — The Labour-Process and the Process of Producing Surplus-Value",
+      "path": "volume_01/10_chapter_07_the_labour_process_and_the_process_of_producing_/editor.html",
+      "bytes": {
+        "source.txt": 60920,
+        "chinese_support.txt": 49944,
+        "editor.html": 211591,
+        "metadata.json": 715
+      }
+    },
+    {
+      "sequence": 12,
+      "part": "Part III — Production of Absolute Surplus-Value",
+      "slug": "11_chapter_08_constant_capital_and_variable_capital",
+      "title": "Chapter 8 — Constant Capital and Variable Capital",
+      "path": "volume_01/11_chapter_08_constant_capital_and_variable_capital/editor.html",
+      "bytes": {
+        "source.txt": 33825,
+        "chinese_support.txt": 27456,
+        "editor.html": 160177,
+        "metadata.json": 656
+      }
+    },
+    {
+      "sequence": 13,
+      "part": "Part III — Production of Absolute Surplus-Value",
+      "slug": "12_chapter_09_the_rate_of_surplus_value",
+      "title": "Chapter 9 — The Rate of Surplus-Value",
+      "path": "volume_01/12_chapter_09_the_rate_of_surplus_value/editor.html",
+      "bytes": {
+        "source.txt": 50218,
+        "chinese_support.txt": 1915,
+        "editor.html": 150594,
+        "metadata.json": 620
+      }
+    },
+    {
+      "sequence": 14,
+      "part": "Part III — Production of Absolute Surplus-Value",
+      "slug": "13_chapter_10_the_working_day",
+      "title": "Chapter 10 — The Working-Day",
+      "path": "volume_01/13_chapter_10_the_working_day/editor.html",
+      "bytes": {
+        "source.txt": 199089,
+        "chinese_support.txt": 33185,
+        "editor.html": 330691,
+        "metadata.json": 591
+      }
+    },
+    {
+      "sequence": 15,
+      "part": "Part III — Production of Absolute Surplus-Value",
+      "slug": "14_chapter_11_rate_and_mass_of_surplus_value",
+      "title": "Chapter 11 — Rate and Mass of Surplus-Value",
+      "path": "volume_01/14_chapter_11_rate_and_mass_of_surplus_value/editor.html",
+      "bytes": {
+        "source.txt": 23921,
+        "chinese_support.txt": 20675,
+        "editor.html": 142802,
+        "metadata.json": 636
+      }
+    },
+    {
+      "sequence": 16,
+      "part": "Part IV — Production of Relative Surplus-Value",
+      "slug": "15_chapter_12_the_concept_of_relative_surplus_value",
+      "title": "Chapter 12 — The Concept of Relative Surplus-Value",
+      "path": "volume_01/15_chapter_12_the_concept_of_relative_surplus_value/editor.html",
+      "bytes": {
+        "source.txt": 27160,
+        "chinese_support.txt": 17312,
+        "editor.html": 143121,
+        "metadata.json": 656
+      }
+    },
+    {
+      "sequence": 17,
+      "part": "Part IV — Production of Relative Surplus-Value",
+      "slug": "16_chapter_13_co_operation",
+      "title": "Chapter 13 — Co-operation",
+      "path": "volume_01/16_chapter_13_co_operation/editor.html",
+      "bytes": {
+        "source.txt": 39856,
+        "chinese_support.txt": 25617,
+        "editor.html": 163966,
+        "metadata.json": 581
+      }
+    },
+    {
+      "sequence": 18,
+      "part": "Part IV — Production of Relative Surplus-Value",
+      "slug": "17_chapter_14_division_of_labour_and_manufacture",
+      "title": "Chapter 14 — Division of Labour and Manufacture",
+      "path": "volume_01/17_chapter_14_division_of_labour_and_manufacture/editor.html",
+      "bytes": {
+        "source.txt": 98057,
+        "chinese_support.txt": 1993,
+        "editor.html": 201606,
+        "metadata.json": 647
+      }
+    },
+    {
+      "sequence": 19,
+      "part": "Part IV — Production of Relative Surplus-Value",
+      "slug": "18_chapter_15_machinery_and_modern_industry",
+      "title": "Chapter 15 — Machinery and Modern Industry",
+      "path": "volume_01/18_chapter_15_machinery_and_modern_industry/editor.html",
+      "bytes": {
+        "source.txt": 380486,
+        "chinese_support.txt": 222405,
+        "editor.html": 703396,
+        "metadata.json": 632
+      }
+    },
+    {
+      "sequence": 20,
+      "part": "Part V — Production of Absolute and Relative Surplus-Value",
+      "slug": "19_chapter_16_absolute_and_relative_surplus_value",
+      "title": "Chapter 16 — Absolute and Relative Surplus-Value",
+      "path": "volume_01/19_chapter_16_absolute_and_relative_surplus_value/editor.html",
+      "bytes": {
+        "source.txt": 28797,
+        "chinese_support.txt": 2440,
+        "editor.html": 130057,
+        "metadata.json": 662
+      }
+    },
+    {
+      "sequence": 21,
+      "part": "Part V — Production of Absolute and Relative Surplus-Value",
+      "slug": "20_chapter_17_changes_of_magnitude_in_the_price_of_labour_powe",
+      "title": "Chapter 17 — Changes of Magnitude in the Price of Labour-Power and in Surplus-Value",
+      "path": "volume_01/20_chapter_17_changes_of_magnitude_in_the_price_of_labour_powe/editor.html",
+      "bytes": {
+        "source.txt": 31451,
+        "chinese_support.txt": 20468,
+        "editor.html": 150236,
+        "metadata.json": 745
+      }
+    },
+    {
+      "sequence": 22,
+      "part": "Part V — Production of Absolute and Relative Surplus-Value",
+      "slug": "21_chapter_18_various_formulae_for_the_rate_of_surplus_value",
+      "title": "Chapter 18 — Various Formulae for the Rate of Surplus-Value",
+      "path": "volume_01/21_chapter_18_various_formulae_for_the_rate_of_surplus_value/editor.html",
+      "bytes": {
+        "source.txt": 9007,
+        "chinese_support.txt": 7884,
+        "editor.html": 115053,
+        "metadata.json": 695
+      }
+    },
+    {
+      "sequence": 23,
+      "part": "Part VI — Wages",
+      "slug": "22_chapter_19_the_transformation_of_the_value_of_labour_power_",
+      "title": "Chapter 19 — The Transformation of the Value of Labour-Power into Wages",
+      "path": "volume_01/22_chapter_19_the_transformation_of_the_value_of_labour_power_/editor.html",
+      "bytes": {
+        "source.txt": 20274,
+        "chinese_support.txt": 18206,
+        "editor.html": 137528,
+        "metadata.json": 678
+      }
+    },
+    {
+      "sequence": 24,
+      "part": "Part VI — Wages",
+      "slug": "23_chapter_20_time_wages",
+      "title": "Chapter 20 — Time-Wages",
+      "path": "volume_01/23_chapter_20_time_wages/editor.html",
+      "bytes": {
+        "source.txt": 21720,
+        "chinese_support.txt": 19338,
+        "editor.html": 139166,
+        "metadata.json": 544
+      }
+    },
+    {
+      "sequence": 25,
+      "part": "Part VI — Wages",
+      "slug": "24_chapter_21_piece_wages",
+      "title": "Chapter 21 — Piece-Wages",
+      "path": "volume_01/24_chapter_21_piece_wages/editor.html",
+      "bytes": {
+        "source.txt": 23693,
+        "chinese_support.txt": 1492,
+        "editor.html": 122783,
+        "metadata.json": 547
+      }
+    },
+    {
+      "sequence": 26,
+      "part": "Part VI — Wages",
+      "slug": "25_chapter_22_national_differences_of_wages",
+      "title": "Chapter 22 — National Differences of Wages",
+      "path": "volume_01/25_chapter_22_national_differences_of_wages/editor.html",
+      "bytes": {
+        "source.txt": 12095,
+        "chinese_support.txt": 1939,
+        "editor.html": 112121,
+        "metadata.json": 601
+      }
+    },
+    {
+      "sequence": 27,
+      "part": "Part VII — Accumulation of Capital",
+      "slug": "26_chapter_23_simple_reproduction",
+      "title": "Chapter 23 — Simple Reproduction",
+      "path": "volume_01/26_chapter_23_simple_reproduction/editor.html",
+      "bytes": {
+        "source.txt": 40267,
+        "chinese_support.txt": 5284,
+        "editor.html": 144015,
+        "metadata.json": 590
+      }
+    },
+    {
+      "sequence": 28,
+      "part": "Part VII — Accumulation of Capital",
+      "slug": "27_chapter_24_conversion_of_surplus_value_into_capital",
+      "title": "Chapter 24 — Conversion of Surplus-Value into Capital",
+      "path": "volume_01/27_chapter_24_conversion_of_surplus_value_into_capital/editor.html",
+      "bytes": {
+        "source.txt": 94727,
+        "chinese_support.txt": 6150,
+        "editor.html": 199575,
+        "metadata.json": 653
+      }
+    },
+    {
+      "sequence": 29,
+      "part": "Part VII — Accumulation of Capital",
+      "slug": "28_chapter_25_the_general_law_of_capitalist_accumulation",
+      "title": "Chapter 25 — The General Law of Capitalist Accumulation",
+      "path": "volume_01/28_chapter_25_the_general_law_of_capitalist_accumulation/editor.html",
+      "bytes": {
+        "source.txt": 254773,
+        "chinese_support.txt": 50551,
+        "editor.html": 415291,
+        "metadata.json": 659
+      }
+    },
+    {
+      "sequence": 30,
+      "part": "Part VIII — Primitive Accumulation",
+      "slug": "29_chapter_26_the_secret_of_primitive_accumulation",
+      "title": "Chapter 26 — The Secret of Primitive Accumulation",
+      "path": "volume_01/29_chapter_26_the_secret_of_primitive_accumulation/editor.html",
+      "bytes": {
+        "source.txt": 8895,
+        "chinese_support.txt": 12708,
+        "editor.html": 119831,
+        "metadata.json": 641
+      }
+    },
+    {
+      "sequence": 31,
+      "part": "Part VIII — Primitive Accumulation",
+      "slug": "30_chapter_27_expropriation_of_the_agricultural_population_fro",
+      "title": "Chapter 27 — Expropriation of the Agricultural Population from the Land",
+      "path": "volume_01/30_chapter_27_expropriation_of_the_agricultural_population_fro/editor.html",
+      "bytes": {
+        "source.txt": 51844,
+        "chinese_support.txt": 12708,
+        "editor.html": 163556,
+        "metadata.json": 697
+      }
+    },
+    {
+      "sequence": 32,
+      "part": "Part VIII — Primitive Accumulation",
+      "slug": "31_chapter_28_bloody_legislation_against_the_expropriated",
+      "title": "Chapter 28 — Bloody Legislation Against the Expropriated",
+      "path": "volume_01/31_chapter_28_bloody_legislation_against_the_expropriated/editor.html",
+      "bytes": {
+        "source.txt": 22849,
+        "chinese_support.txt": 12708,
+        "editor.html": 134221,
+        "metadata.json": 662
+      }
+    },
+    {
+      "sequence": 33,
+      "part": "Part VIII — Primitive Accumulation",
+      "slug": "32_chapter_29_genesis_of_the_capitalist_farmer",
+      "title": "Chapter 29 — Genesis of the Capitalist Farmer",
+      "path": "volume_01/32_chapter_29_genesis_of_the_capitalist_farmer/editor.html",
+      "bytes": {
+        "source.txt": 7776,
+        "chinese_support.txt": 12708,
+        "editor.html": 118462,
+        "metadata.json": 629
+      }
+    },
+    {
+      "sequence": 34,
+      "part": "Part VIII — Primitive Accumulation",
+      "slug": "33_chapter_30_reaction_of_the_agricultural_revolution_on_indus",
+      "title": "Chapter 30 — Reaction of the Agricultural Revolution on Industry and the Home Market",
+      "path": "volume_01/33_chapter_30_reaction_of_the_agricultural_revolution_on_indus/editor.html",
+      "bytes": {
+        "source.txt": 12483,
+        "chinese_support.txt": 12708,
+        "editor.html": 123752,
+        "metadata.json": 723
+      }
+    },
+    {
+      "sequence": 35,
+      "part": "Part VIII — Primitive Accumulation",
+      "slug": "34_chapter_31_genesis_of_the_industrial_capitalist",
+      "title": "Chapter 31 — Genesis of the Industrial Capitalist",
+      "path": "volume_01/34_chapter_31_genesis_of_the_industrial_capitalist/editor.html",
+      "bytes": {
+        "source.txt": 30432,
+        "chinese_support.txt": 12708,
+        "editor.html": 141905,
+        "metadata.json": 641
+      }
+    },
+    {
+      "sequence": 36,
+      "part": "Part VIII — Primitive Accumulation",
+      "slug": "35_chapter_32_historical_tendency_of_capitalist_accumulation",
+      "title": "Chapter 32 — Historical Tendency of Capitalist Accumulation",
+      "path": "volume_01/35_chapter_32_historical_tendency_of_capitalist_accumulation/editor.html",
+      "bytes": {
+        "source.txt": 8522,
+        "chinese_support.txt": 12708,
+        "editor.html": 119389,
+        "metadata.json": 671
+      }
+    },
+    {
+      "sequence": 37,
+      "part": "Part VIII — Primitive Accumulation",
+      "slug": "36_chapter_33_the_modern_theory_of_colonisation",
+      "title": "Chapter 33 — The Modern Theory of Colonisation",
+      "path": "volume_01/36_chapter_33_the_modern_theory_of_colonisation/editor.html",
+      "bytes": {
+        "source.txt": 26673,
+        "chinese_support.txt": 3475,
+        "editor.html": 128895,
+        "metadata.json": 632
+      }
+    }
+  ]
+}

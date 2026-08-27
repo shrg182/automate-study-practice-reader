@@ -1,6 +1,7 @@
 (function () {
   const mobile = matchMedia("(max-width: 760px)");
   const isEditor = /\/editor\.html$/.test(location.pathname);
+  const isBookPage = /\/marxist_classics\/(capital|anti_duhring)\/select_readings\.html$/.test(location.pathname);
   const scriptRoot = document.currentScript?.src ? new URL(".", document.currentScript.src) : new URL("./", location.href);
   let installPrompt = null;
   let registration = null;
@@ -93,6 +94,33 @@
     toast("正在保存本篇供离线阅读…");
   }
 
+  async function bookUrls() {
+    const manifestUrl = new URL("book_manifest.json", location.href);
+    const response = await fetch(manifestUrl, {cache: "no-store"});
+    if (!response.ok) throw new Error("无法读取本书离线清单");
+    const manifest = await response.json();
+    const urls = [location.href, manifestUrl.href];
+    (manifest.units || []).forEach(unit => urls.push(new URL(unit.path, manifestUrl).href));
+    Object.values(manifest.components || {}).forEach(component => {
+      if (component?.path) urls.push(new URL(component.path, manifestUrl).href);
+    });
+    ["workspace_theme.css", "workspace_skin.js", "mobile_pwa.js", "index.html"].forEach(path => urls.push(new URL(path, scriptRoot).href));
+    return [...new Set(urls)];
+  }
+
+  async function manageOfflineBook(remove = false) {
+    if (!navigator.serviceWorker?.controller) return toast("离线书库将在重新打开应用后可用");
+    try {
+      if (!remove) {
+        await navigator.storage?.persist?.();
+        toast("正在保存整本书，请保持页面开启…");
+      }
+      navigator.serviceWorker.controller.postMessage({type: remove ? "REMOVE_BOOK" : "CACHE_BOOK", urls: await bookUrls(), book: document.querySelector("h1")?.textContent?.trim() || "本书"});
+    } catch (error) {
+      toast(`离线书库操作失败：${error.message}`);
+    }
+  }
+
   function showPanel(kind) {
     document.body.classList.add("mobile-panel-open");
     document.body.classList.remove("mobile-edit-mode");
@@ -160,7 +188,9 @@
     style(); document.body.classList.add("mobile-pwa");
     const buttons = isEditor
       ? '<button data-mobile-action="home">目录</button><button data-mobile-action="book">书目</button><button data-mobile-action="pane" aria-pressed="false">窗格</button><button data-mobile-action="immersive">沉浸</button><button data-mobile-action="settings">设置</button><button data-mobile-action="notes">札记</button><button data-mobile-action="sync">同步</button><button data-mobile-action="edit">编辑</button><button data-mobile-action="offline">离线</button><button data-mobile-action="install">安装</button>'
-      : '<button data-mobile-action="home" class="active">目录</button><button data-mobile-action="update">更新</button><button data-mobile-action="install">安装</button>';
+      : isBookPage
+        ? '<button data-mobile-action="home">目录</button><button data-mobile-action="book-offline">保存本书</button><button data-mobile-action="book-remove">移除离线</button><button data-mobile-action="update">更新</button><button data-mobile-action="install">安装</button>'
+        : '<button data-mobile-action="home" class="active">目录</button><button data-mobile-action="update">更新</button><button data-mobile-action="install">安装</button>';
     document.body.insertAdjacentHTML("beforeend", `<div class="mobile-pwa-toast" role="status"></div><div class="mobile-pwa-update" role="status"><span>发现新版 Mobile Reader</span><button type="button">立即更新</button></div><nav class="mobile-pwa-bar${isEditor ? "" : " mobile-home-bar"}" aria-label="阅读工具">${buttons}</nav>`);
     if (registration?.waiting && navigator.serviceWorker.controller) document.querySelector(".mobile-pwa-update").classList.add("show");
     document.querySelector(".mobile-pwa-update button").addEventListener("click", updateApp);
@@ -175,6 +205,8 @@
       if (action === "sync") window.ReadingWorkspace?.openSync?.();
       if (action === "edit") setEditing(!editing);
       if (action === "offline") cacheArticle();
+      if (action === "book-offline") manageOfflineBook(false);
+      if (action === "book-remove") manageOfflineBook(true);
       if (action === "update") updateApp();
       if (action === "install") install();
     });
@@ -185,6 +217,8 @@
   window.addEventListener("beforeinstallprompt", event => { event.preventDefault(); installPrompt = event; });
   navigator.serviceWorker?.addEventListener("message", async event => {
     if (event.data?.type === "ARTICLE_CACHED") toast(`本篇已保存离线 · ${await storageLabel()}`);
+    if (event.data?.type === "BOOK_CACHED") toast(`${event.data.book || "本书"}已保存到离线书库 · ${await storageLabel()}`);
+    if (event.data?.type === "BOOK_REMOVED") toast(`${event.data.book || "本书"}的离线副本已移除`);
     if (event.data?.type === "CACHE_ERROR") toast(`离线保存失败：${event.data.message}`);
     if (event.data?.type === "APP_REFRESHED") location.reload();
     if (event.data?.type === "APP_REFRESH_ERROR") { reloadingForUpdate = false; toast("更新失败，请稍后再试"); }

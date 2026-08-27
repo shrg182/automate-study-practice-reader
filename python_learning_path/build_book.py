@@ -1,0 +1,30 @@
+#!/usr/bin/env python3
+"""Build the three-level Python Learning Path book pages."""
+from pathlib import Path
+import sys
+
+BASE = Path(__file__).resolve().parent
+sys.path.insert(0, str(BASE.parent / "python_tutorial"))
+from build_course import reader  # noqa: E402
+
+
+def landing() -> str:
+    return '''<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Python Learning Path · Three Levels</title><link rel="stylesheet" href="../workspace_theme.css"><script src="../workspace_skin.js"></script><style>
+*{box-sizing:border-box}body{margin:0;background:#f1f3f4;color:#202124;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}main{width:min(1050px,calc(100% - 28px));margin:32px auto 80px}header{padding:36px;border-radius:15px;background:linear-gradient(135deg,#38286f,#176b63);color:#fff}h1{margin:.15em 0;font-size:clamp(32px,5vw,54px)}header p{max-width:760px;line-height:1.65}.actions{display:flex;gap:9px;flex-wrap:wrap}.actions a{padding:10px 14px;border-radius:22px;background:#fff;color:#174ea6;text-decoration:none;font-weight:700}.levels{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:20px}.card{padding:24px;border:1px solid #dadce0;border-radius:13px;background:#fff}.card h2{margin:.2em 0}.status{display:inline-block;padding:5px 9px;border-radius:15px;background:#f1f3f4;font-size:12px;font-weight:700}.complete{background:#e6f4ea;color:#137333}.planned{background:#fef7e0;color:#8a5a00}.card p{line-height:1.55;color:#5f6368}.card a{color:#174ea6;font-weight:700;text-decoration:none}@media(max-width:760px){.levels{grid-template-columns:1fr}header{padding:24px}}</style></head><body><main><header><p>ONE CONTINUOUS CURRICULUM</p><h1>Python Learning Path</h1><p>A three-level book for progressing from sound foundations to maintainable applications and advanced Python systems. The existing eleven-module course remains intact as Level 1.</p><div class="actions"><a href="book_plan/editor.html?view=annotated">Read the full book plan</a><a href="BOOK_PLAN.md">Source Markdown</a></div></header><section class="levels"><article class="card"><span class="status complete">Published · 11 modules</span><h2>1 · Beginning</h2><p>Core syntax, program design, files, classes, testing, numerical foundations, and the Reader Selection Report capstone.</p><a href="../python_tutorial/index.html">Open Practical Python Foundations →</a></article><article class="card"><span class="status planned">Curriculum started</span><h2>2 · Intermediate</h2><p>Typed applications, command-line tools, APIs, SQLite, data analysis, architecture, testing, and packaging.</p><a href="book_plan/editor.html?view=annotated">Review the module plan →</a></article><article class="card"><span class="status planned">Curriculum started</span><h2>3 · Advanced</h2><p>Python protocols, advanced typing, concurrency, performance, streaming, resilience, security, and plugins.</p><a href="book_plan/editor.html?view=annotated">Review the module plan →</a></article></section></main></body></html>'''
+
+
+def main() -> None:
+    markdown = (BASE / "BOOK_PLAN.md").read_text(encoding="utf-8")
+    folder = BASE / "book_plan"
+    folder.mkdir(exist_ok=True)
+    page = reader(markdown, "Python Learning Path — Three-Level Book Plan", "../BOOK_PLAN.md",
+                  "python-learning-path-book-plan-v1", "python_learning_path_book_plan",
+                  "../../index.html", "../../workspace_theme.css", "../index.html")
+    page = page.replace('href="../python_tutorial/index.html"', 'href="../../python_tutorial/index.html"')
+    (folder / "editor.html").write_text(page, encoding="utf-8")
+    (BASE / "index.html").write_text(landing(), encoding="utf-8")
+    print("Built Python Learning Path book")
+
+
+if __name__ == "__main__":
+    main()

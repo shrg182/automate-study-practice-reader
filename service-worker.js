@@ -1,4 +1,4 @@
-const VERSION = "reading-room-v45";
+const VERSION = "reading-room-v46";
 const CORE_CACHE = `${VERSION}-core`;
 const ARTICLE_CACHE = `${VERSION}-articles`;
 const root = new URL("./", self.registration.scope);
@@ -44,5 +44,16 @@ self.addEventListener("message", event => {
   }
   if (data.type === "REMOVE_ARTICLE") {
     event.waitUntil(caches.open(ARTICLE_CACHE).then(cache => Promise.all(data.urls.map(url => cache.delete(url)))).then(() => event.source?.postMessage({type: "ARTICLE_REMOVED"})));
+  }
+  if (data.type === "CACHE_BOOK") {
+    event.waitUntil(caches.open(ARTICLE_CACHE)
+      .then(cache => Promise.all(data.urls.map(url => cache.add(new Request(url, {cache: "reload"})))))
+      .then(() => event.source?.postMessage({type: "BOOK_CACHED", book: data.book}))
+      .catch(error => event.source?.postMessage({type: "CACHE_ERROR", message: error.message})));
+  }
+  if (data.type === "REMOVE_BOOK") {
+    event.waitUntil(caches.open(ARTICLE_CACHE)
+      .then(cache => Promise.all(data.urls.map(url => cache.delete(url))))
+      .then(() => event.source?.postMessage({type: "BOOK_REMOVED", book: data.book})));
   }
 });
