@@ -41,6 +41,8 @@ COLLECTIONS = {
     "marxist_classics": Collection("marxist_classics", "马克思主义经典", "经典文本专题摘录与注释", "理论文献"),
     "ai_course": Collection("ai_course", "AI 课程", "课程文章、讲义与学习笔记", "课程资料"),
     "python": Collection("python", "Python", "Beginning, Intermediate, and Advanced courses by Codex (OpenAI)", "Programming"),
+    "russian_poetry": Collection("russian_poetry", "Русская поэзия", "Russian-first poetry readings with concise English study support", "Russian literature"),
+    "russian_short_stories": Collection("russian_short_stories", "Русские рассказы", "Short Russian prose: humor, fable, prose miniature, and philosophical sketch", "Russian prose"),
 }
 
 COLLECTION_ORDER = list(COLLECTIONS)
@@ -95,6 +97,38 @@ def natural_key(path: Path) -> tuple[object, ...]:
 def entry_context(path: Path, collection_key: str) -> str:
     relative = path.relative_to(BASE_DIR / collection_key)
     parts = relative.parts[:-1]
+    if collection_key == "russian_short_stories" and parts:
+        authors = {
+            "01_chekhov_radost": "Антон Чехов · юмористический рассказ",
+            "02_turgenev_vorobey": "Иван Тургенев · стихотворение в прозе",
+            "03_tolstoy_lev_i_mysh": "Лев Толстой · басня",
+            "04_korolenko_ogonki": "Владимир Короленко · философская миниатюра",
+        }
+        return authors.get(parts[-1], "Русская проза")
+    if collection_key == "russian_poetry" and parts:
+        authors = {
+            "01_pushkin_ya_vas_lyubil": "Александр Пушкин · 1829",
+            "02_pushkin_zimnee_utro": "Александр Пушкин · 1829",
+            "03_pushkin_uznik": "Александр Пушкин · 1822",
+            "04_lermontov_parus": "Михаил Лермонтов · 1832",
+            "05_tyutchev_silentium": "Фёдор Тютчев · 1830",
+            "06_pushkin_esli_zhizn_tebya_obmanet": "Александр Пушкин · 1825",
+            "07_pushkin_k_chaadaevu": "Александр Пушкин · 1818",
+            "08_lermontov_vykhozhu_odin": "Михаил Лермонтов · 1841",
+            "09_tyutchev_vesennie_vody": "Фёдор Тютчев · 1829",
+            "10_fet_ya_prishyol_s_privetom": "Афанасий Фет · 1843",
+            "11_fet_shepot": "Афанасий Фет · 1850",
+            "12_krylov_strekoza_i_muravey": "Иван Крылов · 1808",
+            "13_turgenev_russkiy_yazyk": "Иван Тургенев · 1882",
+            "14_blok_noch_ulitsa": "Александр Блок · 1912",
+            "15_yesenin_beryoza": "Сергей Есенин · 1913",
+            "16_yesenin_do_svidanya": "Сергей Есенин · 1925",
+            "17_derzhavin_reka_vremen": "Гавриил Державин · 1816",
+            "18_batyushkov_moy_geniy": "Константин Батюшков · 1815",
+            "19_nekrasov_seyatelyam": "Николай Некрасов · 1876",
+            "20_mayakovsky_poslushayte": "Владимир Маяковский · 1914",
+        }
+        return authors.get(parts[-1], "Русская поэзия")
     if collection_key == "python" and parts:
         levels = {"beginning": "Beginning", "intermediate": "Intermediate", "advanced": "Advanced"}
         level = next((levels[part] for part in parts if part in levels), "Python")
