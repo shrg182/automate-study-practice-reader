@@ -1,0 +1,301 @@
+{
+  "schema_version": 1,
+  "id": "shiji",
+  "title": "史记",
+  "author": "司马迁",
+  "source_edition": "毛泽东批注二十四史（91册横排简体字本）",
+  "source_volumes": [
+    {
+      "id": "source_volume_01",
+      "label": "《史记》来源册 1",
+      "status": "awaiting_scan",
+      "page_count": null,
+      "sha256": null
+    },
+    {
+      "id": "source_volume_02",
+      "label": "《史记》来源册 2",
+      "status": "awaiting_scan",
+      "page_count": null,
+      "sha256": null
+    },
+    {
+      "id": "source_volume_03",
+      "label": "《史记》来源册 3",
+      "status": "awaiting_scan",
+      "page_count": null,
+      "sha256": null
+    }
+  ],
+  "reader_divisions": [
+    {
+      "id": "benji",
+      "label": "本纪",
+      "juan": "1–12"
+    },
+    {
+      "id": "biao",
+      "label": "表",
+      "juan": "13–22"
+    },
+    {
+      "id": "shu",
+      "label": "书",
+      "juan": "23–30"
+    },
+    {
+      "id": "shijia",
+      "label": "世家",
+      "juan": "31–60"
+    },
+    {
+      "id": "liezhuan",
+      "label": "列传",
+      "juan": "61–130"
+    }
+  ],
+  "comparison_source": {
+    "label": "中国哲学书电子化计划《武英殿二十四史》本《史记》",
+    "url": "https://ctext.org/library.pl?if=gb&remap=gb&res=77688",
+    "role": "unannotated_comparison_only"
+  },
+  "comparison_scan_groups": [
+    {
+      "label": "卷1",
+      "file_id": 79498,
+      "divisions": [
+        "benji"
+      ],
+      "url": "https://ctext.org/library.pl?if=gb&file=79498&page=1&remap=gb",
+      "role": "unannotated_comparison_only"
+    },
+    {
+      "label": "卷2–5",
+      "file_id": 79499,
+      "divisions": [
+        "benji"
+      ],
+      "url": "https://ctext.org/library.pl?if=gb&file=79499&page=1&remap=gb",
+      "role": "unannotated_comparison_only"
+    },
+    {
+      "label": "卷6–7",
+      "file_id": 79500,
+      "divisions": [
+        "benji"
+      ],
+      "url": "https://ctext.org/library.pl?if=gb&file=79500&page=1&remap=gb",
+      "role": "unannotated_comparison_only"
+    },
+    {
+      "label": "卷8–12",
+      "file_id": 79501,
+      "divisions": [
+        "benji"
+      ],
+      "url": "https://ctext.org/library.pl?if=gb&file=79501&page=1&remap=gb",
+      "role": "unannotated_comparison_only"
+    },
+    {
+      "label": "卷13–14",
+      "file_id": 79502,
+      "divisions": [
+        "biao"
+      ],
+      "url": "https://ctext.org/library.pl?if=gb&file=79502&page=1&remap=gb",
+      "role": "unannotated_comparison_only"
+    },
+    {
+      "label": "卷15–17",
+      "file_id": 79503,
+      "divisions": [
+        "biao"
+      ],
+      "url": "https://ctext.org/library.pl?if=gb&file=79503&page=1&remap=gb",
+      "role": "unannotated_comparison_only"
+    },
+    {
+      "label": "卷18–19",
+      "file_id": 79504,
+      "divisions": [
+        "biao"
+      ],
+      "url": "https://ctext.org/library.pl?if=gb&file=79504&page=1&remap=gb",
+      "role": "unannotated_comparison_only"
+    },
+    {
+      "label": "卷20–22",
+      "file_id": 79505,
+      "divisions": [
+        "biao"
+      ],
+      "url": "https://ctext.org/library.pl?if=gb&file=79505&page=1&remap=gb",
+      "role": "unannotated_comparison_only"
+    },
+    {
+      "label": "卷23–26",
+      "file_id": 79506,
+      "divisions": [
+        "shu"
+      ],
+      "url": "https://ctext.org/library.pl?if=gb&file=79506&page=1&remap=gb",
+      "role": "unannotated_comparison_only"
+    },
+    {
+      "label": "卷27–30",
+      "file_id": 79507,
+      "divisions": [
+        "shu"
+      ],
+      "url": "https://ctext.org/library.pl?if=gb&file=79507&page=1&remap=gb",
+      "role": "unannotated_comparison_only"
+    },
+    {
+      "label": "卷31–33",
+      "file_id": 79508,
+      "divisions": [
+        "shijia"
+      ],
+      "url": "https://ctext.org/library.pl?if=gb&file=79508&page=1&remap=gb",
+      "role": "unannotated_comparison_only"
+    },
+    {
+      "label": "卷34–39",
+      "file_id": 79509,
+      "divisions": [
+        "shijia"
+      ],
+      "url": "https://ctext.org/library.pl?if=gb&file=79509&page=1&remap=gb",
+      "role": "unannotated_comparison_only"
+    },
+    {
+      "label": "卷40–43",
+      "file_id": 79510,
+      "divisions": [
+        "shijia"
+      ],
+      "url": "https://ctext.org/library.pl?if=gb&file=79510&page=1&remap=gb",
+      "role": "unannotated_comparison_only"
+    },
+    {
+      "label": "卷44–48",
+      "file_id": 79511,
+      "divisions": [
+        "shijia"
+      ],
+      "url": "https://ctext.org/library.pl?if=gb&file=79511&page=1&remap=gb",
+      "role": "unannotated_comparison_only"
+    },
+    {
+      "label": "卷49–57",
+      "file_id": 79512,
+      "divisions": [
+        "shijia"
+      ],
+      "url": "https://ctext.org/library.pl?if=gb&file=79512&page=1&remap=gb",
+      "role": "unannotated_comparison_only"
+    },
+    {
+      "label": "卷58–67",
+      "file_id": 79513,
+      "divisions": [
+        "shijia",
+        "liezhuan"
+      ],
+      "url": "https://ctext.org/library.pl?if=gb&file=79513&page=1&remap=gb",
+      "role": "unannotated_comparison_only"
+    },
+    {
+      "label": "卷68–74",
+      "file_id": 79514,
+      "divisions": [
+        "liezhuan"
+      ],
+      "url": "https://ctext.org/library.pl?if=gb&file=79514&page=1&remap=gb",
+      "role": "unannotated_comparison_only"
+    },
+    {
+      "label": "卷75–81",
+      "file_id": 79515,
+      "divisions": [
+        "liezhuan"
+      ],
+      "url": "https://ctext.org/library.pl?if=gb&file=79515&page=1&remap=gb",
+      "role": "unannotated_comparison_only"
+    },
+    {
+      "label": "卷82–87",
+      "file_id": 79516,
+      "divisions": [
+        "liezhuan"
+      ],
+      "url": "https://ctext.org/library.pl?if=gb&file=79516&page=1&remap=gb",
+      "role": "unannotated_comparison_only"
+    },
+    {
+      "label": "卷88–95",
+      "file_id": 79517,
+      "divisions": [
+        "liezhuan"
+      ],
+      "url": "https://ctext.org/library.pl?if=gb&file=79517&page=1&remap=gb",
+      "role": "unannotated_comparison_only"
+    },
+    {
+      "label": "卷96–103",
+      "file_id": 79518,
+      "divisions": [
+        "liezhuan"
+      ],
+      "url": "https://ctext.org/library.pl?if=gb&file=79518&page=1&remap=gb",
+      "role": "unannotated_comparison_only"
+    },
+    {
+      "label": "卷104–109",
+      "file_id": 79519,
+      "divisions": [
+        "liezhuan"
+      ],
+      "url": "https://ctext.org/library.pl?if=gb&file=79519&page=1&remap=gb",
+      "role": "unannotated_comparison_only"
+    },
+    {
+      "label": "卷110–115",
+      "file_id": 79520,
+      "divisions": [
+        "liezhuan"
+      ],
+      "url": "https://ctext.org/library.pl?if=gb&file=79520&page=1&remap=gb",
+      "role": "unannotated_comparison_only"
+    },
+    {
+      "label": "卷116–120",
+      "file_id": 79521,
+      "divisions": [
+        "liezhuan"
+      ],
+      "url": "https://ctext.org/library.pl?if=gb&file=79521&page=1&remap=gb",
+      "role": "unannotated_comparison_only"
+    },
+    {
+      "label": "卷121–126",
+      "file_id": 79522,
+      "divisions": [
+        "liezhuan"
+      ],
+      "url": "https://ctext.org/library.pl?if=gb&file=79522&page=1&remap=gb",
+      "role": "unannotated_comparison_only"
+    },
+    {
+      "label": "卷127–130",
+      "file_id": 79523,
+      "divisions": [
+        "liezhuan"
+      ],
+      "url": "https://ctext.org/library.pl?if=gb&file=79523&page=1&remap=gb",
+      "role": "unannotated_comparison_only"
+    }
+  ],
+  "alignment_status": "awaiting_annotated_source_toc",
+  "offline_packages": []
+}

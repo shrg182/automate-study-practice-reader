@@ -43,6 +43,8 @@ COLLECTIONS = {
     "python": Collection("python", "Python", "Beginning, Intermediate, and Advanced courses by Codex (OpenAI)", "Programming"),
     "russian_poetry": Collection("russian_poetry", "Русская поэзия", "Russian-first poetry readings with concise English study support", "Russian literature"),
     "russian_short_stories": Collection("russian_short_stories", "Русские рассказы", "Short Russian prose: humor, fable, prose miniature, and philosophical sketch", "Russian prose"),
+    "russian_wars": Collection("russian_wars", "Войны России", "Russian-first chronicle with selectable English and Chinese study support", "Russian history"),
+    "mao_annotated_24_histories": Collection("mao_annotated_24_histories", "《毛泽东批注二十四史》", "九十一册横排简体字本：二十四史、批注、史论与研究资料", "历史典籍"),
 }
 
 COLLECTION_ORDER = list(COLLECTIONS)
@@ -129,6 +131,16 @@ def entry_context(path: Path, collection_key: str) -> str:
             "20_mayakovsky_poslushayte": "Владимир Маяковский · 1914",
         }
         return authors.get(parts[-1], "Русская поэзия")
+    if collection_key == "russian_wars" and parts:
+        periods = {
+            "period_05_1689_1801": "Период 5 · 1689–1801",
+            "period_06_1801_1855": "Период 6 · 1801–1855",
+            "period_07_1855_1917": "Период 7 · 1855–1917",
+            "period_08_1917_1922": "Период 8 · 1917–1922",
+            "period_09_1922_1941": "Период 9 · 1922–1941",
+            "period_10_1939_1945": "Период 10 · 1939–1945",
+        }
+        return periods.get(parts[0], "Хроника войн")
     if collection_key == "python" and parts:
         levels = {"beginning": "Beginning", "intermediate": "Intermediate", "advanced": "Advanced"}
         level = next((levels[part] for part in parts if part in levels), "Python")
@@ -344,7 +356,7 @@ def marxist_books_html(entries: list[dict[str, str | None]], start_number: int) 
 
 def build_html(grouped: dict[str, list[dict[str, str | None]]]) -> str:
     total = sum(len(entries) for entries in grouped.values())
-    active = [(key, entries) for key, entries in grouped.items() if entries or key in {"guwen_guanzhi", "chinese_wars", "american_civil_war", "laozi", "sunzi", "thirty_six_stratagems"}]
+    active = [(key, entries) for key, entries in grouped.items() if entries or key in {"guwen_guanzhi", "chinese_wars", "american_civil_war", "laozi", "sunzi", "thirty_six_stratagems", "russian_wars", "mao_annotated_24_histories"}]
     nav = "".join(
         f'<a href="#{key}"><span>{escape(COLLECTIONS[key].title)}</span><b>{len(entries)}</b></a>'
         for key, entries in active
@@ -353,7 +365,7 @@ def build_html(grouped: dict[str, list[dict[str, str | None]]]) -> str:
     running_number = 0
     for key, entries in active:
         collection = COLLECTIONS[key]
-        selector_links = {"rongzhai_suibi": "rongzhai_suibi/select_articles.html", "guwen_guanzhi": "guwen_guanzhi/select_articles.html", "chinese_wars": "chinese_wars/select_entries.html", "american_civil_war": "american_civil_war/select_battles.html", "laozi": "laozi/select_chapters.html", "sunzi": "sunzi/select_entries.html", "thirty_six_stratagems": "thirty_six_stratagems/select_entries.html", "liaozhai_stories": "liaozhai_stories/select_articles.html", "shiji": "shiji/select_articles.html", "nine_commentaries": "nine_commentaries/source_index/select_readings.html", "python": "python/index.html"}
+        selector_links = {"rongzhai_suibi": "rongzhai_suibi/select_articles.html", "guwen_guanzhi": "guwen_guanzhi/select_articles.html", "chinese_wars": "chinese_wars/select_entries.html", "american_civil_war": "american_civil_war/select_battles.html", "laozi": "laozi/select_chapters.html", "sunzi": "sunzi/select_entries.html", "thirty_six_stratagems": "thirty_six_stratagems/select_entries.html", "liaozhai_stories": "liaozhai_stories/select_articles.html", "shiji": "shiji/select_articles.html", "nine_commentaries": "nine_commentaries/source_index/select_readings.html", "python": "python/index.html", "russian_wars": "russian_wars/select_articles.html", "mao_annotated_24_histories": "mao_annotated_24_histories/select_histories.html"}
         selector_link = (f'<a class="collection-tool" href="{selector_links[key]}">选择更多篇目</a>' if key in selector_links else "")
         resource_links = {
             "jianshang": '<a class="collection-resource" href="jianshang/翦商.pdf" target="_blank" rel="noopener">原书 PDF</a>',
@@ -466,13 +478,14 @@ const readingHistoryKey='reading-workspace-history-v1',editingHistoryKey='readin
 function setCollectionCollapsed(section,collapsed,persist=true){{section.classList.toggle('collapsed',collapsed);section.querySelector('.collection-toggle')?.setAttribute('aria-expanded',String(!collapsed));if(persist){{const state=JSON.parse(localStorage.getItem('reading-workspace-collapsed-collections')||'{{}}');state[section.id]=collapsed;localStorage.setItem('reading-workspace-collapsed-collections',JSON.stringify(state))}}}}
 function installCollectionToggles(){{document.querySelectorAll('[data-collection]').forEach(section=>{{setCollectionCollapsed(section,true,false);section.querySelector('.collection-toggle')?.addEventListener('click',()=>{{const closing=!section.classList.contains('collapsed');setCollectionCollapsed(section,closing,false);if(closing)history.replaceState(null,'',location.pathname+location.search)}})}});document.querySelectorAll('.masthead-books a[href^="#"]').forEach(link=>link.addEventListener('click',event=>{{event.preventDefault();const section=document.querySelector(link.getAttribute('href')),opening=section?.classList.contains('collapsed');document.querySelectorAll('[data-collection]').forEach(item=>setCollectionCollapsed(item,true,false));if(opening&&section){{setCollectionCollapsed(section,false,false);history.replaceState(null,'',link.getAttribute('href'));section.scrollIntoView({{behavior:'smooth',block:'start'}})}}}}));const linked=location.hash&&document.querySelector(location.hash);if(linked?.matches('[data-collection]'))setCollectionCollapsed(linked,false,false)}}
 function installBookToggles(){{}}
-function filterCatalog(){{const query=search.value.trim().toLocaleLowerCase();let visibleTotal=0;document.querySelectorAll('[data-collection]').forEach(section=>{{let count=0;const books=section.querySelectorAll('[data-book]');if(books.length){{books.forEach(book=>{{const bookMatch=query&&book.dataset.search.includes(query);let bookCount=0;book.querySelectorAll('.entry').forEach(entry=>{{const show=!query||bookMatch||entry.dataset.search.includes(query);entry.hidden=!show;if(show)bookCount++}});book.hidden=bookCount===0;if(query&&bookCount){{const bookState=book.querySelector('.book-state'),contentsState=book.querySelector('.contents-state');if(bookState)bookState.checked=true;if(contentsState)contentsState.checked=true}}count+=bookCount}})}}else{{section.querySelectorAll('.entry').forEach(entry=>{{const show=!query||entry.dataset.search.includes(query);entry.hidden=!show;if(show)count++}})}}section.hidden=count===0;if(query&&count)setCollectionCollapsed(section,false,false);visibleTotal+=count}});empty.style.display=visibleTotal?'none':'block'}}
+function filterCatalog(){{const query=search.value.trim().toLocaleLowerCase();let visibleTotal=0;document.querySelectorAll('[data-collection]').forEach(section=>{{let count=0;const books=section.querySelectorAll('[data-book]');if(books.length){{books.forEach(book=>{{const bookMatch=query&&book.dataset.search.includes(query);let bookCount=0;book.querySelectorAll('.entry').forEach(entry=>{{const show=entry.dataset.libraryHidden!=='true'&&(!query||bookMatch||entry.dataset.search.includes(query));entry.hidden=!show;if(show)bookCount++}});book.hidden=bookCount===0;if(query&&bookCount){{const bookState=book.querySelector('.book-state'),contentsState=book.querySelector('.contents-state');if(bookState)bookState.checked=true;if(contentsState)contentsState.checked=true}}count+=bookCount}})}}else{{section.querySelectorAll('.entry').forEach(entry=>{{const show=entry.dataset.libraryHidden!=='true'&&(!query||entry.dataset.search.includes(query));entry.hidden=!show;if(show)count++}})}}section.hidden=count===0;if(query&&count)setCollectionCollapsed(section,false,false);visibleTotal+=count}});empty.style.display=visibleTotal?'none':'block'}}
+function applyRussianWarsLibrary(){{let selected;try{{selected=JSON.parse(localStorage.getItem('russian-wars-library-ids')||'null')}}catch{{selected=null}}const entries=[...document.querySelectorAll('#russian_wars-entries .entry')],allowed=Array.isArray(selected)?new Set(selected):null;entries.forEach(entry=>{{const parts=entry.dataset.editorPath?.split('/')||[],key=`${{parts.at(-2)}}@${{parts.at(-3)}}`,legacy=parts.at(-2),isBattle=legacy?.startsWith('battle_'),included=allowed?(allowed.has(key)||allowed.has(legacy)):!isBattle;entry.dataset.libraryHidden=included?'false':'true';entry.hidden=!included}});const count=entries.filter(entry=>!entry.hidden).length;const label=document.querySelector('#russian_wars .collection-meta strong');if(label)label.textContent=`${{count}} 篇已导入`}}
 function renderReadingHistory(){{let history={{}};try{{history=JSON.parse(localStorage.getItem(readingHistoryKey)||'{{}}')}}catch{{}}const formatter=new Intl.DateTimeFormat('zh-CN',{{year:'numeric',month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit'}});document.querySelectorAll('.entry[data-editor-path]').forEach(entry=>{{const cell=entry.querySelector('.entry-reading'),record=history[entry.dataset.editorPath];cell.classList.toggle('read',Boolean(record));cell.querySelector('strong').textContent=record?`已读 ${{record.count||1}} 次`:'未读';cell.querySelector('time').textContent=record?.lastRead?formatter.format(new Date(record.lastRead)):''}})}}
 function renderEditingHistory(){{let history={{}};try{{history=JSON.parse(localStorage.getItem(editingHistoryKey)||'{{}}')}}catch{{}}const formatter=new Intl.DateTimeFormat('zh-CN',{{year:'numeric',month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit'}});document.querySelectorAll('.entry[data-editor-path]').forEach(entry=>{{const cell=entry.querySelector('.entry-editing'),record=history[entry.dataset.editorPath];cell.classList.toggle('edited',Boolean(record));cell.querySelector('strong').textContent=record?`已编辑 ${{record.sessions||1}} 次`:'未编辑';cell.querySelector('time').textContent=record?.lastEdited?formatter.format(new Date(record.lastEdited)):'';cell.title=record?`首次编辑：${{formatter.format(new Date(record.firstEdited))}}\n最近编辑：${{formatter.format(new Date(record.lastEdited))}}\n修改批次：${{record.changes||1}}\n内容类型：${{(record.kinds||[]).join('、')||'正文'}}`:''}})}}
 function renderHistory(){{renderReadingHistory();renderEditingHistory()}}
 search.addEventListener('input',filterCatalog);
 document.addEventListener('click',event=>{{if(event.target.closest('.entry-editor a,.entry-title-link'))sessionStorage.setItem('shiji-editor-view','annotated')}});
-window.addEventListener('focus',renderHistory);window.addEventListener('storage',renderHistory);installCollectionToggles();installBookToggles();renderHistory();
+window.addEventListener('focus',()=>{{renderHistory();applyRussianWarsLibrary()}});window.addEventListener('storage',()=>{{renderHistory();applyRussianWarsLibrary()}});installCollectionToggles();installBookToggles();renderHistory();applyRussianWarsLibrary();
 </script>
 </body>
 </html>'''

@@ -1,0 +1,249 @@
+{
+  "schema_version": 1,
+  "id": "mao_annotated_24_histories",
+  "title": "毛泽东批注二十四史",
+  "edition": "横排简体字本，91册",
+  "source_status": "awaiting_authorized_scans",
+  "source_note": "Yale University Library reportedly holds a complete set; catalog and reproduction details remain to be confirmed.",
+  "storage_policy": "catalog-first; scans and OCR are optional per-history or per-volume offline packages",
+  "histories": [
+    {
+      "id": "shiji",
+      "title": "史记",
+      "author": "司马迁",
+      "structure": "本纪、表、书、世家、列传",
+      "scan_status": "awaiting_source",
+      "chapters": []
+    },
+    {
+      "id": "hanshu",
+      "title": "汉书",
+      "author": "班固",
+      "structure": "纪、表、志、传",
+      "scan_status": "awaiting_source",
+      "chapters": []
+    },
+    {
+      "id": "hou_hanshu",
+      "title": "后汉书",
+      "author": "范晔",
+      "structure": "纪、志、传",
+      "scan_status": "awaiting_source",
+      "chapters": []
+    },
+    {
+      "id": "sanguozhi",
+      "title": "三国志",
+      "author": "陈寿",
+      "structure": "魏书、蜀书、吴书",
+      "scan_status": "awaiting_source",
+      "chapters": []
+    },
+    {
+      "id": "jinshu",
+      "title": "晋书",
+      "author": "房玄龄等",
+      "structure": "帝纪、志、列传、载记",
+      "scan_status": "awaiting_source",
+      "chapters": []
+    },
+    {
+      "id": "songshu",
+      "title": "宋书",
+      "author": "沈约",
+      "structure": "本纪、志、列传",
+      "scan_status": "awaiting_source",
+      "chapters": []
+    },
+    {
+      "id": "nan_qishu",
+      "title": "南齐书",
+      "author": "萧子显",
+      "structure": "本纪、志、列传",
+      "scan_status": "awaiting_source",
+      "chapters": []
+    },
+    {
+      "id": "liangshu",
+      "title": "梁书",
+      "author": "姚思廉",
+      "structure": "本纪、列传",
+      "scan_status": "awaiting_source",
+      "chapters": []
+    },
+    {
+      "id": "chenshu",
+      "title": "陈书",
+      "author": "姚思廉",
+      "structure": "本纪、列传",
+      "scan_status": "awaiting_source",
+      "chapters": []
+    },
+    {
+      "id": "weishu",
+      "title": "魏书",
+      "author": "魏收",
+      "structure": "帝纪、志、列传",
+      "scan_status": "awaiting_source",
+      "chapters": []
+    },
+    {
+      "id": "bei_qishu",
+      "title": "北齐书",
+      "author": "李百药",
+      "structure": "帝纪、列传",
+      "scan_status": "awaiting_source",
+      "chapters": []
+    },
+    {
+      "id": "zhoushu",
+      "title": "周书",
+      "author": "令狐德棻等",
+      "structure": "帝纪、列传",
+      "scan_status": "awaiting_source",
+      "chapters": []
+    },
+    {
+      "id": "suishu",
+      "title": "隋书",
+      "author": "魏征等",
+      "structure": "帝纪、志、列传",
+      "scan_status": "awaiting_source",
+      "chapters": []
+    },
+    {
+      "id": "nanshi",
+      "title": "南史",
+      "author": "李延寿",
+      "structure": "本纪、列传",
+      "scan_status": "awaiting_source",
+      "chapters": []
+    },
+    {
+      "id": "beishi",
+      "title": "北史",
+      "author": "李延寿",
+      "structure": "本纪、列传",
+      "scan_status": "awaiting_source",
+      "chapters": []
+    },
+    {
+      "id": "jiu_tangshu",
+      "title": "旧唐书",
+      "author": "刘昫等",
+      "structure": "本纪、志、列传",
+      "scan_status": "awaiting_source",
+      "chapters": []
+    },
+    {
+      "id": "xin_tangshu",
+      "title": "新唐书",
+      "author": "欧阳修、宋祁",
+      "structure": "本纪、志、表、列传",
+      "scan_status": "awaiting_source",
+      "chapters": []
+    },
+    {
+      "id": "jiu_wudaishi",
+      "title": "旧五代史",
+      "author": "薛居正等",
+      "structure": "梁、唐、晋、汉、周书及志",
+      "scan_status": "awaiting_source",
+      "chapters": []
+    },
+    {
+      "id": "xin_wudaishi",
+      "title": "新五代史",
+      "author": "欧阳修",
+      "structure": "本纪、家人传、臣传、考",
+      "scan_status": "awaiting_source",
+      "chapters": []
+    },
+    {
+      "id": "songshi",
+      "title": "宋史",
+      "author": "脱脱等",
+      "structure": "本纪、志、表、列传",
+      "scan_status": "awaiting_source",
+      "chapters": []
+    },
+    {
+      "id": "liaoshi",
+      "title": "辽史",
+      "author": "脱脱等",
+      "structure": "本纪、志、表、列传、国语解",
+      "scan_status": "awaiting_source",
+      "chapters": []
+    },
+    {
+      "id": "jinshi",
+      "title": "金史",
+      "author": "脱脱等",
+      "structure": "本纪、志、表、列传",
+      "scan_status": "awaiting_source",
+      "chapters": []
+    },
+    {
+      "id": "yuanshi",
+      "title": "元史",
+      "author": "宋濂等",
+      "structure": "本纪、志、表、列传",
+      "scan_status": "awaiting_source",
+      "chapters": []
+    },
+    {
+      "id": "mingshi",
+      "title": "明史",
+      "author": "张廷玉等",
+      "structure": "本纪、志、表、列传",
+      "scan_status": "awaiting_source",
+      "chapters": []
+    }
+  ],
+  "research": [
+    {
+      "id": "publication_2013",
+      "type": "版本与出版",
+      "title": "《毛泽东批注二十四史》横排简体字本在京出版",
+      "author": "新华社",
+      "date": "2013-03-21",
+      "scope": "全书",
+      "reliability": "出版信息／机构来源",
+      "url": "https://dangshi.people.com.cn/n/2013/0321/c85037-20862188.html",
+      "summary": "说明全书为91册横排简体武英殿本，以及批注、圈画、《三国志集解》和史论资料的来源。"
+    },
+    {
+      "id": "editorial_history",
+      "type": "版本与出版",
+      "title": "关于《毛泽东批注二十四史》一书的整理与出版",
+      "author": "中国出版传媒商报",
+      "date": "2019",
+      "scope": "全书",
+      "reliability": "出版行业资料",
+      "url": "https://www.cbbr.com.cn/contents/533/10687.html",
+      "summary": "分别介绍批注整理、史论整理和武英殿本《二十四史》整理工作，并说明修订版的校勘增补。"
+    },
+    {
+      "id": "xu_zhongyuan_2023",
+      "type": "毛泽东读史研究",
+      "title": "新中国成立后毛泽东对《二十四史》的研读和批注",
+      "author": "徐中远",
+      "date": "2023-09-26",
+      "scope": "全书",
+      "reliability": "研究机构文章",
+      "url": "https://www.dswxyjy.org.cn/n1/2023/0926/c423725-40085727.html",
+      "summary": "概述阅读过程，并将批注内容归纳为人物、政论、战争、史书注解、古今评论、方法论等八类。"
+    },
+    {
+      "id": "wang_gang_publication_recollection",
+      "type": "版本与出版",
+      "title": "宝贵的精神财富 伟大的领袖风范——回忆毛泽东同志藏书和文稿整理保管工作",
+      "author": "王刚",
+      "date": "2019",
+      "scope": "原藏本与影印出版",
+      "reliability": "回忆与机构转载",
+      "url": "https://www.nju.edu.cn/info/3391/316961.htm",
+      "summary": "记述原藏武英殿本、批注校核及1996年影印出版工作，可用于追溯91册本的文献来源。"
+    }
+  ]
+}
