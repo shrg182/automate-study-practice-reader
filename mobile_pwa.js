@@ -22,7 +22,8 @@
         body.mobile-pwa .editor,body.mobile-pwa .rich-editor{box-sizing:border-box!important;width:100%!important;min-width:0!important;max-width:100%!important;font-size:var(--reading-content-font-size,18px)!important;line-height:var(--reading-content-line-height,1.9)!important;overflow-wrap:anywhere!important}
         body.mobile-pwa.mobile-read-mode .toolbar{display:none!important}
         body.mobile-pwa.mobile-read-mode .sidebar{display:none!important}
-        body.mobile-pwa.mobile-panel-open .sidebar{display:flex!important;position:fixed!important;z-index:220;inset:54px 0 62px!important;max-height:none!important;padding:12px;background:#f8f9fa;overflow:auto}
+        body.mobile-pwa.mobile-panel-open .sidebar{display:flex!important;position:fixed!important;z-index:220;inset:54px 0 62px!important;width:auto!important;min-width:0!important;max-width:none!important;max-height:none!important;margin:0!important;padding:12px;background:#f8f9fa;overflow:auto;visibility:visible!important;transform:none!important}
+        body.mobile-pwa.mobile-panel-open .study-pane{flex-direction:column!important}
         body.mobile-pwa.mobile-edit-mode .toolbar{display:flex!important;position:fixed!important;z-index:210;inset:0 0 auto!important;max-height:52vh;overflow:auto;box-shadow:0 5px 20px #0003}
         body.mobile-pwa.mobile-edit-mode .workspace{padding-top:54px!important}
         .mobile-pwa-bar{box-sizing:border-box!important;position:fixed;z-index:300;left:0;right:auto;bottom:0;display:flex;width:100vw!important;min-width:0!important;max-width:100vw!important;min-height:58px;padding:max(4px,env(safe-area-inset-bottom)) 4px env(safe-area-inset-bottom);border-top:1px solid #dadce0;background:#fff;color:#3c4043;box-shadow:0 -2px 12px #0002;overflow-x:auto}
@@ -56,6 +57,8 @@
     document.body.classList.toggle("mobile-edit-mode", enabled);
     document.body.classList.toggle("mobile-read-mode", !enabled);
     document.body.classList.remove("mobile-panel-open");
+    const paneButton = document.querySelector('[data-mobile-action="pane"]');
+    if (paneButton) { paneButton.classList.remove("active"); paneButton.textContent = "窗格"; paneButton.setAttribute("aria-pressed", "false"); }
     const nodes = editableNodes();
     if (!originalEditable.length) originalEditable = nodes.map(node => node.getAttribute("contenteditable"));
     nodes.forEach((node, index) => {
@@ -93,13 +96,23 @@
   function showPanel(kind) {
     document.body.classList.add("mobile-panel-open");
     document.body.classList.remove("mobile-edit-mode");
+    const paneButton = document.querySelector('[data-mobile-action="pane"]');
+    if (paneButton) { paneButton.classList.add("active"); paneButton.textContent = "正文"; paneButton.setAttribute("aria-pressed", "true"); }
     if (window.BilingualStudyPane) {
-      window.BilingualStudyPane.activateTab(kind === "notes" ? "notes" : "dictionary");
+      window.BilingualStudyPane.activateTab(kind === "notes" ? "notes" : kind === "chinese" ? "chinese" : "dictionary");
       document.querySelector(".study-pane")?.scrollIntoView({block: "start"});
       return;
     }
     const selector = kind === "notes" ? "#user-notes,.notes-dock,#notes" : ".sidebar,.term-list";
     document.querySelector(selector)?.scrollIntoView({block: "start"});
+  }
+
+  function toggleStudyPane() {
+    if (!document.body.classList.contains("mobile-panel-open")) return showPanel("chinese");
+    document.body.classList.remove("mobile-panel-open");
+    const paneButton = document.querySelector('[data-mobile-action="pane"]');
+    if (paneButton) { paneButton.classList.remove("active"); paneButton.textContent = "窗格"; paneButton.setAttribute("aria-pressed", "false"); }
+    document.querySelector(".paper,.editor-panel")?.scrollIntoView({block: "start"});
   }
 
   async function install() {
@@ -146,7 +159,7 @@
     if (document.querySelector(".mobile-pwa-bar")) return;
     style(); document.body.classList.add("mobile-pwa");
     const buttons = isEditor
-      ? '<button data-mobile-action="home">目录</button><button data-mobile-action="book">书目</button><button data-mobile-action="immersive">沉浸</button><button data-mobile-action="settings">设置</button><button data-mobile-action="notes">札记</button><button data-mobile-action="sync">同步</button><button data-mobile-action="edit">编辑</button><button data-mobile-action="offline">离线</button><button data-mobile-action="install">安装</button>'
+      ? '<button data-mobile-action="home">目录</button><button data-mobile-action="book">书目</button><button data-mobile-action="pane" aria-pressed="false">窗格</button><button data-mobile-action="immersive">沉浸</button><button data-mobile-action="settings">设置</button><button data-mobile-action="notes">札记</button><button data-mobile-action="sync">同步</button><button data-mobile-action="edit">编辑</button><button data-mobile-action="offline">离线</button><button data-mobile-action="install">安装</button>'
       : '<button data-mobile-action="home" class="active">目录</button><button data-mobile-action="update">更新</button><button data-mobile-action="install">安装</button>';
     document.body.insertAdjacentHTML("beforeend", `<div class="mobile-pwa-toast" role="status"></div><div class="mobile-pwa-update" role="status"><span>发现新版 Mobile Reader</span><button type="button">立即更新</button></div><nav class="mobile-pwa-bar${isEditor ? "" : " mobile-home-bar"}" aria-label="阅读工具">${buttons}</nav>`);
     if (registration?.waiting && navigator.serviceWorker.controller) document.querySelector(".mobile-pwa-update").classList.add("show");
@@ -155,6 +168,7 @@
       const action = event.target.closest("button")?.dataset.mobileAction;
       if (action === "home") location.href = window.ReadingWorkspace?.directoryHref || new URL("index.html", scriptRoot).href;
       if (action === "book") location.href = window.ReadingWorkspace?.bookDirectoryHref || window.ReadingWorkspace?.directoryHref || new URL("index.html", scriptRoot).href;
+      if (action === "pane") toggleStudyPane();
       if (action === "immersive") window.ReadingWorkspace?.toggleImmersive?.();
       if (action === "settings") window.ReadingWorkspace?.openSettings?.();
       if (action === "notes") showPanel("notes");
