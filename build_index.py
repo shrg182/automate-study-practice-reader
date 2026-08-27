@@ -13,7 +13,7 @@ import re
 
 BASE_DIR = Path(__file__).resolve().parent
 OUTPUT = BASE_DIR / "index.html"
-MOBILE_READER_VERSION = "1.9.0"
+MOBILE_READER_VERSION = "1.9.1"
 COPYRIGHT_YEAR = 2026
 COPYRIGHT_HOLDER = "Ruixing"
 
@@ -243,6 +243,7 @@ def marxist_book_groups(entries: list[dict[str, str | None]]) -> list[dict[str, 
             "catalog_total": 37,
             "tool": "marxist_classics/capital/select_readings.html",
             "tool_label": "浏览阅读计划",
+            "offline_manifest": "marxist_classics/capital/book_manifest.json",
             "prefix": "marxist_classics/capital/",
         },
         {
@@ -253,6 +254,7 @@ def marxist_book_groups(entries: list[dict[str, str | None]]) -> list[dict[str, 
             "catalog_total": 34,
             "tool": "marxist_classics/anti_duhring/select_readings.html",
             "tool_label": "浏览阅读计划",
+            "offline_manifest": "marxist_classics/anti_duhring/book_manifest.json",
             "prefix": "marxist_classics/anti_duhring/",
         },
         {
@@ -285,11 +287,17 @@ def marxist_books_html(entries: list[dict[str, str | None]], start_number: int) 
             if group.get("tool") else ""
         )
         tool_line = f"\n      {tool}" if tool else ""
+        offline_tools = (
+            f'<span class="book-offline-tools"><button type="button" data-offline-manifest="{escape(str(group["offline_manifest"]), quote=True)}" data-offline-book="{escape(str(group["title"]), quote=True)}">保存离线</button>'
+            f'<button type="button" data-offline-manifest="{escape(str(group["offline_manifest"]), quote=True)}" data-offline-book="{escape(str(group["title"]), quote=True)}" data-offline-remove="true">移除离线</button></span>'
+            if group.get("offline_manifest") else ""
+        )
+        offline_line = f"\n      {offline_tools}" if offline_tools else ""
         book_search = f"{group['title']} {group['meta']} {group['contents']}".casefold()
         books.append(f'''<section class="book-group" data-book data-search="{escape(book_search, quote=True)}">
     <input class="book-state" id="{group['key']}-book-state" type="checkbox">
     <header class="book-header">
-      <label class="book-toggle" for="{group['key']}-book-state"><span><span class="book-level">01 · 书名</span><strong>{escape(str(group['title']))}</strong><small>{escape(str(group['meta']))}</small></span><i aria-hidden="true">▾</i></label>{tool_line}
+      <label class="book-toggle" for="{group['key']}-book-state"><span><span class="book-level">01 · 书名</span><strong>{escape(str(group['title']))}</strong><small>{escape(str(group['meta']))}</small></span><i aria-hidden="true">▾</i></label>{tool_line}{offline_line}
     </header>
     <div class="book-contents" id="{group['key']}-contents">
       <input class="contents-state" id="{group['key']}-contents-state" type="checkbox" checked>
@@ -354,6 +362,7 @@ a{{color:inherit}}.masthead{{background:#27251f;color:#fff}}.masthead-inner{{wid
 .entries{{background:var(--panel);border:1px solid var(--line);border-top:0}}.entry{{display:grid;grid-template-columns:54px minmax(0,1fr) auto;gap:16px;align-items:center;min-height:84px;padding:13px 17px;border-bottom:1px solid #e6e0d5}}.entry:last-child{{border-bottom:0}}.entry:hover{{background:#f7f1e6}}.entry-number{{color:#a49b8c;font:600 12px/1 Georgia,serif}}.entry-copy span{{color:var(--blue);font-size:11px;font-weight:750;letter-spacing:.06em}}.entry-copy h3{{margin:5px 0 0;font:650 18px/1.35 "Songti SC","STSong",serif}}
 .entry-actions{{display:flex;gap:7px}}.entry-actions a{{padding:8px 11px;border-radius:6px;text-decoration:none;font-size:12px;font-weight:700}}.entry-actions .primary{{background:var(--red);color:#fff}}.entry-actions .primary:hover{{background:#692a25}}.entry-actions .secondary{{border:1px solid var(--line);background:#fff}}.entry-actions .secondary:hover{{border-color:var(--blue);color:var(--blue)}}
 .hierarchical-entries{{border:0;background:transparent;box-shadow:none}}.book-library{{display:grid;gap:12px}}.book-group{{border:1px solid var(--line);border-radius:8px;overflow:hidden;background:#fff;box-shadow:0 1px 2px #3c40431a}}.book-state,.contents-state{{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);clip-path:inset(50%);white-space:nowrap}}.book-header{{display:flex;align-items:center;gap:12px;padding:0 12px;background:#f8f9fa}}.book-toggle{{display:flex;min-width:0;flex:1;align-items:center;justify-content:space-between;padding:13px 0;border:0;background:transparent;text-align:left;cursor:pointer;touch-action:manipulation}}.book-toggle>span,.contents-toggle>span{{display:grid;gap:3px}}.book-toggle strong{{font-size:15px;font-weight:600}}.book-toggle small{{color:var(--muted);font-size:11px}}.book-level{{color:#137333;font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase}}.book-toggle i,.contents-toggle i{{font-style:normal;transition:transform .2s}}.book-tool{{padding:7px 11px;border:1px solid #c4d8f3;border-radius:18px;background:#e8f0fe;color:#174ea6;text-decoration:none;font-size:11px;font-weight:700;white-space:nowrap}}.book-contents{{border-top:1px solid var(--line)}}.contents-toggle{{display:grid;width:100%;grid-template-columns:minmax(0,1fr) auto 20px;gap:14px;align-items:center;padding:10px 16px;border:0;border-bottom:1px solid var(--line);background:#f1f3f4;text-align:left;cursor:pointer;touch-action:manipulation}}.contents-toggle strong{{font-size:13px}}.contents-toggle b{{color:var(--muted);font-size:11px}}.articles-label{{display:flex;justify-content:space-between;padding:8px 16px;border-bottom:1px solid var(--line);color:#174ea6;font-size:10px;font-weight:700;letter-spacing:.06em}}.articles-label small{{color:var(--muted);font-weight:400;letter-spacing:0}}.book-state:not(:checked)~.book-contents,.contents-state:not(:checked)~.selected-articles{{display:none}}.book-state:not(:checked)~.book-header .book-toggle i,.contents-state:not(:checked)+.contents-toggle i{{transform:rotate(-90deg)}}.book-state:focus-visible~.book-header .book-toggle,.contents-state:focus-visible+.contents-toggle{{outline:2px solid #1a73e8;outline-offset:-2px}}.selected-articles .entry:last-child{{border-bottom:0}}
+.book-offline-tools{{display:flex;gap:5px}}.book-offline-tools button{{min-height:30px;padding:6px 9px;border:1px solid #b7d8c1;border-radius:16px;background:#e6f4ea;color:#137333;cursor:pointer;font-size:11px;font-weight:700;white-space:nowrap}}.book-offline-tools button[data-offline-remove]{{border-color:#dadce0;background:#fff;color:#5f6368}}
 .empty{{display:none;margin:70px 0;padding:28px;text-align:center;color:var(--muted);background:var(--panel);border:1px dashed var(--line)}}footer{{padding:36px 18px;text-align:center;color:var(--muted);font-size:12px}}
 @media(max-width:760px){{.masthead-inner{{grid-template-columns:1fr;padding-top:45px}}.count{{display:none}}.controls{{grid-template-columns:1fr}}.entry{{grid-template-columns:38px 1fr}}.entry-actions{{grid-column:2;justify-content:flex-start}}.collection-header span{{display:none}}}}
 @media print{{.masthead{{background:#fff;color:#000}}.lede,.controls,.entry-actions,footer{{display:none}}.shell{{width:100%;margin:0}}.collection{{break-inside:avoid}}.entry{{min-height:0;padding:7px 10px}}}}
@@ -404,7 +413,7 @@ html[data-workspace-skin="reading"] .entries{{box-shadow:none}}html[data-workspa
 .entry-action{{display:flex;align-self:stretch;align-items:center;justify-content:center;padding:6px 8px;border-right:1px solid var(--line)}}.entry-pdf{{border-right:0}}.entry-action a{{padding:6px 10px;border-radius:16px;text-decoration:none;font-size:11px;font-weight:700;white-space:nowrap}}.entry-action .primary{{background:#188038;color:#fff}}.entry-action .primary:hover{{background:#137333}}.entry-action .secondary{{border:1px solid var(--line);background:#fff}}.entry-action .secondary:hover{{border-color:var(--blue);color:var(--blue)}}.action-empty{{color:#9aa0a6}}
 html[data-workspace-skin="reading"] .entry{{grid-template-columns:54px minmax(0,1fr) 145px 145px 132px 72px}}html[data-workspace-skin="reading"] .entry-action{{padding:0;border-right:1px solid var(--line)}}html[data-workspace-skin="reading"] .entry-pdf{{border-right:0}}html[data-workspace-skin="reading"] .entry-action a{{padding:8px 11px;border-radius:6px;font-size:12px}}html[data-workspace-skin="reading"] .entry-action .primary{{background:var(--red)}}
 @media(max-width:760px){{.entry,html[data-workspace-skin="reading"] .entry{{grid-template-columns:38px minmax(180px,1fr) 125px 125px 126px 62px}}.entry-copy{{border-right:1px solid var(--line)}}.entry-reading,.entry-editing{{padding:5px 7px}}.entry-action{{padding:5px 6px}}}}
-@media(max-width:760px){{.book-header{{align-items:flex-start;flex-direction:column;padding-bottom:10px}}.book-tool{{margin-left:0}}.contents-toggle{{grid-template-columns:minmax(0,1fr) auto}}.contents-toggle i{{display:none}}}}
+@media(max-width:760px){{.book-header{{align-items:stretch;flex-direction:column;padding-bottom:10px;gap:7px}}.book-tool{{margin-left:0;align-self:flex-start}}.book-offline-tools{{width:100%}}.book-offline-tools button{{flex:1;min-height:38px}}.contents-toggle{{grid-template-columns:minmax(0,1fr) auto}}.contents-toggle i{{display:none}}}}
 @media print{{.entry-action{{display:none}}}}
 </style>
 <script src="workspace_skin.js"></script>

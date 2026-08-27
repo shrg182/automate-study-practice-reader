@@ -94,8 +94,8 @@
     toast("正在保存本篇供离线阅读…");
   }
 
-  async function bookUrls() {
-    const manifestUrl = new URL("book_manifest.json", location.href);
+  async function bookUrls(manifestPath = "book_manifest.json") {
+    const manifestUrl = new URL(manifestPath, location.href);
     const response = await fetch(manifestUrl, {cache: "no-store"});
     if (!response.ok) throw new Error("无法读取本书离线清单");
     const manifest = await response.json();
@@ -108,14 +108,14 @@
     return [...new Set(urls)];
   }
 
-  async function manageOfflineBook(remove = false) {
+  async function manageOfflineBook(remove = false, manifestPath = "book_manifest.json", bookName = "") {
     if (!navigator.serviceWorker?.controller) return toast("离线书库将在重新打开应用后可用");
     try {
       if (!remove) {
         await navigator.storage?.persist?.();
         toast("正在保存整本书，请保持页面开启…");
       }
-      navigator.serviceWorker.controller.postMessage({type: remove ? "REMOVE_BOOK" : "CACHE_BOOK", urls: await bookUrls(), book: document.querySelector("h1")?.textContent?.trim() || "本书"});
+      navigator.serviceWorker.controller.postMessage({type: remove ? "REMOVE_BOOK" : "CACHE_BOOK", urls: await bookUrls(manifestPath), book: bookName || document.querySelector("h1")?.textContent?.trim() || "本书"});
     } catch (error) {
       toast(`离线书库操作失败：${error.message}`);
     }
@@ -215,6 +215,10 @@
   }
 
   window.addEventListener("beforeinstallprompt", event => { event.preventDefault(); installPrompt = event; });
+  document.addEventListener("click", event => {
+    const button = event.target.closest("[data-offline-manifest]");
+    if (button) manageOfflineBook(button.dataset.offlineRemove === "true", button.dataset.offlineManifest, button.dataset.offlineBook);
+  });
   navigator.serviceWorker?.addEventListener("message", async event => {
     if (event.data?.type === "ARTICLE_CACHED") toast(`本篇已保存离线 · ${await storageLabel()}`);
     if (event.data?.type === "BOOK_CACHED") toast(`${event.data.book || "本书"}已保存到离线书库 · ${await storageLabel()}`);
