@@ -1,0 +1,64 @@
+{
+  "version": 2,
+  "book": "中医基础理论",
+  "source_exported_at": "2026-08-28T17:24:44.675Z",
+  "imported_at": "2026-08-28",
+  "notes": [
+    {
+      "id": "b7594aff-d7c0-4e39-a04c-6a9704142725",
+      "page": 343,
+      "kind": "批注",
+      "text": "经络",
+      "image": "",
+      "created": "2026-08-28T17:17:39.478Z"
+    },
+    {
+      "id": "5faf6500-d706-4630-a939-0179a08b3825",
+      "page": 284,
+      "kind": "批注",
+      "text": "气",
+      "image": "",
+      "created": "2026-08-28T17:18:58.311Z"
+    },
+    {
+      "id": "34e62223-0517-42d5-b5f4-e2fa12180755",
+      "page": 284,
+      "kind": "笔记",
+      "text": "笔记 for page 284",
+      "image": "",
+      "created": "2026-08-28T17:19:25.336Z"
+    },
+    {
+      "id": "aa9e7d15-ee5a-42fc-a92b-9ad991341b9b",
+      "page": 343,
+      "kind": "批注",
+      "text": "第四章 经络",
+      "image": "",
+      "created": "2026-08-28T17:20:42.952Z"
+    },
+    {
+      "id": "ffb42d54-fb29-40ce-9bd2-2fa1568809e5",
+      "page": 343,
+      "kind": "存疑",
+      "text": "如何加入图片",
+      "image": "",
+      "created": "2026-08-28T17:21:31.754Z"
+    },
+    {
+      "id": "c71910e9-097d-40a4-a04f-ea527aa2505d",
+      "page": 343,
+      "kind": "笔记",
+      "text": "这是笔记",
+      "image": "",
+      "created": "2026-08-28T17:21:51.859Z"
+    },
+    {
+      "id": "412f03d2-2d7c-4f3a-b5c0-4b89be65a9cd",
+      "page": 343,
+      "kind": "图片",
+      "text": "https://www.a-hospital.com/w/%E7%BB%8F%E7%A9%B4%E7%A9%B4%E4%BD%8D%E5%9B%BE",
+      "image": "",
+      "created": "2026-08-28T17:23:14.440Z"
+    }
+  ]
+}

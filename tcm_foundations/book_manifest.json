@@ -129,6 +129,9 @@
     "pdf_workbench": {
       "path": "source_reader.html"
     },
+    "pdf_notes": {
+      "path": "pdf_notes.json"
+    },
     "source_pdf": {
       "path": "中医基础理论.pdf"
     }

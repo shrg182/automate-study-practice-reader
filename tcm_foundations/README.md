@@ -7,3 +7,5 @@
 内容依据北京中医药大学、中国大学 MOOC 和国家高等教育智慧教育平台公开课程框架组织，并参考 WHO 传统医学术语标准。教材明确区分传统理论、现代医学概念和临床证据，不提供个人诊断或治疗建议。
 
 运行 `python3 practice/tcm_foundations/build_collection.py` 可重新生成 11 个章节、教材目录和离线清单。
+
+`pdf_notes.json` 保存经审核导入的 PDF 页边札记。每条记录以 PDF 页码和稳定 UUID 定位；`source_reader.html?page=343&note=<UUID>` 可直接打开相应页面并突出该札记。浏览器中的新增札记仍保存在本地，导出审核后再合并到此文件。
