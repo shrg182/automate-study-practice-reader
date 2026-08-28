@@ -13,7 +13,7 @@ import re
 
 BASE_DIR = Path(__file__).resolve().parent
 OUTPUT = BASE_DIR / "index.html"
-MOBILE_READER_VERSION = "1.11.1"
+MOBILE_READER_VERSION = "1.12.0"
 COPYRIGHT_YEAR = 2026
 COPYRIGHT_HOLDER = "Ruixing"
 
@@ -373,6 +373,7 @@ def build_html(grouped: dict[str, list[dict[str, str | None]]]) -> str:
         selector_link = (f'<a class="collection-tool" href="{selector_links[key]}">选择更多篇目</a>' if key in selector_links else "")
         resource_links = {
             "jianshang": '<a class="collection-resource" href="jianshang/翦商.pdf" target="_blank" rel="noopener">原书 PDF</a>',
+            "tcm_foundations": '<a class="collection-resource" href="tcm_foundations/source_reader.html">PDF 与页边札记</a><a class="collection-resource" href="tcm_foundations/中医基础理论.pdf" target="_blank" rel="noopener">原书 PDF</a>',
         }.get(key, "")
         resources_block = f'<div class="collection-resources">{resource_links}</div>' if resource_links else ""
         if key == "marxist_classics":

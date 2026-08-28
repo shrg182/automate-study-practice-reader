@@ -2,9 +2,15 @@
   "schema_version": 1,
   "id": "tcm_foundations",
   "title": "中医基础理论",
-  "edition": "原创学习版 v2",
+  "edition": "官方 PDF + 原创学习版 v2",
   "language": "zh-CN",
   "medical_use": "education_only",
+  "source_pdf": {
+    "path": "中医基础理论.pdf",
+    "url": "https://cjrjy.sdmpu.edu.cn/_upload/article/files/b6/78/0c1514014d6886af2888bbaa55f0/2ad29a5d-4340-464a-9a1e-c4b08b95ab3f.pdf",
+    "pages": 629,
+    "text_selectable": true
+  },
   "chapters": [
     {
       "number": 1,
@@ -119,6 +125,14 @@
       "title": "综合复习：从概念网络到案例分析"
     }
   ],
+  "components": {
+    "pdf_workbench": {
+      "path": "source_reader.html"
+    },
+    "source_pdf": {
+      "path": "中医基础理论.pdf"
+    }
+  },
   "sources": [
     {
       "title": "中医基础理论（北京中医药大学）",
