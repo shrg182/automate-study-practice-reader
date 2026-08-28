@@ -17,7 +17,112 @@ SOURCES = [
     {"title": "WHO International Standard Terminologies on Traditional Medicine", "url": "https://www.who.int/publications/i/item/9789240042322", "type": "术语参考"},
     {"title": "Traditional Chinese Medicine: What You Need To Know", "url": "https://www.nccih.nih.gov/health/traditional-chinese-medicine-what-you-need-to-know", "type": "疗效与安全参考"},
     {"title": "Acupuncture: Effectiveness and Safety", "url": "https://www.nccih.nih.gov/health/acupuncture-effectiveness-and-safety", "type": "针灸安全参考"},
+    {"title": "上海中医药大学《中医基础理论》教学大纲", "url": "https://jwc.shutcm.edu.cn/_upload/article/files/0f/7f/b8921e0b4db4af1d5d52f2801232/c9328800-969d-42b5-aad5-d79a8b775a14.pdf", "type": "112学时课程大纲"},
+    {"title": "精讲精学中医基础理论（广州中医药大学）", "url": "https://higher.smartedu.cn/course/64befd74d190d2a6beef0042", "type": "国家级公开课程"},
+    {"title": "中医基础理论（北京中医药大学，国家平台）", "url": "https://higher.smartedu.cn/course/68d5aee1a9f4619f8f6b707e", "type": "国家级公开课程"},
 ]
+
+EXPANSIONS = {
+    "01_introduction": {
+        "objectives": ["说明中医基础理论的知识层级与课程范围", "辨析整体观念、辨证、辨病和循证评价", "运用司外揣内、援物比类等方法分析概念", "识别学习资料的版权、证据和安全边界"],
+        "sections": [
+            ("四、中医理论体系的形成线索", ["先秦至两汉的哲学、天文历法和医疗经验为理论形成提供背景。《黄帝内经》《难经》《伤寒杂病论》《神农本草经》等经典逐步确立生命观、疾病观与诊疗框架。后世医家围绕脏腑、病因、温病、体质等不断补充和争论，因此“中医理论”并非一次完成、始终不变的单一体系。", "学习学术史时应区分成书年代、作者归属、后世注释和现代教材整理。古代权威性能够说明思想影响，却不能自动证明现代临床有效性。"]),
+            ("五、主要思维方法", ["司外揣内是由可观察表现推测内部状态；援物比类是借助自然或社会事物的相似性组织认识；取象运数则通过象与数建立秩序。它们有助于理解传统模型的形成，也可能产生过度类比，因此需要用反例和独立证据检查。", "系统思维关注关系和变化，分析思维则拆分变量、检验机制。成熟学习不是二选一，而是知道何时使用哪种方法、每种方法能得出多强的结论。"]),
+        ],
+        "compare": [("传统理论陈述", "说明体系内部的概念与关系", "可用文献与理论一致性考察"), ("现代机制假说", "提出可检验的生物学解释", "需要实验和可重复证据"), ("临床疗效主张", "声称干预改善健康结局", "需要合适对照、风险评估与证据综合")],
+        "case": "某文章把“整体观念”解释为任何中医疗法都能同时改善全身。请分别指出其中的理论陈述、疗效主张和缺失证据。",
+    },
+    "02_qi_yinyang_wuxing": {
+        "objectives": ["解释精气、阴阳和五行的基本内涵", "分析阴阳四种关系与五行生克乘侮", "区分关系模型、分类模型与物质实体", "在具体语境中判断术语层级"],
+        "sections": [
+            ("四、阴阳偏胜、偏衰与互损", ["在传统病机语言中，阴阳偏胜强调一方相对亢盛，偏衰强调一方不足。由于双方互根，长期或严重不足还可能出现阴损及阳、阳损及阴的描述。分析时要先说明比较对象、部位和阶段。", "“阴虚”“阳虚”是证候概念，不能凭单一怕冷、口干或疲劳自行确定。相同表现可以来自多种疾病、药物或生活因素。"]),
+            ("五、五行归类的操作规则", ["归类常依据性质、功能、方位、季节等相似性，再以生克关系解释系统协调。配属表是学习工具，不应把所有事物强行归入唯一类别。不同文献出现差异时，应记录版本和语境。", "五行推演若只用结果反证前提，容易形成循环解释。较好的做法是先写出预测，再寻找可能推翻它的观察。"]),
+        ],
+        "compare": [("阴阳", "描述成对方面的关系与变化", "不是两种固定物质"), ("五行", "五类性质及生克关系的分类模型", "不是现代化学元素"), ("精气", "生成变化与生命活动的传统概括", "不是可直接测量的单一能量")],
+        "case": "同一杯温水相对于冰水可称为阳，相对于沸水又可称为阴。用此例说明阴阳属性为何具有相对性。",
+    },
+    "03_zangxiang": {
+        "objectives": ["说明藏象学说的形成、特点与分类", "概述五脏六腑的主要传统功能", "分析脏腑之间的相互关系", "避免把传统脏腑直接等同现代器官"],
+        "sections": [
+            ("四、五脏功能纲要", ["心的传统功能围绕主血脉、藏神；肺围绕主气、司呼吸、宣发肃降和通调水道；脾围绕运化、升清、统血；肝围绕疏泄、藏血；肾围绕藏精、主水、纳气。每一项都应继续追问其定义、表现和与其他脏腑的联系。", "这些功能构成的是系统概念。例如“脾主运化”涉及饮食物转化和输布的传统解释，不等于现代脾脏承担消化吸收。"]),
+            ("五、脏腑关系", ["脏与脏的关系常围绕气血、津液、精神活动及先后天之本展开；脏与腑通过表里配对及功能协作联系；腑与腑强调受纳、传化和排泄过程的衔接。", "关系分析应避免单向化。传统模型往往同时包含相互资生、相互制约和病理影响，需说明当前讨论的是正常生理还是疾病状态。"]),
+        ],
+        "compare": [("中医“心”", "血脉与神志等功能系统", "范围超过解剖心脏"), ("中医“脾”", "运化、升清、统血等功能系统", "不可等同现代脾脏"), ("中医“肾”", "藏精、生长生殖、水液与纳气等系统", "不可据此判断肾功能指标")],
+        "case": "学习者看到注意力下降便断言“心脏有病，因为心藏神”。请分析概念跨越发生在哪里，并列出需要补充的现代医学信息。",
+    },
+    "04_essence_qi_blood_fluids_spirit": {
+        "objectives": ["概述精气血津液神的来源、功能与运行", "解释气的分类和升降出入", "分析各概念之间的相互关系", "辨析传统术语与实验室指标"],
+        "sections": [
+            ("四、气的分类与运动", ["元气、宗气、营气、卫气从来源、分布和功能角度区分。元气与先天之精密切相关；宗气聚于胸中；营气行于脉中并与营养相关；卫气行于脉外并与防御、温煦相关。", "升、降、出、入概括气机运动。正常功能依赖方向协调，异常可用气滞、气逆、气陷等概念描述。分类之间存在层级关系，不应把每一种气想象成独立可见物质。"]),
+            ("五、相互化生与约束", ["传统理论以精能化气、气能生血行血摄血、津血同源等命题连接各概念。神的活动又以精气血为基础，并反映整体生命状态。", "关系命题可用于建立概念图：箭头应标明是生成、推动、固摄、承载还是外在表现。标明关系类型比单纯画双向箭头更能检验理解。"]),
+        ],
+        "compare": [("气虚", "传统证候中的功能不足倾向", "不是氧气不足的同义词"), ("血虚", "传统濡养不足的证候概括", "不必然等于贫血"), ("津液不足", "传统水液亏少状态", "脱水需按现代标准评估")],
+        "case": "某人把“血虚”直接翻译为缺铁性贫血。请说明两者可能重叠的表现，以及为何仍需血常规、铁代谢和病因评估。",
+    },
+    "05_meridians": {
+        "objectives": ["列出经络系统主要组成", "掌握十二经脉命名、表里和交接规律", "概述奇经八脉及经络作用", "客观表述经络与针刺研究证据"],
+        "sections": [
+            ("四、十二经脉的组织法", ["命名由手足、阴阳和脏腑三部分组成。手三阴从胸走手，手三阳从手走头，足三阳从头走足，足三阴从足走腹胸；相互交接形成循环。先掌握这一框架，再添加具体循行与病候。", "表里配对为肺与大肠、脾与胃、心与小肠、肾与膀胱、心包与三焦、肝与胆。配对属于传统功能联系，不代表解剖结构直接相连。"]),
+            ("五、奇经八脉与网络层次", ["督、任、冲、带、阴跷、阳跷、阴维、阳维合称奇经八脉。教材常以蓄溢十二经气血、联络纵横和调节特定功能概括其意义。", "经别加强表里经与深部的联系，经筋侧重筋肉关节，皮部反映经脉在体表的区域。层次化学习可避免把经络系统缩减成十二条线。"]),
+        ],
+        "compare": [("经脉", "系统中的主要纵向通路", "传统功能路径"), ("络脉", "由经脉分出的网络", "大小深浅层次多样"), ("神经/血管", "现代解剖结构", "不能与经络简单一一对应")],
+        "case": "一项研究发现针刺某穴会改变脑成像信号。这个结果能支持什么？不能单独证明哪些更广泛的经络主张？",
+    },
+    "06_constitution": {
+        "objectives": ["解释体质概念、形成因素和基本特点", "比较分类工具的用途与限制", "分析体质、证候和疾病的关系", "设计不造成标签化的健康记录"],
+        "sections": [
+            ("四、体质、证候与疾病", ["体质描述较长期的倾向，证候概括疾病某阶段的状态，疾病诊断则按特定标准识别病理实体。体质可能影响易感性和反应，但不能由体质直接推出某种疾病。", "同一疾病可见不同证候，同一证候也可出现于不同疾病；体质又可能与当前证候不完全一致。这三层需要分别记录。"]),
+            ("五、观察与再评估", ["较好的体质记录包括评估日期、近期疾病、睡眠、饮食、药物、压力和环境变化，并允许多种特征共存。经过一段时间后重新评估，能区分暂时状态与相对稳定倾向。", "分类工具应说明来源、适用人群和测量误差。未经过验证的网络测试不宜用于决定治疗或排除疾病。"]),
+        ],
+        "compare": [("体质", "相对稳定的个体倾向", "可随年龄环境改变"), ("证候", "疾病过程中阶段性病理概括", "动态变化较明显"), ("疾病", "按诊断标准识别的健康问题", "需相应临床证据")],
+        "case": "某问卷把学习者归为“湿热体质”，于是其停止多种食物。请列出应核对的测量、营养和健康风险问题。",
+    },
+    "07_causes": {
+        "objectives": ["分类外感、内伤和其他病因", "概括六淫各自的传统致病特点", "说明七情、饮食和劳逸的作用边界", "建立病因假说与证据链"],
+        "sections": [
+            ("四、六淫特点的比较", ["风常概括善动、变化和游走；寒与收引凝滞相关；湿与重浊黏滞相关；燥与津液受损相关；火热与炎上、耗气伤津相关；暑具有明显季节性并常夹湿。", "这些是症候模式的传统归纳，不是病原鉴定。实际临床还要考虑感染、过敏、毒物、环境温度及基础疾病。"]),
+            ("五、因果推理", ["判断可能病因要记录暴露是否先于结果、关联是否稳定、是否存在替代解释、停止或再次暴露后如何变化，以及是否有独立检测支持。", "“情绪之后出现不适”并不自动说明七情是唯一病因。情绪、睡眠、药物、内分泌、感染和社会处境可能共同作用。"]),
+        ],
+        "compare": [("六气", "正常自然气候变化", "不必致病"), ("六淫", "异常或超过适应能力的外感因素", "传统病因分类"), ("病原体", "可识别的病毒细菌等", "现代病原学概念")],
+        "case": "多人在同一聚会后发热咳嗽。比较用“风热”描述症候与用实验室检测识别病原体所回答的不同问题。",
+    },
+    "08_onset": {
+        "objectives": ["说明发病的正邪关系", "比较主要发病类型", "分析体质、环境和暴露的共同作用", "优先识别需要现代急诊评估的危险信号"],
+        "sections": [
+            ("四、发病条件的多层模型", ["可把发病条件分为个体基础、具体暴露、时间过程和社会环境四层。传统正邪关系主要概括前两层互动，现代公共卫生还会系统考察住房、职业、资源和传播网络。", "多层模型有助于避免责备患者。患病不能简单归因于“正气不足”或意志薄弱。"]),
+            ("五、复发与继发", ["复发指原有疾病在一定条件下再次出现，诱因可包括劳累、饮食、情志、治疗不彻底等传统因素。继发则强调在原有疾病基础上产生新的问题。", "现代随访应同时确认是否真为同一疾病、是否耐药或出现并发症、治疗依从性如何。传统分类可以整理现象，但不能替代这些判断。"]),
+        ],
+        "compare": [("即发", "暴露后较快出现", "时间短不等于因果已证实"), ("徐发", "缓慢形成", "常需长期资料"), ("伏而后发", "潜伏后出现", "需与现代潜伏期等概念区分")],
+        "case": "患者突然出现单侧无力和言语不清。说明为何此时首先处理危险信号，而不是花时间完成传统证候分类。",
+    },
+    "09_pathogenesis": {
+        "objectives": ["构建基本病机的层级框架", "比较虚实、寒热和升降出入异常", "解释气血津液与脏腑病机的联系", "用可反驳的证据链分析病机"],
+        "sections": [
+            ("四、从现象到病机的层级", ["第一层是可观察资料，第二层是证候归纳，第三层是气血津液或阴阳层面的机制解释，第四层才可能进一步联系脏腑经络。跳过中间层会使结论缺少依据。", "同一资料可能支持多个病机假说。应列出每个假说预期出现却尚未观察到的信息，并通过继续询问或检查区分。"]),
+            ("五、病机转化", ["疾病可在虚实、寒热、表里等方面发生转化，也可出现虚实夹杂、寒热错杂。转化强调时间轴，因此一次静态观察不足以代表全过程。", "记录“何时出现、何时改变、什么事件在前”比堆叠术语更重要。动态资料也能减少事后把任何变化都解释成理论正确的倾向。"]),
+        ],
+        "compare": [("观察", "患者报告或检查所得资料", "应尽量具体记录"), ("证候", "对资料模式的传统归纳", "可能有多个候选"), ("病机", "解释证候形成变化的理论", "需避免循环论证")],
+        "case": "“因为有血瘀，所以出现疼痛；因为疼痛，所以证明血瘀。”指出循环论证，并提出可增加区分度的信息。",
+    },
+    "10_prevention_treatment": {
+        "objectives": ["解释治未病、治病求本和标本缓急", "比较扶正祛邪、正治反治和三因制宜", "把传统原则置于风险收益框架", "识别中药针灸的关键安全问题"],
+        "sections": [
+            ("四、标本与缓急", ["“本”常指主要或较深层机制，“标”常指继发或表面表现，但划分会随讨论层次而变。急则治标强调先处理危急表现，缓则治本强调条件允许时针对主要机制。", "现代急救中的气道、呼吸、循环优先原则可以帮助理解“急则治其标”的决策逻辑，但两者属于不同知识体系，不能借类比替代临床规范。"]),
+            ("五、风险收益与共同决策", ["选择干预应明确目标、已知获益、证据不确定性、常见和严重风险、替代方案及不治疗的后果。患者偏好很重要，但知情选择需要准确资料。", "使用中药或针灸时，应核对产品来源、成分、剂量、疗程、资质、无菌操作、妊娠及肝肾功能，并监测不良反应。不要擅自停用已经处方的有效治疗。"]),
+        ],
+        "compare": [("正治", "采用与证候性质相反的治法", "常规逆向处理"), ("反治", "表面顺从假象、实质针对本质", "须建立在准确判断上"), ("三因制宜", "结合时间地点个体", "不豁免安全标准")],
+        "case": "患者准备同时使用多种中药、抗凝药和针灸。列出开始前必须与医生和合格从业者共同核对的事项。",
+    },
+    "11_review": {
+        "objectives": ["整合全书概念层级", "执行学习型案例五步法", "区分描述、解释、预测与治疗主张", "设计后续中医与现代医学并行学习路径"],
+        "sections": [
+            ("四、四类命题", ["描述命题回答看到了什么；分类命题回答归入什么模式；解释命题回答为什么发生；干预命题回答做什么会改善结果。每向后一层，都需要更多证据。", "传统文献可以有力支持某概念在历史上如何定义，却不能仅凭年代久远支持现代疗效。现代实验可能支持某个局部机制，也不能自动验证整套理论。"]),
+            ("五、自我测评与学习档案", ["每章完成后可用四栏记录：我能准确复述什么、我能建立哪些关系、我仍混淆什么、哪些说法需要查证。复习时优先解决关系和边界，而不是继续增加孤立术语。", "学习档案应保存资料来源、访问日期和自己的修改。Reader 的标记与札记适合记录推理过程，但不应保存他人可识别的敏感医疗信息。"]),
+        ],
+        "compare": [("课程掌握", "能定义、比较、应用并说明边界", "不只背诵"), ("临床能力", "需诊断训练、监督实践与资质", "本教材不能授予"), ("研究判断", "评估设计、偏倚与证据综合", "需循证方法训练")],
+        "case": "选取一个常见健康说法，分别写出它的传统理论依据、现代机制证据、临床疗效证据和安全信息；若某栏为空，要明确标注未知。",
+    },
+}
 
 CHAPTERS = [
     {
@@ -145,24 +250,27 @@ CHAPTERS = [
 
 
 def chapter_page(chapter: dict, number: int) -> str:
+    expansion = EXPANSIONS[chapter["slug"]]
+    objectives = "".join(f"<li>{escape(item)}</li>" for item in expansion["objectives"])
     sections = "".join(
         f'<section><h2>{escape(title)}</h2>{"".join(f"<p>{escape(p)}</p>" for p in paragraphs)}</section>'
-        for title, paragraphs in chapter["sections"]
+        for title, paragraphs in chapter["sections"] + expansion["sections"]
     )
     terms = "".join(f'<tr><th>{escape(term)}</th><td>{escape(note)}</td></tr>' for term, note in chapter["terms"])
+    comparison = "".join(f'<tr><th>{escape(item)}</th><td>{escape(meaning)}</td><td>{escape(boundary)}</td></tr>' for item, meaning, boundary in expansion["compare"])
     questions = "".join(f"<li>{escape(question)}</li>" for question in chapter["questions"])
     source_links = "".join(f'<a href="{escape(source["url"], quote=True)}" target="_blank" rel="noreferrer">{escape(source["title"])}</a>' for source in SOURCES)
     return f'''<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>{escape(chapter['title'])} · 中医基础理论</title><link rel="stylesheet" href="../../../workspace_theme.css"><style>
-*{{box-sizing:border-box}}body{{margin:0;background:#f3f1eb;color:#25231f;font-family:Arial,"PingFang SC",sans-serif}}header{{position:sticky;top:0;z-index:5;display:flex;gap:14px;align-items:center;padding:11px 18px;border-bottom:1px solid #d7d1c4;background:#fffdf8ed;backdrop-filter:blur(9px)}}header a{{color:#176b4b;text-decoration:none}}header strong{{flex:1}}.toolbar{{display:none;gap:7px;flex-wrap:wrap;padding:8px 18px;border-bottom:1px solid #d7d1c4;background:#fff}}body.mobile-edit-mode>.toolbar{{display:flex!important;position:sticky;top:0;z-index:210}}.toolbar button{{padding:7px 10px;border:1px solid #cfc8ba;border-radius:5px;background:#fff}}main{{width:min(940px,calc(100% - 28px));margin:24px auto 90px}}article{{padding:clamp(22px,5vw,54px);border:1px solid #d8d2c6;background:#fff;box-shadow:0 2px 12px #322b2010}}.eyebrow{{margin:0;color:#8a5c2c;font-size:12px;font-weight:700;letter-spacing:.12em}}h1{{margin:.25em 0 .45em;font:700 clamp(31px,6vw,53px)/1.16 "Songti SC",serif}}.lead{{padding:14px 16px;border-left:4px solid #27805d;background:#eef7f1;font-size:17px;line-height:1.8}}section{{margin-top:34px}}h2{{padding-bottom:8px;border-bottom:1px solid #ddd7ca;font:700 25px/1.3 "Songti SC",serif}}p{{font:18px/1.9 "Songti SC","STSong",serif}}table{{width:100%;border-collapse:collapse}}th,td{{padding:10px;border:1px solid #ddd7ca;text-align:left}}th{{width:24%;background:#f6f3ec}}li{{margin:.65em 0;line-height:1.7}}.boundary{{padding:14px;border:1px solid #efcf90;background:#fff8df;line-height:1.7}}.sources{{display:flex;gap:7px;flex-wrap:wrap}}.sources a{{padding:6px 9px;border:1px solid #c9d8cf;border-radius:16px;color:#176b4b;text-decoration:none;font-size:12px}}@media(max-width:600px){{article{{padding:21px 17px}}th{{width:32%}}}}@media print{{header,.toolbar{{display:none!important}}body{{background:#fff}}article{{border:0;box-shadow:none}}}}
-</style></head><body><header><a href="../../index.html">← 教材目录</a><strong>第 {number} 章 · {escape(chapter['unit'])}</strong><span>原创学习版</span></header><nav class="toolbar"><button data-command="undo">撤销</button><button data-command="redo">重做</button><button data-command="bold"><b>粗体</b></button><button data-command="italic"><i>斜体</i></button><button data-command="hiliteColor">标记</button><button data-command="removeFormat">清除格式</button></nav><main><article id="editor" contenteditable="true"><p class="eyebrow">中医基础理论 · 第 {number} 章</p><h1>{escape(chapter['title'])}</h1><p class="lead">{escape(chapter['lead'])}</p>{sections}<section><h2>核心术语</h2><table>{terms}</table></section><section><h2>复习问题</h2><ol>{questions}</ol></section><section contenteditable="false"><h2>学习边界</h2><p class="boundary">本章用于医学史与理论学习，不构成诊断或治疗建议。传统术语与现代医学概念除非明确说明，不应视为一一对应；健康问题请咨询合格医疗专业人员。</p><div class="sources">{source_links}</div></section></article></main><script>
-const key='tcm-foundations-{escape(chapter['slug'])}-v1',editor=document.getElementById('editor'),saved=localStorage.getItem(key);if(saved)editor.innerHTML=saved;editor.addEventListener('input',()=>localStorage.setItem(key,editor.innerHTML));document.querySelector('.toolbar').onclick=e=>{{const command=e.target.closest('button')?.dataset.command;if(!command)return;document.execCommand(command,false,command==='hiliteColor'?'#fff2a8':null);editor.focus()}};
+*{{box-sizing:border-box}}body{{margin:0;background:#f3f1eb;color:#25231f;font-family:Arial,"PingFang SC",sans-serif}}header{{position:sticky;top:0;z-index:5;display:flex;gap:14px;align-items:center;padding:11px 18px;border-bottom:1px solid #d7d1c4;background:#fffdf8ed;backdrop-filter:blur(9px)}}header a{{color:#176b4b;text-decoration:none}}header strong{{flex:1}}.toolbar{{display:none;gap:7px;flex-wrap:wrap;padding:8px 18px;border-bottom:1px solid #d7d1c4;background:#fff}}body.mobile-edit-mode>.toolbar{{display:flex!important;position:sticky;top:0;z-index:210}}.toolbar button{{padding:7px 10px;border:1px solid #cfc8ba;border-radius:5px;background:#fff}}main{{width:min(940px,calc(100% - 28px));margin:24px auto 90px}}article{{padding:clamp(22px,5vw,54px);border:1px solid #d8d2c6;background:#fff;box-shadow:0 2px 12px #322b2010}}.eyebrow{{margin:0;color:#8a5c2c;font-size:12px;font-weight:700;letter-spacing:.12em}}h1{{margin:.25em 0 .45em;font:700 clamp(31px,6vw,53px)/1.16 "Songti SC",serif}}.lead{{padding:14px 16px;border-left:4px solid #27805d;background:#eef7f1;font-size:17px;line-height:1.8}}.objectives,.case{{padding:16px 20px;border:1px solid #c9d8cf;background:#f2f8f4}}.objectives h2,.case h2{{margin-top:0}}section{{margin-top:34px}}h2{{padding-bottom:8px;border-bottom:1px solid #ddd7ca;font:700 25px/1.3 "Songti SC",serif}}p{{font:18px/1.9 "Songti SC","STSong",serif}}table{{width:100%;border-collapse:collapse}}th,td{{padding:10px;border:1px solid #ddd7ca;text-align:left;vertical-align:top}}th{{width:24%;background:#f6f3ec}}.comparison th{{width:auto}}li{{margin:.65em 0;line-height:1.7}}.boundary{{padding:14px;border:1px solid #efcf90;background:#fff8df;line-height:1.7}}.sources{{display:flex;gap:7px;flex-wrap:wrap}}.sources a{{padding:6px 9px;border:1px solid #c9d8cf;border-radius:16px;color:#176b4b;text-decoration:none;font-size:12px}}@media(max-width:600px){{article{{padding:21px 17px}}th{{width:32%}}.comparison{{font-size:13px}}}}@media print{{header,.toolbar{{display:none!important}}body{{background:#fff}}article{{border:0;box-shadow:none}}}}
+</style></head><body><header><a href="../../index.html">← 教材目录</a><strong>第 {number} 章 · {escape(chapter['unit'])}</strong><span>原创学习版 · 第2版</span></header><nav class="toolbar"><button data-command="undo">撤销</button><button data-command="redo">重做</button><button data-command="bold"><b>粗体</b></button><button data-command="italic"><i>斜体</i></button><button data-command="hiliteColor">标记</button><button data-command="removeFormat">清除格式</button></nav><main><article id="editor" contenteditable="true"><p class="eyebrow">中医基础理论 · 第 {number} 章</p><h1>{escape(chapter['title'])}</h1><p class="lead">{escape(chapter['lead'])}</p><section class="objectives"><h2>学习目标</h2><ul>{objectives}</ul></section>{sections}<section><h2>核心术语</h2><table>{terms}</table></section><section><h2>概念辨析</h2><table class="comparison"><thead><tr><th>概念</th><th>本章含义</th><th>边界提醒</th></tr></thead><tbody>{comparison}</tbody></table></section><section class="case"><h2>思考练习</h2><p>{escape(expansion['case'])}</p></section><section><h2>复习问题</h2><ol>{questions}</ol></section><section contenteditable="false"><h2>学习边界</h2><p class="boundary">本章用于医学史与理论学习，不构成诊断或治疗建议。传统术语与现代医学概念除非明确说明，不应视为一一对应；健康问题请咨询合格医疗专业人员。</p><div class="sources">{source_links}</div></section></article></main><script>
+const key='tcm-foundations-{escape(chapter['slug'])}-v2',editor=document.getElementById('editor'),saved=localStorage.getItem(key);if(saved)editor.innerHTML=saved;editor.addEventListener('input',()=>localStorage.setItem(key,editor.innerHTML));document.querySelector('.toolbar').onclick=e=>{{const command=e.target.closest('button')?.dataset.command;if(!command)return;document.execCommand(command,false,command==='hiliteColor'?'#fff2a8':null);editor.focus()}};
 </script><script>window.ReadingWorkspace={{directoryHref:'../../../index.html',bookDirectoryHref:'../../index.html'}};</script><script src="../../../mobile_pwa.js"></script></body></html>'''
 
 
 def index_page() -> str:
     cards = "".join(f'''<article><span>{number:02d}</span><div><small>{escape(chapter['unit'])}</small><h2>{escape(chapter['title'])}</h2><p>{escape(chapter['lead'])}</p></div><a href="chapters/{chapter['slug']}/editor.html?view=annotated">阅读</a></article>''' for number, chapter in enumerate(CHAPTERS, 1))
     sources = "".join(f'<li><a href="{escape(item["url"], quote=True)}" target="_blank" rel="noreferrer">{escape(item["title"])}</a><small>{escape(item["type"])}</small></li>' for item in SOURCES)
-    return f'''<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>《中医基础理论》原创学习教材</title><link rel="stylesheet" href="../workspace_theme.css"><style>*{{box-sizing:border-box}}body{{margin:0;background:#f3f1eb;color:#25231f;font-family:Arial,"PingFang SC",sans-serif}}header{{padding:34px max(20px,6vw);background:linear-gradient(135deg,#173e33,#79552c);color:#fff}}header a{{color:#d9f2e6}}h1{{margin:.2em 0;font:700 clamp(39px,7vw,70px)/1.05 "Songti SC",serif}}header p{{max-width:800px;line-height:1.75}}main{{width:min(1050px,calc(100% - 28px));margin:20px auto 90px}}.notice,.sources{{padding:17px;border:1px solid #dfc782;background:#fff8df;line-height:1.7}}.chapters{{display:grid;gap:8px;margin-top:16px}}article{{display:grid;grid-template-columns:42px minmax(0,1fr) auto;gap:13px;align-items:center;padding:15px;border:1px solid #d8d2c6;background:#fff}}article h2{{margin:3px 0;font:700 21px "Songti SC",serif}}article p{{margin:5px 0 0;color:#625e55;line-height:1.55}}article small{{color:#8a5c2c}}article>a{{padding:8px 12px;border:1px solid #b9cfc3;border-radius:18px;color:#176b4b;text-decoration:none;font-weight:700}}.sources{{margin-top:20px;background:#fff}}.sources li{{display:flex;justify-content:space-between;gap:12px;margin:8px 0}}.sources a{{color:#176b4b}}@media(max-width:620px){{article{{grid-template-columns:30px 1fr}}article>a{{grid-column:2;justify-self:start}}.sources li{{display:block}}}}</style></head><body><header><a href="../index.html#tcm_foundations">← Reader library</a><h1>《中医基础理论》</h1><p>原创学习教材 · 依据权威公开课程框架编写。强调概念网络、传统理论与现代医学边界、证据意识和安全学习。</p></header><main><p class="notice"><strong>用途说明：</strong>本教材用于理论学习，不提供个人诊断、处方或停药建议。严重或持续症状应由合格医疗专业人员评估。</p><section class="chapters">{cards}</section><section class="sources"><h2>框架与术语参考</h2><ul>{sources}</ul></section></main><script src="../workspace_skin.js"></script><script src="../mobile_pwa.js"></script></body></html>'''
+    return f'''<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>《中医基础理论》原创学习教材</title><link rel="stylesheet" href="../workspace_theme.css"><style>*{{box-sizing:border-box}}body{{margin:0;background:#f3f1eb;color:#25231f;font-family:Arial,"PingFang SC",sans-serif}}header{{padding:34px max(20px,6vw);background:linear-gradient(135deg,#173e33,#79552c);color:#fff}}header a{{color:#d9f2e6}}h1{{margin:.2em 0;font:700 clamp(39px,7vw,70px)/1.05 "Songti SC",serif}}header p{{max-width:800px;line-height:1.75}}main{{width:min(1050px,calc(100% - 28px));margin:20px auto 90px}}.notice,.sources{{padding:17px;border:1px solid #dfc782;background:#fff8df;line-height:1.7}}.chapters{{display:grid;gap:8px;margin-top:16px}}article{{display:grid;grid-template-columns:42px minmax(0,1fr) auto;gap:13px;align-items:center;padding:15px;border:1px solid #d8d2c6;background:#fff}}article h2{{margin:3px 0;font:700 21px "Songti SC",serif}}article p{{margin:5px 0 0;color:#625e55;line-height:1.55}}article small{{color:#8a5c2c}}article>a{{padding:8px 12px;border:1px solid #b9cfc3;border-radius:18px;color:#176b4b;text-decoration:none;font-weight:700}}.sources{{margin-top:20px;background:#fff}}.sources li{{display:flex;justify-content:space-between;gap:12px;margin:8px 0}}.sources a{{color:#176b4b}}@media(max-width:620px){{article{{grid-template-columns:30px 1fr}}article>a{{grid-column:2;justify-self:start}}.sources li{{display:block}}}}</style></head><body><header><a href="../index.html#tcm_foundations">← Reader library</a><h1>《中医基础理论》</h1><p>原创学习教材 · 第2版。依据权威公开课程框架编写，新增学习目标、深入专题、概念辨析与案例练习，强调传统理论与现代医学边界、证据意识和安全学习。</p></header><main><p class="notice"><strong>用途说明：</strong>本教材用于理论学习，不提供个人诊断、处方或停药建议。严重或持续症状应由合格医疗专业人员评估。</p><section class="chapters">{cards}</section><section class="sources"><h2>框架与术语参考</h2><ul>{sources}</ul></section></main><script src="../workspace_skin.js"></script><script src="../mobile_pwa.js"></script></body></html>'''
 
 
 def build() -> None:
@@ -172,7 +280,7 @@ def build() -> None:
         (folder / "editor.html").write_text(chapter_page(chapter, number), encoding="utf-8")
     (BASE / "index.html").write_text(index_page(), encoding="utf-8")
     chapters = [{"number": number, "slug": chapter["slug"], "title": chapter["title"], "unit": chapter["unit"]} for number, chapter in enumerate(CHAPTERS, 1)]
-    manifest = {"schema_version": 1, "id": "tcm_foundations", "title": "中医基础理论", "edition": "原创学习版 v1", "language": "zh-CN", "medical_use": "education_only", "chapters": chapters, "units": [{"path": f"chapters/{chapter['slug']}/editor.html", "title": chapter["title"]} for chapter in CHAPTERS], "sources": SOURCES}
+    manifest = {"schema_version": 1, "id": "tcm_foundations", "title": "中医基础理论", "edition": "原创学习版 v2", "language": "zh-CN", "medical_use": "education_only", "chapters": chapters, "units": [{"path": f"chapters/{chapter['slug']}/editor.html", "title": chapter["title"]} for chapter in CHAPTERS], "sources": SOURCES}
     (BASE / "book_manifest.json").write_text(json.dumps(manifest, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     print(f"Built {len(CHAPTERS)} Chinese medicine foundations chapters")
 

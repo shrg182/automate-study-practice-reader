@@ -2,7 +2,7 @@
   "schema_version": 1,
   "id": "tcm_foundations",
   "title": "中医基础理论",
-  "edition": "原创学习版 v1",
+  "edition": "原创学习版 v2",
   "language": "zh-CN",
   "medical_use": "education_only",
   "chapters": [
@@ -149,6 +149,21 @@
       "title": "Acupuncture: Effectiveness and Safety",
       "url": "https://www.nccih.nih.gov/health/acupuncture-effectiveness-and-safety",
       "type": "针灸安全参考"
+    },
+    {
+      "title": "上海中医药大学《中医基础理论》教学大纲",
+      "url": "https://jwc.shutcm.edu.cn/_upload/article/files/0f/7f/b8921e0b4db4af1d5d52f2801232/c9328800-969d-42b5-aad5-d79a8b775a14.pdf",
+      "type": "112学时课程大纲"
+    },
+    {
+      "title": "精讲精学中医基础理论（广州中医药大学）",
+      "url": "https://higher.smartedu.cn/course/64befd74d190d2a6beef0042",
+      "type": "国家级公开课程"
+    },
+    {
+      "title": "中医基础理论（北京中医药大学，国家平台）",
+      "url": "https://higher.smartedu.cn/course/68d5aee1a9f4619f8f6b707e",
+      "type": "国家级公开课程"
     }
   ]
 }
