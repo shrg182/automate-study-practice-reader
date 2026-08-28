@@ -76,6 +76,8 @@ BASE_DIR.parents[1] / "liaozhai_stories"
 
 `practice/shiji/reference_library/` 是独立的《史记》参考资料库。各篇编辑器工具栏中的“史记资料库”按钮位于“全书词典”旁边，点击后打开资料库页面。页面支持搜索、标签筛选、打开来源、复制标准引用、添加或编辑浏览器副本，以及导出合并后的 CSV。
 
+二十四史的非毛评本在线正文与检索入口另见 [`reference_library/TWENTY_FOUR_HISTORIES.md`](reference_library/TWENTY_FOUR_HISTORIES.md)。该索引按史列出正文链接、内容范围和通行卷数；在线文本只作为阅读与查句入口，正式校勘仍须核明底本。
+
 项目中的规范数据仍保存在 `practice/shiji/shared_references.csv`。修改该 CSV 后运行：
 
 ```bash

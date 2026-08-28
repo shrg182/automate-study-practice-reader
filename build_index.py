@@ -13,7 +13,7 @@ import re
 
 BASE_DIR = Path(__file__).resolve().parent
 OUTPUT = BASE_DIR / "index.html"
-MOBILE_READER_VERSION = "1.9.1"
+MOBILE_READER_VERSION = "1.10.0"
 COPYRIGHT_YEAR = 2026
 COPYRIGHT_HOLDER = "Ruixing"
 
@@ -45,6 +45,7 @@ COLLECTIONS = {
     "russian_short_stories": Collection("russian_short_stories", "Русские рассказы", "Short Russian prose: humor, fable, prose miniature, and philosophical sketch", "Russian prose"),
     "russian_wars": Collection("russian_wars", "Войны России", "Russian-first chronicle with selectable English and Chinese study support", "Russian history"),
     "mao_annotated_24_histories": Collection("mao_annotated_24_histories", "《毛泽东批注二十四史》", "九十一册横排简体字本：二十四史、批注、史论与研究资料", "历史典籍"),
+    "tcm_foundations": Collection("tcm_foundations", "《中医基础理论》", "原创学习教材：传统理论、现代医学边界、术语与复习", "中医基础课程"),
 }
 
 COLLECTION_ORDER = list(COLLECTIONS)
@@ -146,6 +147,9 @@ def entry_context(path: Path, collection_key: str) -> str:
         level = next((levels[part] for part in parts if part in levels), "Python")
         match = re.match(r"(\d+)_", parts[-1])
         return f"{level} · Module {int(match.group(1))}" if match else level
+    if collection_key == "tcm_foundations" and parts:
+        match = re.match(r"(\d+)_", parts[-1])
+        return f"原创教材 · 第{int(match.group(1))}章" if match else "原创教材"
     if collection_key == "rongzhai_suibi" and parts:
         volume = next((part for part in parts if part.startswith("volume_")), "")
         if volume:
@@ -365,7 +369,7 @@ def build_html(grouped: dict[str, list[dict[str, str | None]]]) -> str:
     running_number = 0
     for key, entries in active:
         collection = COLLECTIONS[key]
-        selector_links = {"rongzhai_suibi": "rongzhai_suibi/select_articles.html", "guwen_guanzhi": "guwen_guanzhi/select_articles.html", "chinese_wars": "chinese_wars/select_entries.html", "american_civil_war": "american_civil_war/select_battles.html", "laozi": "laozi/select_chapters.html", "sunzi": "sunzi/select_entries.html", "thirty_six_stratagems": "thirty_six_stratagems/select_entries.html", "liaozhai_stories": "liaozhai_stories/select_articles.html", "shiji": "shiji/select_articles.html", "nine_commentaries": "nine_commentaries/source_index/select_readings.html", "python": "python/index.html", "russian_wars": "russian_wars/select_articles.html", "mao_annotated_24_histories": "mao_annotated_24_histories/select_histories.html"}
+        selector_links = {"rongzhai_suibi": "rongzhai_suibi/select_articles.html", "guwen_guanzhi": "guwen_guanzhi/select_articles.html", "chinese_wars": "chinese_wars/select_entries.html", "american_civil_war": "american_civil_war/select_battles.html", "laozi": "laozi/select_chapters.html", "sunzi": "sunzi/select_entries.html", "thirty_six_stratagems": "thirty_six_stratagems/select_entries.html", "liaozhai_stories": "liaozhai_stories/select_articles.html", "shiji": "shiji/select_articles.html", "nine_commentaries": "nine_commentaries/source_index/select_readings.html", "python": "python/index.html", "russian_wars": "russian_wars/select_articles.html", "mao_annotated_24_histories": "mao_annotated_24_histories/select_histories.html", "tcm_foundations": "tcm_foundations/index.html"}
         selector_link = (f'<a class="collection-tool" href="{selector_links[key]}">选择更多篇目</a>' if key in selector_links else "")
         resource_links = {
             "jianshang": '<a class="collection-resource" href="jianshang/翦商.pdf" target="_blank" rel="noopener">原书 PDF</a>',

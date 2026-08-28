@@ -36,6 +36,35 @@ HISTORIES = [
     ("mingshi", "明史", "张廷玉等", "本纪、志、表、列传"),
 ]
 
+# These public-domain reading texts are comparison sources only. They must stay
+# separate from the 91-volume Mao-annotated scan containers.
+TEXT_SOURCES = {
+    "shiji": "https://zh.wikisource.org/wiki/史記",
+    "hanshu": "https://zh.wikisource.org/wiki/漢書",
+    "hou_hanshu": "https://zh.wikisource.org/wiki/後漢書",
+    "sanguozhi": "https://zh.wikisource.org/wiki/三國志",
+    "jinshu": "https://zh.wikisource.org/wiki/晉書",
+    "songshu": "https://zh.wikisource.org/wiki/宋書",
+    "nan_qishu": "https://zh.wikisource.org/wiki/南齊書",
+    "liangshu": "https://zh.wikisource.org/wiki/梁書",
+    "chenshu": "https://zh.wikisource.org/wiki/陳書",
+    "weishu": "https://zh.wikisource.org/wiki/魏書",
+    "bei_qishu": "https://zh.wikisource.org/wiki/北齊書",
+    "zhoushu": "https://zh.wikisource.org/wiki/周書",
+    "suishu": "https://zh.wikisource.org/wiki/隋書",
+    "nanshi": "https://zh.wikisource.org/wiki/南史",
+    "beishi": "https://zh.wikisource.org/wiki/北史",
+    "jiu_tangshu": "https://zh.wikisource.org/wiki/舊唐書",
+    "xin_tangshu": "https://zh.wikisource.org/wiki/新唐書",
+    "jiu_wudaishi": "https://zh.wikisource.org/wiki/舊五代史",
+    "xin_wudaishi": "https://zh.wikisource.org/wiki/新五代史",
+    "songshi": "https://zh.wikisource.org/wiki/宋史",
+    "liaoshi": "https://zh.wikisource.org/wiki/遼史",
+    "jinshi": "https://zh.wikisource.org/wiki/金史",
+    "yuanshi": "https://zh.wikisource.org/wiki/元史",
+    "mingshi": "https://zh.wikisource.org/wiki/明史",
+}
+
 RESEARCH = [
     {
         "id": "publication_2013",
@@ -111,7 +140,15 @@ def manifest() -> dict:
         "source_note": "Yale University Library reportedly holds a complete set; catalog and reproduction details remain to be confirmed.",
         "storage_policy": "catalog-first; scans and OCR are optional per-history or per-volume offline packages",
         "histories": [
-            {"id": key, "title": title, "author": author, "structure": structure, "scan_status": "awaiting_source", "chapters": []}
+            {
+                "id": key,
+                "title": title,
+                "author": author,
+                "structure": structure,
+                "scan_status": "awaiting_source",
+                "reading_text": {"url": TEXT_SOURCES[key], "role": "unannotated_comparison_only"},
+                "chapters": [],
+            }
             for key, title, author, structure in HISTORIES
         ],
         "research": RESEARCH,
@@ -120,7 +157,7 @@ def manifest() -> dict:
 
 def overview_page() -> str:
     cards = "".join(
-        f'<article><span>{i:02d}</span><div><h2>{f"<a href=\"../shiji/index.html\">《{escape(title)}》</a>" if key == "shiji" else f"《{escape(title)}》"}</h2><p>{escape(author)} · {escape(structure)}</p></div><b>{"试点已建立" if key == "shiji" else "待取得扫描件"}</b></article>'
+        f'<article data-history="{escape(key, quote=True)}"><span>{i:02d}</span><div><h2>{f"<a href=\"../shiji/index.html\">《{escape(title)}》</a>" if key == "shiji" else f"《{escape(title)}》"}</h2><p>{escape(author)} · {escape(structure)}</p><a class="clean-text" href="{escape(TEXT_SOURCES[key], quote=True)}" target="_blank" rel="noreferrer">非毛评清文本 ↗</a></div><b>{"试点已建立" if key == "shiji" else "毛评扫描待取得"}</b></article>'
         for i, (key, title, author, structure) in enumerate(HISTORIES, 1)
     )
     refs = "".join(
@@ -128,8 +165,8 @@ def overview_page() -> str:
         for item in RESEARCH
     )
     return f'''<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>毛泽东批注二十四史 · 资料总览</title><link rel="stylesheet" href="../workspace_theme.css"><style>
-*{{box-sizing:border-box}}body{{margin:0;background:#f5f3ed;color:#26231e;font-family:Arial,"PingFang SC",sans-serif}}header{{padding:34px max(20px,5vw);background:#46372c;color:#fff}}header a{{color:#f6dd9b}}h1{{margin:.25em 0;font:700 clamp(34px,6vw,62px)/1.1 "Songti SC",serif}}header p{{max-width:850px;line-height:1.7}}nav{{position:sticky;top:0;z-index:3;display:flex;gap:8px;padding:10px max(18px,5vw);border-bottom:1px solid #d8d2c6;background:#fffc}}nav a{{padding:7px 11px;border-radius:16px;color:#7b352c;text-decoration:none}}main{{width:min(1180px,calc(100% - 30px));margin:22px auto 95px}}.notice{{padding:16px;border-left:4px solid #b28335;background:#fff8e1;line-height:1.65}}.grid{{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px;margin-top:16px}}article{{display:grid;grid-template-columns:36px 1fr auto;gap:12px;align-items:center;padding:14px;border:1px solid #d8d2c6;border-radius:8px;background:#fff}}article h2{{margin:0;font:700 19px/1.3 "Songti SC",serif}}article h2 a{{color:#174ea6}}article p{{margin:5px 0 0;color:#69645c;font-size:12px}}article b{{color:#8a6d3b;font-size:11px}}.research{{margin-top:36px}}.research li{{margin:10px 0;padding:15px;border:1px solid #d8d2c6;background:#fff;list-style:none}}.research small,.research a{{display:block}}.research small{{color:#6b665e}}.research a{{margin-top:5px;color:#174ea6;font-weight:700}}.research p{{margin-bottom:0;line-height:1.6}}@media(max-width:720px){{.grid{{grid-template-columns:1fr}}article{{grid-template-columns:30px 1fr}}article b{{grid-column:2}}}}
-</style></head><body><header><a href="../index.html#mao_annotated_24_histories">← Reader library</a><h1>《毛泽东批注二十四史》</h1><p>九十一册横排简体字本的渐进式数字阅读框架：以二十四史为阅读层级，以原书册次保存扫描来源，并把批注、史论、研究资料和私人笔记严格分层。</p></header><nav><a href="#catalog">二十四史</a><a href="#research">研究资料</a><a href="select_histories.html">加入书库</a></nav><main><p class="notice"><strong>资料状态：</strong>目录结构已经建立；扫描页、OCR文字和页码对应关系须在取得可靠的91册本图像后导入。当前不会以普通武英殿本图像冒充毛泽东批注本。</p><section id="catalog" class="grid">{cards}</section><section class="research" id="research"><h2>研究资料</h2><ul>{refs}</ul></section></main><script src="../mobile_pwa.js"></script></body></html>'''
+*{{box-sizing:border-box}}body{{margin:0;background:#f5f3ed;color:#26231e;font-family:Arial,"PingFang SC",sans-serif}}header{{padding:34px max(20px,5vw);background:#46372c;color:#fff}}header a{{color:#f6dd9b}}h1{{margin:.25em 0;font:700 clamp(34px,6vw,62px)/1.1 "Songti SC",serif}}header p{{max-width:850px;line-height:1.7}}nav{{position:sticky;top:0;z-index:3;display:flex;gap:8px;padding:10px max(18px,5vw);border-bottom:1px solid #d8d2c6;background:#fffc}}nav a{{padding:7px 11px;border-radius:16px;color:#7b352c;text-decoration:none}}main{{width:min(1180px,calc(100% - 30px));margin:22px auto 95px}}.notice{{padding:16px;border-left:4px solid #b28335;background:#fff8e1;line-height:1.65}}.selection-status{{color:#69645c}}.grid{{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px;margin-top:16px}}article{{display:grid;grid-template-columns:36px 1fr auto;gap:12px;align-items:center;padding:14px;border:1px solid #d8d2c6;border-radius:8px;background:#fff}}.grid article[hidden]{{display:none}}article h2{{margin:0;font:700 19px/1.3 "Songti SC",serif}}article h2 a,.clean-text{{color:#174ea6}}article p{{margin:5px 0 0;color:#69645c;font-size:12px}}.clean-text{{display:inline-block;margin-top:8px;font-size:12px}}article b{{color:#8a6d3b;font-size:11px}}.research{{margin-top:36px}}.research li{{margin:10px 0;padding:15px;border:1px solid #d8d2c6;background:#fff;list-style:none}}.research small,.research a{{display:block}}.research small{{color:#6b665e}}.research a{{margin-top:5px;color:#174ea6;font-weight:700}}.research p{{margin-bottom:0;line-height:1.6}}@media(max-width:720px){{.grid{{grid-template-columns:1fr}}article{{grid-template-columns:30px 1fr}}article b{{grid-column:2}}}}
+</style></head><body><header><a href="../../index.html#mao_annotated_24_histories">← Reader library</a><h1>《毛泽东批注二十四史》</h1><p>九十一册横排简体字本的渐进式数字阅读框架：以二十四史为阅读层级，以原书册次保存扫描来源，并把批注、史论、研究资料和私人笔记严格分层。</p></header><nav><a href="#catalog">已选史书</a><a href="#research">研究资料</a><a href="../select_histories.html">重新选择</a></nav><main><p class="notice"><strong>资料状态：</strong>所选史书现可打开非毛评清文本阅读。扫描页、OCR文字和页码对应关系仍须在取得可靠的91册本图像后导入；普通文本不会冒充毛泽东批注本。</p><p class="selection-status" id="selectionStatus"></p><section id="catalog" class="grid">{cards}</section><section class="research" id="research"><h2>研究资料</h2><ul>{refs}</ul></section></main><script>const selectionKey='mao-24-histories-library',selected=new Set(JSON.parse(localStorage.getItem(selectionKey)||'[]')),cards=[...document.querySelectorAll('[data-history]')];if(selected.size)cards.forEach(card=>card.hidden=!selected.has(card.dataset.history));document.getElementById('selectionStatus').textContent=selected.size?`书库中已加入 ${{selected.size}} 部；下方只显示所选史书。`:'尚未保存选择；暂时显示全部二十四史。';</script></body></html>'''
 
 
 def selector_page() -> str:

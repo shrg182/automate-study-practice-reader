@@ -1,7 +1,7 @@
 (function () {
   const mobile = matchMedia("(max-width: 760px)");
   const isEditor = /\/editor\.html$/.test(location.pathname);
-  const isBookPage = /\/marxist_classics\/(capital|anti_duhring)\/select_readings\.html$/.test(location.pathname);
+  const isBookPage = /\/(?:marxist_classics\/(?:capital|anti_duhring)\/select_readings|tcm_foundations\/index)\.html$/.test(location.pathname);
   const scriptRoot = document.currentScript?.src ? new URL(".", document.currentScript.src) : new URL("./", location.href);
   let installPrompt = null;
   let registration = null;

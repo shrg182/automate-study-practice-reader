@@ -9,6 +9,8 @@ The Reader uses two compatible structures:
 
 The separation preserves the printed edition while allowing readers to navigate by historical work. Scans, OCR, and page alignment remain optional offline packages and must not be marked complete until a reliable copy of the 91-volume edition is obtained.
 
+The selection page saves the chosen histories in browser local storage. The overview shows only those histories and provides a separately labeled public-domain clean-text link for immediate reading. These links are comparison texts, never substitutes for or representations of Mao's annotated pages.
+
 Research records are stored separately from Mao's annotations, editorial notes, and private reader notes. Each record requires a source URL, scope, type, summary, and reliability label.
 
 Run `python3 practice/mao_annotated_24_histories/build_collection.py` after changing the manifest data, followed by `python3 practice/build_index.py`.

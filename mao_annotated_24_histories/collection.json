@@ -13,6 +13,10 @@
       "author": "司马迁",
       "structure": "本纪、表、书、世家、列传",
       "scan_status": "awaiting_source",
+      "reading_text": {
+        "url": "https://zh.wikisource.org/wiki/史記",
+        "role": "unannotated_comparison_only"
+      },
       "chapters": []
     },
     {
@@ -21,6 +25,10 @@
       "author": "班固",
       "structure": "纪、表、志、传",
       "scan_status": "awaiting_source",
+      "reading_text": {
+        "url": "https://zh.wikisource.org/wiki/漢書",
+        "role": "unannotated_comparison_only"
+      },
       "chapters": []
     },
     {
@@ -29,6 +37,10 @@
       "author": "范晔",
       "structure": "纪、志、传",
       "scan_status": "awaiting_source",
+      "reading_text": {
+        "url": "https://zh.wikisource.org/wiki/後漢書",
+        "role": "unannotated_comparison_only"
+      },
       "chapters": []
     },
     {
@@ -37,6 +49,10 @@
       "author": "陈寿",
       "structure": "魏书、蜀书、吴书",
       "scan_status": "awaiting_source",
+      "reading_text": {
+        "url": "https://zh.wikisource.org/wiki/三國志",
+        "role": "unannotated_comparison_only"
+      },
       "chapters": []
     },
     {
@@ -45,6 +61,10 @@
       "author": "房玄龄等",
       "structure": "帝纪、志、列传、载记",
       "scan_status": "awaiting_source",
+      "reading_text": {
+        "url": "https://zh.wikisource.org/wiki/晉書",
+        "role": "unannotated_comparison_only"
+      },
       "chapters": []
     },
     {
@@ -53,6 +73,10 @@
       "author": "沈约",
       "structure": "本纪、志、列传",
       "scan_status": "awaiting_source",
+      "reading_text": {
+        "url": "https://zh.wikisource.org/wiki/宋書",
+        "role": "unannotated_comparison_only"
+      },
       "chapters": []
     },
     {
@@ -61,6 +85,10 @@
       "author": "萧子显",
       "structure": "本纪、志、列传",
       "scan_status": "awaiting_source",
+      "reading_text": {
+        "url": "https://zh.wikisource.org/wiki/南齊書",
+        "role": "unannotated_comparison_only"
+      },
       "chapters": []
     },
     {
@@ -69,6 +97,10 @@
       "author": "姚思廉",
       "structure": "本纪、列传",
       "scan_status": "awaiting_source",
+      "reading_text": {
+        "url": "https://zh.wikisource.org/wiki/梁書",
+        "role": "unannotated_comparison_only"
+      },
       "chapters": []
     },
     {
@@ -77,6 +109,10 @@
       "author": "姚思廉",
       "structure": "本纪、列传",
       "scan_status": "awaiting_source",
+      "reading_text": {
+        "url": "https://zh.wikisource.org/wiki/陳書",
+        "role": "unannotated_comparison_only"
+      },
       "chapters": []
     },
     {
@@ -85,6 +121,10 @@
       "author": "魏收",
       "structure": "帝纪、志、列传",
       "scan_status": "awaiting_source",
+      "reading_text": {
+        "url": "https://zh.wikisource.org/wiki/魏書",
+        "role": "unannotated_comparison_only"
+      },
       "chapters": []
     },
     {
@@ -93,6 +133,10 @@
       "author": "李百药",
       "structure": "帝纪、列传",
       "scan_status": "awaiting_source",
+      "reading_text": {
+        "url": "https://zh.wikisource.org/wiki/北齊書",
+        "role": "unannotated_comparison_only"
+      },
       "chapters": []
     },
     {
@@ -101,6 +145,10 @@
       "author": "令狐德棻等",
       "structure": "帝纪、列传",
       "scan_status": "awaiting_source",
+      "reading_text": {
+        "url": "https://zh.wikisource.org/wiki/周書",
+        "role": "unannotated_comparison_only"
+      },
       "chapters": []
     },
     {
@@ -109,6 +157,10 @@
       "author": "魏征等",
       "structure": "帝纪、志、列传",
       "scan_status": "awaiting_source",
+      "reading_text": {
+        "url": "https://zh.wikisource.org/wiki/隋書",
+        "role": "unannotated_comparison_only"
+      },
       "chapters": []
     },
     {
@@ -117,6 +169,10 @@
       "author": "李延寿",
       "structure": "本纪、列传",
       "scan_status": "awaiting_source",
+      "reading_text": {
+        "url": "https://zh.wikisource.org/wiki/南史",
+        "role": "unannotated_comparison_only"
+      },
       "chapters": []
     },
     {
@@ -125,6 +181,10 @@
       "author": "李延寿",
       "structure": "本纪、列传",
       "scan_status": "awaiting_source",
+      "reading_text": {
+        "url": "https://zh.wikisource.org/wiki/北史",
+        "role": "unannotated_comparison_only"
+      },
       "chapters": []
     },
     {
@@ -133,6 +193,10 @@
       "author": "刘昫等",
       "structure": "本纪、志、列传",
       "scan_status": "awaiting_source",
+      "reading_text": {
+        "url": "https://zh.wikisource.org/wiki/舊唐書",
+        "role": "unannotated_comparison_only"
+      },
       "chapters": []
     },
     {
@@ -141,6 +205,10 @@
       "author": "欧阳修、宋祁",
       "structure": "本纪、志、表、列传",
       "scan_status": "awaiting_source",
+      "reading_text": {
+        "url": "https://zh.wikisource.org/wiki/新唐書",
+        "role": "unannotated_comparison_only"
+      },
       "chapters": []
     },
     {
@@ -149,6 +217,10 @@
       "author": "薛居正等",
       "structure": "梁、唐、晋、汉、周书及志",
       "scan_status": "awaiting_source",
+      "reading_text": {
+        "url": "https://zh.wikisource.org/wiki/舊五代史",
+        "role": "unannotated_comparison_only"
+      },
       "chapters": []
     },
     {
@@ -157,6 +229,10 @@
       "author": "欧阳修",
       "structure": "本纪、家人传、臣传、考",
       "scan_status": "awaiting_source",
+      "reading_text": {
+        "url": "https://zh.wikisource.org/wiki/新五代史",
+        "role": "unannotated_comparison_only"
+      },
       "chapters": []
     },
     {
@@ -165,6 +241,10 @@
       "author": "脱脱等",
       "structure": "本纪、志、表、列传",
       "scan_status": "awaiting_source",
+      "reading_text": {
+        "url": "https://zh.wikisource.org/wiki/宋史",
+        "role": "unannotated_comparison_only"
+      },
       "chapters": []
     },
     {
@@ -173,6 +253,10 @@
       "author": "脱脱等",
       "structure": "本纪、志、表、列传、国语解",
       "scan_status": "awaiting_source",
+      "reading_text": {
+        "url": "https://zh.wikisource.org/wiki/遼史",
+        "role": "unannotated_comparison_only"
+      },
       "chapters": []
     },
     {
@@ -181,6 +265,10 @@
       "author": "脱脱等",
       "structure": "本纪、志、表、列传",
       "scan_status": "awaiting_source",
+      "reading_text": {
+        "url": "https://zh.wikisource.org/wiki/金史",
+        "role": "unannotated_comparison_only"
+      },
       "chapters": []
     },
     {
@@ -189,6 +277,10 @@
       "author": "宋濂等",
       "structure": "本纪、志、表、列传",
       "scan_status": "awaiting_source",
+      "reading_text": {
+        "url": "https://zh.wikisource.org/wiki/元史",
+        "role": "unannotated_comparison_only"
+      },
       "chapters": []
     },
     {
@@ -197,6 +289,10 @@
       "author": "张廷玉等",
       "structure": "本纪、志、表、列传",
       "scan_status": "awaiting_source",
+      "reading_text": {
+        "url": "https://zh.wikisource.org/wiki/明史",
+        "role": "unannotated_comparison_only"
+      },
       "chapters": []
     }
   ],

@@ -1,0 +1,154 @@
+{
+  "schema_version": 1,
+  "id": "tcm_foundations",
+  "title": "中医基础理论",
+  "edition": "原创学习版 v1",
+  "language": "zh-CN",
+  "medical_use": "education_only",
+  "chapters": [
+    {
+      "number": 1,
+      "slug": "01_introduction",
+      "title": "导论：怎样学习中医基础理论",
+      "unit": "绪论"
+    },
+    {
+      "number": 2,
+      "slug": "02_qi_yinyang_wuxing",
+      "title": "精气、阴阳与五行",
+      "unit": "哲学基础"
+    },
+    {
+      "number": 3,
+      "slug": "03_zangxiang",
+      "title": "藏象：五脏、六腑与奇恒之腑",
+      "unit": "正常生命活动"
+    },
+    {
+      "number": 4,
+      "slug": "04_essence_qi_blood_fluids_spirit",
+      "title": "精、气、血、津液与神",
+      "unit": "生命物质与活动"
+    },
+    {
+      "number": 5,
+      "slug": "05_meridians",
+      "title": "经络",
+      "unit": "联系与运行"
+    },
+    {
+      "number": 6,
+      "slug": "06_constitution",
+      "title": "体质",
+      "unit": "个体差异"
+    },
+    {
+      "number": 7,
+      "slug": "07_causes",
+      "title": "病因",
+      "unit": "疾病认识"
+    },
+    {
+      "number": 8,
+      "slug": "08_onset",
+      "title": "发病",
+      "unit": "疾病认识"
+    },
+    {
+      "number": 9,
+      "slug": "09_pathogenesis",
+      "title": "病机",
+      "unit": "疾病认识"
+    },
+    {
+      "number": 10,
+      "slug": "10_prevention_treatment",
+      "title": "养生、治未病与防治原则",
+      "unit": "防治原则"
+    },
+    {
+      "number": 11,
+      "slug": "11_review",
+      "title": "综合复习：从概念网络到案例分析",
+      "unit": "复习与方法"
+    }
+  ],
+  "units": [
+    {
+      "path": "chapters/01_introduction/editor.html",
+      "title": "导论：怎样学习中医基础理论"
+    },
+    {
+      "path": "chapters/02_qi_yinyang_wuxing/editor.html",
+      "title": "精气、阴阳与五行"
+    },
+    {
+      "path": "chapters/03_zangxiang/editor.html",
+      "title": "藏象：五脏、六腑与奇恒之腑"
+    },
+    {
+      "path": "chapters/04_essence_qi_blood_fluids_spirit/editor.html",
+      "title": "精、气、血、津液与神"
+    },
+    {
+      "path": "chapters/05_meridians/editor.html",
+      "title": "经络"
+    },
+    {
+      "path": "chapters/06_constitution/editor.html",
+      "title": "体质"
+    },
+    {
+      "path": "chapters/07_causes/editor.html",
+      "title": "病因"
+    },
+    {
+      "path": "chapters/08_onset/editor.html",
+      "title": "发病"
+    },
+    {
+      "path": "chapters/09_pathogenesis/editor.html",
+      "title": "病机"
+    },
+    {
+      "path": "chapters/10_prevention_treatment/editor.html",
+      "title": "养生、治未病与防治原则"
+    },
+    {
+      "path": "chapters/11_review/editor.html",
+      "title": "综合复习：从概念网络到案例分析"
+    }
+  ],
+  "sources": [
+    {
+      "title": "中医基础理论（北京中医药大学）",
+      "url": "https://www.icourse163.org/course/BUCM-1206410812",
+      "type": "公开课程"
+    },
+    {
+      "title": "中医基础理论（国家高等教育智慧教育平台）",
+      "url": "https://higher.smartedu.cn/course/66cd0d78711dc30c3470e686",
+      "type": "国家级课程"
+    },
+    {
+      "title": "中医基础理论课程与十四周大纲",
+      "url": "https://www.icourse163.org/course/detail.htm?cid=1002126013",
+      "type": "公开课程大纲"
+    },
+    {
+      "title": "WHO International Standard Terminologies on Traditional Medicine",
+      "url": "https://www.who.int/publications/i/item/9789240042322",
+      "type": "术语参考"
+    },
+    {
+      "title": "Traditional Chinese Medicine: What You Need To Know",
+      "url": "https://www.nccih.nih.gov/health/traditional-chinese-medicine-what-you-need-to-know",
+      "type": "疗效与安全参考"
+    },
+    {
+      "title": "Acupuncture: Effectiveness and Safety",
+      "url": "https://www.nccih.nih.gov/health/acupuncture-effectiveness-and-safety",
+      "type": "针灸安全参考"
+    }
+  ]
+}
