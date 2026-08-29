@@ -68,7 +68,12 @@ html[data-workspace-skin="reading"] .entries{box-shadow:none}html[data-workspace
 .entry-reading,.entry-editing{align-self:stretch;display:flex;flex-direction:column;justify-content:center;padding:6px 12px;border-right:1px solid var(--line);color:var(--muted);font-size:11px;line-height:1.35}.entry-reading strong,.entry-editing strong{color:#5f6368;font-size:12px}.entry-reading.read strong,.entry-editing.edited strong{color:#137333}.entry-reading time,.entry-editing time{margin-top:2px;white-space:nowrap}
 .entry-action{display:flex;align-self:stretch;align-items:center;justify-content:center;padding:6px 8px;border-right:1px solid var(--line)}.entry-pdf{border-right:0}.entry-action a{padding:6px 10px;border-radius:16px;text-decoration:none;font-size:11px;font-weight:700;white-space:nowrap}.entry-action .primary{background:#188038;color:#fff}.entry-action .primary:hover{background:#137333}.entry-action .secondary{border:1px solid var(--line);background:#fff}.entry-action .secondary:hover{border-color:var(--blue);color:var(--blue)}.action-empty{color:#9aa0a6}
 html[data-workspace-skin="reading"] .entry{grid-template-columns:54px minmax(0,1fr) 145px 145px 132px 72px}html[data-workspace-skin="reading"] .entry-action{padding:0;border-right:1px solid var(--line)}html[data-workspace-skin="reading"] .entry-pdf{border-right:0}html[data-workspace-skin="reading"] .entry-action a{padding:8px 11px;border-radius:6px;font-size:12px}html[data-workspace-skin="reading"] .entry-action .primary{background:var(--red)}
+.news-columns,.news-entry,html[data-workspace-skin="reading"] .news-columns,html[data-workspace-skin="reading"] .news-entry{grid-template-columns:52px 130px 118px minmax(250px,1fr) 112px 112px 140px 72px}
+.news-columns{display:grid;min-height:34px;border-bottom:1px solid var(--line);background:#f1f3f4;color:#5f6368;font-size:10px;font-weight:700;letter-spacing:.04em;text-transform:uppercase}.news-columns span{display:flex;align-items:center;padding:6px 10px;border-right:1px solid var(--line)}.news-columns span:last-child{border-right:0}
+.news-type,.news-date,.news-title{align-self:stretch;display:flex;align-items:center;padding:8px 12px;border-right:1px solid var(--line)}.news-type{color:#137333;font-size:11px;font-weight:700}.news-date{color:var(--muted);font-size:11px;white-space:nowrap}.news-title{font:500 14px/1.35 Arial,"PingFang SC",sans-serif}
+html[data-workspace-skin="reading"] .news-columns{background:#eee8dc;color:var(--muted)}html[data-workspace-skin="reading"] .news-entry{gap:0;min-height:58px;padding:0}html[data-workspace-skin="reading"] .news-type{color:var(--blue)}html[data-workspace-skin="reading"] .news-title{font:650 17px/1.35 "Songti SC","STSong",serif}
 @media(max-width:760px){.entry,html[data-workspace-skin="reading"] .entry{grid-template-columns:38px minmax(180px,1fr) 125px 125px 126px 62px}.entry-copy{border-right:1px solid var(--line)}.entry-reading,.entry-editing{padding:5px 7px}.entry-action{padding:5px 6px}}
+@media(max-width:760px){#news_reports .entries{overflow-x:auto}.news-columns,.news-entry,html[data-workspace-skin="reading"] .news-columns,html[data-workspace-skin="reading"] .news-entry{min-width:900px;grid-template-columns:42px 116px 106px minmax(220px,1fr) 105px 105px 126px 58px}}
 @media(max-width:760px){.book-header{align-items:stretch;flex-direction:column;padding-bottom:10px;gap:7px}.book-tool{margin-left:0;align-self:flex-start}.book-offline-tools{width:100%}.book-offline-tools button{flex:1;min-height:38px}.contents-toggle{grid-template-columns:minmax(0,1fr) auto}.contents-toggle i{display:none}}
 @media print{.entry-action{display:none}}
 </style>
@@ -1795,107 +1800,137 @@ html[data-workspace-skin="reading"] .entry{grid-template-columns:54px minmax(0,1
     <div class="collection-meta"><strong>15 篇</strong></div>
   </header>
 
-  <div class="entries" id="news_reports-entries"><article class="entry" data-search="the cuban missile crisis historical report · may 20, 2026 news report transcript study english cuba_crisis/cuba_crisis_report_20260520.pdf" data-editor-path="news_reports/cuba_crisis/cuba_crisis_report_20260520.pdf">
+  <div class="entries" id="news_reports-entries"><div class="news-columns" aria-hidden="true"><span>No.</span><span>Type</span><span>Date</span><span>Title</span><span>Reading</span><span>Editing</span><span>Report</span><span></span></div><article class="entry news-entry" data-search="the cuban missile crisis historical report may 20, 2026 news report transcript study english cuba_crisis/cuba_crisis_report_20260520.pdf" data-editor-path="news_reports/cuba_crisis/cuba_crisis_report_20260520.pdf">
       <div class="entry-number">226</div>
-      <div class="entry-copy"><span>Historical report · May 20, 2026</span><h3><a class="entry-title-link" href="news_reports/cuba_crisis/cuba_crisis_report_20260520.pdf" target="_blank" rel="noopener">The Cuban Missile Crisis</a></h3></div>
+      <div class="news-type">Historical report</div>
+      <div class="news-date">May 20, 2026</div>
+      <div class="news-title"><a class="entry-title-link" href="news_reports/cuba_crisis/cuba_crisis_report_20260520.pdf" target="_blank" rel="noopener">The Cuban Missile Crisis</a></div>
       <div class="entry-reading"><strong>未读</strong><time></time></div>
       <div class="entry-editing"><strong>未编辑</strong><time></time></div>
       <div class="entry-action entry-editor"><a class="primary" href="news_reports/cuba_crisis/cuba_crisis_report_20260520.pdf" target="_blank" rel="noopener">Open report</a></div>
       <div class="entry-action entry-pdf"><span class="action-empty" aria-label="暂无 PDF">—</span></div>
-    </article><article class="entry" data-search="putin’s visit to china news report · may 20, 2026 news report transcript study english putin_visit_to_china_3/putin_china_visit_report_20260520.pdf" data-editor-path="news_reports/putin_visit_to_china_3/putin_china_visit_report_20260520.pdf">
+    </article><article class="entry news-entry" data-search="putin’s visit to china news report may 20, 2026 news report transcript study english putin_visit_to_china_3/putin_china_visit_report_20260520.pdf" data-editor-path="news_reports/putin_visit_to_china_3/putin_china_visit_report_20260520.pdf">
       <div class="entry-number">227</div>
-      <div class="entry-copy"><span>News report · May 20, 2026</span><h3><a class="entry-title-link" href="news_reports/putin_visit_to_china_3/putin_china_visit_report_20260520.pdf" target="_blank" rel="noopener">Putin’s Visit to China</a></h3></div>
+      <div class="news-type">News report</div>
+      <div class="news-date">May 20, 2026</div>
+      <div class="news-title"><a class="entry-title-link" href="news_reports/putin_visit_to_china_3/putin_china_visit_report_20260520.pdf" target="_blank" rel="noopener">Putin’s Visit to China</a></div>
       <div class="entry-reading"><strong>未读</strong><time></time></div>
       <div class="entry-editing"><strong>未编辑</strong><time></time></div>
       <div class="entry-action entry-editor"><a class="primary" href="news_reports/putin_visit_to_china_3/putin_china_visit_report_20260520.pdf" target="_blank" rel="noopener">Open report</a></div>
       <div class="entry-action entry-pdf"><span class="action-empty" aria-label="暂无 PDF">—</span></div>
-    </article><article class="entry" data-search="trump’s visit to china news report · may 9, 2026 news report transcript study english trump_visit_to_china/trump_china_visit_report.pdf" data-editor-path="news_reports/trump_visit_to_china/trump_china_visit_report.pdf">
+    </article><article class="entry news-entry" data-search="trump’s visit to china news report may 9, 2026 news report transcript study english trump_visit_to_china/trump_china_visit_report.pdf" data-editor-path="news_reports/trump_visit_to_china/trump_china_visit_report.pdf">
       <div class="entry-number">228</div>
-      <div class="entry-copy"><span>News report · May 9, 2026</span><h3><a class="entry-title-link" href="news_reports/trump_visit_to_china/trump_china_visit_report.pdf" target="_blank" rel="noopener">Trump’s Visit to China</a></h3></div>
+      <div class="news-type">News report</div>
+      <div class="news-date">May 9, 2026</div>
+      <div class="news-title"><a class="entry-title-link" href="news_reports/trump_visit_to_china/trump_china_visit_report.pdf" target="_blank" rel="noopener">Trump’s Visit to China</a></div>
       <div class="entry-reading"><strong>未读</strong><time></time></div>
       <div class="entry-editing"><strong>未编辑</strong><time></time></div>
       <div class="entry-action entry-editor"><a class="primary" href="news_reports/trump_visit_to_china/trump_china_visit_report.pdf" target="_blank" rel="noopener">Open report</a></div>
       <div class="entry-action entry-pdf"><span class="action-empty" aria-label="暂无 PDF">—</span></div>
-    </article><article class="entry" data-search="trump’s visit to china news report · may 13, 2026 news report transcript study english trump_visit_to_china_2/trump_china_visit_report_20260513.pdf" data-editor-path="news_reports/trump_visit_to_china_2/trump_china_visit_report_20260513.pdf">
+    </article><article class="entry news-entry" data-search="trump’s visit to china news report may 13, 2026 news report transcript study english trump_visit_to_china_2/trump_china_visit_report_20260513.pdf" data-editor-path="news_reports/trump_visit_to_china_2/trump_china_visit_report_20260513.pdf">
       <div class="entry-number">229</div>
-      <div class="entry-copy"><span>News report · May 13, 2026</span><h3><a class="entry-title-link" href="news_reports/trump_visit_to_china_2/trump_china_visit_report_20260513.pdf" target="_blank" rel="noopener">Trump’s Visit to China</a></h3></div>
+      <div class="news-type">News report</div>
+      <div class="news-date">May 13, 2026</div>
+      <div class="news-title"><a class="entry-title-link" href="news_reports/trump_visit_to_china_2/trump_china_visit_report_20260513.pdf" target="_blank" rel="noopener">Trump’s Visit to China</a></div>
       <div class="entry-reading"><strong>未读</strong><time></time></div>
       <div class="entry-editing"><strong>未编辑</strong><time></time></div>
       <div class="entry-action entry-editor"><a class="primary" href="news_reports/trump_visit_to_china_2/trump_china_visit_report_20260513.pdf" target="_blank" rel="noopener">Open report</a></div>
       <div class="entry-action entry-pdf"><span class="action-empty" aria-label="暂无 PDF">—</span></div>
-    </article><article class="entry" data-search="trump’s visit to china news report · may 14, 2026 news report transcript study english trump_visit_to_china_3/trump_china_visit_report_20260514.pdf" data-editor-path="news_reports/trump_visit_to_china_3/trump_china_visit_report_20260514.pdf">
+    </article><article class="entry news-entry" data-search="trump’s visit to china news report may 14, 2026 news report transcript study english trump_visit_to_china_3/trump_china_visit_report_20260514.pdf" data-editor-path="news_reports/trump_visit_to_china_3/trump_china_visit_report_20260514.pdf">
       <div class="entry-number">230</div>
-      <div class="entry-copy"><span>News report · May 14, 2026</span><h3><a class="entry-title-link" href="news_reports/trump_visit_to_china_3/trump_china_visit_report_20260514.pdf" target="_blank" rel="noopener">Trump’s Visit to China</a></h3></div>
+      <div class="news-type">News report</div>
+      <div class="news-date">May 14, 2026</div>
+      <div class="news-title"><a class="entry-title-link" href="news_reports/trump_visit_to_china_3/trump_china_visit_report_20260514.pdf" target="_blank" rel="noopener">Trump’s Visit to China</a></div>
       <div class="entry-reading"><strong>未读</strong><time></time></div>
       <div class="entry-editing"><strong>未编辑</strong><time></time></div>
       <div class="entry-action entry-editor"><a class="primary" href="news_reports/trump_visit_to_china_3/trump_china_visit_report_20260514.pdf" target="_blank" rel="noopener">Open report</a></div>
       <div class="entry-action entry-pdf"><span class="action-empty" aria-label="暂无 PDF">—</span></div>
-    </article><article class="entry" data-search="trump’s visit to china news report · may 17, 2026 news report transcript study english trump_visit_to_china_4/trump_china_visit_report_20260517.pdf" data-editor-path="news_reports/trump_visit_to_china_4/trump_china_visit_report_20260517.pdf">
+    </article><article class="entry news-entry" data-search="trump’s visit to china news report may 17, 2026 news report transcript study english trump_visit_to_china_4/trump_china_visit_report_20260517.pdf" data-editor-path="news_reports/trump_visit_to_china_4/trump_china_visit_report_20260517.pdf">
       <div class="entry-number">231</div>
-      <div class="entry-copy"><span>News report · May 17, 2026</span><h3><a class="entry-title-link" href="news_reports/trump_visit_to_china_4/trump_china_visit_report_20260517.pdf" target="_blank" rel="noopener">Trump’s Visit to China</a></h3></div>
+      <div class="news-type">News report</div>
+      <div class="news-date">May 17, 2026</div>
+      <div class="news-title"><a class="entry-title-link" href="news_reports/trump_visit_to_china_4/trump_china_visit_report_20260517.pdf" target="_blank" rel="noopener">Trump’s Visit to China</a></div>
       <div class="entry-reading"><strong>未读</strong><time></time></div>
       <div class="entry-editing"><strong>未编辑</strong><time></time></div>
       <div class="entry-action entry-editor"><a class="primary" href="news_reports/trump_visit_to_china_4/trump_china_visit_report_20260517.pdf" target="_blank" rel="noopener">Open report</a></div>
       <div class="entry-action entry-pdf"><span class="action-empty" aria-label="暂无 PDF">—</span></div>
-    </article><article class="entry" data-search="white house dinner security incident news report news report transcript study english white_house_dinner_security_incident/report.pdf" data-editor-path="news_reports/white_house_dinner_security_incident/report.pdf">
+    </article><article class="entry news-entry" data-search="white house dinner security incident news report undated news report transcript study english white_house_dinner_security_incident/report.pdf" data-editor-path="news_reports/white_house_dinner_security_incident/report.pdf">
       <div class="entry-number">232</div>
-      <div class="entry-copy"><span>News report</span><h3><a class="entry-title-link" href="news_reports/white_house_dinner_security_incident/report.pdf" target="_blank" rel="noopener">White House Dinner Security Incident</a></h3></div>
+      <div class="news-type">News report</div>
+      <div class="news-date">Undated</div>
+      <div class="news-title"><a class="entry-title-link" href="news_reports/white_house_dinner_security_incident/report.pdf" target="_blank" rel="noopener">White House Dinner Security Incident</a></div>
       <div class="entry-reading"><strong>未读</strong><time></time></div>
       <div class="entry-editing"><strong>未编辑</strong><time></time></div>
       <div class="entry-action entry-editor"><a class="primary" href="news_reports/white_house_dinner_security_incident/report.pdf" target="_blank" rel="noopener">Open report</a></div>
       <div class="entry-action entry-pdf"><span class="action-empty" aria-label="暂无 PDF">—</span></div>
-    </article><article class="entry" data-search="trump speech reading packet english reading packet · july 1, 2026 news report transcript study english trump_speech_20260701/trump_speech_reading_packet_20260701.pdf" data-editor-path="news_reports/trump_speech_20260701/trump_speech_reading_packet_20260701.pdf">
+    </article><article class="entry news-entry" data-search="trump speech reading packet reading packet july 1, 2026 news report transcript study english trump_speech_20260701/trump_speech_reading_packet_20260701.pdf" data-editor-path="news_reports/trump_speech_20260701/trump_speech_reading_packet_20260701.pdf">
       <div class="entry-number">233</div>
-      <div class="entry-copy"><span>English reading packet · July 1, 2026</span><h3><a class="entry-title-link" href="news_reports/trump_speech_20260701/trump_speech_reading_packet_20260701.pdf" target="_blank" rel="noopener">Trump Speech Reading Packet</a></h3></div>
+      <div class="news-type">Reading packet</div>
+      <div class="news-date">July 1, 2026</div>
+      <div class="news-title"><a class="entry-title-link" href="news_reports/trump_speech_20260701/trump_speech_reading_packet_20260701.pdf" target="_blank" rel="noopener">Trump Speech Reading Packet</a></div>
       <div class="entry-reading"><strong>未读</strong><time></time></div>
       <div class="entry-editing"><strong>未编辑</strong><time></time></div>
       <div class="entry-action entry-editor"><a class="primary" href="news_reports/trump_speech_20260701/trump_speech_reading_packet_20260701.pdf" target="_blank" rel="noopener">Open report</a></div>
       <div class="entry-action entry-pdf"><span class="action-empty" aria-label="暂无 PDF">—</span></div>
-    </article><article class="entry" data-search="trump speech learning units sectioned study edition · july 1, 2026 news report transcript study english trump_speech_20260701/sectioned_learning_units/trump_speech_learning_units_20260701.pdf" data-editor-path="news_reports/trump_speech_20260701/sectioned_learning_units/trump_speech_learning_units_20260701.pdf">
+    </article><article class="entry news-entry" data-search="trump speech learning units learning units july 1, 2026 news report transcript study english trump_speech_20260701/sectioned_learning_units/trump_speech_learning_units_20260701.pdf" data-editor-path="news_reports/trump_speech_20260701/sectioned_learning_units/trump_speech_learning_units_20260701.pdf">
       <div class="entry-number">234</div>
-      <div class="entry-copy"><span>Sectioned study edition · July 1, 2026</span><h3><a class="entry-title-link" href="news_reports/trump_speech_20260701/sectioned_learning_units/trump_speech_learning_units_20260701.pdf" target="_blank" rel="noopener">Trump Speech Learning Units</a></h3></div>
+      <div class="news-type">Learning units</div>
+      <div class="news-date">July 1, 2026</div>
+      <div class="news-title"><a class="entry-title-link" href="news_reports/trump_speech_20260701/sectioned_learning_units/trump_speech_learning_units_20260701.pdf" target="_blank" rel="noopener">Trump Speech Learning Units</a></div>
       <div class="entry-reading"><strong>未读</strong><time></time></div>
       <div class="entry-editing"><strong>未编辑</strong><time></time></div>
       <div class="entry-action entry-editor"><a class="primary" href="news_reports/trump_speech_20260701/sectioned_learning_units/trump_speech_learning_units_20260701.pdf" target="_blank" rel="noopener">Open report</a></div>
       <div class="entry-action entry-pdf"><span class="action-empty" aria-label="暂无 PDF">—</span></div>
-    </article><article class="entry" data-search="salute to america speech study guide · july 4, 2026 news report transcript study english trump_250_speech_20260704/trump_salute_to_america_2026_study_guide.pdf" data-editor-path="news_reports/trump_250_speech_20260704/trump_salute_to_america_2026_study_guide.pdf">
+    </article><article class="entry news-entry" data-search="salute to america speech study guide july 4, 2026 news report transcript study english trump_250_speech_20260704/trump_salute_to_america_2026_study_guide.pdf" data-editor-path="news_reports/trump_250_speech_20260704/trump_salute_to_america_2026_study_guide.pdf">
       <div class="entry-number">235</div>
-      <div class="entry-copy"><span>Study guide · July 4, 2026</span><h3><a class="entry-title-link" href="news_reports/trump_250_speech_20260704/trump_salute_to_america_2026_study_guide.pdf" target="_blank" rel="noopener">Salute to America Speech</a></h3></div>
+      <div class="news-type">Study guide</div>
+      <div class="news-date">July 4, 2026</div>
+      <div class="news-title"><a class="entry-title-link" href="news_reports/trump_250_speech_20260704/trump_salute_to_america_2026_study_guide.pdf" target="_blank" rel="noopener">Salute to America Speech</a></div>
       <div class="entry-reading"><strong>未读</strong><time></time></div>
       <div class="entry-editing"><strong>未编辑</strong><time></time></div>
       <div class="entry-action entry-editor"><a class="primary" href="news_reports/trump_250_speech_20260704/trump_salute_to_america_2026_study_guide.pdf" target="_blank" rel="noopener">Open report</a></div>
       <div class="entry-action entry-pdf"><span class="action-empty" aria-label="暂无 PDF">—</span></div>
-    </article><article class="entry" data-search="trump press conference study report · july 8, 2026 news report transcript study english trump_at_press_conference_20260708/trump_press_conference_20260708_study_report.pdf" data-editor-path="news_reports/trump_at_press_conference_20260708/trump_press_conference_20260708_study_report.pdf">
+    </article><article class="entry news-entry" data-search="trump press conference study report july 8, 2026 news report transcript study english trump_at_press_conference_20260708/trump_press_conference_20260708_study_report.pdf" data-editor-path="news_reports/trump_at_press_conference_20260708/trump_press_conference_20260708_study_report.pdf">
       <div class="entry-number">236</div>
-      <div class="entry-copy"><span>Study report · July 8, 2026</span><h3><a class="entry-title-link" href="news_reports/trump_at_press_conference_20260708/trump_press_conference_20260708_study_report.pdf" target="_blank" rel="noopener">Trump Press Conference</a></h3></div>
+      <div class="news-type">Study report</div>
+      <div class="news-date">July 8, 2026</div>
+      <div class="news-title"><a class="entry-title-link" href="news_reports/trump_at_press_conference_20260708/trump_press_conference_20260708_study_report.pdf" target="_blank" rel="noopener">Trump Press Conference</a></div>
       <div class="entry-reading"><strong>未读</strong><time></time></div>
       <div class="entry-editing"><strong>未编辑</strong><time></time></div>
       <div class="entry-action entry-editor"><a class="primary" href="news_reports/trump_at_press_conference_20260708/trump_press_conference_20260708_study_report.pdf" target="_blank" rel="noopener">Open report</a></div>
       <div class="entry-action entry-pdf"><span class="action-empty" aria-label="暂无 PDF">—</span></div>
-    </article><article class="entry" data-search="trump press conference 5,000-word reading edition · july 8, 2026 news report transcript study english trump_at_press_conference_20260708/trump_press_conference_20260708_short_5000.pdf" data-editor-path="news_reports/trump_at_press_conference_20260708/trump_press_conference_20260708_short_5000.pdf">
+    </article><article class="entry news-entry" data-search="trump press conference reading edition july 8, 2026 news report transcript study english trump_at_press_conference_20260708/trump_press_conference_20260708_short_5000.pdf" data-editor-path="news_reports/trump_at_press_conference_20260708/trump_press_conference_20260708_short_5000.pdf">
       <div class="entry-number">237</div>
-      <div class="entry-copy"><span>5,000-word reading edition · July 8, 2026</span><h3><a class="entry-title-link" href="news_reports/trump_at_press_conference_20260708/trump_press_conference_20260708_short_5000.pdf" target="_blank" rel="noopener">Trump Press Conference</a></h3></div>
+      <div class="news-type">Reading edition</div>
+      <div class="news-date">July 8, 2026</div>
+      <div class="news-title"><a class="entry-title-link" href="news_reports/trump_at_press_conference_20260708/trump_press_conference_20260708_short_5000.pdf" target="_blank" rel="noopener">Trump Press Conference</a></div>
       <div class="entry-reading"><strong>未读</strong><time></time></div>
       <div class="entry-editing"><strong>未编辑</strong><time></time></div>
       <div class="entry-action entry-editor"><a class="primary" href="news_reports/trump_at_press_conference_20260708/trump_press_conference_20260708_short_5000.pdf" target="_blank" rel="noopener">Open report</a></div>
       <div class="entry-action entry-pdf"><span class="action-empty" aria-label="暂无 PDF">—</span></div>
-    </article><article class="entry" data-search="trump press conference full transcript · july 8, 2026 news report transcript study english trump_at_press_conference_20260708/trump_press_conference_20260708_full_transcript.pdf" data-editor-path="news_reports/trump_at_press_conference_20260708/trump_press_conference_20260708_full_transcript.pdf">
+    </article><article class="entry news-entry" data-search="trump press conference full transcript july 8, 2026 news report transcript study english trump_at_press_conference_20260708/trump_press_conference_20260708_full_transcript.pdf" data-editor-path="news_reports/trump_at_press_conference_20260708/trump_press_conference_20260708_full_transcript.pdf">
       <div class="entry-number">238</div>
-      <div class="entry-copy"><span>Full transcript · July 8, 2026</span><h3><a class="entry-title-link" href="news_reports/trump_at_press_conference_20260708/trump_press_conference_20260708_full_transcript.pdf" target="_blank" rel="noopener">Trump Press Conference</a></h3></div>
+      <div class="news-type">Full transcript</div>
+      <div class="news-date">July 8, 2026</div>
+      <div class="news-title"><a class="entry-title-link" href="news_reports/trump_at_press_conference_20260708/trump_press_conference_20260708_full_transcript.pdf" target="_blank" rel="noopener">Trump Press Conference</a></div>
       <div class="entry-reading"><strong>未读</strong><time></time></div>
       <div class="entry-editing"><strong>未编辑</strong><time></time></div>
       <div class="entry-action entry-editor"><a class="primary" href="news_reports/trump_at_press_conference_20260708/trump_press_conference_20260708_full_transcript.pdf" target="_blank" rel="noopener">Open report</a></div>
       <div class="entry-action entry-pdf"><span class="action-empty" aria-label="暂无 PDF">—</span></div>
-    </article><article class="entry" data-search="trump and iran live report timed study report · july 11, 2026 news report transcript study english trump_iran_live_pdf_20260711/trump_iran_live_study_report_time_under_subtitle.pdf" data-editor-path="news_reports/trump_iran_live_pdf_20260711/trump_iran_live_study_report_time_under_subtitle.pdf">
+    </article><article class="entry news-entry" data-search="trump and iran live report timed study report july 11, 2026 news report transcript study english trump_iran_live_pdf_20260711/trump_iran_live_study_report_time_under_subtitle.pdf" data-editor-path="news_reports/trump_iran_live_pdf_20260711/trump_iran_live_study_report_time_under_subtitle.pdf">
       <div class="entry-number">239</div>
-      <div class="entry-copy"><span>Timed study report · July 11, 2026</span><h3><a class="entry-title-link" href="news_reports/trump_iran_live_pdf_20260711/trump_iran_live_study_report_time_under_subtitle.pdf" target="_blank" rel="noopener">Trump and Iran Live Report</a></h3></div>
+      <div class="news-type">Timed study report</div>
+      <div class="news-date">July 11, 2026</div>
+      <div class="news-title"><a class="entry-title-link" href="news_reports/trump_iran_live_pdf_20260711/trump_iran_live_study_report_time_under_subtitle.pdf" target="_blank" rel="noopener">Trump and Iran Live Report</a></div>
       <div class="entry-reading"><strong>未读</strong><time></time></div>
       <div class="entry-editing"><strong>未编辑</strong><time></time></div>
       <div class="entry-action entry-editor"><a class="primary" href="news_reports/trump_iran_live_pdf_20260711/trump_iran_live_study_report_time_under_subtitle.pdf" target="_blank" rel="noopener">Open report</a></div>
       <div class="entry-action entry-pdf"><span class="action-empty" aria-label="暂无 PDF">—</span></div>
-    </article><article class="entry" data-search="recent trump news english study edition · july 12, 2026 news report transcript study english trump_recent_news_20260712/trump_recent_news_english_study_20260712.pdf" data-editor-path="news_reports/trump_recent_news_20260712/trump_recent_news_english_study_20260712.pdf">
+    </article><article class="entry news-entry" data-search="recent trump news study edition july 12, 2026 news report transcript study english trump_recent_news_20260712/trump_recent_news_english_study_20260712.pdf" data-editor-path="news_reports/trump_recent_news_20260712/trump_recent_news_english_study_20260712.pdf">
       <div class="entry-number">240</div>
-      <div class="entry-copy"><span>English study edition · July 12, 2026</span><h3><a class="entry-title-link" href="news_reports/trump_recent_news_20260712/trump_recent_news_english_study_20260712.pdf" target="_blank" rel="noopener">Recent Trump News</a></h3></div>
+      <div class="news-type">Study edition</div>
+      <div class="news-date">July 12, 2026</div>
+      <div class="news-title"><a class="entry-title-link" href="news_reports/trump_recent_news_20260712/trump_recent_news_english_study_20260712.pdf" target="_blank" rel="noopener">Recent Trump News</a></div>
       <div class="entry-reading"><strong>未读</strong><time></time></div>
       <div class="entry-editing"><strong>未编辑</strong><time></time></div>
       <div class="entry-action entry-editor"><a class="primary" href="news_reports/trump_recent_news_20260712/trump_recent_news_english_study_20260712.pdf" target="_blank" rel="noopener">Open report</a></div>
@@ -2744,7 +2779,7 @@ html[data-workspace-skin="reading"] .entry{grid-template-columns:54px minmax(0,1
 </section>
   <p class="empty" id="emptyState">没有找到匹配的阅读材料。</p>
 </main>
-<footer><strong>教育用途说明：</strong>本站仅供个人阅读、校读与学习，不隶属于所引用的原文来源网站；原始资料的权利归其相应权利人所有。<br><span>Mobile Reader v1.14.0 · &copy; 2026 Ruixing. All rights reserved.</span><br>目录由 <code>practice/build_index.py</code> 自动生成 · 新增编辑器后重新运行即可更新</footer>
+<footer><strong>教育用途说明：</strong>本站仅供个人阅读、校读与学习，不隶属于所引用的原文来源网站；原始资料的权利归其相应权利人所有。<br><span>Mobile Reader v1.14.1 · &copy; 2026 Ruixing. All rights reserved.</span><br>目录由 <code>practice/build_index.py</code> 自动生成 · 新增编辑器后重新运行即可更新</footer>
 <script>
 const search=document.getElementById('catalogSearch'),empty=document.getElementById('emptyState');
 const readingHistoryKey='reading-workspace-history-v1',editingHistoryKey='reading-workspace-editing-history-v1';

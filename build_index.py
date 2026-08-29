@@ -13,7 +13,7 @@ import re
 
 BASE_DIR = Path(__file__).resolve().parent
 OUTPUT = BASE_DIR / "index.html"
-MOBILE_READER_VERSION = "1.14.0"
+MOBILE_READER_VERSION = "1.14.1"
 COPYRIGHT_YEAR = 2026
 COPYRIGHT_HOLDER = "Ruixing"
 
@@ -223,33 +223,35 @@ def collect_entries() -> dict[str, list[dict[str, str | None]]]:
             }
         )
     news_items = [
-        ("cuba_crisis/cuba_crisis_report_20260520.pdf", "The Cuban Missile Crisis", "Historical report · May 20, 2026"),
-        ("putin_visit_to_china_3/putin_china_visit_report_20260520.pdf", "Putin’s Visit to China", "News report · May 20, 2026"),
-        ("trump_visit_to_china/trump_china_visit_report.pdf", "Trump’s Visit to China", "News report · May 9, 2026"),
-        ("trump_visit_to_china_2/trump_china_visit_report_20260513.pdf", "Trump’s Visit to China", "News report · May 13, 2026"),
-        ("trump_visit_to_china_3/trump_china_visit_report_20260514.pdf", "Trump’s Visit to China", "News report · May 14, 2026"),
-        ("trump_visit_to_china_4/trump_china_visit_report_20260517.pdf", "Trump’s Visit to China", "News report · May 17, 2026"),
-        ("white_house_dinner_security_incident/report.pdf", "White House Dinner Security Incident", "News report"),
-        ("trump_speech_20260701/trump_speech_reading_packet_20260701.pdf", "Trump Speech Reading Packet", "English reading packet · July 1, 2026"),
-        ("trump_speech_20260701/sectioned_learning_units/trump_speech_learning_units_20260701.pdf", "Trump Speech Learning Units", "Sectioned study edition · July 1, 2026"),
-        ("trump_250_speech_20260704/trump_salute_to_america_2026_study_guide.pdf", "Salute to America Speech", "Study guide · July 4, 2026"),
-        ("trump_at_press_conference_20260708/trump_press_conference_20260708_study_report.pdf", "Trump Press Conference", "Study report · July 8, 2026"),
-        ("trump_at_press_conference_20260708/trump_press_conference_20260708_short_5000.pdf", "Trump Press Conference", "5,000-word reading edition · July 8, 2026"),
-        ("trump_at_press_conference_20260708/trump_press_conference_20260708_full_transcript.pdf", "Trump Press Conference", "Full transcript · July 8, 2026"),
-        ("trump_iran_live_pdf_20260711/trump_iran_live_study_report_time_under_subtitle.pdf", "Trump and Iran Live Report", "Timed study report · July 11, 2026"),
-        ("trump_recent_news_20260712/trump_recent_news_english_study_20260712.pdf", "Recent Trump News", "English study edition · July 12, 2026"),
+        ("cuba_crisis/cuba_crisis_report_20260520.pdf", "Historical report", "May 20, 2026", "The Cuban Missile Crisis"),
+        ("putin_visit_to_china_3/putin_china_visit_report_20260520.pdf", "News report", "May 20, 2026", "Putin’s Visit to China"),
+        ("trump_visit_to_china/trump_china_visit_report.pdf", "News report", "May 9, 2026", "Trump’s Visit to China"),
+        ("trump_visit_to_china_2/trump_china_visit_report_20260513.pdf", "News report", "May 13, 2026", "Trump’s Visit to China"),
+        ("trump_visit_to_china_3/trump_china_visit_report_20260514.pdf", "News report", "May 14, 2026", "Trump’s Visit to China"),
+        ("trump_visit_to_china_4/trump_china_visit_report_20260517.pdf", "News report", "May 17, 2026", "Trump’s Visit to China"),
+        ("white_house_dinner_security_incident/report.pdf", "News report", "Undated", "White House Dinner Security Incident"),
+        ("trump_speech_20260701/trump_speech_reading_packet_20260701.pdf", "Reading packet", "July 1, 2026", "Trump Speech Reading Packet"),
+        ("trump_speech_20260701/sectioned_learning_units/trump_speech_learning_units_20260701.pdf", "Learning units", "July 1, 2026", "Trump Speech Learning Units"),
+        ("trump_250_speech_20260704/trump_salute_to_america_2026_study_guide.pdf", "Study guide", "July 4, 2026", "Salute to America Speech"),
+        ("trump_at_press_conference_20260708/trump_press_conference_20260708_study_report.pdf", "Study report", "July 8, 2026", "Trump Press Conference"),
+        ("trump_at_press_conference_20260708/trump_press_conference_20260708_short_5000.pdf", "Reading edition", "July 8, 2026", "Trump Press Conference"),
+        ("trump_at_press_conference_20260708/trump_press_conference_20260708_full_transcript.pdf", "Full transcript", "July 8, 2026", "Trump Press Conference"),
+        ("trump_iran_live_pdf_20260711/trump_iran_live_study_report_time_under_subtitle.pdf", "Timed study report", "July 11, 2026", "Trump and Iran Live Report"),
+        ("trump_recent_news_20260712/trump_recent_news_english_study_20260712.pdf", "Study edition", "July 12, 2026", "Recent Trump News"),
     ]
-    for relative, title, context in news_items:
+    for relative, report_type, report_date, title in news_items:
         path = BASE_DIR / "news_reports" / relative
         if not path.exists():
             continue
         href = path.relative_to(BASE_DIR).as_posix()
         grouped["news_reports"].append({
             "title": title,
-            "context": context,
+            "context": f"{report_type} · {report_date}",
+            "report_type": report_type,
+            "report_date": report_date,
             "editor": href,
             "pdf": None,
-            "search": f"{title} {context} news report transcript study English {relative}",
+            "search": f"{title} {report_type} {report_date} news report transcript study English {relative}",
             "action_label": "Open report",
             "direct_link": "yes",
         })
@@ -294,6 +296,17 @@ def entry_card(entry: dict[str, str | None], number: int) -> str:
         if pdf
         else '<span class="action-empty" aria-label="暂无 PDF">—</span>'
     )
+    if entry.get("report_type"):
+        return f'''<article class="entry news-entry" data-search="{escape(str(entry['search']).casefold(), quote=True)}" data-editor-path="{escape(str(entry['editor']), quote=True)}">
+      <div class="entry-number">{number:02d}</div>
+      <div class="news-type">{escape(str(entry['report_type']))}</div>
+      <div class="news-date">{escape(str(entry['report_date']))}</div>
+      <div class="news-title"><a class="entry-title-link" href="{escape(href, quote=True)}" target="_blank" rel="noopener">{escape(str(entry['title']))}</a></div>
+      <div class="entry-reading"><strong>未读</strong><time></time></div>
+      <div class="entry-editing"><strong>未编辑</strong><time></time></div>
+      <div class="entry-action entry-editor"><a class="primary" href="{escape(href, quote=True)}" target="_blank" rel="noopener">{escape(action_label)}</a></div>
+      <div class="entry-action entry-pdf">{pdf_link}</div>
+    </article>'''
     return f'''<article class="entry" data-search="{escape(str(entry['search']).casefold(), quote=True)}" data-editor-path="{escape(str(entry['editor']), quote=True)}">
       <div class="entry-number">{number:02d}</div>
       <div class="entry-copy"><span>{escape(str(entry['context']))}</span><h3><a class="entry-title-link" href="{escape(href, quote=True)}" target="_blank" rel="noopener">{escape(str(entry['title']))}</a></h3></div>
@@ -416,7 +429,8 @@ def build_html(grouped: dict[str, list[dict[str, str | None]]]) -> str:
             for entry in entries:
                 running_number += 1
                 cards.append(entry_card(entry, running_number))
-            cards_html = "".join(cards)
+            heading = '<div class="news-columns" aria-hidden="true"><span>No.</span><span>Type</span><span>Date</span><span>Title</span><span>Reading</span><span>Editing</span><span>Report</span><span></span></div>' if key == "news_reports" else ""
+            cards_html = heading + "".join(cards)
         sections.append(f'''<section class="collection" id="{key}" data-collection>
   <header class="collection-header">
     <button class="collection-toggle" type="button" aria-expanded="true" aria-controls="{key}-entries"><span class="collection-toggle-copy"><span class="collection-eyebrow">{escape(collection.eyebrow)}</span><span class="collection-title">{escape(collection.title)}</span><span class="collection-description">{escape(collection.description)}</span></span><i aria-hidden="true">▾</i></button>
@@ -495,7 +509,12 @@ html[data-workspace-skin="reading"] .entries{{box-shadow:none}}html[data-workspa
 .entry-reading,.entry-editing{{align-self:stretch;display:flex;flex-direction:column;justify-content:center;padding:6px 12px;border-right:1px solid var(--line);color:var(--muted);font-size:11px;line-height:1.35}}.entry-reading strong,.entry-editing strong{{color:#5f6368;font-size:12px}}.entry-reading.read strong,.entry-editing.edited strong{{color:#137333}}.entry-reading time,.entry-editing time{{margin-top:2px;white-space:nowrap}}
 .entry-action{{display:flex;align-self:stretch;align-items:center;justify-content:center;padding:6px 8px;border-right:1px solid var(--line)}}.entry-pdf{{border-right:0}}.entry-action a{{padding:6px 10px;border-radius:16px;text-decoration:none;font-size:11px;font-weight:700;white-space:nowrap}}.entry-action .primary{{background:#188038;color:#fff}}.entry-action .primary:hover{{background:#137333}}.entry-action .secondary{{border:1px solid var(--line);background:#fff}}.entry-action .secondary:hover{{border-color:var(--blue);color:var(--blue)}}.action-empty{{color:#9aa0a6}}
 html[data-workspace-skin="reading"] .entry{{grid-template-columns:54px minmax(0,1fr) 145px 145px 132px 72px}}html[data-workspace-skin="reading"] .entry-action{{padding:0;border-right:1px solid var(--line)}}html[data-workspace-skin="reading"] .entry-pdf{{border-right:0}}html[data-workspace-skin="reading"] .entry-action a{{padding:8px 11px;border-radius:6px;font-size:12px}}html[data-workspace-skin="reading"] .entry-action .primary{{background:var(--red)}}
+.news-columns,.news-entry,html[data-workspace-skin="reading"] .news-columns,html[data-workspace-skin="reading"] .news-entry{{grid-template-columns:52px 130px 118px minmax(250px,1fr) 112px 112px 140px 72px}}
+.news-columns{{display:grid;min-height:34px;border-bottom:1px solid var(--line);background:#f1f3f4;color:#5f6368;font-size:10px;font-weight:700;letter-spacing:.04em;text-transform:uppercase}}.news-columns span{{display:flex;align-items:center;padding:6px 10px;border-right:1px solid var(--line)}}.news-columns span:last-child{{border-right:0}}
+.news-type,.news-date,.news-title{{align-self:stretch;display:flex;align-items:center;padding:8px 12px;border-right:1px solid var(--line)}}.news-type{{color:#137333;font-size:11px;font-weight:700}}.news-date{{color:var(--muted);font-size:11px;white-space:nowrap}}.news-title{{font:500 14px/1.35 Arial,"PingFang SC",sans-serif}}
+html[data-workspace-skin="reading"] .news-columns{{background:#eee8dc;color:var(--muted)}}html[data-workspace-skin="reading"] .news-entry{{gap:0;min-height:58px;padding:0}}html[data-workspace-skin="reading"] .news-type{{color:var(--blue)}}html[data-workspace-skin="reading"] .news-title{{font:650 17px/1.35 "Songti SC","STSong",serif}}
 @media(max-width:760px){{.entry,html[data-workspace-skin="reading"] .entry{{grid-template-columns:38px minmax(180px,1fr) 125px 125px 126px 62px}}.entry-copy{{border-right:1px solid var(--line)}}.entry-reading,.entry-editing{{padding:5px 7px}}.entry-action{{padding:5px 6px}}}}
+@media(max-width:760px){{#news_reports .entries{{overflow-x:auto}}.news-columns,.news-entry,html[data-workspace-skin="reading"] .news-columns,html[data-workspace-skin="reading"] .news-entry{{min-width:900px;grid-template-columns:42px 116px 106px minmax(220px,1fr) 105px 105px 126px 58px}}}}
 @media(max-width:760px){{.book-header{{align-items:stretch;flex-direction:column;padding-bottom:10px;gap:7px}}.book-tool{{margin-left:0;align-self:flex-start}}.book-offline-tools{{width:100%}}.book-offline-tools button{{flex:1;min-height:38px}}.contents-toggle{{grid-template-columns:minmax(0,1fr) auto}}.contents-toggle i{{display:none}}}}
 @media print{{.entry-action{{display:none}}}}
 </style>
