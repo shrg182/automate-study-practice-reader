@@ -1,0 +1,23 @@
+{
+  "schema": "personal-writing-v1",
+  "id": "4a56f4e1-0952-4bc7-bca1-974dfece57f0",
+  "savedAt": "2026-08-29T17:51:15.166Z",
+  "type": "Schedule",
+  "date": "2026-08-29",
+  "title": "Travel to Beijing",
+  "details": {
+    "goal": "Beijing",
+    "range": "Sept 08, 2026 - Oct 03, 2026"
+  },
+  "bodyHTML": "<p>Describe the purpose of this schedule and any important constraints.</p><p>There is a limit of 30 day staying restriction. Air tickets are booked for both ways with fixed dates.</p><p><br></p>",
+  "schedule": [
+    {
+      "time": "09:00",
+      "item": "",
+      "priority": "Normal",
+      "status": "Planned"
+    }
+  ],
+  "notes": "",
+  "splitPercent": 50
+}

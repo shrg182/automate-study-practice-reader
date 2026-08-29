@@ -16,6 +16,7 @@ a{color:inherit}.masthead{background:#27251f;color:#fff}.masthead-inner{width:mi
 .category-group{margin-top:24px;scroll-margin-top:72px}.category-header{border:1px solid var(--line);border-radius:8px;background:#eef3f0}.category-header button{display:grid;width:100%;grid-template-columns:minmax(0,1fr) auto 22px;gap:14px;align-items:center;padding:12px 15px;border:0;background:transparent;color:inherit;text-align:left;cursor:pointer}.category-header span{display:grid;gap:3px}.category-header strong{font-size:17px}.category-header small,.category-header b{color:var(--muted);font-size:11px}.category-header i{font-style:normal;transition:transform .2s}.category-group.collapsed .category-header i{transform:rotate(-90deg)}.category-group.collapsed .category-collections{display:none}.category-collections>.collection:first-child{margin-top:10px}
 .collection{margin-top:34px;scroll-margin-top:90px}.collection-header{display:flex;justify-content:space-between;gap:25px;align-items:end;padding:0 3px 15px;border-bottom:2px solid var(--ink)}.collection-eyebrow{margin:0 0 6px!important;color:var(--red)!important;font-size:11px!important;font-weight:800;letter-spacing:.16em}.collection-title{margin:0!important;color:inherit!important;font:700 28px/1.25 "Songti SC","STSong",serif!important}.collection-description{display:block;margin-top:7px;color:var(--muted);font-size:13px}.collection-header strong{white-space:nowrap;color:var(--muted);font-size:13px}.collection-toggle{display:flex;min-width:0;flex:1;align-items:center;justify-content:space-between;gap:16px;padding:0;border:0;background:transparent;color:inherit;text-align:left;cursor:pointer}.collection-toggle-copy{display:block;min-width:0}.collection-toggle i{font-style:normal;font-size:18px;transition:transform .2s}.collection.collapsed .collection-toggle i{transform:rotate(-90deg)}.collection.collapsed .entries,.collection.collapsed .collection-resources{display:none}
 .collection-meta{display:flex;gap:10px;align-items:center}.collection-tool,.collection-resource{padding:7px 10px;border:1px solid var(--line);border-radius:6px;background:var(--panel);color:var(--red);text-decoration:none;font-size:12px;font-weight:700}.collection-resources{padding:8px 12px;border:1px solid var(--line);border-bottom:0;background:#fff}
+.collection-description,.collection-meta,.collection-resources,.entries{display:none!important}.collection-header{border-bottom:1px solid var(--line)!important}.collection-toggle{cursor:default}.collection-toggle i{display:none}
 .entries{background:var(--panel);border:1px solid var(--line);border-top:0}.entry{display:grid;grid-template-columns:54px minmax(0,1fr) auto;gap:16px;align-items:center;min-height:84px;padding:13px 17px;border-bottom:1px solid #e6e0d5}.entry:last-child{border-bottom:0}.entry:hover{background:#f7f1e6}.entry-number{color:#a49b8c;font:600 12px/1 Georgia,serif}.entry-copy span{color:var(--blue);font-size:11px;font-weight:750;letter-spacing:.06em}.entry-copy h3{margin:5px 0 0;font:650 18px/1.35 "Songti SC","STSong",serif}
 .entry-actions{display:flex;gap:7px}.entry-actions a{padding:8px 11px;border-radius:6px;text-decoration:none;font-size:12px;font-weight:700}.entry-actions .primary{background:var(--red);color:#fff}.entry-actions .primary:hover{background:#692a25}.entry-actions .secondary{border:1px solid var(--line);background:#fff}.entry-actions .secondary:hover{border-color:var(--blue);color:var(--blue)}
 .hierarchical-entries{border:0;background:transparent;box-shadow:none}.book-library{display:grid;gap:12px}.book-group{border:1px solid var(--line);border-radius:8px;overflow:hidden;background:#fff;box-shadow:0 1px 2px #3c40431a}.book-state,.contents-state{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);clip-path:inset(50%);white-space:nowrap}.book-header{display:flex;align-items:center;gap:12px;padding:0 12px;background:#f8f9fa}.book-toggle{display:flex;min-width:0;flex:1;align-items:center;justify-content:space-between;padding:13px 0;border:0;background:transparent;text-align:left;cursor:pointer;touch-action:manipulation}.book-toggle>span,.contents-toggle>span{display:grid;gap:3px}.book-toggle strong{font-size:15px;font-weight:600}.book-toggle small{color:var(--muted);font-size:11px}.book-level{color:#137333;font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase}.book-toggle i,.contents-toggle i{font-style:normal;transition:transform .2s}.book-tool{padding:7px 11px;border:1px solid #c4d8f3;border-radius:18px;background:#e8f0fe;color:#174ea6;text-decoration:none;font-size:11px;font-weight:700;white-space:nowrap}.book-contents{border-top:1px solid var(--line)}.contents-toggle{display:grid;width:100%;grid-template-columns:minmax(0,1fr) auto 20px;gap:14px;align-items:center;padding:10px 16px;border:0;border-bottom:1px solid var(--line);background:#f1f3f4;text-align:left;cursor:pointer;touch-action:manipulation}.contents-toggle strong{font-size:13px}.contents-toggle b{color:var(--muted);font-size:11px}.articles-label{display:flex;justify-content:space-between;padding:8px 16px;border-bottom:1px solid var(--line);color:#174ea6;font-size:10px;font-weight:700;letter-spacing:.06em}.articles-label small{color:var(--muted);font-weight:400;letter-spacing:0}.book-state:not(:checked)~.book-contents,.contents-state:not(:checked)~.selected-articles{display:none}.book-state:not(:checked)~.book-header .book-toggle i,.contents-state:not(:checked)+.contents-toggle i{transform:rotate(-90deg)}.book-state:focus-visible~.book-header .book-toggle,.contents-state:focus-visible+.contents-toggle{outline:2px solid #1a73e8;outline-offset:-2px}.selected-articles .entry:last-child{border-bottom:0}
@@ -81,7 +82,7 @@ html[data-workspace-skin="reading"] .news-columns{background:#eee8dc;color:var(-
 <script src="workspace_skin.js"></script>
 </head>
 <body>
-<header class="masthead"><div class="masthead-inner"><div><p class="kicker">Reading workspace</p><h1>校读书斋</h1><p class="lede">文章、古籍与课程材料的阅读编辑器目录。搜索篇名，或按系列进入清稿、注音、脚注、按语与札记工作区。</p></div><div class="count"><b>358</b><span>个阅读编辑器</span></div><nav class="masthead-books" aria-label="书目分组"><div class="collection-nav"><button type="button" class="category-chip active" data-category-filter="all"><span>All Collections</span><b>358</b></button><button type="button" class="category-chip" data-category-filter="chinese_classics"><span>Chinese Classics &amp; Literature</span><b>70</b></button><button type="button" class="category-chip" data-category-filter="history_politics"><span>History &amp; Political Studies</span><b>194</b></button><button type="button" class="category-chip" data-category-filter="courses"><span>Courses &amp; Technical Learning</span><b>51</b></button><button type="button" class="category-chip" data-category-filter="russian_literature"><span>Russian Literature</span><b>24</b></button><button type="button" class="category-chip" data-category-filter="news"><span>News &amp; Current Affairs</span><b>15</b></button><button type="button" class="category-chip" data-category-filter="writing"><span>Writing Workspaces</span><b>4</b></button></div></nav></div></header>
+<header class="masthead"><div class="masthead-inner"><div><p class="kicker">Reading workspace</p><h1>校读书斋</h1><p class="lede">文章、古籍与课程材料的阅读编辑器目录。搜索篇名，或按系列进入清稿、注音、脚注、按语与札记工作区。</p></div><div class="count"><b>360</b><span>个阅读编辑器</span></div><nav class="masthead-books" aria-label="书目分组"><div class="collection-nav"><button type="button" class="category-chip active" data-category-filter="all"><span>All Collections</span><b>360</b></button><button type="button" class="category-chip" data-category-filter="chinese_classics"><span>Chinese Classics &amp; Literature</span><b>70</b></button><button type="button" class="category-chip" data-category-filter="history_politics"><span>History &amp; Political Studies</span><b>194</b></button><button type="button" class="category-chip" data-category-filter="courses"><span>Courses &amp; Technical Learning</span><b>51</b></button><button type="button" class="category-chip" data-category-filter="russian_literature"><span>Russian Literature</span><b>24</b></button><button type="button" class="category-chip" data-category-filter="news"><span>News &amp; Current Affairs</span><b>15</b></button><button type="button" class="category-chip" data-category-filter="writing"><span>Writing Workspaces</span><b>6</b></button></div></nav></div></header>
 <main class="shell">
   <div class="controls"><label class="search"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></svg><input id="catalogSearch" type="search" placeholder="搜索文章、篇章或系列…" autocomplete="off"></label></div>
   <section class="category-group" data-category-group="chinese_classics">
@@ -2778,22 +2779,36 @@ html[data-workspace-skin="reading"] .news-columns{background:#eee8dc;color:var(-
     </article></div>
 </section></div>
 </section><section class="category-group" data-category-group="writing">
-  <header class="category-header"><button type="button" data-category-toggle aria-expanded="true"><span><strong>Writing Workspaces</strong><small>Original articles and private personal writing</small></span><b>4 entries</b><i aria-hidden="true">▾</i></button></header>
+  <header class="category-header"><button type="button" data-category-toggle aria-expanded="true"><span><strong>Writing Workspaces</strong><small>Original articles and private personal writing</small></span><b>6 entries</b><i aria-hidden="true">▾</i></button></header>
   <div class="category-collections"><section class="collection" id="reader_articles" data-collection data-category="writing">
   <header class="collection-header">
     <button class="collection-toggle" type="button" aria-expanded="true" aria-controls="reader_articles-entries"><span class="collection-toggle-copy"><span class="collection-eyebrow">Personal authoring workspace</span><span class="collection-title">Reader Articles</span><span class="collection-description">Write, annotate, preview, back up, and export original articles</span></span><i aria-hidden="true">▾</i></button>
-    <div class="collection-meta"><strong>2 篇</strong></div>
+    <div class="collection-meta"><strong>4 篇</strong></div>
   </header>
 
-  <div class="entries" id="reader_articles-entries"><article class="entry" data-search="new reader article start write author publication blank page" data-editor-path="reader_articles/index.html?new=1">
+  <div class="entries" id="reader_articles-entries"><article class="entry" data-search="ten global issues world recent news report august 29 2026 current affairs iran ukraine canada ai climate" data-editor-path="reader_articles/entries/ten_global_issues_august_2026/editor.html">
       <div class="entry-number">355</div>
+      <div class="entry-copy"><span>News report · August 29, 2026 · Edited current-affairs overview</span><h3><a class="entry-title-link" href="reader_articles/entries/ten_global_issues_august_2026/editor.html" target="_blank" rel="noopener">Ten Global Issues to Watch</a></h3></div>
+      <div class="entry-reading"><strong>未读</strong><time></time></div>
+      <div class="entry-editing"><strong>未编辑</strong><time></time></div>
+      <div class="entry-action entry-editor"><a class="primary" href="reader_articles/entries/ten_global_issues_august_2026/editor.html" target="_blank" rel="noopener">Read article</a></div>
+      <div class="entry-action entry-pdf"><span class="action-empty" aria-label="暂无 PDF">—</span></div>
+    </article><article class="entry" data-search="russia ukraine war developments august 29 2026 donetsk kostiantynivka drones logistics diplomacy" data-editor-path="reader_articles/entries/russia_ukraine_war_august_29_2026/editor.html">
+      <div class="entry-number">356</div>
+      <div class="entry-copy"><span>Article · August 29, 2026 · Edited current-affairs overview</span><h3><a class="entry-title-link" href="reader_articles/entries/russia_ukraine_war_august_29_2026/editor.html" target="_blank" rel="noopener">The Russia–Ukraine War: Developments to Watch</a></h3></div>
+      <div class="entry-reading"><strong>未读</strong><time></time></div>
+      <div class="entry-editing"><strong>未编辑</strong><time></time></div>
+      <div class="entry-action entry-editor"><a class="primary" href="reader_articles/entries/russia_ukraine_war_august_29_2026/editor.html" target="_blank" rel="noopener">Read article</a></div>
+      <div class="entry-action entry-pdf"><span class="action-empty" aria-label="暂无 PDF">—</span></div>
+    </article><article class="entry" data-search="new reader article start write author publication blank page" data-editor-path="reader_articles/index.html?new=1">
+      <div class="entry-number">357</div>
       <div class="entry-copy"><span>Start a new publication-style article with a blank page</span><h3><a class="entry-title-link" href="reader_articles/index.html?new=1" target="_blank" rel="noopener">New Article</a></h3></div>
       <div class="entry-reading"><strong>未读</strong><time></time></div>
       <div class="entry-editing"><strong>未编辑</strong><time></time></div>
       <div class="entry-action entry-editor"><a class="primary" href="reader_articles/index.html?new=1" target="_blank" rel="noopener">Start article</a></div>
       <div class="entry-action entry-pdf"><span class="action-empty" aria-label="暂无 PDF">—</span></div>
     </article><article class="entry" data-search="reader articles studio open saved browser draft write edit two pane pdf backup" data-editor-path="reader_articles/index.html">
-      <div class="entry-number">356</div>
+      <div class="entry-number">358</div>
       <div class="entry-copy"><span>Open the workspace; a browser draft is restored automatically</span><h3><a class="entry-title-link" href="reader_articles/index.html" target="_blank" rel="noopener">Open Article Studio</a></h3></div>
       <div class="entry-reading"><strong>未读</strong><time></time></div>
       <div class="entry-editing"><strong>未编辑</strong><time></time></div>
@@ -2807,14 +2822,14 @@ html[data-workspace-skin="reading"] .news-columns{background:#eee8dc;color:var(-
   </header>
 
   <div class="entries" id="personal_writings-entries"><article class="entry" data-search="new personal writing diary schedule journal reflection reading notes meeting notes" data-editor-path="personal_writings/index.html?new=1">
-      <div class="entry-number">357</div>
+      <div class="entry-number">359</div>
       <div class="entry-copy"><span>Start a diary, schedule, journal, reflection, or note</span><h3><a class="entry-title-link" href="personal_writings/index.html?new=1" target="_blank" rel="noopener">New Writing</a></h3></div>
       <div class="entry-reading"><strong>未读</strong><time></time></div>
       <div class="entry-editing"><strong>未编辑</strong><time></time></div>
       <div class="entry-action entry-editor"><a class="primary" href="personal_writings/index.html?new=1" target="_blank" rel="noopener">Start writing</a></div>
       <div class="entry-action entry-pdf"><span class="action-empty" aria-label="暂无 PDF">—</span></div>
     </article><article class="entry" data-search="open personal writing studio saved browser draft private backup" data-editor-path="personal_writings/index.html">
-      <div class="entry-number">358</div>
+      <div class="entry-number">360</div>
       <div class="entry-copy"><span>Open the workspace; a private browser draft is restored automatically</span><h3><a class="entry-title-link" href="personal_writings/index.html" target="_blank" rel="noopener">Open Personal Writing Studio</a></h3></div>
       <div class="entry-reading"><strong>未读</strong><time></time></div>
       <div class="entry-editing"><strong>未编辑</strong><time></time></div>
@@ -2825,7 +2840,7 @@ html[data-workspace-skin="reading"] .news-columns{background:#eee8dc;color:var(-
 </section>
   <p class="empty" id="emptyState">没有找到匹配的阅读材料。</p>
 </main>
-<footer><strong>教育用途说明：</strong>本站仅供个人阅读、校读与学习，不隶属于所引用的原文来源网站；原始资料的权利归其相应权利人所有。<br><span>Mobile Reader v1.17.0 · &copy; 2026 Ruixing. All rights reserved.</span><br>目录由 <code>practice/build_index.py</code> 自动生成 · 新增编辑器后重新运行即可更新</footer>
+<footer><strong>教育用途说明：</strong>本站仅供个人阅读、校读与学习，不隶属于所引用的原文来源网站；原始资料的权利归其相应权利人所有。<br><span>Mobile Reader v1.18.0 · &copy; 2026 Ruixing. All rights reserved.</span><br>目录由 <code>practice/build_index.py</code> 自动生成 · 新增编辑器后重新运行即可更新</footer>
 <script>
 const search=document.getElementById('catalogSearch'),empty=document.getElementById('emptyState');
 const readingHistoryKey='reading-workspace-history-v1',editingHistoryKey='reading-workspace-editing-history-v1';

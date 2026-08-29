@@ -13,7 +13,7 @@ import re
 
 BASE_DIR = Path(__file__).resolve().parent
 OUTPUT = BASE_DIR / "index.html"
-MOBILE_READER_VERSION = "1.17.0"
+MOBILE_READER_VERSION = "1.18.0"
 COPYRIGHT_YEAR = 2026
 COPYRIGHT_HOLDER = "Ruixing"
 
@@ -228,6 +228,8 @@ def collect_entries() -> dict[str, list[dict[str, str | None]]]:
         if editor == OUTPUT:
             continue
         relative = editor.relative_to(BASE_DIR)
+        if relative.parts[:2] == ("reader_articles", "entries"):
+            continue
         collection_key = relative.parts[0]
         if collection_key not in COLLECTIONS:
             continue
@@ -278,6 +280,28 @@ def collect_entries() -> dict[str, list[dict[str, str | None]]]:
         })
     studio = BASE_DIR / "reader_articles" / "index.html"
     if studio.exists():
+        global_issues = BASE_DIR / "reader_articles" / "entries" / "ten_global_issues_august_2026" / "editor.html"
+        if global_issues.exists():
+            grouped["reader_articles"].append({
+                "title": "Ten Global Issues to Watch",
+                "context": "News report · August 29, 2026 · Edited current-affairs overview",
+                "editor": global_issues.relative_to(BASE_DIR).as_posix(),
+                "pdf": None,
+                "search": "ten global issues world recent news report August 29 2026 current affairs Iran Ukraine Canada AI climate",
+                "action_label": "Read article",
+                "direct_link": "yes",
+            })
+        ukraine_war = BASE_DIR / "reader_articles" / "entries" / "russia_ukraine_war_august_29_2026" / "editor.html"
+        if ukraine_war.exists():
+            grouped["reader_articles"].append({
+                "title": "The Russia–Ukraine War: Developments to Watch",
+                "context": "Article · August 29, 2026 · Edited current-affairs overview",
+                "editor": ukraine_war.relative_to(BASE_DIR).as_posix(),
+                "pdf": None,
+                "search": "Russia Ukraine war developments August 29 2026 Donetsk Kostiantynivka drones logistics diplomacy",
+                "action_label": "Read article",
+                "direct_link": "yes",
+            })
         grouped["reader_articles"].append({
             "title": "New Article",
             "context": "Start a new publication-style article with a blank page",
@@ -528,6 +552,7 @@ a{{color:inherit}}.masthead{{background:#27251f;color:#fff}}.masthead-inner{{wid
 .category-group{{margin-top:24px;scroll-margin-top:72px}}.category-header{{border:1px solid var(--line);border-radius:8px;background:#eef3f0}}.category-header button{{display:grid;width:100%;grid-template-columns:minmax(0,1fr) auto 22px;gap:14px;align-items:center;padding:12px 15px;border:0;background:transparent;color:inherit;text-align:left;cursor:pointer}}.category-header span{{display:grid;gap:3px}}.category-header strong{{font-size:17px}}.category-header small,.category-header b{{color:var(--muted);font-size:11px}}.category-header i{{font-style:normal;transition:transform .2s}}.category-group.collapsed .category-header i{{transform:rotate(-90deg)}}.category-group.collapsed .category-collections{{display:none}}.category-collections>.collection:first-child{{margin-top:10px}}
 .collection{{margin-top:34px;scroll-margin-top:90px}}.collection-header{{display:flex;justify-content:space-between;gap:25px;align-items:end;padding:0 3px 15px;border-bottom:2px solid var(--ink)}}.collection-eyebrow{{margin:0 0 6px!important;color:var(--red)!important;font-size:11px!important;font-weight:800;letter-spacing:.16em}}.collection-title{{margin:0!important;color:inherit!important;font:700 28px/1.25 "Songti SC","STSong",serif!important}}.collection-description{{display:block;margin-top:7px;color:var(--muted);font-size:13px}}.collection-header strong{{white-space:nowrap;color:var(--muted);font-size:13px}}.collection-toggle{{display:flex;min-width:0;flex:1;align-items:center;justify-content:space-between;gap:16px;padding:0;border:0;background:transparent;color:inherit;text-align:left;cursor:pointer}}.collection-toggle-copy{{display:block;min-width:0}}.collection-toggle i{{font-style:normal;font-size:18px;transition:transform .2s}}.collection.collapsed .collection-toggle i{{transform:rotate(-90deg)}}.collection.collapsed .entries,.collection.collapsed .collection-resources{{display:none}}
 .collection-meta{{display:flex;gap:10px;align-items:center}}.collection-tool,.collection-resource{{padding:7px 10px;border:1px solid var(--line);border-radius:6px;background:var(--panel);color:var(--red);text-decoration:none;font-size:12px;font-weight:700}}.collection-resources{{padding:8px 12px;border:1px solid var(--line);border-bottom:0;background:#fff}}
+.collection-description,.collection-meta,.collection-resources,.entries{{display:none!important}}.collection-header{{border-bottom:1px solid var(--line)!important}}.collection-toggle{{cursor:default}}.collection-toggle i{{display:none}}
 .entries{{background:var(--panel);border:1px solid var(--line);border-top:0}}.entry{{display:grid;grid-template-columns:54px minmax(0,1fr) auto;gap:16px;align-items:center;min-height:84px;padding:13px 17px;border-bottom:1px solid #e6e0d5}}.entry:last-child{{border-bottom:0}}.entry:hover{{background:#f7f1e6}}.entry-number{{color:#a49b8c;font:600 12px/1 Georgia,serif}}.entry-copy span{{color:var(--blue);font-size:11px;font-weight:750;letter-spacing:.06em}}.entry-copy h3{{margin:5px 0 0;font:650 18px/1.35 "Songti SC","STSong",serif}}
 .entry-actions{{display:flex;gap:7px}}.entry-actions a{{padding:8px 11px;border-radius:6px;text-decoration:none;font-size:12px;font-weight:700}}.entry-actions .primary{{background:var(--red);color:#fff}}.entry-actions .primary:hover{{background:#692a25}}.entry-actions .secondary{{border:1px solid var(--line);background:#fff}}.entry-actions .secondary:hover{{border-color:var(--blue);color:var(--blue)}}
 .hierarchical-entries{{border:0;background:transparent;box-shadow:none}}.book-library{{display:grid;gap:12px}}.book-group{{border:1px solid var(--line);border-radius:8px;overflow:hidden;background:#fff;box-shadow:0 1px 2px #3c40431a}}.book-state,.contents-state{{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);clip-path:inset(50%);white-space:nowrap}}.book-header{{display:flex;align-items:center;gap:12px;padding:0 12px;background:#f8f9fa}}.book-toggle{{display:flex;min-width:0;flex:1;align-items:center;justify-content:space-between;padding:13px 0;border:0;background:transparent;text-align:left;cursor:pointer;touch-action:manipulation}}.book-toggle>span,.contents-toggle>span{{display:grid;gap:3px}}.book-toggle strong{{font-size:15px;font-weight:600}}.book-toggle small{{color:var(--muted);font-size:11px}}.book-level{{color:#137333;font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase}}.book-toggle i,.contents-toggle i{{font-style:normal;transition:transform .2s}}.book-tool{{padding:7px 11px;border:1px solid #c4d8f3;border-radius:18px;background:#e8f0fe;color:#174ea6;text-decoration:none;font-size:11px;font-weight:700;white-space:nowrap}}.book-contents{{border-top:1px solid var(--line)}}.contents-toggle{{display:grid;width:100%;grid-template-columns:minmax(0,1fr) auto 20px;gap:14px;align-items:center;padding:10px 16px;border:0;border-bottom:1px solid var(--line);background:#f1f3f4;text-align:left;cursor:pointer;touch-action:manipulation}}.contents-toggle strong{{font-size:13px}}.contents-toggle b{{color:var(--muted);font-size:11px}}.articles-label{{display:flex;justify-content:space-between;padding:8px 16px;border-bottom:1px solid var(--line);color:#174ea6;font-size:10px;font-weight:700;letter-spacing:.06em}}.articles-label small{{color:var(--muted);font-weight:400;letter-spacing:0}}.book-state:not(:checked)~.book-contents,.contents-state:not(:checked)~.selected-articles{{display:none}}.book-state:not(:checked)~.book-header .book-toggle i,.contents-state:not(:checked)+.contents-toggle i{{transform:rotate(-90deg)}}.book-state:focus-visible~.book-header .book-toggle,.contents-state:focus-visible+.contents-toggle{{outline:2px solid #1a73e8;outline-offset:-2px}}.selected-articles .entry:last-child{{border-bottom:0}}

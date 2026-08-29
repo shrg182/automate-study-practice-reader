@@ -2,5 +2,5 @@
   "schema": "personal-writing-v1",
   "privacy": "browser-local until explicitly exported",
   "types": ["Diary", "Schedule", "Journal", "Reflection", "Reading Notes", "Meeting Notes"],
-  "fields": ["id", "savedAt", "type", "date", "title", "details", "bodyHTML", "schedule", "notes", "splitPercent"]
+  "fields": ["id", "savedAt", "type", "date", "title", "details", "bodyHTML", "schedule", "footnotes", "notes", "splitPercent"]
 }

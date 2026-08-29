@@ -1,0 +1,17 @@
+{
+  "schema": "reader-article-v1",
+  "id": "8445c524-a1cc-4d95-b061-c4d50351ebc6",
+  "savedAt": "2026-08-29T17:47:15.962Z",
+  "metadata": {
+    "type": "Essay",
+    "date": "2026-08-29",
+    "title": "Travel Plan Template",
+    "byline": "Travel schedule details"
+  },
+  "bodyHTML": "<h2>Introduction</h2><p>Use <strong>Schedule</strong> for the current draft. Add each activity as a row with its time, place or task, priority, and status.</p><p>For travel planning, a dedicated <strong>Travel Plan</strong> type would be better. It could include:</p><ul><li>Destination and date range</li><li>Travelers and contacts</li><li>Transportation details</li><li>Accommodation and reservation numbers</li><li>Daily itinerary</li><li>Addresses, maps, and links</li><li>Budget and payments</li><li>Packing checklist</li><li>Emergency information</li><li>Notes and backup plans</li></ul><p>Sensitive information would remain browser-local and appear in exported backups or PDFs only when you explicitly generate them.<span style=\"vertical-align: super;\">1</span></p>",
+  "footnotes": [
+    "Suggested by Codex."
+  ],
+  "notes": "",
+  "splitPercent": 50
+}
