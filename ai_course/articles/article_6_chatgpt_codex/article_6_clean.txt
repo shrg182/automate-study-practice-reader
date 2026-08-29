@@ -151,3 +151,9 @@ OpenAI’s current ChatGPT and Codex workflow examples: https://learn.chatgpt.co
 Official Codex documentation and developer resources: https://developers.openai.com/codex
 
 Because interfaces and availability change, consult current official documentation for account-specific features, limits, and setup instructions.
+
+Эффективная работа с ChatGPT и Codex начинается с ясной цели, подходящего контекста и чётких границ полномочий. ChatGPT помогает исследовать, объяснять и уточнять идеи, а Codex переносит утверждённый замысел в реальные файлы, проверки и рабочие результаты. В обоих случаях человек должен проверять важные утверждения, защищать конфиденциальные данные и сохранять право принимать окончательные решения.〔1〕
+
+脚注
+
+〔1〕Editor’s note: This Russian paragraph summarizes the complementary roles of ChatGPT and Codex and emphasizes verification, privacy, and human authority.
