@@ -13,7 +13,7 @@ import re
 
 BASE_DIR = Path(__file__).resolve().parent
 OUTPUT = BASE_DIR / "index.html"
-MOBILE_READER_VERSION = "1.15.0"
+MOBILE_READER_VERSION = "1.16.0"
 COPYRIGHT_YEAR = 2026
 COPYRIGHT_HOLDER = "Ruixing"
 
@@ -42,6 +42,7 @@ COLLECTIONS = {
     "ai_course": Collection("ai_course", "AI 课程", "课程文章、讲义与学习笔记", "课程资料"),
     "news_reports": Collection("news_reports", "News Reports", "English-language news reports, transcripts, and study editions", "Current affairs reading"),
     "reader_articles": Collection("reader_articles", "Reader Articles", "Write, annotate, preview, back up, and export original articles", "Personal authoring workspace"),
+    "personal_writings": Collection("personal_writings", "Personal Writings", "Private diaries, schedules, journals, reflections, and notes", "Browser-local writing workspace"),
     "python": Collection("python", "Python", "Beginning, Intermediate, and Advanced courses by Codex (OpenAI)", "Programming"),
     "russian_poetry": Collection("russian_poetry", "Русская поэзия", "Russian-first poetry readings with concise English study support", "Russian literature"),
     "russian_short_stories": Collection("russian_short_stories", "Русские рассказы", "Short Russian prose: humor, fable, prose miniature, and philosophical sketch", "Russian prose"),
@@ -264,6 +265,17 @@ def collect_entries() -> dict[str, list[dict[str, str | None]]]:
             "editor": studio.relative_to(BASE_DIR).as_posix(),
             "pdf": None,
             "search": "reader articles studio write author edit two pane PDF backup footnotes annotations",
+            "action_label": "Open studio",
+            "direct_link": "yes",
+        })
+    personal_studio = BASE_DIR / "personal_writings" / "index.html"
+    if personal_studio.exists():
+        grouped["personal_writings"].append({
+            "title": "Personal Writings Studio",
+            "context": "Private two-pane diary and planning workspace",
+            "editor": personal_studio.relative_to(BASE_DIR).as_posix(),
+            "pdf": None,
+            "search": "personal writings diary schedule journal reflection reading notes meeting notes private PDF backup",
             "action_label": "Open studio",
             "direct_link": "yes",
         })
