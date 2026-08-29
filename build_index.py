@@ -13,7 +13,7 @@ import re
 
 BASE_DIR = Path(__file__).resolve().parent
 OUTPUT = BASE_DIR / "index.html"
-MOBILE_READER_VERSION = "1.14.2"
+MOBILE_READER_VERSION = "1.15.0"
 COPYRIGHT_YEAR = 2026
 COPYRIGHT_HOLDER = "Ruixing"
 
@@ -41,6 +41,7 @@ COLLECTIONS = {
     "marxist_classics": Collection("marxist_classics", "马克思主义经典", "经典文本专题摘录与注释", "理论文献"),
     "ai_course": Collection("ai_course", "AI 课程", "课程文章、讲义与学习笔记", "课程资料"),
     "news_reports": Collection("news_reports", "News Reports", "English-language news reports, transcripts, and study editions", "Current affairs reading"),
+    "reader_articles": Collection("reader_articles", "Reader Articles", "Write, annotate, preview, back up, and export original articles", "Personal authoring workspace"),
     "python": Collection("python", "Python", "Beginning, Intermediate, and Advanced courses by Codex (OpenAI)", "Programming"),
     "russian_poetry": Collection("russian_poetry", "Русская поэзия", "Russian-first poetry readings with concise English study support", "Russian literature"),
     "russian_short_stories": Collection("russian_short_stories", "Русские рассказы", "Short Russian prose: humor, fable, prose miniature, and philosophical sketch", "Russian prose"),
@@ -253,6 +254,17 @@ def collect_entries() -> dict[str, list[dict[str, str | None]]]:
             "pdf": None,
             "search": f"{title} {report_type} {report_date} news report transcript study English {relative}",
             "action_label": "Open report",
+            "direct_link": "yes",
+        })
+    studio = BASE_DIR / "reader_articles" / "index.html"
+    if studio.exists():
+        grouped["reader_articles"].append({
+            "title": "Reader Articles Studio",
+            "context": "Two-pane writing and PDF workspace",
+            "editor": studio.relative_to(BASE_DIR).as_posix(),
+            "pdf": None,
+            "search": "reader articles studio write author edit two pane PDF backup footnotes annotations",
+            "action_label": "Open studio",
             "direct_link": "yes",
         })
     nine_sources = BASE_DIR / "nine_commentaries" / "source_index" / "select_readings.html"

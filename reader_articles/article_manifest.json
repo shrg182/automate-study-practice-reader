@@ -1,0 +1,18 @@
+{
+  "schema": "reader-article-v1",
+  "description": "Portable state for a reader-authored article.",
+  "fields": {
+    "id": "stable article identifier",
+    "savedAt": "ISO-8601 timestamp",
+    "metadata": {
+      "type": "article type",
+      "date": "publication date",
+      "title": "article title",
+      "byline": "author or byline"
+    },
+    "bodyHTML": "editable article HTML",
+    "footnotes": "numbered footnote strings",
+    "notes": "reader notes",
+    "splitPercent": "left-pane percentage"
+  }
+}
