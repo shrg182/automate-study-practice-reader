@@ -7,7 +7,7 @@ python3 build_editor.py
 python3 generate_pdf.py
 ```
 
-Open `editor.html`. Browser storage key: `ai-course-article-6-editor-v1`.
+Open `editor.html`. Browser storage key: `ai-course-article-6-editor-v2`.
 
 To process a later editor backup:
 

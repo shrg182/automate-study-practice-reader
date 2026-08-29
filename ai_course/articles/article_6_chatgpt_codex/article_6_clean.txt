@@ -4,7 +4,7 @@ Follow-up Course · ChatGPT and Codex in Practice
 
 The first seven lessons explained how artificial intelligence learns patterns, produces language, and must be used responsibly. This follow-up asks a practical question: how can a person turn those ideas into good work with ChatGPT and Codex?
 
-ChatGPT and Codex are related, but they are not identical tools. ChatGPT is a general conversational workspace for thinking, learning, writing, researching, analyzing files, and working with connected tools. Codex is an agentic work environment designed to inspect a project, edit files, run commands, test results, and continue through a multi-step implementation. A useful rule is simple: begin with the kind of outcome you need, then choose the environment whose working surface matches that outcome.
+ChatGPT and Codex are related, but they are not identical tools. ChatGPT is a general conversational workspace for thinking, learning, writing, researching, analyzing files, and working with connected tools. Codex is an agentic work environment designed to inspect a project, edit files, run commands, test results, and continue through a multi-step implementation. A useful rule is simple: begin with the kind of outcome you need, then choose the environment whose working surface matches that outcome.〔1〕
 
 This course does not depend on memorizing a particular menu or model name. Product interfaces change. The durable skills are defining the task, supplying relevant context, setting boundaries, checking evidence, and deciding what only a human should approve.
 
@@ -42,7 +42,7 @@ Constraints: Name requirements such as language, length, tone, file format, comp
 
 Quality standard: Describe how success will be judged. Useful standards include factual support, a passing test suite, no broken links, a clean mobile layout, preserved user edits, or a comparison against a reference example.
 
-Permission boundary: Say what the assistant may change and what requires approval. Reading and analyzing are different from sending, publishing, deleting, purchasing, or changing access. For Codex, identify whether the request is diagnosis only or authorizes implementation, testing, committing, and publishing.
+Permission boundary: Say what the assistant may change and what requires approval. Reading and analyzing are different from sending, publishing, deleting, purchasing, or changing access. For Codex, identify whether the request is diagnosis only or authorizes implementation, testing, committing, and publishing.〔2〕
 
 Here is a reusable brief:
 
@@ -120,7 +120,7 @@ Protect sensitive information by minimizing it. Do not provide secrets, password
 
 Watch the difference between reversible and consequential actions. Drafting a message is not sending it. Preparing a commit is not publishing it. Calculating a purchase is not placing an order. An assistant can do extensive preparation while a person retains the final decision.
 
-Human authority is not ceremonial. The reviewer should know the standard, have access to the evidence, and be able to reject or revise the result. “Human in the loop” means meaningful judgment and control, not a hurried click after an automated process.
+Human authority is not ceremonial. The reviewer should know the standard, have access to the evidence, and be able to reject or revise the result. “Human in the loop” means meaningful judgment and control, not a hurried click after an automated process.〔3〕
 
 Responsible-use checklist: Is the goal clear? Are the inputs appropriate and lawful to use? Are important claims sourced? Have sensitive details been minimized? Were the relevant behaviors tested? Are limitations visible? Does a qualified person retain authority over consequential action?
 
@@ -152,8 +152,14 @@ Official Codex documentation and developer resources: https://developers.openai.
 
 Because interfaces and availability change, consult current official documentation for account-specific features, limits, and setup instructions.
 
-Эффективная работа с ChatGPT и Codex начинается с ясной цели, подходящего контекста и чётких границ полномочий. ChatGPT помогает исследовать, объяснять и уточнять идеи, а Codex переносит утверждённый замысел в реальные файлы, проверки и рабочие результаты. В обоих случаях человек должен проверять важные утверждения, защищать конфиденциальные данные и сохранять право принимать окончательные решения.〔1〕
+Эффективная работа с ChatGPT и Codex начинается с ясной цели, подходящего контекста и чётких границ полномочий. ChatGPT помогает исследовать, объяснять и уточнять идеи, а Codex переносит утверждённый замысел в реальные файлы, проверки и рабочие результаты. В обоих случаях человек должен проверять важные утверждения, защищать конфиденциальные данные и сохранять право принимать окончательные решения.〔4〕
 
 脚注
 
-〔1〕Editor’s note: This Russian paragraph summarizes the complementary roles of ChatGPT and Codex and emphasizes verification, privacy, and human authority.
+〔1〕The correct working surface depends on the desired outcome: conversational understanding, durable artifact change, or a planned combination of both.
+
+〔2〕A permission boundary distinguishes analysis and preparation from consequential actions such as publication, deletion, purchase, communication, or access changes.
+
+〔3〕Meaningful human review requires a standard, relevant evidence, and genuine authority to reject, revise, or stop the result.
+
+〔4〕Editor’s note: This Russian paragraph summarizes the complementary roles of ChatGPT and Codex and emphasizes verification, privacy, and human authority.

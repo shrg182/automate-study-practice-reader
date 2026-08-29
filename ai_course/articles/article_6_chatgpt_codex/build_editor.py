@@ -21,7 +21,7 @@ if __name__ == "__main__":
         "source.txt",
         chapter_title="From Conversation to Completed Work: Using ChatGPT and Codex",
         editor_title="AI Course Article 6 · Follow-up Reading Editor",
-        storage_key="ai-course-article-6-editor-v1",
+        storage_key="ai-course-article-6-editor-v2",
         file_stem="ai_course_article_6_chatgpt_codex",
         inline_notes=load_inline_notes(BASE_DIR / "inline_notes.tsv"),
         review_notes=load_review_notes(BASE_DIR / "review_notes.tsv"),
@@ -30,6 +30,13 @@ if __name__ == "__main__":
         theme_href="../../../workspace_theme.css",
         home_href="../../../index.html",
     )
+    initial_highlights = {
+        "choose the environment whose working surface matches that outcome": "#fff1a8",
+        "A productive prompt is a compact work brief": "#b7e7a7",
+        "The first answer is a starting point, not a verdict": "#b8ddf8",
+        "“The command completed” is not the same as “the requested behavior works.”": "#ddb5eb",
+        "Verification should increase with consequence, uncertainty, and irreversibility": "#fff1a8",
+    }
     seed_path = BASE_DIR / "article_6_editor_seed.json"
     if seed_path.exists():
         seed = json.loads(seed_path.read_text(encoding="utf-8"))
@@ -50,6 +57,9 @@ if __name__ == "__main__":
             output,
             count=1,
         )
+    else:
+        for phrase, color in initial_highlights.items():
+            output = output.replace(phrase, f'<span style="background-color:{color}">{phrase}</span>', 1)
     output = output.replace("../../../project_dictionary/", "../../../../project_dictionary/")
     (BASE_DIR / "editor.html").write_text(output, encoding="utf-8")
     print(f"Output: {BASE_DIR / 'editor.html'}\nCharacters: {len(text)}")

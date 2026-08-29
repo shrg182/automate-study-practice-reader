@@ -1,1 +1,4 @@
 text	issue	status
+choose the environment whose working surface matches that outcome	Some tasks move between ChatGPT and Codex; readers should classify the present stage rather than the entire project.	open
+The test should match the risk	Further study could compare low-stakes content review with high-stakes legal, medical, or financial validation.	open
+Maintain one source of truth for each kind of information	The source of truth may differ by artifact: requirements, canonical text, generated output, and acceptance evidence need distinct owners.	open
