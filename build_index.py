@@ -13,7 +13,7 @@ import re
 
 BASE_DIR = Path(__file__).resolve().parent
 OUTPUT = BASE_DIR / "index.html"
-MOBILE_READER_VERSION = "1.13.5"
+MOBILE_READER_VERSION = "1.14.0"
 COPYRIGHT_YEAR = 2026
 COPYRIGHT_HOLDER = "Ruixing"
 
@@ -40,6 +40,7 @@ COLLECTIONS = {
     "nine_commentaries": Collection("nine_commentaries", "九评", "章节阅读与校读材料", "专题阅读"),
     "marxist_classics": Collection("marxist_classics", "马克思主义经典", "经典文本专题摘录与注释", "理论文献"),
     "ai_course": Collection("ai_course", "AI 课程", "课程文章、讲义与学习笔记", "课程资料"),
+    "news_reports": Collection("news_reports", "News Reports", "English-language news reports, transcripts, and study editions", "Current affairs reading"),
     "python": Collection("python", "Python", "Beginning, Intermediate, and Advanced courses by Codex (OpenAI)", "Programming"),
     "russian_poetry": Collection("russian_poetry", "Русская поэзия", "Russian-first poetry readings with concise English study support", "Russian literature"),
     "russian_short_stories": Collection("russian_short_stories", "Русские рассказы", "Short Russian prose: humor, fable, prose miniature, and philosophical sketch", "Russian prose"),
@@ -221,6 +222,37 @@ def collect_entries() -> dict[str, list[dict[str, str | None]]]:
                 "direct_link": None,
             }
         )
+    news_items = [
+        ("cuba_crisis/cuba_crisis_report_20260520.pdf", "The Cuban Missile Crisis", "Historical report · May 20, 2026"),
+        ("putin_visit_to_china_3/putin_china_visit_report_20260520.pdf", "Putin’s Visit to China", "News report · May 20, 2026"),
+        ("trump_visit_to_china/trump_china_visit_report.pdf", "Trump’s Visit to China", "News report · May 9, 2026"),
+        ("trump_visit_to_china_2/trump_china_visit_report_20260513.pdf", "Trump’s Visit to China", "News report · May 13, 2026"),
+        ("trump_visit_to_china_3/trump_china_visit_report_20260514.pdf", "Trump’s Visit to China", "News report · May 14, 2026"),
+        ("trump_visit_to_china_4/trump_china_visit_report_20260517.pdf", "Trump’s Visit to China", "News report · May 17, 2026"),
+        ("white_house_dinner_security_incident/report.pdf", "White House Dinner Security Incident", "News report"),
+        ("trump_speech_20260701/trump_speech_reading_packet_20260701.pdf", "Trump Speech Reading Packet", "English reading packet · July 1, 2026"),
+        ("trump_speech_20260701/sectioned_learning_units/trump_speech_learning_units_20260701.pdf", "Trump Speech Learning Units", "Sectioned study edition · July 1, 2026"),
+        ("trump_250_speech_20260704/trump_salute_to_america_2026_study_guide.pdf", "Salute to America Speech", "Study guide · July 4, 2026"),
+        ("trump_at_press_conference_20260708/trump_press_conference_20260708_study_report.pdf", "Trump Press Conference", "Study report · July 8, 2026"),
+        ("trump_at_press_conference_20260708/trump_press_conference_20260708_short_5000.pdf", "Trump Press Conference", "5,000-word reading edition · July 8, 2026"),
+        ("trump_at_press_conference_20260708/trump_press_conference_20260708_full_transcript.pdf", "Trump Press Conference", "Full transcript · July 8, 2026"),
+        ("trump_iran_live_pdf_20260711/trump_iran_live_study_report_time_under_subtitle.pdf", "Trump and Iran Live Report", "Timed study report · July 11, 2026"),
+        ("trump_recent_news_20260712/trump_recent_news_english_study_20260712.pdf", "Recent Trump News", "English study edition · July 12, 2026"),
+    ]
+    for relative, title, context in news_items:
+        path = BASE_DIR / "news_reports" / relative
+        if not path.exists():
+            continue
+        href = path.relative_to(BASE_DIR).as_posix()
+        grouped["news_reports"].append({
+            "title": title,
+            "context": context,
+            "editor": href,
+            "pdf": None,
+            "search": f"{title} {context} news report transcript study English {relative}",
+            "action_label": "Open report",
+            "direct_link": "yes",
+        })
     nine_sources = BASE_DIR / "nine_commentaries" / "source_index" / "select_readings.html"
     nine_book_pdf = BASE_DIR / "nine_commentaries" / "吴冷西：十年论战——1956-1966中苏关系回忆录.pdf"
     if nine_book_pdf.exists():

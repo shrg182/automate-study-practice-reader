@@ -2,7 +2,7 @@ How a Question Became an AI Course
 
 A course often begins with a question that is smaller than the course itself. A learner may ask why a language model sometimes invents facts, how a machine recognizes an image, or what “training” means. A good teacher does not merely answer. The teacher notices the larger structure hidden inside the question: prior knowledge, useful examples, likely misconceptions, and the next question the learner will probably ask.
 
-Generative AI can support this process. It can help an educator compare explanations, organize approved source material, draft exercises, and revise a lesson for a particular reading level. It can also help a learner turn a dense chapter into a glossary, a claim–evidence table〔1〕, or a set of questions. Yet the course still needs a human purpose. Someone must decide what deserves attention, what evidence is trustworthy, and what the learner should be able to do afterward.
+Generative AI can support this process. It can help an educator compare explanations, organize approved source material, draft exercises, and revise a lesson for a particular reading level. It can also help a learner turn a dense chapter into a glossary, a claim–evidence table, or a set of questions. Yet the course still needs a human purpose. Someone must decide what deserves attention, what evidence is trustworthy, and what the learner should be able to do afterward.
 
 Choosing the Journey
 
@@ -54,9 +54,8 @@ OpenAI education workflows and use cases: https://learn.chatgpt.com/use-cases
 
 UNESCO, Guidance for Generative AI in Education and Research: https://unesdoc.unesco.org/ark:/48223/pf0000386693
 
-Совместная разработка учебного курса требует ясной цели, надёжных источников и постоянной проверки. ИИ может помогать создавать объяснения, упражнения и учебные материалы, но преподаватели и учащиеся должны сохранять самостоятельность, исправлять ошибки и оценивать, действительно ли курс способствует пониманию.〔2〕
+Совместная разработка учебного курса требует ясной цели, надёжных источников и постоянной проверки. ИИ может помогать создавать объяснения, упражнения и учебные материалы, но преподаватели и учащиеся должны сохранять самостоятельность, исправлять ошибки и оценивать, действительно ли курс способствует пониманию.〔1〕
 
 脚注
 
-〔1〕A claim–evidence table is a structured graphic organizer used to break down and connect an argument's main assertion with its supporting data
-〔2〕Editor’s note: This Russian paragraph summarizes collaborative course design, verification, and the continuing authority of teachers and learners.
+〔1〕Editor’s note: This Russian paragraph summarizes collaborative course design, verification, and the continuing authority of teachers and learners.

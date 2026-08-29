@@ -32,9 +32,11 @@ if __name__ == "__main__":
         theme_href="../../../workspace_theme.css",
         home_href="../../../index.html",
     )
-    # The legacy seed contains project-specific dialogue and is intentionally not
-    # used by this general-audience edition.
-    seed_path = BASE_DIR / "article_5_general_editor_seed.json"
+    # Prefer the learner's imported rich backup. The older general seed remains
+    # available only as a fallback for a fresh checkout.
+    seed_path = BASE_DIR / "article_5_editor_seed.json"
+    if not seed_path.exists():
+        seed_path = BASE_DIR / "article_5_general_editor_seed.json"
     if seed_path.exists():
         seed = json.loads(seed_path.read_text(encoding="utf-8"))
         body_html = str(seed.get("bodyHTML", "")).strip()
