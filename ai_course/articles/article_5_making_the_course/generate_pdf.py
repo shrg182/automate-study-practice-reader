@@ -47,6 +47,7 @@ def build() -> None:
         "h1": ParagraphStyle("H1", parent=base["Heading2"], fontName=bold, fontSize=12.2, leading=14.5, textColor=NAVY, spaceBefore=5, spaceAfter=3.5),
         "body": ParagraphStyle("Body", parent=base["BodyText"], fontName=regular, fontSize=8.1, leading=11, textColor=colors.HexColor("#1F2933"), spaceAfter=3.5),
         "dialogue": ParagraphStyle("Dialogue", parent=base["BodyText"], fontName=italic, fontSize=8.05, leading=11, textColor=colors.HexColor("#334E68")),
+        "footnote": ParagraphStyle("Footnote", parent=base["BodyText"], fontName=italic, fontSize=7.5, leading=10, textColor=MUTED, leftIndent=8, rightIndent=8, spaceAfter=5),
         "cell": ParagraphStyle("Cell", parent=base["BodyText"], fontName=regular, fontSize=7.3, leading=9.2, textColor=colors.HexColor("#243B53")),
         "cell_b": ParagraphStyle("CellB", parent=base["BodyText"], fontName=bold, fontSize=7.3, leading=9.2, textColor=colors.white),
     }
@@ -89,7 +90,8 @@ def build() -> None:
         return content
 
     rich_blocks: list[dict[str, str]] = []
-    seed_path = HERE / "article_5_editor_seed.json"
+    # Keep the archived private editing seed out of the public reading edition.
+    seed_path = HERE / "article_5_general_editor_seed.json"
     if seed_path.exists():
         seed = json.loads(seed_path.read_text(encoding="utf-8"))
         soup = BeautifulSoup(seed.get("bodyHTML", ""), "html.parser")
@@ -119,14 +121,19 @@ def build() -> None:
         rich_lookup.setdefault(item["plain"], []).append(item["rich"])
 
     doc = SimpleDocTemplate(str(OUTPUT), pagesize=letter, leftMargin=.68*inch, rightMargin=.68*inch, topMargin=.5*inch, bottomMargin=.52*inch, title="How a Question Became an AI Course", author="Codex, OpenAI")
-    story = [p("How a Question Became an AI Course", "title"), p("A learner–AI dialogue became seven lessons, four study articles, and a collaborative editing process.", "dek"), p("AI course companion article | Dialogue edition", "meta"), Spacer(1, 7), HRFlowable(width="100%", thickness=1, color=LINE), Spacer(1, 7)]
+    story = [p("How a Question Became an AI Course", "title"), p("From an initial question to a general, reviewable learning sequence.", "dek"), p("AI course companion article | General education edition", "meta"), Spacer(1, 7), HRFlowable(width="100%", thickness=1, color=LINE), Spacer(1, 7)]
     for block in blocks:
         matches = rich_lookup.get(block, [])
         rendered = matches.pop(0) if matches else html.escape(block)
         if block == "Editing Became Part of the Lesson":
             story.append(p(rendered, "h1"))
-        elif block in {"Choosing the Journey", "The Color of Difficulty", "Corrections Became Evidence", "A Course About AI—and With AI", "The Story Turns Back on Itself"}:
+        elif block in {"Choosing the Journey", "The Color of Difficulty", "Corrections Became Evidence", "A Course About AI—and With AI", "The Story Turns Back on Itself", "Sources"}:
             story.append(p(rendered, "h1"))
+        elif block == "脚注":
+            continue
+        elif block.startswith("〔1〕"):
+            note = re.sub(r"^〔1〕\s*Editor[’']s note:\s*", "", block, flags=re.I)
+            story.append(p(f"<super>1</super> {html.escape(note)}", "footnote"))
         elif block.startswith(("Learner:", "Codex:")):
             speaker, _words = block.split(":", 1)
             rendered_words = rendered.split(":", 1)[1].strip()
@@ -134,6 +141,9 @@ def build() -> None:
             box.setStyle(TableStyle([("BACKGROUND", (0,0),(0,0), BLUE), ("BACKGROUND", (1,0),(1,0), PALE), ("BOX", (0,0),(-1,-1), .45, LINE), ("VALIGN", (0,0),(-1,-1), "MIDDLE"), ("PADDING", (0,0),(-1,-1), 4)]))
             story += [box, Spacer(1, 3)]
         else:
+            rendered = rendered.replace("〔1〕", '<super><font color="#1F5F99">1</font></super>')
+            rendered = rendered.replace("https://learn.chatgpt.com/use-cases", '<link href="https://learn.chatgpt.com/use-cases" color="#1F5F99">learn.chatgpt.com/use-cases</link>')
+            rendered = rendered.replace("https://unesdoc.unesco.org/ark:/48223/pf0000386693", '<link href="https://unesdoc.unesco.org/ark:/48223/pf0000386693" color="#1F5F99">unesdoc.unesco.org/ark:/48223/pf0000386693</link>')
             rendered = rendered.replace(
                 "缺对应中文", '<font name="STSong-Light">缺对应中文</font>'
             )

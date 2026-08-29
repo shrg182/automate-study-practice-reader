@@ -32,7 +32,9 @@ if __name__ == "__main__":
         theme_href="../../../workspace_theme.css",
         home_href="../../../index.html",
     )
-    seed_path = BASE_DIR / "article_5_editor_seed.json"
+    # The legacy seed contains project-specific dialogue and is intentionally not
+    # used by this general-audience edition.
+    seed_path = BASE_DIR / "article_5_general_editor_seed.json"
     if seed_path.exists():
         seed = json.loads(seed_path.read_text(encoding="utf-8"))
         body_html = str(seed.get("bodyHTML", "")).strip()

@@ -92,7 +92,7 @@ Report: A good handoff states the outcome, important decisions, evidence, remain
 
 You remain responsible for scope and acceptance. Read diffs for important changes. Notice whether a tool requests broader permission than the task requires. Treat deletion, external publication, messages, purchases, credentials, and access changes as actions that deserve special care.
 
-Codex works well with concrete feedback. “The button still does not move the PDF viewer; the outside page field changes to 343 while the viewer remains on page 1” is far more useful than “still broken.” Screenshots, error messages, reproduction steps, expected behavior, and the last known working state reduce guesswork.
+Codex works well with concrete feedback. “The registration form accepts the entry but does not add the student to the class list” is far more useful than “still broken.” Screenshots, error messages, reproduction steps, expected behavior, and the last known working state reduce guesswork.
 
 Practice workflow: Give Codex a small local project. Ask it to add one visible feature, preserve existing behavior, run the relevant checks, and summarize the change. Review the diff. Then introduce one realistic failure report and ask for diagnosis before authorizing a fix.
 

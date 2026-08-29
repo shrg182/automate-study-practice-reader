@@ -1,7 +1,8 @@
 term,pinyin,type,annotation
-artificial intelligence,,concept,Computer systems designed to perform tasks involving learned patterns or reasoning-like operations.
-machine learning,,concept,A way to build systems that learn patterns from examples.
-editorial control,,concept,Human authority over what is selected corrected and published.
-font-family mapping,,technical,A configuration connecting regular bold and italic typefaces for document rendering.
-human oversight,,concept,Meaningful human review with authority to evaluate and intervene.
-collaboration,,concept,People and systems working together toward a shared result.
+generative AI,,concept,AI systems that produce new text images code or other content in response to input.
+learning path,,concept,A sequence in which each stage prepares learners for later knowledge or skills.
+misconception,,concept,A mistaken understanding that can interfere with further learning.
+annotation,,concept,A note highlight question or other mark added to support close reading.
+accessibility,,concept,Design that enables people with different abilities and needs to use material effectively.
+human agency,,concept,People's meaningful ability to set goals make choices and remain responsible for decisions.
+accountability,,concept,Clear responsibility for reviewing decisions and their consequences.

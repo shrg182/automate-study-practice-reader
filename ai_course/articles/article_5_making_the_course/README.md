@@ -1,6 +1,6 @@
 # Article 5: Making the AI Course
 
-This two-page companion article tells the story of the learner–Codex collaboration using extracts from their dialogue.
+This companion article explains AI-supported course design through general education examples. It contains no private learner–Codex dialogue.
 
 ```bash
 python3 build_editor.py

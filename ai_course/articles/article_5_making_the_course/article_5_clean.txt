@@ -1,79 +1,61 @@
 How a Question Became an AI Course
 
-Learner: “Are you AI a machine or a half-machine and half-human?”
+A course often begins with a question that is smaller than the course itself. A learner may ask why a language model sometimes invents facts, how a machine recognizes an image, or what “training” means. A good teacher does not merely answer. The teacher notices the larger structure hidden inside the question: prior knowledge, useful examples, likely misconceptions, and the next question the learner will probably ask.
 
-Codex: “I am entirely artificial intelligence—not a human or a half-human. I can communicate in a humanlike way, but I do not have a human body or consciousness.”
-
-That question opened the door to a much larger project. The learner did not stop after discovering what the AI was. The next request turned curiosity into a plan.
-
-Learner: “Can you start a course to teach me how AI works?”
-
-The course began as a brief, essay-like news report for an English learner. Its purpose was not merely to define artificial intelligence, but to make a difficult technical subject readable. The learner then asked for the material to become a Shiji article with its own editor. From that point onward, Codex drafted and programmed while the learner read, annotated, corrected, and redesigned.
+Generative AI can support this process. It can help an educator compare explanations, organize approved source material, draft exercises, and revise a lesson for a particular reading level. It can also help a learner turn a dense chapter into a glossary, a claim–evidence table, or a set of questions. Yet the course still needs a human purpose. Someone must decide what deserves attention, what evidence is trustworthy, and what the learner should be able to do afterward.
 
 Choosing the Journey
 
-The first two lessons introduced artificial intelligence and machine learning through examples, features, labels, training sets, and test sets. Then, the learner asked how long the course would be. Codex proposed seven lessons.
+Imagine an adult English class studying artificial intelligence through reading. The students know everyday computer vocabulary but have not studied machine learning. A seven-part sequence could begin with familiar examples, move through data and training, introduce neural networks and language models, offer a small practical project, and end with responsible use.
 
-Learner: “How did you come up with this decision?”
+The number of lessons is less important than the learning path. Each stage should prepare for the next. Terms such as feature, label, parameter, token, and bias should appear when learners have enough context to use them. Short checks can reveal misunderstanding before it becomes a foundation for later confusion.
 
-After reviewing the reasoning, the learner replied, “Your decision is correct. We shall stay with it.” The seven lessons would move from basic definitions to training, neural networks, language models, a small Python classifier, and responsible use.
-
-The learner improved the publication plan: “I would suggest to divide lessons 3–7 into 3–4, 5–6, and 7 + a brief summary, i.e., in 3 articles.” One further requirement shaped everything that followed: “Each article should have its own editor so that I can write notes in it.”
-
-The request for seven lessons was not simply a request for more pages. It created a gradual personal learning path. Each article could be studied on its own while still belonging to a larger sequence. Headings offered a route through the ideas, short checks encouraged reflection, and “Your turn” prompts changed passive reading into practice. The structure itself became part of the learning.
+The same principle appears beyond AI education. A history teacher may organize letters, maps, and statistics into a unit on migration. A workplace trainer may turn policy documents and realistic scenarios into an onboarding course. A community group may convert public health guidance into a multilingual information session. In each case, AI can help arrange and transform material, but people define the educational goal and approve the sources.
 
 Editing Became Part of the Lesson
 
-The project was no longer only a collection of readings. Each article became an independent study environment. The learner could highlight difficult expressions in yellow, green, blue, and purple while reserving pink for highlighting bugs. Underline, strikethrough, dehighlighting, reader notes, inline notes, editorial comments, and footnotes were added and tested in actual reading.
+Reading materials improve when learners can interact with them. An editable study page can support highlighting, vocabulary notes, questions, footnotes, and personal summaries. These actions slow the reader down in a useful way. Instead of treating the article as a stream of sentences, the learner marks relationships and records uncertainty.
 
-The learner repeatedly found details that automated generation had missed. When highlighted text carried unwanted underlines, the learner asked for their removal. When a note attached to “overfitting” disappeared beside a footnote marker, the display was revised until “overfitting（缺对应中文）” became visible. When bold text appeared in the editor but not in the PDF, Codex traced the problem to the PDF font-family mapping and connected the regular, italic, and bold faces correctly.
+Consider a student reading an explanation of overfitting. The student highlights the definition, writes an everyday analogy in the margin, and adds a question about test data. A teacher reviewing the page can see not only whether the student finished the reading, but how the student understood it. The annotations become evidence about learning.
+
+AI may suggest definitions or examples, but the learner should compare them with the text and reliable references. A note that sounds clear can still be inaccurate. The act of checking is part of the lesson, especially in a course about AI.
 
 The Color of Difficulty
 
-The highlight colors acquired a meaning of their own. Yellow, green, blue, and purple indicated different levels of difficulty, while pink was deliberately reserved for bugs. The distinction came from the learner’s reading practice rather than from an abstract design specification.
+Visual annotation can make a long reading easier to navigate. A class might use yellow for a new word, green for a key idea, blue for supporting evidence, and purple for a question that requires discussion. Another class may choose a simpler system. The important point is consistency: color should communicate a reading decision rather than serve as decoration.
 
-Learner: “The difficulty of the words/phrase is colored by the Preview’s highlight panel from yellow, green, blue, (pink) and purple except pink. I reserve pink for highlight bugs.”
-
-This rule illustrates how the course was made. Codex could implement a menu and reproduce the visual choices of Preview, but the learner decided what those choices meant. A color was not merely decoration; it communicated a reader’s judgment. When the highlighting tools could change one color into another but could not remove a highlight, the learner noticed the missing operation. Dehighlighting was then added. Design improved through use.
-
-Learner: “I have done the manual editing… Please process it.”
-
-Codex: “The imports succeeded.”
-
-That exchange became the rhythm of the work. The learner exported editor backups; Codex imported the rich formatting, rebuilt the editors, regenerated the PDFs, and checked every rendered page. The learner decided which words were difficult, which annotations were helpful, and what the pages should look like. Codex supplied drafting, programming, conversion, and troubleshooting.
+These choices also show why educational tools should be adaptable. A beginner may need visible definitions and generous spacing. An advanced learner may prefer fewer hints and more room for argument. A learner with low vision may need strong contrast rather than subtle color differences. Good design responds to actual readers.
 
 Corrections Became Evidence
 
-Every defect revealed something about the system. A hidden inline note showed that two valid annotations could still interfere with one another. Missing bold type showed that correct HTML did not guarantee correct PDF typography. Chinese characters rendered as empty boxes when a Latin italic font was asked to display them. A nearly blank page revealed that an intentional page break could become wasteful after the surrounding text changed.
+Course development is an evaluation process. A teacher may discover that an example assumes cultural knowledge the class does not share. A student may notice that a diagram contradicts the paragraph beside it. A screen reader may expose a missing label that was invisible during visual review. A quiz may reveal that a clear-sounding explanation did not produce understanding.
 
-These were not failures outside the learning process. They became concrete examples of Lesson 7’s central message: outputs must be checked in the environment where people will actually use them. The source text, editor, and PDF were three different representations of the same article, and success in one did not prove success in the others. Visual inspection remained necessary.
+Such corrections are not merely cosmetic. They provide evidence about where communication failed. The revised course becomes stronger when the team records the problem, changes the material, and checks the result in the environment where learners will use it.
 
-The learner’s brief responses—“It works,” “It looks better,” and “It looks good”—therefore carried real weight. They were acceptance tests expressed in ordinary language. Each one followed observation, comparison, and revision.
+This is especially important when AI contributes to the draft. Generated prose may be fluent while using the wrong level, hiding an assumption, or giving a confident but unsupported claim. Review should therefore examine accuracy, readability, accessibility, and usefulness—not grammar alone.
 
 A Course About AI—and With AI
 
-Lessons 3 and 4 followed prediction errors through loss, gradient descent, learning rates, artificial neurons, hidden layers, and backpropagation. Lessons 5 and 6 explained next-token prediction and turned theory into a small Python classifier. Lesson 7 examined bias, privacy, reliability, verification, accountability, security, and human oversight.
+An AI course created with AI offers a valuable opportunity for transparency. The class can examine which tasks the system performed and which decisions remained human. AI might propose an outline, rewrite a paragraph at two reading levels, generate practice questions, or help create an interactive activity. Educators select sources, protect student information, correct errors, and decide whether the material meets the learning objective.
 
-The making of the course demonstrated its final lesson. The AI did not become human, and the human did not surrender editorial control. The machine generated and transformed; the learner evaluated, corrected, and decided. Their different roles made the result stronger.
+Public examples show how broad this environment can be. OpenAI’s education use cases include building unit plans from source files, creating classroom material packs, developing lesson decks, refreshing course materials, and building interactive lesson resources. UNESCO’s guidance on generative AI in education emphasizes human agency, inclusion, equity, and the participation of teachers and learners. These examples place AI inside an educational process rather than above it.
 
 The Story Turns Back on Itself
 
-After the lessons and their study editions were complete, the learner suggested that the collaboration itself should become part of the course.
+When students study how the course was made, course design becomes another reading subject. They can identify the original question, trace how it became a sequence, compare early and revised explanations, and judge which checks made the material more reliable. The process teaches planning, source evaluation, revision, and accountability.
 
-Learner: “Now please write an article describe a story using extracts of the dialogue between you and me for making this AI course.”
+This broader story matters for English learners. Technical content provides real reasons to read closely, ask for clarification, compare definitions, and write concise summaries. The course is therefore doing two kinds of work at once: explaining AI and developing language through purposeful reading.
 
-The learner then made the publishing intention explicit.
+A polished course rarely appears in one attempt. It grows through a cycle: define the learners, select evidence, design a sequence, draft, annotate, test, revise, and review again. AI can accelerate several stages, but speed is not the final standard. The final standard is whether learners can understand the material, question it intelligently, and use it responsibly.
 
-Learner: “Please make it an article and provide an editor, i.e., treat it the same way as it is a part of the AI course.”
+Sources
 
-Codex: “I’ll add this as a new companion article in the AI course, with its own independent editor, import workflow, vocabulary, and a news-style PDF constrained to two pages.”
+OpenAI education workflows and use cases: https://learn.chatgpt.com/use-cases
 
-In that moment, the process became its own subject. A dialogue that had produced a course was transformed into another editable lesson within the course.
+UNESCO, Guidance for Generative AI in Education and Research: https://unesdoc.unesco.org/ark:/48223/pf0000386693
 
-The collaboration had become recursive: the participants used an AI course editor to edit a story about building the AI course editor. Yet the purpose remained practical. The story preserved decisions that would otherwise be scattered across many short requests. It showed future readers that a polished course did not arrive in one prompt. It emerged from planning, disagreement, experimentation, manual reading, and repeated repair.
+Совместная разработка учебного курса требует ясной цели, надёжных источников и постоянной проверки. ИИ может помогать создавать объяснения, упражнения и учебные материалы, но преподаватели и учащиеся должны сохранять самостоятельность, исправлять ошибки и оценивать, действительно ли курс способствует пониманию.〔1〕
 
-At the end of another regenerated edition, the learner gave the shortest possible review.
+脚注
 
-Learner: “It looks good!”
-
-What began as a question about whether an AI was a machine became a practical story of human–AI collaboration. The course taught how AI works, but its creation also showed how AI can be used responsibly: through clear goals, repeated checking, preserved human judgment, and a willingness to revise.
+〔1〕Editor’s note: This Russian paragraph summarizes collaborative course design, verification, and the continuing authority of teachers and learners.
