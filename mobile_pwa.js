@@ -211,7 +211,10 @@
       if (action === "install") install();
     });
     if (isEditor) setEditing(false, true);
-    storageLabel().then(value => { if (value) document.querySelector('[data-mobile-action="offline"]').title = `已用空间 ${value}`; });
+    storageLabel().then(value => {
+      const offlineButton = document.querySelector('[data-mobile-action="offline"]');
+      if (value && offlineButton) offlineButton.title = `已用空间 ${value}`;
+    });
   }
 
   window.addEventListener("beforeinstallprompt", event => { event.preventDefault(); installPrompt = event; });
