@@ -13,7 +13,7 @@ import re
 
 BASE_DIR = Path(__file__).resolve().parent
 OUTPUT = BASE_DIR / "index.html"
-MOBILE_READER_VERSION = "1.16.0"
+MOBILE_READER_VERSION = "1.16.1"
 COPYRIGHT_YEAR = 2026
 COPYRIGHT_HOLDER = "Ruixing"
 
@@ -271,12 +271,21 @@ def collect_entries() -> dict[str, list[dict[str, str | None]]]:
     personal_studio = BASE_DIR / "personal_writings" / "index.html"
     if personal_studio.exists():
         grouped["personal_writings"].append({
-            "title": "Personal Writings Studio",
-            "context": "Private two-pane diary and planning workspace",
+            "title": "New Writing",
+            "context": "Start a diary, schedule, journal, reflection, or note",
+            "editor": personal_studio.relative_to(BASE_DIR).as_posix() + "?new=1",
+            "pdf": None,
+            "search": "new personal writing diary schedule journal reflection reading notes meeting notes",
+            "action_label": "Start writing",
+            "direct_link": "yes",
+        })
+        grouped["personal_writings"].append({
+            "title": "Continue Last Writing",
+            "context": "Resume the private draft saved in this browser",
             "editor": personal_studio.relative_to(BASE_DIR).as_posix(),
             "pdf": None,
-            "search": "personal writings diary schedule journal reflection reading notes meeting notes private PDF backup",
-            "action_label": "Open studio",
+            "search": "continue resume personal writing browser draft private backup",
+            "action_label": "Continue",
             "direct_link": "yes",
         })
     nine_sources = BASE_DIR / "nine_commentaries" / "source_index" / "select_readings.html"
