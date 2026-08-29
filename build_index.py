@@ -13,7 +13,7 @@ import re
 
 BASE_DIR = Path(__file__).resolve().parent
 OUTPUT = BASE_DIR / "index.html"
-MOBILE_READER_VERSION = "1.16.2"
+MOBILE_READER_VERSION = "1.17.0"
 COPYRIGHT_YEAR = 2026
 COPYRIGHT_HOLDER = "Ruixing"
 
@@ -51,7 +51,26 @@ COLLECTIONS = {
     "tcm_foundations": Collection("tcm_foundations", "《中医基础理论》", "原创学习教材：传统理论、现代医学边界、术语与复习", "中医基础课程"),
 }
 
-COLLECTION_ORDER = list(COLLECTIONS)
+CATEGORIES = {
+    "chinese_classics": ("Chinese Classics & Literature", "Classical texts, philosophy, history, and fiction"),
+    "history_politics": ("History & Political Studies", "Wars, political documents, historical interpretation, and theory"),
+    "courses": ("Courses & Technical Learning", "Structured courses and professional study materials"),
+    "russian_literature": ("Russian Literature", "Russian poetry and short prose"),
+    "news": ("News & Current Affairs", "Reports, transcripts, and current-affairs study editions"),
+    "writing": ("Writing Workspaces", "Original articles and private personal writing"),
+}
+
+CATEGORY_COLLECTIONS = {
+    "chinese_classics": ["rongzhai_suibi", "guwen_guanzhi", "laozi", "sunzi", "thirty_six_stratagems", "liaozhai_stories", "shiji"],
+    "history_politics": ["chinese_wars", "american_civil_war", "jianshang", "nine_commentaries", "marxist_classics", "russian_wars", "mao_annotated_24_histories"],
+    "courses": ["ai_course", "python", "tcm_foundations"],
+    "russian_literature": ["russian_poetry", "russian_short_stories"],
+    "news": ["news_reports"],
+    "writing": ["reader_articles", "personal_writings"],
+}
+
+COLLECTION_CATEGORY = {collection: category for category, collections in CATEGORY_COLLECTIONS.items() for collection in collections}
+COLLECTION_ORDER = [collection for category in CATEGORIES for collection in CATEGORY_COLLECTIONS[category]]
 
 
 class HeadingParser(HTMLParser):
@@ -447,11 +466,12 @@ def marxist_books_html(entries: list[dict[str, str | None]], start_number: int) 
 def build_html(grouped: dict[str, list[dict[str, str | None]]]) -> str:
     total = sum(len(entries) for entries in grouped.values())
     active = [(key, entries) for key, entries in grouped.items() if entries or key in {"guwen_guanzhi", "chinese_wars", "american_civil_war", "laozi", "sunzi", "thirty_six_stratagems", "russian_wars", "mao_annotated_24_histories"}]
-    nav = "".join(
-        f'<a href="#{key}"><span>{escape(COLLECTIONS[key].title)}</span><b>{len(entries)}</b></a>'
-        for key, entries in active
+    category_counts = {category: sum(len(grouped[key]) for key in collections) for category, collections in CATEGORY_COLLECTIONS.items()}
+    nav = '<button type="button" class="category-chip active" data-category-filter="all"><span>All Collections</span><b>{}</b></button>'.format(total) + "".join(
+        f'<button type="button" class="category-chip" data-category-filter="{category}"><span>{escape(CATEGORIES[category][0])}</span><b>{category_counts[category]}</b></button>'
+        for category in CATEGORIES
     )
-    sections = []
+    sections: dict[str, list[str]] = {category: [] for category in CATEGORIES}
     running_number = 0
     for key, entries in active:
         collection = COLLECTIONS[key]
@@ -472,13 +492,23 @@ def build_html(grouped: dict[str, list[dict[str, str | None]]]) -> str:
                 cards.append(entry_card(entry, running_number))
             heading = '<div class="news-columns" aria-hidden="true"><span>No.</span><span>Type</span><span>Date</span><span>Title</span><span>Reading</span><span>Editing</span><span>Report</span></div>' if key == "news_reports" else ""
             cards_html = heading + "".join(cards)
-        sections.append(f'''<section class="collection" id="{key}" data-collection>
+        category = COLLECTION_CATEGORY[key]
+        sections[category].append(f'''<section class="collection" id="{key}" data-collection data-category="{category}">
   <header class="collection-header">
     <button class="collection-toggle" type="button" aria-expanded="true" aria-controls="{key}-entries"><span class="collection-toggle-copy"><span class="collection-eyebrow">{escape(collection.eyebrow)}</span><span class="collection-title">{escape(collection.title)}</span><span class="collection-description">{escape(collection.description)}</span></span><i aria-hidden="true">▾</i></button>
     <div class="collection-meta">{selector_link}<strong>{len(entries)} 篇</strong></div>
   </header>
 {resources_block}
   <div class="entries{' hierarchical-entries' if key == 'marxist_classics' else ''}" id="{key}-entries">{cards_html}</div>
+</section>''')
+    category_groups = []
+    for category, (title, description) in CATEGORIES.items():
+        collections = sections[category]
+        if not collections:
+            continue
+        category_groups.append(f'''<section class="category-group" data-category-group="{category}">
+  <header class="category-header"><button type="button" data-category-toggle aria-expanded="true"><span><strong>{escape(title)}</strong><small>{escape(description)}</small></span><b>{category_counts[category]} entries</b><i aria-hidden="true">▾</i></button></header>
+  <div class="category-collections">{"".join(collections)}</div>
 </section>''')
     return f'''<!doctype html>
 <html lang="zh-CN">
@@ -494,7 +524,8 @@ a{{color:inherit}}.masthead{{background:#27251f;color:#fff}}.masthead-inner{{wid
 .count{{min-width:150px;padding:20px 22px;border:1px solid #ffffff2d;border-radius:10px;background:#ffffff0b}}.count b{{display:block;font:700 44px/1 Georgia,serif;color:#f1d293}}.count span{{color:#cfc9bd;font-size:13px}}
 .shell{{width:min(1180px,calc(100% - 36px));margin:0 auto 70px}}.controls{{position:sticky;top:0;z-index:5;display:grid;grid-template-columns:minmax(240px,1fr) minmax(0,2fr);gap:14px;margin:0 -12px;padding:16px 12px;background:#e9e4d9ed;backdrop-filter:blur(10px)}}
 .search{{display:flex;align-items:center;gap:10px;padding:0 14px;background:var(--panel);border:1px solid var(--line);border-radius:8px}}.search svg{{width:18px;color:var(--muted)}}.search input{{width:100%;height:46px;border:0;outline:0;background:transparent;color:var(--ink);font-size:15px}}
-.collection-nav{{display:flex;gap:7px;overflow:auto;padding-bottom:1px;scrollbar-width:thin}}.collection-nav a{{display:flex;gap:10px;align-items:center;white-space:nowrap;padding:10px 13px;border:1px solid var(--line);border-radius:8px;background:var(--panel);text-decoration:none;font-size:13px}}.collection-nav a:hover{{border-color:var(--red);color:var(--red)}}.collection-nav b{{display:grid;min-width:24px;height:24px;place-items:center;border-radius:12px;background:#eee8dc;font-size:11px}}
+.collection-nav{{display:flex;gap:7px;overflow:auto;padding-bottom:1px;scrollbar-width:thin}}.category-chip{{display:flex;gap:10px;align-items:center;white-space:nowrap;padding:10px 13px;border:1px solid var(--line);border-radius:8px;background:var(--panel);color:inherit;cursor:pointer;font-size:13px}}.category-chip:hover,.category-chip.active{{border-color:var(--red);color:var(--red)}}.category-chip.active{{box-shadow:inset 0 0 0 1px var(--red)}}.collection-nav b{{display:grid;min-width:24px;height:24px;place-items:center;border-radius:12px;background:#eee8dc;font-size:11px}}
+.category-group{{margin-top:24px;scroll-margin-top:72px}}.category-header{{border:1px solid var(--line);border-radius:8px;background:#eef3f0}}.category-header button{{display:grid;width:100%;grid-template-columns:minmax(0,1fr) auto 22px;gap:14px;align-items:center;padding:12px 15px;border:0;background:transparent;color:inherit;text-align:left;cursor:pointer}}.category-header span{{display:grid;gap:3px}}.category-header strong{{font-size:17px}}.category-header small,.category-header b{{color:var(--muted);font-size:11px}}.category-header i{{font-style:normal;transition:transform .2s}}.category-group.collapsed .category-header i{{transform:rotate(-90deg)}}.category-group.collapsed .category-collections{{display:none}}.category-collections>.collection:first-child{{margin-top:10px}}
 .collection{{margin-top:34px;scroll-margin-top:90px}}.collection-header{{display:flex;justify-content:space-between;gap:25px;align-items:end;padding:0 3px 15px;border-bottom:2px solid var(--ink)}}.collection-eyebrow{{margin:0 0 6px!important;color:var(--red)!important;font-size:11px!important;font-weight:800;letter-spacing:.16em}}.collection-title{{margin:0!important;color:inherit!important;font:700 28px/1.25 "Songti SC","STSong",serif!important}}.collection-description{{display:block;margin-top:7px;color:var(--muted);font-size:13px}}.collection-header strong{{white-space:nowrap;color:var(--muted);font-size:13px}}.collection-toggle{{display:flex;min-width:0;flex:1;align-items:center;justify-content:space-between;gap:16px;padding:0;border:0;background:transparent;color:inherit;text-align:left;cursor:pointer}}.collection-toggle-copy{{display:block;min-width:0}}.collection-toggle i{{font-style:normal;font-size:18px;transition:transform .2s}}.collection.collapsed .collection-toggle i{{transform:rotate(-90deg)}}.collection.collapsed .entries,.collection.collapsed .collection-resources{{display:none}}
 .collection-meta{{display:flex;gap:10px;align-items:center}}.collection-tool,.collection-resource{{padding:7px 10px;border:1px solid var(--line);border-radius:6px;background:var(--panel);color:var(--red);text-decoration:none;font-size:12px;font-weight:700}}.collection-resources{{padding:8px 12px;border:1px solid var(--line);border-bottom:0;background:#fff}}
 .entries{{background:var(--panel);border:1px solid var(--line);border-top:0}}.entry{{display:grid;grid-template-columns:54px minmax(0,1fr) auto;gap:16px;align-items:center;min-height:84px;padding:13px 17px;border-bottom:1px solid #e6e0d5}}.entry:last-child{{border-bottom:0}}.entry:hover{{background:#f7f1e6}}.entry-number{{color:#a49b8c;font:600 12px/1 Georgia,serif}}.entry-copy span{{color:var(--blue);font-size:11px;font-weight:750;letter-spacing:.06em}}.entry-copy h3{{margin:5px 0 0;font:650 18px/1.35 "Songti SC","STSong",serif}}
@@ -504,7 +535,6 @@ a{{color:inherit}}.masthead{{background:#27251f;color:#fff}}.masthead-inner{{wid
 .empty{{display:none;margin:70px 0;padding:28px;text-align:center;color:var(--muted);background:var(--panel);border:1px dashed var(--line)}}footer{{padding:36px 18px;text-align:center;color:var(--muted);font-size:12px}}
 @media(max-width:760px){{.masthead-inner{{grid-template-columns:1fr;padding-top:45px}}.count{{display:none}}.controls{{grid-template-columns:1fr}}.entry{{grid-template-columns:38px 1fr}}.entry-actions{{grid-column:2;justify-content:flex-start}}.collection-header span{{display:none}}}}
 @media print{{.masthead{{background:#fff;color:#000}}.lede,.controls,.entry-actions,footer{{display:none}}.shell{{width:100%;margin:0}}.collection{{break-inside:avoid}}.entry{{min-height:0;padding:7px 10px}}}}
-.collection.collapsed{{display:none}}
 /* Google Workspace-inspired catalog shell */
 :root{{--ink:#202124;--muted:#5f6368;--paper:#fff;--panel:#fff;--line:#dadce0;--red:#188038;--blue:#1a73e8;--gold:#f9ab00}}
 body{{background:#f8f9fa;font-family:Arial,"PingFang SC","Noto Sans CJK SC",sans-serif}}
@@ -521,7 +551,7 @@ h1{{font:500 20px/1.25 Arial,"PingFang SC",sans-serif;letter-spacing:0}}
 .controls{{top:0;display:block;margin:0;padding:8px 6px;background:#fff;border-bottom:1px solid var(--line);backdrop-filter:none}}
 .search{{height:38px;border-color:var(--line);border-radius:20px;background:#f1f3f4}}.search:focus-within{{background:#fff;box-shadow:0 1px 3px #3c404340}}
 .search input{{height:36px;font-size:13px}}.collection-nav{{gap:4px;align-items:center}}
-.collection-nav a{{padding:7px 10px;border-color:transparent;border-radius:18px;background:#f1f3f4;font-size:12px}}.collection-nav a:hover{{border-color:#aecbfa;background:#e8f0fe;color:#174ea6}}
+.category-chip{{padding:7px 10px;border-color:transparent;border-radius:18px;background:#f1f3f4;font-size:12px}}.category-chip:hover,.category-chip.active{{border-color:#aecbfa;background:#e8f0fe;color:#174ea6}}.category-chip.active{{box-shadow:none}}
 .collection-nav b{{height:20px;min-width:20px;background:#fff;font-size:10px}}
 .collection{{margin-top:18px;scroll-margin-top:62px}}
 .collection-header{{min-height:54px;padding:8px 12px;align-items:center;border:1px solid var(--line);border-bottom:0;background:#f8f9fa}}
@@ -542,7 +572,8 @@ html[data-workspace-skin="reading"] .masthead{{background:#27251f;color:#fff;bor
 html[data-workspace-skin="reading"] .kicker{{margin:0 0 12px;color:#d8b775;font-size:12px;letter-spacing:.22em}}html[data-workspace-skin="reading"] h1{{font:700 clamp(36px,6vw,72px)/1.05 "Songti SC","STSong",serif}}html[data-workspace-skin="reading"] .lede{{max-width:650px;margin:18px 0 0;color:#d9d4ca;font-size:16px;line-height:1.75}}
 html[data-workspace-skin="reading"] .count{{min-width:150px;padding:20px 22px;border-color:#ffffff2d;border-radius:10px;background:#ffffff0b}}html[data-workspace-skin="reading"] .count b{{display:block;margin:0;color:#f1d293;font:700 44px/1 Georgia,serif}}html[data-workspace-skin="reading"] .count span{{color:#cfc9bd;font-size:13px}}
 html[data-workspace-skin="reading"] .shell{{width:min(1180px,calc(100% - 36px));padding:0;margin:0 auto 70px}}html[data-workspace-skin="reading"] .controls{{grid-template-columns:minmax(240px,1fr) minmax(0,2fr);gap:14px;margin:0 -12px;padding:16px 12px;background:#e9e4d9ed;backdrop-filter:blur(10px)}}html[data-workspace-skin="reading"] .search{{height:auto;border-radius:8px;background:var(--panel)}}html[data-workspace-skin="reading"] .search input{{height:46px;font-size:15px}}
-html[data-workspace-skin="reading"] .collection-nav{{gap:7px}}html[data-workspace-skin="reading"] .collection-nav a{{padding:10px 13px;border-color:var(--line);border-radius:8px;background:var(--panel);color:var(--ink);font-size:13px}}html[data-workspace-skin="reading"] .collection-nav a:hover,html[data-workspace-skin="reading"] .collection-nav a:focus-visible{{border-color:var(--red);background:#f7f1e6;color:var(--red)}}html[data-workspace-skin="reading"] .collection-nav b{{height:24px;min-width:24px;background:#eee8dc;color:var(--ink);font-size:11px}}
+html[data-workspace-skin="reading"] .collection-nav{{gap:7px}}html[data-workspace-skin="reading"] .category-chip{{padding:10px 13px;border-color:var(--line);border-radius:8px;background:var(--panel);color:var(--ink);font-size:13px}}html[data-workspace-skin="reading"] .category-chip:hover,html[data-workspace-skin="reading"] .category-chip:focus-visible,html[data-workspace-skin="reading"] .category-chip.active{{border-color:var(--red);background:#f7f1e6;color:var(--red)}}html[data-workspace-skin="reading"] .collection-nav b{{height:24px;min-width:24px;background:#eee8dc;color:var(--ink);font-size:11px}}
+html[data-workspace-skin="reading"] .category-header{{border-color:var(--line);background:#ded7c9}}html[data-workspace-skin="reading"] .category-header strong{{font:700 20px/1.3 "Songti SC","STSong",serif}}
 html[data-workspace-skin="reading"] .collection{{margin-top:34px;scroll-margin-top:90px}}html[data-workspace-skin="reading"] .collection-header{{padding:0 3px 15px;align-items:end;border:0;border-bottom:2px solid var(--ink);background:transparent}}html[data-workspace-skin="reading"] .collection-eyebrow{{display:block}}html[data-workspace-skin="reading"] .collection-title{{font:700 28px/1.25 "Songti SC","STSong",serif!important}}html[data-workspace-skin="reading"] .collection-description{{margin-top:7px;font-size:13px}}html[data-workspace-skin="reading"] .collection-tool{{border-radius:6px;background:var(--panel);color:var(--red)}}
 html[data-workspace-skin="reading"] .entries{{box-shadow:none}}html[data-workspace-skin="reading"] .entry{{grid-template-columns:54px minmax(0,1fr) auto;gap:16px;min-height:84px;padding:13px 17px;border-color:#e6e0d5}}html[data-workspace-skin="reading"] .entry-number{{display:block;align-self:auto;background:transparent;border:0;color:#a49b8c;font:600 12px/1 Georgia,serif}}html[data-workspace-skin="reading"] .entry-copy{{display:block;align-self:auto;border:0}}html[data-workspace-skin="reading"] .entry-copy span{{padding:0;color:var(--blue);font-size:11px;letter-spacing:.06em}}html[data-workspace-skin="reading"] .entry-copy h3{{margin:5px 0 0;padding:0;border:0;font:650 18px/1.35 "Songti SC","STSong",serif}}html[data-workspace-skin="reading"] .entry-actions{{padding:0}}html[data-workspace-skin="reading"] .entry-actions a{{padding:8px 11px;border-radius:6px;font-size:12px}}html[data-workspace-skin="reading"] .entry-actions .primary{{background:var(--red)}}
 /* Separate editor and PDF into aligned spreadsheet columns. */
@@ -565,24 +596,28 @@ html[data-workspace-skin="reading"] .news-columns{{background:#eee8dc;color:var(
 <header class="masthead"><div class="masthead-inner"><div><p class="kicker">Reading workspace</p><h1>校读书斋</h1><p class="lede">文章、古籍与课程材料的阅读编辑器目录。搜索篇名，或按系列进入清稿、注音、脚注、按语与札记工作区。</p></div><div class="count"><b>{total}</b><span>个阅读编辑器</span></div><nav class="masthead-books" aria-label="书目分组"><div class="collection-nav">{nav}</div></nav></div></header>
 <main class="shell">
   <div class="controls"><label class="search"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></svg><input id="catalogSearch" type="search" placeholder="搜索文章、篇章或系列…" autocomplete="off"></label></div>
-  {"".join(sections)}
+  {"".join(category_groups)}
   <p class="empty" id="emptyState">没有找到匹配的阅读材料。</p>
 </main>
 <footer><strong>教育用途说明：</strong>本站仅供个人阅读、校读与学习，不隶属于所引用的原文来源网站；原始资料的权利归其相应权利人所有。<br><span>Mobile Reader v{MOBILE_READER_VERSION} · &copy; {COPYRIGHT_YEAR} {escape(COPYRIGHT_HOLDER)}. All rights reserved.</span><br>目录由 <code>practice/build_index.py</code> 自动生成 · 新增编辑器后重新运行即可更新</footer>
 <script>
 const search=document.getElementById('catalogSearch'),empty=document.getElementById('emptyState');
 const readingHistoryKey='reading-workspace-history-v1',editingHistoryKey='reading-workspace-editing-history-v1';
+const categoryKey='reading-workspace-category-v1';let currentCategory=localStorage.getItem(categoryKey)||'all';
 function setCollectionCollapsed(section,collapsed,persist=true){{section.classList.toggle('collapsed',collapsed);section.querySelector('.collection-toggle')?.setAttribute('aria-expanded',String(!collapsed));if(persist){{const state=JSON.parse(localStorage.getItem('reading-workspace-collapsed-collections')||'{{}}');state[section.id]=collapsed;localStorage.setItem('reading-workspace-collapsed-collections',JSON.stringify(state))}}}}
-function installCollectionToggles(){{document.querySelectorAll('[data-collection]').forEach(section=>{{setCollectionCollapsed(section,true,false);section.querySelector('.collection-toggle')?.addEventListener('click',()=>{{const closing=!section.classList.contains('collapsed');setCollectionCollapsed(section,closing,false);if(closing)history.replaceState(null,'',location.pathname+location.search)}})}});document.querySelectorAll('.masthead-books a[href^="#"]').forEach(link=>link.addEventListener('click',event=>{{event.preventDefault();const section=document.querySelector(link.getAttribute('href')),opening=section?.classList.contains('collapsed');document.querySelectorAll('[data-collection]').forEach(item=>setCollectionCollapsed(item,true,false));if(opening&&section){{setCollectionCollapsed(section,false,false);history.replaceState(null,'',link.getAttribute('href'));section.scrollIntoView({{behavior:'smooth',block:'start'}})}}}}));const linked=location.hash&&document.querySelector(location.hash);if(linked?.matches('[data-collection]'))setCollectionCollapsed(linked,false,false)}}
+function installCollectionToggles(){{document.querySelectorAll('[data-collection]').forEach(section=>{{setCollectionCollapsed(section,true,false);section.querySelector('.collection-toggle')?.addEventListener('click',()=>setCollectionCollapsed(section,!section.classList.contains('collapsed'),false))}});const linked=location.hash&&document.querySelector(location.hash);if(linked?.matches('[data-collection]')){{currentCategory=linked.dataset.category;setCollectionCollapsed(linked,false,false);requestAnimationFrame(()=>linked.scrollIntoView({{block:'start'}}))}}}}
+function applyCategory(category,persist=true){{currentCategory=CATEGORIES.includes(category)?category:'all';document.querySelectorAll('[data-category-filter]').forEach(button=>button.classList.toggle('active',button.dataset.categoryFilter===currentCategory));if(persist)localStorage.setItem(categoryKey,currentCategory);filterCatalog()}}
+const CATEGORIES=['all',...Array.from(document.querySelectorAll('[data-category-group]'),group=>group.dataset.categoryGroup)];
+function installCategoryControls(){{document.querySelectorAll('[data-category-filter]').forEach(button=>button.addEventListener('click',()=>applyCategory(button.dataset.categoryFilter)));document.querySelectorAll('[data-category-toggle]').forEach(button=>button.addEventListener('click',()=>{{const group=button.closest('[data-category-group]'),collapsed=group.classList.toggle('collapsed');button.setAttribute('aria-expanded',String(!collapsed))}}));applyCategory(currentCategory,false)}}
 function installBookToggles(){{}}
-function filterCatalog(){{const query=search.value.trim().toLocaleLowerCase();let visibleTotal=0;document.querySelectorAll('[data-collection]').forEach(section=>{{let count=0;const books=section.querySelectorAll('[data-book]');if(books.length){{books.forEach(book=>{{const bookMatch=query&&book.dataset.search.includes(query);let bookCount=0;book.querySelectorAll('.entry').forEach(entry=>{{const show=entry.dataset.libraryHidden!=='true'&&(!query||bookMatch||entry.dataset.search.includes(query));entry.hidden=!show;if(show)bookCount++}});book.hidden=bookCount===0;if(query&&bookCount){{const bookState=book.querySelector('.book-state'),contentsState=book.querySelector('.contents-state');if(bookState)bookState.checked=true;if(contentsState)contentsState.checked=true}}count+=bookCount}})}}else{{section.querySelectorAll('.entry').forEach(entry=>{{const show=entry.dataset.libraryHidden!=='true'&&(!query||entry.dataset.search.includes(query));entry.hidden=!show;if(show)count++}})}}section.hidden=count===0;if(query&&count)setCollectionCollapsed(section,false,false);visibleTotal+=count}});empty.style.display=visibleTotal?'none':'block'}}
+function filterCatalog(){{const query=search.value.trim().toLocaleLowerCase();let visibleTotal=0;document.querySelectorAll('[data-collection]').forEach(section=>{{let count=0;const books=section.querySelectorAll('[data-book]');if(books.length){{books.forEach(book=>{{const bookMatch=query&&book.dataset.search.includes(query);let bookCount=0;book.querySelectorAll('.entry').forEach(entry=>{{const show=entry.dataset.libraryHidden!=='true'&&(!query||bookMatch||entry.dataset.search.includes(query));entry.hidden=!show;if(show)bookCount++}});book.hidden=bookCount===0;if(query&&bookCount){{const bookState=book.querySelector('.book-state'),contentsState=book.querySelector('.contents-state');if(bookState)bookState.checked=true;if(contentsState)contentsState.checked=true}}count+=bookCount}})}}else{{section.querySelectorAll('.entry').forEach(entry=>{{const show=entry.dataset.libraryHidden!=='true'&&(!query||entry.dataset.search.includes(query));entry.hidden=!show;if(show)count++}})}}section.hidden=count===0;if(query&&count)setCollectionCollapsed(section,false,false);visibleTotal+=count}});document.querySelectorAll('[data-category-group]').forEach(group=>{{const hasResults=[...group.querySelectorAll('[data-collection]')].some(section=>!section.hidden),categoryMatch=currentCategory==='all'||group.dataset.categoryGroup===currentCategory;group.hidden=!hasResults||(!query&&!categoryMatch)}});empty.style.display=visibleTotal?'none':'block'}}
 function applyRussianWarsLibrary(){{let selected;try{{selected=JSON.parse(localStorage.getItem('russian-wars-library-ids')||'null')}}catch{{selected=null}}const entries=[...document.querySelectorAll('#russian_wars-entries .entry')],allowed=Array.isArray(selected)?new Set(selected):null;entries.forEach(entry=>{{const parts=entry.dataset.editorPath?.split('/')||[],key=`${{parts.at(-2)}}@${{parts.at(-3)}}`,legacy=parts.at(-2),isBattle=legacy?.startsWith('battle_'),included=allowed?(allowed.has(key)||allowed.has(legacy)):!isBattle;entry.dataset.libraryHidden=included?'false':'true';entry.hidden=!included}});const count=entries.filter(entry=>!entry.hidden).length;const label=document.querySelector('#russian_wars .collection-meta strong');if(label)label.textContent=`${{count}} 篇已导入`}}
 function renderReadingHistory(){{let history={{}};try{{history=JSON.parse(localStorage.getItem(readingHistoryKey)||'{{}}')}}catch{{}}const formatter=new Intl.DateTimeFormat('zh-CN',{{year:'numeric',month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit'}});document.querySelectorAll('.entry[data-editor-path]').forEach(entry=>{{const cell=entry.querySelector('.entry-reading'),record=history[entry.dataset.editorPath];cell.classList.toggle('read',Boolean(record));cell.querySelector('strong').textContent=record?`已读 ${{record.count||1}} 次`:'未读';cell.querySelector('time').textContent=record?.lastRead?formatter.format(new Date(record.lastRead)):''}})}}
 function renderEditingHistory(){{let history={{}};try{{history=JSON.parse(localStorage.getItem(editingHistoryKey)||'{{}}')}}catch{{}}const formatter=new Intl.DateTimeFormat('zh-CN',{{year:'numeric',month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit'}});document.querySelectorAll('.entry[data-editor-path]').forEach(entry=>{{const cell=entry.querySelector('.entry-editing'),record=history[entry.dataset.editorPath];cell.classList.toggle('edited',Boolean(record));cell.querySelector('strong').textContent=record?`已编辑 ${{record.sessions||1}} 次`:'未编辑';cell.querySelector('time').textContent=record?.lastEdited?formatter.format(new Date(record.lastEdited)):'';cell.title=record?`首次编辑：${{formatter.format(new Date(record.firstEdited))}}\n最近编辑：${{formatter.format(new Date(record.lastEdited))}}\n修改批次：${{record.changes||1}}\n内容类型：${{(record.kinds||[]).join('、')||'正文'}}`:''}})}}
 function renderHistory(){{renderReadingHistory();renderEditingHistory()}}
 search.addEventListener('input',filterCatalog);
 document.addEventListener('click',event=>{{if(event.target.closest('.entry-editor a,.entry-title-link'))sessionStorage.setItem('shiji-editor-view','annotated')}});
-window.addEventListener('focus',()=>{{renderHistory();applyRussianWarsLibrary()}});window.addEventListener('storage',()=>{{renderHistory();applyRussianWarsLibrary()}});installCollectionToggles();installBookToggles();renderHistory();applyRussianWarsLibrary();
+window.addEventListener('focus',()=>{{renderHistory();applyRussianWarsLibrary()}});window.addEventListener('storage',()=>{{renderHistory();applyRussianWarsLibrary()}});installCollectionToggles();installCategoryControls();installBookToggles();renderHistory();applyRussianWarsLibrary();filterCatalog();
 </script>
 </body>
 </html>'''
