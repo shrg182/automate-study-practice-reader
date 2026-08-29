@@ -7,5 +7,6 @@ Each article is an independent Shiji-style editing project with its own text, di
 - `article_3_lessons_5_6`: Lessons 5–6
 - `article_4_lesson_7_summary`: Lesson 7 and the complete course summary
 - `article_5_making_the_course`: two-page companion story about creating the course
+- `article_6_chatgpt_codex`: English follow-up mini-course on using ChatGPT and Codex
 
 The editor state and JSON backups of one article are not shared with another article.

@@ -1,0 +1,9 @@
+term,pinyin,type,annotation
+agentic,,concept,Able to carry a task through multiple steps by using tools and responding to intermediate results.
+artifact-centered,,concept,Work organized around creating or changing durable files documents code or other project outputs.
+acceptance test,,technical,A check that determines whether a result satisfies an observable requirement.
+permission boundary,,concept,A clear statement of which actions are authorized and which require approval.
+source of truth,,concept,The authoritative location from which a particular kind of information should be maintained.
+reversible,,concept,Able to be undone without serious loss or consequence.
+human authority,,concept,Meaningful human power to inspect decide reject revise or stop an action.
+traceable,,concept,Connected to evidence or sources that a reviewer can follow and verify.

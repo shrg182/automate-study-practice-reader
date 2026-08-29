@@ -1,0 +1,7 @@
+This follow-up course was written for the AI Course collection using current official OpenAI documentation and the established Reader workflow.
+
+Official references:
+- https://learn.chatgpt.com/use-cases
+- https://developers.openai.com/codex
+
+Product interfaces, availability, and limits may change. The course emphasizes durable workflow principles rather than account-specific menus.
