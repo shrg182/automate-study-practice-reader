@@ -13,7 +13,7 @@ import re
 
 BASE_DIR = Path(__file__).resolve().parent
 OUTPUT = BASE_DIR / "index.html"
-MOBILE_READER_VERSION = "1.16.1"
+MOBILE_READER_VERSION = "1.16.2"
 COPYRIGHT_YEAR = 2026
 COPYRIGHT_HOLDER = "Ruixing"
 
@@ -260,12 +260,21 @@ def collect_entries() -> dict[str, list[dict[str, str | None]]]:
     studio = BASE_DIR / "reader_articles" / "index.html"
     if studio.exists():
         grouped["reader_articles"].append({
-            "title": "Reader Articles Studio",
-            "context": "Two-pane writing and PDF workspace",
+            "title": "New Article",
+            "context": "Start a new publication-style article with a blank page",
+            "editor": studio.relative_to(BASE_DIR).as_posix() + "?new=1",
+            "pdf": None,
+            "search": "new reader article start write author publication blank page",
+            "action_label": "Start article",
+            "direct_link": "yes",
+        })
+        grouped["reader_articles"].append({
+            "title": "Open Article Studio",
+            "context": "Open the workspace; a browser draft is restored automatically",
             "editor": studio.relative_to(BASE_DIR).as_posix(),
             "pdf": None,
-            "search": "reader articles studio write author edit two pane PDF backup footnotes annotations",
-            "action_label": "Open studio",
+            "search": "reader articles studio open saved browser draft write edit two pane PDF backup",
+            "action_label": "Open",
             "direct_link": "yes",
         })
     personal_studio = BASE_DIR / "personal_writings" / "index.html"
@@ -280,12 +289,12 @@ def collect_entries() -> dict[str, list[dict[str, str | None]]]:
             "direct_link": "yes",
         })
         grouped["personal_writings"].append({
-            "title": "Continue Last Writing",
-            "context": "Resume the private draft saved in this browser",
+            "title": "Open Personal Writing Studio",
+            "context": "Open the workspace; a private browser draft is restored automatically",
             "editor": personal_studio.relative_to(BASE_DIR).as_posix(),
             "pdf": None,
-            "search": "continue resume personal writing browser draft private backup",
-            "action_label": "Continue",
+            "search": "open personal writing studio saved browser draft private backup",
+            "action_label": "Open",
             "direct_link": "yes",
         })
     nine_sources = BASE_DIR / "nine_commentaries" / "source_index" / "select_readings.html"
