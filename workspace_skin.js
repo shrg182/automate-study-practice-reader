@@ -643,7 +643,7 @@
     window.ReadingWorkspace.setPaneShare = applyShare;
   }
 
-  function installWorkspaceControls() { installContextNavigation(); installHomeMark(); installSwitch(); installReadingEnvironment(); installFileMenu(); installInsertMenu(); installUserNotesAccess(); installExpandingReviewFields(); installAnnotationSync(); installAllNotesView(); installImmersiveMode(); installGoogleVoicePriority(); installPaneBalancer(); }
+  function installWorkspaceControls() { installContextNavigation(); installHomeMark(); installSwitch(); installReadingEnvironment(); installPaneBalancer(); installFileMenu(); installInsertMenu(); installUserNotesAccess(); installExpandingReviewFields(); installAnnotationSync(); installAllNotesView(); installImmersiveMode(); installGoogleVoicePriority(); }
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", installWorkspaceControls);
   else installWorkspaceControls();
 })();
