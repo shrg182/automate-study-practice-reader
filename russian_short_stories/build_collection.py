@@ -7,6 +7,7 @@ import html
 import re
 import sys
 from pathlib import Path
+from urllib.parse import quote
 
 BASE = Path(__file__).resolve().parent
 PRACTICE = BASE.parent
@@ -109,6 +110,11 @@ def story_markup(item: dict) -> str:
     vocab = "".join(f'<li><b>{html.escape(a)}</b><span>{html.escape(b)}</span></li>' for a, b in item["vocab"])
     return f'''<article class="prose-reading" lang="ru"><p class="byline">{html.escape(item['author'])} · {item['year']} · {html.escape(item['form'])}</p>{body}</article><section class="study-card" contenteditable="false" lang="en"><h2>Reading guide</h2><p>{html.escape(item['guide'])}</p><h3>Core vocabulary</h3><ul>{vocab}</ul></section>'''
 
+
+def translation_card(item: dict) -> str:
+    query = quote(f'"{item["title"]}" {item["author"]} English translation')
+    return f'''<section class="card translation-card" lang="en"><h2>English translations</h2><p>External editions are provided for comparison. Wording and paragraph divisions may differ from this Russian text; these links are not paragraph-by-paragraph alignments.</p><div class="translation-links"><a href="https://en.wikisource.org/w/index.php?search={query}" target="_blank" rel="noreferrer">Search English Wikisource <span aria-hidden="true">↗</span></a><a href="https://archive.org/search?query={query}" target="_blank" rel="noreferrer">Search Internet Archive <span aria-hidden="true">↗</span></a></div></section>'''
+
 def build_one(item: dict) -> None:
     folder = BASE / item["slug"]
     folder.mkdir(parents=True, exist_ok=True)
@@ -116,7 +122,8 @@ def build_one(item: dict) -> None:
     page = build_html(plain, [], item["source"], chapter_title=item["title"], editor_title=f"{item['title']} · {item['author']} · Russian Prose Reader", storage_key=f"russian-prose-{item['slug']}-v1", file_stem=f"russian_prose_{item['slug']}", inline_notes=[], review_notes=[], reading_notes=[], global_terms=[], home_href="../../../index.html#russian_short_stories", theme_href="../../../workspace_theme.css", shared_library_href="../index.html", shared_library_label="Русские рассказы", source_site_label="Викитека")
     page, count = re.subn(r'(<section id="editor" class="editor"[^>]*>)[\s\S]*?(</section>)', lambda m: m.group(1) + story_markup(item) + m.group(2), page, count=1)
     if count != 1: raise RuntimeError("Reader editor body not found")
-    styles = '''<style>#editor{max-width:920px;margin-inline:auto;font-family:Georgia,"Times New Roman",serif;font-size:clamp(18px,1.7vw,23px);line-height:1.85}.byline{color:#5f6368;font:600 13px/1.4 Arial,sans-serif;text-indent:0!important}.prose-reading>p:not(.byline){margin:.85em 0}.study-card{margin:3em 0 1em;padding:20px;border:1px solid #dadce0;border-radius:10px;background:#f8f9fa;font:16px/1.65 Arial,sans-serif}.study-card h2,.study-card h3{margin:.2em 0 .65em}.study-card ul{display:grid;gap:7px;padding:0;list-style:none}.study-card li{display:grid;grid-template-columns:minmax(140px,.35fr) 1fr;gap:12px;padding-top:7px;border-top:1px solid #e1e4e8}.study-card li span{color:#5f6368}@media(max-width:600px){.study-card li{grid-template-columns:1fr;gap:1px}}</style>'''
+    page = page.replace('<aside class="sidebar">', '<aside class="sidebar">' + translation_card(item), 1)
+    styles = '''<style>#editor{max-width:920px;margin-inline:auto;font-family:Georgia,"Times New Roman",serif;font-size:clamp(18px,1.7vw,23px);line-height:1.85}.byline{color:#5f6368;font:600 13px/1.4 Arial,sans-serif;text-indent:0!important}.prose-reading>p:not(.byline){margin:.85em 0}.study-card{margin:3em 0 1em;padding:20px;border:1px solid #dadce0;border-radius:10px;background:#f8f9fa;font:16px/1.65 Arial,sans-serif}.study-card h2,.study-card h3{margin:.2em 0 .65em}.study-card ul{display:grid;gap:7px;padding:0;list-style:none}.study-card li{display:grid;grid-template-columns:minmax(140px,.35fr) 1fr;gap:12px;padding-top:7px;border-top:1px solid #e1e4e8}.study-card li span{color:#5f6368}.translation-card p{margin:0 0 10px;color:#5f6368;font:12px/1.55 Arial,sans-serif}.translation-links{display:grid;gap:7px}.translation-links a{display:flex;justify-content:space-between;gap:8px;padding:9px 10px;border:1px solid #c7d3e3;border-radius:6px;background:#f8fbff;color:#174ea6;text-decoration:none;font:700 12px/1.35 Arial,sans-serif}.translation-links a:hover{border-color:#174ea6;background:#e8f0fe}@media(max-width:600px){.study-card li{grid-template-columns:1fr;gap:1px}}</style>'''
     page = page.replace("</head>", styles + "</head>", 1).replace("</body>", '<script src="../../../mobile_pwa.js"></script></body>', 1)
     (folder / "editor.html").write_text(page, encoding="utf-8")
 

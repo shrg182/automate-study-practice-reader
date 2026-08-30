@@ -195,12 +195,12 @@
 
   function installFileMenu() {
     if (document.querySelector(".workspace-file-menu")) return;
-    const pdf = document.getElementById("printPdfBtn");
+    const pdf = document.getElementById("printPdfBtn") || document.getElementById("pdfBtn");
     if (!pdf) return;
     pdf.textContent = "PDF 草稿";
     const ids = ["saveBtn", "exportTxtBtn", "exportHtmlBtn", "exportJsonBtn", "exportLogBtn", "exportTermsBtn", "exportNotesBtn", "exportBtn", "downloadBtn", "backupBtn", "resetBtn"];
     const controls = ids.map((id) => document.getElementById(id)).filter(Boolean);
-    const importInput = document.getElementById("importJson") || document.getElementById("importBackup");
+    const importInput = document.getElementById("importJson") || document.getElementById("importBackup") || document.getElementById("importInput");
     const importLabel = importInput ? document.querySelector(`label[for="${importInput.id}"]`) : null;
     if (!controls.length) return;
     const style = document.createElement("style");
@@ -243,7 +243,7 @@
 
   function installInsertMenu() {
     if (document.querySelector(".workspace-insert-menu")) return;
-    const ids = ["notationBtn", "interlinearBtn", "footnoteBtn", "commentBtn", "insertImageBtn", "doubtBtn"];
+    const ids = ["notationBtn", "interlinearBtn", "footnoteBtn", "commentBtn", "insertImageBtn", "imageBtn", "doubtBtn"];
     const controls = ids.map((id) => document.getElementById(id)).filter(Boolean);
     if (controls.length < 2) return;
     const firstControl = controls[0];
