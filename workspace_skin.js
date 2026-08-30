@@ -5,6 +5,7 @@
   const key = "reading-workspace-skin";
   const requested = new URLSearchParams(location.search).get("skin");
   const saved = localStorage.getItem(key);
+  const englishFirst = /English-First Reader/i.test(document.title);
   const fallback = /目录/.test(document.title) ? "sheet" : "reading";
   const initial = requested === "reading" || requested === "sheet"
     ? requested
@@ -125,8 +126,10 @@
     const control = document.createElement("div");
     control.className = "workspace-skin-switch";
     control.setAttribute("role", "group");
-    control.setAttribute("aria-label", "界面风格");
-    control.innerHTML = '<button type="button" data-skin-choice="reading" title="适合长时间阅读的温暖书卷风格">阅读模式</button><button type="button" data-skin-choice="sheet" title="适合目录管理和密集编辑的表格风格">表格模式</button>';
+    control.setAttribute("aria-label", englishFirst ? "Interface style" : "界面风格");
+    control.innerHTML = englishFirst
+      ? '<button type="button" data-skin-choice="reading" title="A warm book style for extended reading">Reading</button><button type="button" data-skin-choice="sheet" title="A compact style for editing and navigation">Workspace</button>'
+      : '<button type="button" data-skin-choice="reading" title="适合长时间阅读的温暖书卷风格">阅读模式</button><button type="button" data-skin-choice="sheet" title="适合目录管理和密集编辑的表格风格">表格模式</button>';
     control.addEventListener("click", (event) => {
       const button = event.target.closest("[data-skin-choice]");
       if (button) applySkin(button.dataset.skinChoice, true);
@@ -154,11 +157,13 @@
     let settings = defaults;
     try { settings = { ...defaults, ...JSON.parse(localStorage.getItem(key) || "{}") }; } catch {}
     const style = document.createElement("style");
-    style.textContent = `.editor,.rich-editor{font-size:var(--reading-content-font-size)!important;line-height:var(--reading-content-line-height)!important;background:var(--reading-content-background)!important}.paper,.editor-panel,.page-card{background:var(--reading-content-background,#fffdfa)!important}.reading-environment{position:relative;display:inline-flex}.reading-environment-trigger{min-height:30px!important;padding:4px 9px!important;border:1px solid #c9d2df!important;border-radius:5px!important;background:#fff!important;color:#202124!important;cursor:pointer}.reading-environment-panel{position:absolute;z-index:340;top:calc(100% + 6px);left:0;right:auto;display:none;width:min(260px,calc(100vw - 24px));padding:14px;border:1px solid #dadce0;border-radius:10px;background:#fff;color:#202124;box-shadow:0 10px 30px #0003;font:12px/1.4 Arial,"PingFang SC",sans-serif}.reading-environment.open .reading-environment-panel{display:grid;gap:12px}.reading-setting{display:grid;grid-template-columns:70px 1fr 42px;gap:8px;align-items:center}.reading-setting input{min-width:0;width:100%}.reading-colors{display:flex;gap:8px}.reading-color{width:30px;height:30px!important;min-height:30px!important;padding:0!important;border:2px solid #dadce0!important;border-radius:50%!important}.reading-color.active{border-color:#1a73e8!important;box-shadow:0 0 0 2px #d2e3fc}.reading-reset{justify-self:start}@media print{.reading-environment{display:none!important}}`;
+    style.textContent = `.editor,.rich-editor{font-size:var(--reading-content-font-size)!important;line-height:var(--reading-content-line-height)!important;background:var(--reading-content-background)!important}.paper,.editor-panel,.page-card{background:var(--reading-content-background,#fffdfa)!important}.reading-environment{position:relative;display:inline-flex}.reading-environment-trigger{min-height:30px!important;padding:4px 9px!important;border:1px solid #c9d2df!important;border-radius:5px!important;background:#fff!important;color:#202124!important;cursor:pointer}.reading-environment-panel{position:absolute;z-index:340;top:calc(100% + 6px);left:0;right:auto;display:none;width:min(260px,calc(100vw - 24px));padding:14px;border:1px solid #dadce0;border-radius:10px;background:#fff;color:#202124;box-shadow:0 10px 30px #0003;font:12px/1.4 Arial,"PingFang SC",sans-serif}.reading-environment.open .reading-environment-panel{display:grid;gap:12px}.reading-setting{display:grid;grid-template-columns:70px 1fr 42px;gap:8px;align-items:center}.reading-setting input{min-width:0;width:100%}.reading-colors{display:flex;gap:8px}.reading-color{width:30px;height:30px!important;min-height:30px!important;padding:0!important;border:2px solid #dadce0!important;border-radius:50%!important}.reading-color.active{border-color:#1a73e8!important;box-shadow:0 0 0 2px #d2e3fc}.reading-reset{justify-self:start}.bilingual-layout-popover{width:min(440px,calc(100vw - 24px))!important}.bilingual-presets button{line-height:1.2!important;white-space:normal}.bilingual-slider-label{grid-template-columns:auto minmax(140px,1fr) auto!important}.bilingual-slider-label>span{white-space:nowrap}.bilingual-layout-output{grid-column:1/-1!important}@media(max-width:520px){.bilingual-layout-popover{position:fixed!important;top:64px!important;left:12px!important;right:12px!important;width:auto!important}.bilingual-presets{grid-template-columns:repeat(3,1fr)!important}.bilingual-slider-label{grid-template-columns:1fr!important}.bilingual-slider-label>span:last-of-type{display:none}.bilingual-layout-output{grid-column:1!important}}@media print{.reading-environment{display:none!important}}`;
     document.head.appendChild(style);
     const controls = document.createElement("div");
     controls.className = "reading-environment";
-    controls.innerHTML = `<button type="button" class="reading-environment-trigger" aria-expanded="false">阅读设置</button><div class="reading-environment-panel"><label class="reading-setting"><span>字号</span><input data-reading-setting="fontSize" type="range" min="12" max="34" step="1"><output data-reading-output="fontSize"></output></label><label class="reading-setting"><span>行距</span><input data-reading-setting="lineHeight" type="range" min="1.3" max="2.6" step="0.05"><output data-reading-output="lineHeight"></output></label><div><div style="margin-bottom:7px">背景颜色</div><div class="reading-colors"><button class="reading-color" data-reading-color="#ffffff" style="background:#fff" title="白色"></button><button class="reading-color" data-reading-color="#fffdfa" style="background:#fffdfa" title="米白"></button><button class="reading-color" data-reading-color="#f3eedf" style="background:#f3eedf" title="羊皮纸"></button><button class="reading-color" data-reading-color="#eaf2e7" style="background:#eaf2e7" title="护眼绿"></button><button class="reading-color" data-reading-color="#e9f0f5" style="background:#e9f0f5" title="浅蓝"></button></div></div><button type="button" class="reading-reset">恢复默认</button></div>`;
+    controls.innerHTML = englishFirst
+      ? `<button type="button" class="reading-environment-trigger" aria-expanded="false">Settings</button><div class="reading-environment-panel"><label class="reading-setting"><span>Font size</span><input data-reading-setting="fontSize" type="range" min="12" max="34" step="1"><output data-reading-output="fontSize"></output></label><label class="reading-setting"><span>Line spacing</span><input data-reading-setting="lineHeight" type="range" min="1.3" max="2.6" step="0.05"><output data-reading-output="lineHeight"></output></label><div><div style="margin-bottom:7px">Background</div><div class="reading-colors"><button class="reading-color" data-reading-color="#ffffff" style="background:#fff" title="White"></button><button class="reading-color" data-reading-color="#fffdfa" style="background:#fffdfa" title="Warm white"></button><button class="reading-color" data-reading-color="#f3eedf" style="background:#f3eedf" title="Parchment"></button><button class="reading-color" data-reading-color="#eaf2e7" style="background:#eaf2e7" title="Soft green"></button><button class="reading-color" data-reading-color="#e9f0f5" style="background:#e9f0f5" title="Soft blue"></button></div></div><button type="button" class="reading-reset">Reset</button></div>`
+      : `<button type="button" class="reading-environment-trigger" aria-expanded="false">阅读设置</button><div class="reading-environment-panel"><label class="reading-setting"><span>字号</span><input data-reading-setting="fontSize" type="range" min="12" max="34" step="1"><output data-reading-output="fontSize"></output></label><label class="reading-setting"><span>行距</span><input data-reading-setting="lineHeight" type="range" min="1.3" max="2.6" step="0.05"><output data-reading-output="lineHeight"></output></label><div><div style="margin-bottom:7px">背景颜色</div><div class="reading-colors"><button class="reading-color" data-reading-color="#ffffff" style="background:#fff" title="白色"></button><button class="reading-color" data-reading-color="#fffdfa" style="background:#fffdfa" title="米白"></button><button class="reading-color" data-reading-color="#f3eedf" style="background:#f3eedf" title="羊皮纸"></button><button class="reading-color" data-reading-color="#eaf2e7" style="background:#eaf2e7" title="护眼绿"></button><button class="reading-color" data-reading-color="#e9f0f5" style="background:#e9f0f5" title="浅蓝"></button></div></div><button type="button" class="reading-reset">恢复默认</button></div>`;
     const trigger = controls.querySelector(".reading-environment-trigger");
     const panel = controls.querySelector(".reading-environment-panel");
     const positionPanel = () => {
@@ -197,7 +202,7 @@
     if (document.querySelector(".workspace-file-menu")) return;
     const pdf = document.getElementById("printPdfBtn") || document.getElementById("pdfBtn");
     if (!pdf) return;
-    pdf.textContent = "PDF 草稿";
+    pdf.textContent = englishFirst ? "PDF draft" : "PDF 草稿";
     const ids = ["saveBtn", "exportTxtBtn", "exportHtmlBtn", "exportJsonBtn", "exportLogBtn", "exportTermsBtn", "exportNotesBtn", "exportBtn", "downloadBtn", "backupBtn", "resetBtn"];
     const controls = ids.map((id) => document.getElementById(id)).filter(Boolean);
     const importInput = document.getElementById("importJson") || document.getElementById("importBackup") || document.getElementById("importInput");
@@ -207,10 +212,10 @@
     style.textContent = `.workspace-file-menu{position:relative;display:inline-flex;align-items:center}.workspace-file-trigger{min-height:30px!important;padding:4px 9px!important;border:1px solid #c9d2df!important;border-radius:5px!important;background:#fff!important;color:#202124!important;white-space:nowrap;cursor:pointer}.workspace-file-trigger::after{content:" ▾";font-size:10px}.workspace-file-popover{position:absolute;z-index:100;top:calc(100% + 5px);left:0;right:auto;display:none;width:min(210px,calc(100vw - 24px));padding:6px;border:1px solid #dadce0;border-radius:8px;background:#fff;box-shadow:0 8px 24px #3c404333}.workspace-file-menu.open .workspace-file-popover{display:grid;gap:2px}.workspace-file-popover button,.workspace-file-popover label{display:flex!important;width:100%;min-height:32px!important;padding:6px 9px!important;align-items:center;border:0!important;border-radius:4px!important;background:#fff!important;color:#202124!important;text-align:left;font:12px/1.3 Arial,"PingFang SC",sans-serif!important;cursor:pointer}.workspace-file-popover button:hover,.workspace-file-popover label:hover{background:#edf2fa!important}.workspace-file-popover .export-all-action{margin-bottom:5px;border-bottom:1px solid #e3e7ed!important;border-radius:4px 4px 0 0!important;background:#e8f0fe!important;color:#174ea6!important;font-weight:700!important}.workspace-file-popover .danger-action{margin-top:5px;border-top:1px solid #eee!important;border-radius:0 0 4px 4px!important;color:#b3261e!important}.workspace-file-popover input{display:none!important}@media print{.workspace-file-menu{display:none!important}}`;
     document.head.appendChild(style);
     const menu = document.createElement("div"), trigger = document.createElement("button"), popover = document.createElement("div");
-    menu.className = "workspace-file-menu"; trigger.className = "workspace-file-trigger"; trigger.type = "button"; trigger.textContent = "文件与备份"; trigger.setAttribute("aria-haspopup", "menu"); trigger.setAttribute("aria-expanded", "false");
+    menu.className = "workspace-file-menu"; trigger.className = "workspace-file-trigger"; trigger.type = "button"; trigger.textContent = englishFirst ? "Files" : "文件与备份"; trigger.setAttribute("aria-haspopup", "menu"); trigger.setAttribute("aria-expanded", "false");
     popover.className = "workspace-file-popover"; popover.setAttribute("role", "menu");
     const exportAll = document.createElement("button");
-    exportAll.type = "button"; exportAll.className = "export-all-action"; exportAll.textContent = "一键导出全部";
+    exportAll.type = "button"; exportAll.className = "export-all-action"; exportAll.textContent = englishFirst ? "Export all" : "一键导出全部";
     exportAll.addEventListener("click", () => {
       const downloadIds = ["exportTxtBtn", "exportHtmlBtn", "exportJsonBtn", "exportTermsBtn", "exportNotesBtn", "downloadBtn", "backupBtn", "downloadLogBtn"];
       const downloadLog = document.getElementById("downloadLogBtn");
@@ -253,7 +258,7 @@
     document.head.appendChild(style);
     const menu = document.createElement("div"), trigger = document.createElement("button"), popover = document.createElement("div");
     menu.className = "workspace-insert-menu";
-    trigger.className = "workspace-insert-trigger"; trigger.type = "button"; trigger.textContent = "插入与注释";
+    trigger.className = "workspace-insert-trigger"; trigger.type = "button"; trigger.textContent = englishFirst ? "Annotate" : "插入与注释";
     trigger.setAttribute("aria-haspopup", "menu"); trigger.setAttribute("aria-expanded", "false");
     popover.className = "workspace-insert-popover"; popover.setAttribute("role", "menu");
     host.insertBefore(menu, firstControl);
@@ -336,10 +341,10 @@
     style.textContent = `.user-notes-shortcut{min-height:30px!important;padding:4px 9px!important;border:1px solid #c9d2df!important;border-radius:5px!important;background:#fff!important;color:#174ea6!important;font-weight:700!important;white-space:nowrap;cursor:pointer}.note-item.duplicate-note-highlight{outline:3px solid #f9ab00;outline-offset:2px;background:#fef7e0!important;animation:noteDuplicatePulse .8s ease-in-out 2}@keyframes noteDuplicatePulse{50%{outline-color:#fdd663;background:#fff8d8!important}}@media print{.user-notes-shortcut{display:none!important}}`;
     document.head.appendChild(style);
     const shortcut = document.createElement("button");
-    shortcut.type = "button"; shortcut.className = "user-notes-shortcut"; shortcut.textContent = "札记（0）";
-    shortcut.title = "查看本篇用户札记";
+    shortcut.type = "button"; shortcut.className = "user-notes-shortcut"; shortcut.textContent = englishFirst ? "Notes (0)" : "札记（0）";
+    shortcut.title = englishFirst ? "View notes for this reading" : "查看本篇用户札记";
     const rows = () => [...list.querySelectorAll(".note-item")];
-    const updateCount = () => { shortcut.textContent = `札记（${rows().length}）`; };
+    const updateCount = () => { shortcut.textContent = englishFirst ? `Notes (${rows().length})` : `札记（${rows().length}）`; };
     shortcut.addEventListener("click", () => {
       window.BilingualStudyPane?.activateTab?.("notes");
       section.scrollIntoView({ behavior: "smooth", block: "start" });
@@ -422,6 +427,25 @@
     );
     window.ReadingWorkspace.bookDirectoryHref = bookContentsLink?.href || homeLink.href;
     homeLink.remove();
+  }
+
+  function installHomeMark() {
+    const topbar = document.querySelector(".topbar");
+    if (!topbar || topbar.querySelector(".workspace-home-mark")) return;
+    if (!document.getElementById("workspaceHomeMarkStyle")) {
+      const style = document.createElement("style");
+      style.id = "workspaceHomeMarkStyle";
+      style.textContent = `.topbar.has-home-mark::before{display:none!important}.workspace-home-mark{display:block!important;width:30px!important;height:30px!important;min-width:30px!important;flex:0 0 30px!important;border-radius:7px;background:linear-gradient(135deg,#34a853 0 52%,#0f9d58 52%);box-shadow:inset 0 0 0 1px #00000012;transition:box-shadow .15s ease,transform .15s ease}.workspace-home-mark:hover{box-shadow:inset 0 0 0 2px #ffffffaa,0 1px 4px #0003;transform:translateY(-1px)}.workspace-home-mark:focus-visible{outline:3px solid #a8c7fa;outline-offset:2px}@media print{.workspace-home-mark{display:none!important}}`;
+      document.head.appendChild(style);
+    }
+    const english = document.documentElement.lang.toLowerCase().startsWith("en") || englishFirst;
+    const home = document.createElement("a");
+    home.className = "workspace-home-mark";
+    home.href = new URL("index.html", workspaceRoot).href;
+    home.setAttribute("aria-label", english ? "Reader home" : "返回阅读器首页");
+    home.title = english ? "Reader home" : "返回阅读器首页";
+    topbar.classList.add("has-home-mark");
+    topbar.prepend(home);
   }
 
   function installExpandingReviewFields() {
@@ -566,7 +590,60 @@
     arrange();
   }
 
-  function installWorkspaceControls() { installContextNavigation(); installSwitch(); installReadingEnvironment(); installFileMenu(); installInsertMenu(); installUserNotesAccess(); installExpandingReviewFields(); installAnnotationSync(); installAllNotesView(); installImmersiveMode(); installGoogleVoicePriority(); }
+  function installPaneBalancer() {
+    if (document.querySelector(".pane-balance,.bilingual-layout-control,.workspace-pane-balance")) return;
+    const containers = [...document.querySelectorAll(".workspace,.content-grid,.editor-shell,main")];
+    const candidate = containers.map(container => {
+      const children = [...container.children].filter(node => !node.matches("script,style,template") && getComputedStyle(node).display !== "none");
+      const secondary = children.find(node => node.matches("aside,.sidebar,.notes-dock,.reference-pane,.side-pane"));
+      const primary = children.find(node => node !== secondary && node.matches("article,.paper,.editor-panel,.main-pane,.content-pane,section"));
+      return primary && secondary ? { container, primary, secondary } : null;
+    }).find(Boolean);
+    if (!candidate) return;
+    const { container, primary, secondary } = candidate;
+    const english = document.documentElement.lang.toLowerCase().startsWith("en") || englishFirst;
+    const labels = english
+      ? { trigger: "Pane layout", primaryOnly: "Text only", primaryFirst: "Text first", balanced: "Balanced", secondaryFirst: "Pane first", secondaryOnly: "Pane only", primary: "Text", secondary: "Pane" }
+      : { trigger: "分栏布局", primaryOnly: "仅正文", primaryFirst: "正文优先", balanced: "均衡", secondaryFirst: "窗格优先", secondaryOnly: "仅窗格", primary: "正文", secondary: "窗格" };
+    const heading = secondary.querySelector("h1,h2,h3,.study-pane-title")?.textContent?.replace(/\s+/g, " ").trim();
+    if (heading && heading.length <= 14) labels.secondary = heading.replace(/\s*\d+\s*$/, "") || labels.secondary;
+    const style = document.createElement("style");
+    style.textContent = `.workspace-pane-balance{position:relative;display:inline-flex}.workspace-pane-balance-trigger{white-space:nowrap}.workspace-pane-balance-popover{position:absolute;z-index:370;top:calc(100% + 6px);left:0;display:none;width:min(340px,calc(100vw - 24px));padding:12px;border:1px solid #c9d2df;border-radius:10px;background:#fff;color:#202124;box-shadow:0 10px 30px #0003}.workspace-pane-balance.open .workspace-pane-balance-popover{display:grid;gap:11px}.workspace-pane-presets{display:grid;grid-template-columns:repeat(5,1fr);gap:4px}.workspace-pane-presets button{min-width:0!important;padding:6px 3px!important;font-size:11px!important}.workspace-pane-presets button.active{background:#e6f4ea!important;color:#137333!important;font-weight:700}.workspace-pane-slider{display:grid;grid-template-columns:auto 1fr auto;gap:8px;align-items:center;color:#5f6368;font:12px/1.3 Arial,"PingFang SC",sans-serif}.workspace-pane-slider input{width:100%;min-width:80px}.workspace-pane-output{grid-column:1/-1;color:#202124;font-weight:700}.workspace-pane-layout.workspace-pane-primary-only>[data-pane-secondary],.workspace-pane-layout.workspace-pane-secondary-only>[data-pane-primary]{display:none!important}@media(min-width:901px){.workspace-pane-layout:not(.workspace-pane-primary-only):not(.workspace-pane-secondary-only){grid-template-columns:minmax(0,var(--workspace-primary-share,75fr)) minmax(260px,var(--workspace-secondary-share,25fr))!important}}@media(max-width:900px){.workspace-pane-presets{grid-template-columns:repeat(3,1fr)}.workspace-pane-slider{grid-template-columns:auto 1fr}.workspace-pane-slider>span:last-of-type,.workspace-pane-output{grid-column:1/-1}}@media print{.workspace-pane-balance{display:none!important}.workspace-pane-layout>[data-pane-primary]{display:block!important}.workspace-pane-layout>[data-pane-secondary]{display:none!important}}`;
+    document.head.appendChild(style);
+    container.classList.add("workspace-pane-layout");
+    primary.dataset.panePrimary = "";
+    secondary.dataset.paneSecondary = "";
+    const control = document.createElement("div");
+    control.className = "workspace-pane-balance";
+    control.innerHTML = `<button type="button" class="workspace-pane-balance-trigger" aria-expanded="false">${labels.trigger}</button><div class="workspace-pane-balance-popover"><div class="workspace-pane-presets"><button type="button" data-pane-share="0">${labels.primaryOnly}</button><button type="button" data-pane-share="25">${labels.primaryFirst}</button><button type="button" data-pane-share="50">${labels.balanced}</button><button type="button" data-pane-share="65">${labels.secondaryFirst}</button><button type="button" data-pane-share="100">${labels.secondaryOnly}</button></div><label class="workspace-pane-slider"><span>${labels.primary}</span><input type="range" min="0" max="100" step="1" value="25" aria-label="${english ? "Secondary pane share" : "右侧窗格所占比例"}"><span>${labels.secondary}</span><output class="workspace-pane-output"></output></label></div>`;
+    const toolbar = document.querySelector(".toolbar,.actions,jianshang-editor-header .view-tools");
+    if (!toolbar) return;
+    (document.querySelector(".reading-environment") || toolbar.lastElementChild)?.insertAdjacentElement("afterend", control);
+    const trigger = control.querySelector(".workspace-pane-balance-trigger"), popover = control.querySelector(".workspace-pane-balance-popover"), slider = control.querySelector("input"), output = control.querySelector("output");
+    const key = `reading-workspace-pane-balance:${location.pathname}`;
+    const presetNames = { 0: labels.primaryOnly, 25: labels.primaryFirst, 50: labels.balanced, 65: labels.secondaryFirst, 100: labels.secondaryOnly };
+    const applyShare = (raw, persist = true) => {
+      const share = Math.max(0, Math.min(100, Number(raw) || 0));
+      container.classList.toggle("workspace-pane-primary-only", share === 0);
+      container.classList.toggle("workspace-pane-secondary-only", share === 100);
+      container.style.setProperty("--workspace-primary-share", `${100 - share}fr`);
+      container.style.setProperty("--workspace-secondary-share", `${share}fr`);
+      slider.value = String(share);
+      output.textContent = presetNames[share] || `${labels.primary} ${100 - share}% · ${labels.secondary} ${share}%`;
+      control.querySelectorAll("[data-pane-share]").forEach(button => button.classList.toggle("active", Number(button.dataset.paneShare) === share));
+      if (persist) localStorage.setItem(key, String(share));
+    };
+    applyShare(localStorage.getItem(key) ?? "25", false);
+    trigger.addEventListener("click", event => { event.stopPropagation(); const open = control.classList.toggle("open"); trigger.setAttribute("aria-expanded", String(open)); if (open) requestAnimationFrame(() => { popover.style.left = "0px"; const rect = popover.getBoundingClientRect(), offset = Math.max(12 - rect.left, Math.min(0, innerWidth - 12 - rect.right)); popover.style.left = `${offset}px`; }); });
+    control.querySelector(".workspace-pane-presets").addEventListener("click", event => { const button = event.target.closest("[data-pane-share]"); if (button) applyShare(button.dataset.paneShare); });
+    slider.addEventListener("input", event => applyShare(event.target.value));
+    document.addEventListener("click", event => { if (!control.contains(event.target)) { control.classList.remove("open"); trigger.setAttribute("aria-expanded", "false"); } });
+    document.addEventListener("keydown", event => { if (event.key === "Escape") { control.classList.remove("open"); trigger.setAttribute("aria-expanded", "false"); } });
+    window.ReadingWorkspace ||= {};
+    window.ReadingWorkspace.setPaneShare = applyShare;
+  }
+
+  function installWorkspaceControls() { installContextNavigation(); installHomeMark(); installSwitch(); installReadingEnvironment(); installFileMenu(); installInsertMenu(); installUserNotesAccess(); installExpandingReviewFields(); installAnnotationSync(); installAllNotesView(); installImmersiveMode(); installGoogleVoicePriority(); installPaneBalancer(); }
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", installWorkspaceControls);
   else installWorkspaceControls();
 })();

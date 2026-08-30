@@ -137,6 +137,94 @@ def make_paragraphs(
     return rendered
 
 
+def localize_english_first_ui(output: str) -> str:
+    """Localize controls while keeping the Chinese study material unchanged."""
+    if "English-First Reader" not in output:
+        return output
+    replacements = [
+        (">查看原文来源 ↗</a>", ">View original source ↗</a>"),
+        ('id="saveStatus">尚未修改</div>', 'id="saveStatus">No changes</div>'),
+        ('aria-label="编辑工具栏"', 'aria-label="Editing toolbar"'),
+        ('title="返回本书目录">书目</a>', 'title="Return to the book contents">Contents</a>'),
+        ('title="收起工具栏以扩大正文区域">收起工具栏</button>', 'title="Collapse the toolbar to enlarge the reading area">Collapse toolbar</button>'),
+        ('id="viewToggle" class="primary">切换为注音稿</button><span class="view-badge" id="viewBadge">当前：清稿', 'id="viewToggle" class="primary">Show annotated text</button><span class="view-badge" id="viewBadge">View: Clean'),
+        ('title="撤销 Ctrl/⌘+Z">撤销</button><button type="button" data-command="redo">重做', 'title="Undo Ctrl/⌘+Z">Undo</button><button type="button" data-command="redo">Redo'),
+        ('placeholder="搜索正文关键词" aria-label="搜索正文关键词"', 'placeholder="Search reading text" aria-label="Search reading text"'),
+        ('title="上一个匹配"', 'title="Previous match"'),
+        ('title="下一个匹配"', 'title="Next match"'),
+        ('aria-label="文字样式"', 'aria-label="Text formatting"'),
+        ('title="高亮与划线"', 'title="Highlight and lines"'),
+        ('aria-label="高亮与划线"', 'aria-label="Highlight and lines"'),
+        ('<span class="hidden">高亮与划线</span>', '<span class="hidden">Highlight and lines</span>'),
+        ('data-label="黄色高亮"', 'data-label="Yellow highlight"'),
+        ('data-label="绿色高亮"', 'data-label="Green highlight"'),
+        ('data-label="蓝色高亮"', 'data-label="Blue highlight"'),
+        ('data-label="粉色高亮"', 'data-label="Pink highlight"'),
+        ('data-label="紫色高亮"', 'data-label="Purple highlight"'),
+        ('</span>黄色</button>', '</span>Yellow</button>'),
+        ('</span>绿色</button>', '</span>Green</button>'),
+        ('</span>蓝色</button>', '</span>Blue</button>'),
+        ('</span>粉色</button>', '</span>Pink</button>'),
+        ('</span>紫色</button>', '</span>Purple</button>'),
+        ('data-label="下划线"', 'data-label="Underline"'),
+        ('data-label="删除线"', 'data-label="Strikethrough"'),
+        ('</span>下划线</button>', '</span>Underline</button>'),
+        ('</span>删除线</button>', '</span>Strikethrough</button>'),
+        ('title="加粗所选文字"', 'title="Bold selected text"'),
+        ('<span class="hidden">粗体</span>', '<span class="hidden">Bold</span>'),
+        ('id="notationBtn">添加注音/简注', 'id="notationBtn">Add pronunciation'),
+        ('id="interlinearBtn">添加行间注', 'id="interlinearBtn">Interlinear note'),
+        ('id="footnoteBtn">添加脚注', 'id="footnoteBtn">Footnote'),
+        ('id="commentBtn">插入按语', 'id="commentBtn">Comment'),
+        ('id="insertImageBtn">插入图片', 'id="insertImageBtn">Image'),
+        ('id="doubtBtn">标为待核', 'id="doubtBtn">Flag'),
+        ('id="clearBtn">清除所选格式', 'id="clearBtn">Clear'),
+        ('target="_blank">全书词典</a>', 'target="_blank">Dictionary</a>'),
+        ('id="speakBtn" class="primary">朗读选中/全文', 'id="speakBtn" class="primary">Read aloud'),
+        ('id="pauseBtn" disabled>暂停', 'id="pauseBtn" disabled>Pause'),
+        ('id="stopBtn" disabled>停止', 'id="stopBtn" disabled>Stop'),
+        ('aria-label="朗读声音"><option value="">系统默认声音', 'aria-label="Reading voice"><option value="">Default voice'),
+        ('<label class="rate">语速 ', '<label class="rate">Speed '),
+        ('id="saveBtn">保存到浏览器', 'id="saveBtn">Save in browser'),
+        ('id="printPdfBtn">导出 PDF', 'id="printPdfBtn">Export PDF'),
+        ('id="exportTxtBtn">导出 TXT', 'id="exportTxtBtn">Export TXT'),
+        ('id="exportHtmlBtn">导出 HTML', 'id="exportHtmlBtn">Export HTML'),
+        ('id="exportJsonBtn">导出备份', 'id="exportJsonBtn">Export backup'),
+        ('id="exportLogBtn">导出日志', 'id="exportLogBtn">Export log'),
+        ('for="importJson">导入备份', 'for="importJson">Import backup'),
+        ('id="globalHintsBtn" class="active" aria-pressed="true">全书词典提示：开', 'id="globalHintsBtn" class="active" aria-pressed="true">Hints: On'),
+        ('<label class="difficulty-control">阅读难度 ', '<label class="difficulty-control">Level '),
+        ('aria-label="阅读文章的最低词语难度"', 'aria-label="Minimum vocabulary difficulty shown in the reading"'),
+        ('id="resetBtn">恢复初始文本', 'id="resetBtn">Reset text'),
+        ("annotated?'切换为清稿':'切换为注音稿'", "annotated?'Show clean text':'Show annotated text'"),
+        ("annotated?'当前：注音稿':'当前：清稿'", "annotated?'View: Annotated':'View: Clean'"),
+        ("'<option value=\"\">系统默认声音</option>'", "'<option value=\"\">Default voice</option>'"),
+        ("utterance.lang='zh-CN'", "utterance.lang='en-US'"),
+        ("selected?'正在朗读所选原文':'正在朗读原文全文'", "selected?'Reading selected text':'Reading full text'"),
+        ("textContent='暂停'", "textContent='Pause'"),
+        ("collapsed?'展开工具栏':'收起工具栏'", "collapsed?'Expand toolbar':'Collapse toolbar'"),
+        ("collapsed?'展开编辑工具栏':'收起工具栏以扩大正文区域'", "collapsed?'Expand the editing toolbar':'Collapse the toolbar to enlarge the reading area'"),
+        ("hidden?'全书词典提示：关':'全书词典提示：开'", "hidden?'Hints: Off':'Hints: On'"),
+        ("event.target.textContent='继续'", "event.target.textContent='Resume'"),
+        ("event.target.textContent='暂停'", "event.target.textContent='Pause'"),
+        ('class="bilingual-layout-trigger" aria-expanded="false">中英布局', 'class="bilingual-layout-trigger" aria-expanded="false">Layout'),
+        ('data-share="0">仅英文', 'data-share="0">English only'),
+        ('data-share="30">英文优先', 'data-share="30">English first'),
+        ('data-share="50">均衡', 'data-share="50">Balanced'),
+        ('data-share="65">中文优先', 'data-share="65">Chinese first'),
+        ('data-share="100">仅中文', 'data-share="100">Chinese only'),
+        ('<span>英文</span><input type="range"', '<span>English</span><input type="range"'),
+        ('aria-label="中文和学习窗格所占比例"', 'aria-label="Share of the Chinese study pane"'),
+        ('<span>中文／学习窗格</span>', '<span>Chinese / study pane</span>'),
+        ("{0:'仅英文',30:'英文优先',50:'均衡',65:'中文优先',100:'仅中文'}", "{0:'English only',30:'English first',50:'Balanced',65:'Chinese first',100:'Chinese only'}"),
+        ("share===0?'仅英文':share===100?'仅中文':`英文 ${100-share}% · 学习窗格 ${share}%`", "share===0?'English only':share===100?'Chinese only':`English ${100-share}% · Study pane ${share}%`"),
+    ]
+    for source, target in replacements:
+        output = output.replace(source, target)
+    output = output.replace("voices=speechSynthesis.getVoices().sort((a,b)=>Number(!/^google\\b/i.test(a.name))", "voices=speechSynthesis.getVoices().sort((a,b)=>Number(!/^en(?:-|$)/i.test(a.lang))-Number(!/^en(?:-|$)/i.test(b.lang))||Number(!/^google\\b/i.test(a.name))")
+    return output
+
+
 def build_html(
     text: str,
     terms: list[dict[str, str]],
@@ -372,7 +460,7 @@ document.getElementById('speakBtn').onclick=speak;document.getElementById('pause
 speechSynthesis.onvoiceschanged=loadVoices;loadVoices();renderTerms();mergeInitialNotes();renderNotes();renderLog();const stored=localStorage.getItem(STORAGE_KEY);if(stored){try{loadState(JSON.parse(stored));saveStatus.textContent='已恢复浏览器中的编辑记录'}catch{localStorage.removeItem(STORAGE_KEY)}}else{INITIAL_FOOTNOTES.forEach(item=>addFootnoteRow(item.id,item.note,item.mediaIds||[]));renumberFootnotes()}mergeInitialNotes();renderNotes();applyProjectDictionaryOverrides();document.getElementById('difficultyLevel').value=localStorage.getItem(STORAGE_KEY+'-difficulty')||'3';const requestedView=new URLSearchParams(location.search).get('view');setView(['annotated','clean'].includes(requestedView)?requestedView:(sessionStorage.getItem('shiji-editor-view')||'clean'));setToolbarCollapsed(sessionStorage.getItem('shiji-toolbar-collapsed')==='yes');if(sessionStorage.getItem('shiji-global-hints')==='off')document.getElementById('globalHintsBtn').click();updateStats();importMedia(INITIAL_MEDIA).then(loadMediaRecords).catch(error=>console.error('无法载入媒体附件',error));
 </script>
 </body></html>'''
-    return (
+    output = (
         template.replace("__PARAGRAPHS__", paragraphs)
         .replace("__TERMS__", term_json)
         .replace("__GLOBAL_TERMS__", global_term_json)
@@ -391,6 +479,7 @@ speechSynthesis.onvoiceschanged=loadVoices;loadVoices();renderTerms();mergeIniti
         .replace("shiji-lisheng-lujia-editor-v1", storage_key)
         .replace("lisheng_lujia_", f"{file_stem}_")
     )
+    return localize_english_first_ui(output)
 
 
 def main() -> None:
