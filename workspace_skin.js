@@ -61,6 +61,15 @@
 
   installPwaAssets();
 
+  function installProjectDictionaryLinks() {
+    const base = location.protocol === "file:" ? new URL("../", workspaceRoot) : workspaceRoot;
+    document.querySelectorAll('a[href*="project_dictionary/"]').forEach((link) => {
+      const original = link.getAttribute("href") || "";
+      const suffix = original.split("project_dictionary/")[1] || "index.html";
+      link.href = new URL(`project_dictionary/${suffix}`, base).href;
+    });
+  }
+
   function recordReading() {
     const match = decodeURIComponent(location.pathname).match(/\/practice\/(.+\/editor\.html)$/);
     if (!match) return;
@@ -702,7 +711,7 @@
     new MutationObserver(() => queueMicrotask(translate)).observe(document.body, { childList: true, subtree: true, characterData: true });
   }
 
-  function installWorkspaceControls() { installRussianInterfaceTranslation(); installContextNavigation(); installHomeMark(); installSwitch(); installReadingEnvironment(); installPaneBalancer(); installFileMenu(); installInsertMenu(); installUserNotesAccess(); installExpandingReviewFields(); installAnnotationSync(); installAllNotesView(); installImmersiveMode(); installGoogleVoicePriority(); window.ReadingWorkspace ||= {}; window.ReadingWorkspace.interfaceLanguage = interfaceLanguage; }
+  function installWorkspaceControls() { installProjectDictionaryLinks(); installRussianInterfaceTranslation(); installContextNavigation(); installHomeMark(); installSwitch(); installReadingEnvironment(); installPaneBalancer(); installFileMenu(); installInsertMenu(); installUserNotesAccess(); installExpandingReviewFields(); installAnnotationSync(); installAllNotesView(); installImmersiveMode(); installGoogleVoicePriority(); window.ReadingWorkspace ||= {}; window.ReadingWorkspace.interfaceLanguage = interfaceLanguage; }
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", installWorkspaceControls);
   else installWorkspaceControls();
 })();

@@ -1,0 +1,157 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="A searchable multilingual catalog of vocabulary encountered across the reading project.">
+  <meta name="theme-color" content="#173f35">
+  <title>Reading Lexicon</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="masthead" aria-label="Spreadsheet controls">
+    <div class="document-bar">
+      <a class="wordmark" href="#" aria-label="Reading Lexicon home">
+        <span class="wordmark-mark" aria-hidden="true">字</span>
+        <span class="wordmark-copy">
+          <strong>Reading Lexicon</strong>
+          <small>Saved locally · Personal multilingual dictionary</small>
+        </span>
+      </a>
+      <p class="edition">Dictionary workspace</p>
+    </div>
+    <div class="menu-bar" aria-hidden="true">
+      <span>File</span><span>Edit</span><span>View</span><span>Insert</span>
+      <span>Format</span><span>Data</span><span>Tools</span><span>Help</span>
+    </div>
+    <div class="sheet-toolbar" aria-hidden="true">
+      <span class="tool-icon">↶</span><span class="tool-icon">↷</span>
+      <i></i><span>100%</span><i></i><span>Default</span><i></i>
+      <span class="tool-icon">−</span><strong>16</strong><span class="tool-icon">+</span>
+      <b>B</b><em>I</em><u>U</u><i></i>
+      <span class="tool-icon">≡</span><span class="tool-icon">⇅</span>
+      <span class="tool-icon">⌗</span><span class="tool-icon">Σ</span>
+    </div>
+    <div class="dictionary-transfer" aria-label="Dictionary edit transfer">
+      <button id="export-overrides" type="button">Export local edits</button>
+      <label for="import-overrides">Import local edits</label><input id="import-overrides" type="file" accept="application/json,.json">
+    </div>
+  </header>
+
+  <main>
+    <section class="hero" aria-labelledby="page-title">
+      <div class="hero-copy">
+        <p class="eyebrow">Words gathered while reading</p>
+        <h1 id="page-title">A field guide to<br><em>what we encounter.</em></h1>
+        <p class="intro">Chinese classics, English news, Russian literature, and every useful phrase between them—collected with their meanings, contexts, and origins intact.</p>
+        <div class="language-strip" aria-label="Supported languages">
+          <span><b>EN</b> English</span>
+          <span lang="zh"><b>中</b> 中文</span>
+          <span lang="ru"><b>РУ</b> Русский</span>
+        </div>
+      </div>
+      <div class="hero-stat" aria-label="Dictionary statistics">
+        <span id="entry-count">—</span>
+        <small>entries catalogued</small>
+        <p>Collected from books, notes, news reports, and study projects.</p>
+      </div>
+    </section>
+
+    <section class="explorer" aria-labelledby="explorer-title">
+      <div class="explorer-heading">
+        <div>
+          <p class="section-kicker">Browse the archive</p>
+          <h2 id="explorer-title">Dictionary entries</h2>
+        </div>
+        <p class="explorer-note">Search across terms, readings, definitions, and original source paths.</p>
+      </div>
+
+      <div class="search-wrap">
+        <label for="search">Search the collection</label>
+        <div class="search-field">
+          <svg aria-hidden="true" viewBox="0 0 24 24"><path d="m21 21-4.6-4.6m2.1-5.4a7.5 7.5 0 1 1-15 0 7.5 7.5 0 0 1 15 0Z"/></svg>
+          <input id="search" type="search" placeholder="Term, pinyin, meaning, or source…" autocomplete="off">
+          <kbd>⌘ K</kbd>
+        </div>
+      </div>
+
+      <div class="toolbar">
+        <div class="filters" role="group" aria-label="Filter by language">
+          <button class="filter active" data-language="all" type="button">All <span id="count-all"></span></button>
+          <button class="filter" data-language="zh" type="button">Chinese <span id="count-zh"></span></button>
+          <button class="filter" data-language="en" type="button">English <span id="count-en"></span></button>
+          <button class="filter" data-language="ru" type="button">Russian <span id="count-ru"></span></button>
+        </div>
+        <label class="sort-label">Sort
+          <select id="sort">
+            <option value="term">A–Z / 拼音</option>
+            <option value="frequency">Most encountered</option>
+            <option value="difficulty-desc">Hardest first</option>
+            <option value="difficulty-asc">Easiest first</option>
+            <option value="entry-time">Newest entries</option>
+            <option value="source">Source path</option>
+          </select>
+        </label>
+      </div>
+
+      <div class="results-meta">
+        <p id="results-summary" aria-live="polite"></p>
+        <button id="clear-search" type="button" hidden>Clear search</button>
+      </div>
+
+      <div id="empty-state" class="empty-state" hidden>
+        <span>未</span>
+        <h2>No matching entries</h2>
+        <p>Try another spelling, pinyin, meaning, or source name.</p>
+      </div>
+
+      <div id="dictionary-table" class="dictionary-table" role="table" aria-label="Dictionary entries">
+        <div class="table-header" role="row">
+          <span class="cell-index" role="columnheader" aria-label="Row number">#</span>
+          <span role="columnheader">Term</span>
+          <span role="columnheader">Reading</span>
+          <span role="columnheader">Language</span>
+          <span role="columnheader">Type</span>
+          <span class="difficulty-header" role="columnheader">
+            <label for="difficulty-filter">Difficulty</label>
+            <select id="difficulty-filter" aria-label="Minimum difficulty">
+              <option value="0">All levels</option>
+              <option value="1">1+ Common</option>
+              <option value="2">2+ Intermediate</option>
+              <option value="3">3+ Advanced</option>
+              <option value="4">4+ Rare</option>
+              <option value="5">5 Specialist</option>
+            </select>
+          </span>
+          <span role="columnheader">Definition</span>
+          <span role="columnheader">Source(s)</span>
+          <span class="cell-open" role="columnheader">Open</span>
+          <span class="cell-count" role="columnheader">Uses</span>
+        </div>
+        <div id="dictionary-grid" class="dictionary-grid" role="rowgroup"></div>
+      </div>
+      <nav id="pagination" class="pagination" aria-label="Dictionary pages"></nav>
+    </section>
+  </main>
+
+  <aside id="detail-panel" class="detail-panel" aria-hidden="true" aria-labelledby="detail-term">
+    <button id="close-panel" class="close-panel" type="button" aria-label="Close details">×</button>
+    <div id="detail-content"></div>
+  </aside>
+  <div id="scrim" class="scrim" hidden></div>
+
+  <div class="sheet-tabs" aria-label="Workbook sheets">
+    <button type="button" aria-label="Add sheet">+</button>
+    <button class="sheet-list" type="button" aria-label="All sheets">☰</button>
+    <span>Dictionary <b aria-hidden="true">▾</b></span>
+  </div>
+
+  <footer>
+    <p>Built from <code>news_reports/</code> and <code>practice/</code></p>
+    <p>Definitions remain traceable to their original readings.</p>
+  </footer>
+
+  <script src="dictionary_data.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
