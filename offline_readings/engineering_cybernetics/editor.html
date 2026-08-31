@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Engineering Cybernetics · Offline English-First Reader</title>
+  <link rel="stylesheet" href="reader.css">
+</head>
+<body>
+<header class="titlebar">
+  <a class="home" href="../../index.html#offline" aria-label="Return to Contents">⌂</a>
+  <h1>Engineering Cybernetics · Offline English-First Reader</h1>
+  <span id="saveStatus">Notes saved on this device</span>
+</header>
+<nav class="toolbar" id="toolbar" aria-label="Reading and annotation toolbar">
+  <a class="button" href="../../index.html#offline">Contents</a>
+  <button id="collapseToolbar">Collapse toolbar</button>
+  <label class="button file">Attach English PDF<input id="englishFile" type="file" accept="application/pdf"></label>
+  <label class="button file">Attach Chinese PDF<input id="chineseFile" type="file" accept="application/pdf"></label>
+  <button id="undo" disabled>Undo</button><button id="redo" disabled>Redo</button>
+  <input id="noteSearch" type="search" placeholder="Search notes">
+  <button id="addNote" class="accent">Add note / annotation</button>
+  <button id="showNotes">All notes <span id="noteCount">0</span></button>
+  <button id="layoutButton">Layout</button>
+  <button id="exportBackup">Export backup</button>
+  <label class="button file">Import backup<input id="importBackup" type="file" accept="application/json"></label>
+  <button id="settingsButton">Settings</button>
+  <div class="second-row">
+    <label>Chapter <select id="chapter"></select></label>
+    <label>English page <input id="englishPage" type="number" min="1" value="19"></label><button data-go="english">Go</button>
+    <label>Chinese page <input id="chinesePage" type="number" min="1" value="12"></label><button data-go="chinese">Go</button>
+    <span class="privacy">PDFs stay on this device. Notes work online with or without the PDFs.</span>
+  </div>
+</nav>
+
+<main id="workspace" data-layout="english-first">
+  <section class="pane english-pane">
+    <header><strong>English edition</strong><span id="englishState">No PDF attached</span><button data-remove="english" hidden>Remove</button></header>
+    <div class="empty" id="englishEmpty"><strong>Attach your English PDF to begin.</strong><br>The file is stored only in this browser on this device.</div>
+    <iframe id="englishViewer" title="English PDF"></iframe>
+  </section>
+  <section class="pane chinese-pane">
+    <header><strong>Chinese edition</strong><span id="chineseState">No PDF attached</span><button data-remove="chinese" hidden>Remove</button></header>
+    <div class="empty" id="chineseEmpty"><strong>Attach your Chinese PDF for parallel reading.</strong><br>You can still write and review notes without it.</div>
+    <iframe id="chineseViewer" title="Chinese PDF"></iframe>
+  </section>
+</main>
+
+<aside id="notesDrawer" aria-label="Notes and annotations" aria-hidden="true">
+  <header><div><strong>Notes & annotations</strong><small id="drawerSubtitle">All saved notes</small></div><button id="closeNotes" aria-label="Close notes">×</button></header>
+  <form id="noteForm" hidden>
+    <input id="editingId" type="hidden">
+    <div class="form-grid">
+      <label>Edition<select id="noteEdition"><option value="english">English</option><option value="chinese">Chinese</option><option value="general">General</option></select></label>
+      <label>Page<input id="notePage" type="number" min="1"></label>
+      <label>Type<select id="noteKind"><option>Note</option><option>Annotation</option><option>Question</option><option>Citation</option></select></label>
+    </div>
+    <label>Quoted text / reference<textarea id="noteQuote" rows="3" placeholder="Optional passage or reference"></textarea></label>
+    <label>Your note<textarea id="noteText" rows="6" required placeholder="Write your observation, annotation, question, or citation…"></textarea></label>
+    <div class="actions"><button type="button" id="cancelNote">Cancel</button><button type="submit" class="accent">Save note</button></div>
+  </form>
+  <div id="notesList"></div>
+</aside>
+
+<div id="layoutMenu" class="popover" hidden>
+  <strong>Pane balance</strong>
+  <button data-layout="english-only">English only</button><button data-layout="english-first">English first</button>
+  <button data-layout="balanced">Balanced</button><button data-layout="chinese-first">Chinese first</button><button data-layout="chinese-only">Chinese only</button>
+</div>
+<div id="settingsMenu" class="popover" hidden>
+  <strong>Page options</strong>
+  <label><input id="rememberFiles" type="checkbox" checked> Remember attached PDFs on this device</label>
+  <button id="clearNotes" class="danger">Delete all notes</button>
+</div>
+<script src="reader.js"></script>
+<script src="../../workspace_skin.js"></script>
+<script src="../../mobile_pwa.js"></script>
+</body>
+</html>

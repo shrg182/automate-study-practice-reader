@@ -13,7 +13,7 @@ import re
 
 BASE_DIR = Path(__file__).resolve().parent
 OUTPUT = BASE_DIR / "index.html"
-MOBILE_READER_VERSION = "1.18.2"
+MOBILE_READER_VERSION = "1.19.0"
 COPYRIGHT_YEAR = 2026
 COPYRIGHT_HOLDER = "Ruixing"
 
@@ -49,6 +49,7 @@ COLLECTIONS = {
     "russian_wars": Collection("russian_wars", "Войны России", "Russian-first chronicle with selectable English and Chinese study support", "Russian history"),
     "mao_annotated_24_histories": Collection("mao_annotated_24_histories", "《毛泽东批注二十四史》", "九十一册横排简体字本：二十四史、批注、史论与研究资料", "历史典籍"),
     "tcm_foundations": Collection("tcm_foundations", "《中医基础理论》", "原创学习教材：传统理论、现代医学边界、术语与复习", "中医基础课程"),
+    "offline_readings": Collection("offline_readings", "Offline Readings", "Public reading workspaces for books supplied privately on the reader’s device", "Local-file library"),
 }
 
 CATEGORIES = {
@@ -58,6 +59,7 @@ CATEGORIES = {
     "russian_literature": ("Russian Literature", "Russian poetry and short prose"),
     "news": ("News & Current Affairs", "Reports, transcripts, and current-affairs study editions"),
     "writing": ("Writing Workspaces", "Original articles and private personal writing"),
+    "offline": ("Offline Readings", "Titles and study tools are public; book files remain only on your device"),
 }
 
 CATEGORY_COLLECTIONS = {
@@ -67,6 +69,7 @@ CATEGORY_COLLECTIONS = {
     "russian_literature": ["russian_poetry", "russian_short_stories"],
     "news": ["news_reports"],
     "writing": ["reader_articles", "personal_writings"],
+    "offline": ["offline_readings"],
 }
 
 COLLECTION_CATEGORY = {collection: category for category, collections in CATEGORY_COLLECTIONS.items() for collection in collections}
@@ -622,7 +625,6 @@ html[data-workspace-skin="reading"] .news-columns{{background:#eee8dc;color:var(
 <main class="shell">
   <div class="controls"><label class="search"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></svg><input id="catalogSearch" type="search" placeholder="搜索文章、篇章或系列…" autocomplete="off"></label></div>
   {"".join(category_groups)}
-  <script>if(location.protocol==='file:')document.write('<script src="private_library.local.js"><\\/script>')</script>
   <p class="empty" id="emptyState">没有找到匹配的阅读材料。</p>
 </main>
 <footer><strong>教育用途说明：</strong>本站仅供个人阅读、校读与学习，不隶属于所引用的原文来源网站；原始资料的权利归其相应权利人所有。<br><span>Mobile Reader v{MOBILE_READER_VERSION} · &copy; {COPYRIGHT_YEAR} {escape(COPYRIGHT_HOLDER)}. All rights reserved.</span><br>目录由 <code>practice/build_index.py</code> 自动生成 · 新增编辑器后重新运行即可更新</footer>
