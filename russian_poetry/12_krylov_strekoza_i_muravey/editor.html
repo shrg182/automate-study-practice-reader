@@ -4,8 +4,8 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Стрекоза и Муравей · Иван Крылов · Russian Reader</title>
-<link rel="stylesheet" href="../../../workspace_theme.css">
-<script src="../../../workspace_skin.js"></script>
+<link rel="stylesheet" href="../../workspace_theme.css">
+<script src="../../workspace_skin.js"></script>
 <style>
 .inline-media figcaption:empty::before{content:attr(data-placeholder);color:#aaa}
 .inline-media{position:relative;clear:both;margin:1.2em auto;padding:10px;border:1px solid var(--line);border-radius:7px;background:#fff;text-align:center;text-indent:0!important}.inline-media[data-size="small"]{max-width:320px}.inline-media[data-size="medium"]{max-width:560px}.inline-media[data-size="large"]{max-width:820px}.inline-media[data-size="full"]{max-width:none}.inline-media img{display:block;width:100%;max-height:70vh;object-fit:contain}.inline-media figcaption{min-height:1.5em;margin-top:7px;color:var(--muted);font:13px/1.5 system-ui,sans-serif}.inline-media-tools{display:flex;gap:5px;justify-content:center;margin-top:7px}.inline-media-tools button{padding:3px 7px;font-size:11px}.clean-view .inline-media{display:none!important}
@@ -33,7 +33,7 @@ button,input,select,textarea{font:inherit}.app{min-height:100vh;display:grid;gri
 <div class="app">
   <header class="topbar"><div class="brand">Стрекоза и Муравей · Иван Крылов · Russian Reader</div><a class="source" id="sourceLink" target="_blank" rel="noreferrer">View original source ↗</a><div class="status" id="saveStatus">No changes</div></header>
   <nav class="toolbar" aria-label="Editing toolbar">
-    <a class="file-label book-menu-link" href="../../../index.html#russian_poetry" title="Return to contents">Contents</a>
+    <a class="file-label book-menu-link" href="../../index.html#russian_poetry" title="Return to contents">Contents</a>
     <button type="button" id="toolbarToggle" class="toolbar-toggle" aria-expanded="true" title="Collapse the toolbar to enlarge the text area">Collapse toolbar</button>
     <div class="group"><button type="button" id="viewToggle" class="primary">Show annotated text</button><span class="view-badge" id="viewBadge">View: Clean</span></div>
     <div class="group"><button type="button" data-command="undo" title="Undo Ctrl/⌘+Z">Undo</button><button type="button" data-command="redo">Redo</button></div>
@@ -185,4 +185,4 @@ document.getElementById('termSearch').oninput=event=>renderTerms(event.target.va
 document.getElementById('speakBtn').onclick=speak;document.getElementById('pauseBtn').onclick=event=>{if(speechSynthesis.paused){speechSynthesis.resume();event.target.textContent='Пауза'}else{speechSynthesis.pause();event.target.textContent='Resume'}};document.getElementById('stopBtn').onclick=()=>speechSynthesis.cancel();document.getElementById('rate').oninput=event=>document.getElementById('rateValue').textContent=`${event.target.value}×`;window.addEventListener('resize',()=>footnoteList.querySelectorAll('textarea').forEach(resizeFootnoteTextarea));
 speechSynthesis.onvoiceschanged=loadVoices;loadVoices();renderTerms();mergeInitialNotes();renderNotes();renderLog();const stored=localStorage.getItem(STORAGE_KEY);if(stored){try{loadState(JSON.parse(stored));saveStatus.textContent='已恢复浏览器中的编辑记录'}catch{localStorage.removeItem(STORAGE_KEY)}}else{INITIAL_FOOTNOTES.forEach(item=>addFootnoteRow(item.id,item.note,item.mediaIds||[]));renumberFootnotes()}mergeInitialNotes();renderNotes();applyProjectDictionaryOverrides();document.getElementById('difficultyLevel').value=localStorage.getItem(STORAGE_KEY+'-difficulty')||'3';const requestedView=new URLSearchParams(location.search).get('view');setView(['annotated','clean'].includes(requestedView)?requestedView:(sessionStorage.getItem('shiji-editor-view')||'clean'));setToolbarCollapsed(sessionStorage.getItem('shiji-toolbar-collapsed')==='yes');if(sessionStorage.getItem('shiji-global-hints')==='off')document.getElementById('globalHintsBtn').click();updateStats();importMedia(INITIAL_MEDIA).then(loadMediaRecords).catch(error=>console.error('无法载入媒体附件',error));
 </script>
-<script src="../../../mobile_pwa.js"></script></body></html>
+<script src="../../mobile_pwa.js"></script></body></html>

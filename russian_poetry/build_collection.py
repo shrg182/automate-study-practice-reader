@@ -343,7 +343,7 @@ def build_one(item: dict) -> None:
         editor_title=f"{item['title']} · {item['author']} · Russian Reader",
         storage_key=f"russian-poetry-{item['slug']}-v1", file_stem=f"russian_poetry_{item['slug']}",
         inline_notes=[], review_notes=[], reading_notes=[], global_terms=[],
-        home_href="../../../index.html#russian_poetry", theme_href="../../../workspace_theme.css",
+        home_href="../../index.html#russian_poetry", theme_href="../../workspace_theme.css",
         shared_library_href="../index.html", shared_library_label="Русская поэзия",
         source_site_label="Викитека",
     )
@@ -357,7 +357,7 @@ def build_one(item: dict) -> None:
 #editor{font-family:Georgia,"Times New Roman",serif;max-width:900px;margin-inline:auto}.poem-reading{font-size:clamp(20px,2.2vw,29px);line-height:1.72}.poet{color:#5f6368;font:600 13px/1.4 Arial,sans-serif;letter-spacing:.04em;text-indent:0!important}.stanza{margin:1.35em 0!important;text-indent:0!important}.study-card{margin:3em 0 1em;padding:20px;border:1px solid #dadce0;border-radius:10px;background:#f8f9fa;font:16px/1.65 Arial,sans-serif}.study-card h2,.study-card h3{margin:.2em 0 .65em}.study-card ul{display:grid;gap:7px;padding:0;list-style:none}.study-card li{display:grid;grid-template-columns:minmax(110px,.35fr) 1fr;gap:12px;padding-top:7px;border-top:1px solid #e1e4e8}.study-card li span{color:#5f6368}.translation-card p{margin:0 0 10px;color:#5f6368;font:12px/1.55 Arial,sans-serif}.translation-links{display:grid;gap:7px}.translation-links a{display:flex;justify-content:space-between;gap:8px;padding:9px 10px;border:1px solid #c7d3e3;border-radius:6px;background:#f8fbff;color:#174ea6;text-decoration:none;font:700 12px/1.35 Arial,sans-serif}.translation-links a:hover{border-color:#174ea6;background:#e8f0fe}@media(max-width:600px){.study-card li{grid-template-columns:1fr;gap:1px}}
 </style>'''
     page = page.replace("</head>", styles + "</head>", 1)
-    page = page.replace("</body>", '<script src="../../../mobile_pwa.js"></script></body>', 1)
+    page = page.replace("</body>", '<script src="../../mobile_pwa.js"></script></body>', 1)
     (folder / "editor.html").write_text(page, encoding="utf-8")
 
 
