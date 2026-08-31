@@ -31,6 +31,14 @@
 
   applySkin(initial, false);
 
+  function installToolbarLayering() {
+    if (!document.querySelector(".toolbar") || !document.querySelector(".workspace") || document.getElementById("workspace-toolbar-layering")) return;
+    const style = document.createElement("style");
+    style.id = "workspace-toolbar-layering";
+    style.textContent = `@media(min-width:851px){.topbar,.toolbar{position:relative!important;z-index:500!important}.toolbar{max-height:none!important;overflow:visible!important}.workspace{position:relative!important;z-index:1!important}}`;
+    document.head.appendChild(style);
+  }
+
   function installPwaAssets() {
     if (!document.querySelector('meta[name="viewport"]')) {
       const viewport = document.createElement("meta");
@@ -711,7 +719,7 @@
     new MutationObserver(() => queueMicrotask(translate)).observe(document.body, { childList: true, subtree: true, characterData: true });
   }
 
-  function installWorkspaceControls() { installProjectDictionaryLinks(); installRussianInterfaceTranslation(); installContextNavigation(); installHomeMark(); installSwitch(); installReadingEnvironment(); installPaneBalancer(); installFileMenu(); installInsertMenu(); installUserNotesAccess(); installExpandingReviewFields(); installAnnotationSync(); installAllNotesView(); installImmersiveMode(); installGoogleVoicePriority(); window.ReadingWorkspace ||= {}; window.ReadingWorkspace.interfaceLanguage = interfaceLanguage; }
+  function installWorkspaceControls() { installToolbarLayering(); installProjectDictionaryLinks(); installRussianInterfaceTranslation(); installContextNavigation(); installHomeMark(); installSwitch(); installReadingEnvironment(); installPaneBalancer(); installFileMenu(); installInsertMenu(); installUserNotesAccess(); installExpandingReviewFields(); installAnnotationSync(); installAllNotesView(); installImmersiveMode(); installGoogleVoicePriority(); window.ReadingWorkspace ||= {}; window.ReadingWorkspace.interfaceLanguage = interfaceLanguage; }
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", installWorkspaceControls);
   else installWorkspaceControls();
 })();
