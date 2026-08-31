@@ -1,0 +1,4 @@
+/* Language positions stay stable; layout presets change width, not reading order. */
+#workspace[data-layout="chinese-first"] .chinese-pane {
+  order: initial;
+}
