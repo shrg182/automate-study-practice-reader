@@ -127,11 +127,11 @@
     const control = document.createElement("div");
     control.className = "workspace-skin-switch";
     control.setAttribute("role", "group");
-    control.setAttribute("aria-label", englishFirst ? "Interface style" : russianFirst ? "Режим интерфейса" : "界面风格");
+    control.setAttribute("aria-label", englishFirst || russianFirst ? "Interface style" : "界面风格");
     control.innerHTML = englishFirst
       ? '<button type="button" data-skin-choice="reading" title="A warm book style for extended reading">Reading</button><button type="button" data-skin-choice="sheet" title="A compact style for editing and navigation">Workspace</button>'
       : russianFirst
-        ? '<button type="button" data-skin-choice="reading" title="Тёплый книжный вид для долгого чтения">Чтение</button><button type="button" data-skin-choice="sheet" title="Компактный вид для редактирования и навигации">Рабочий режим</button>'
+        ? '<button type="button" data-skin-choice="reading" title="A warm book style for extended reading">Reading</button><button type="button" data-skin-choice="sheet" title="A compact style for editing and navigation">Workspace</button>'
       : '<button type="button" data-skin-choice="reading" title="适合长时间阅读的温暖书卷风格">阅读模式</button><button type="button" data-skin-choice="sheet" title="适合目录管理和密集编辑的表格风格">表格模式</button>';
     control.addEventListener("click", (event) => {
       const button = event.target.closest("[data-skin-choice]");
@@ -445,8 +445,8 @@
     const home = document.createElement("a");
     home.className = "workspace-home-mark";
     home.href = new URL("index.html", workspaceRoot).href;
-    home.setAttribute("aria-label", english ? "Reader home" : russianFirst ? "На главную страницу" : "返回阅读器首页");
-    home.title = english ? "Reader home" : russianFirst ? "На главную страницу" : "返回阅读器首页";
+    home.setAttribute("aria-label", english || russianFirst ? "Reader home" : "返回阅读器首页");
+    home.title = english || russianFirst ? "Reader home" : "返回阅读器首页";
     topbar.classList.add("has-home-mark");
     topbar.prepend(home);
   }
@@ -608,7 +608,7 @@
     const labels = english
       ? { trigger: "Pane layout", primaryOnly: "Text only", primaryFirst: "Text first", balanced: "Balanced", secondaryFirst: "Pane first", secondaryOnly: "Pane only", primary: "Text", secondary: "Pane" }
       : russianFirst
-        ? { trigger: "Панели", primaryOnly: "Только текст", primaryFirst: "Текст больше", balanced: "Поровну", secondaryFirst: "Панель больше", secondaryOnly: "Только панель", primary: "Текст", secondary: "Панель" }
+        ? { trigger: "Pane layout", primaryOnly: "Text only", primaryFirst: "Text first", balanced: "Balanced", secondaryFirst: "Pane first", secondaryOnly: "Pane only", primary: "Text", secondary: "Pane" }
       : { trigger: "分栏布局", primaryOnly: "仅正文", primaryFirst: "正文优先", balanced: "均衡", secondaryFirst: "窗格优先", secondaryOnly: "仅窗格", primary: "正文", secondary: "窗格" };
     const heading = secondary.querySelector("h1,h2,h3,.study-pane-title")?.textContent?.replace(/\s+/g, " ").trim();
     if (heading && heading.length <= 14) labels.secondary = heading.replace(/\s*\d+\s*$/, "") || labels.secondary;

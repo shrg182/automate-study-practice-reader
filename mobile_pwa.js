@@ -61,7 +61,7 @@
     document.body.classList.toggle("mobile-read-mode", !enabled);
     document.body.classList.remove("mobile-panel-open");
     const paneButton = document.querySelector('[data-mobile-action="pane"]');
-    if (paneButton) { paneButton.classList.remove("active"); paneButton.textContent = englishFirst ? "Pane" : russianFirst ? "Панель" : "窗格"; paneButton.setAttribute("aria-pressed", "false"); }
+    if (paneButton) { paneButton.classList.remove("active"); paneButton.textContent = englishFirst || russianFirst ? "Pane" : "窗格"; paneButton.setAttribute("aria-pressed", "false"); }
     const nodes = editableNodes();
     if (!originalEditable.length) originalEditable = nodes.map(node => node.getAttribute("contenteditable"));
     nodes.forEach((node, index) => {
@@ -127,7 +127,7 @@
     document.body.classList.add("mobile-panel-open");
     document.body.classList.remove("mobile-edit-mode");
     const paneButton = document.querySelector('[data-mobile-action="pane"]');
-    if (paneButton) { paneButton.classList.add("active"); paneButton.textContent = englishFirst ? "Text" : russianFirst ? "Текст" : "正文"; paneButton.setAttribute("aria-pressed", "true"); }
+    if (paneButton) { paneButton.classList.add("active"); paneButton.textContent = englishFirst || russianFirst ? "Text" : "正文"; paneButton.setAttribute("aria-pressed", "true"); }
     if (window.BilingualStudyPane) {
       window.BilingualStudyPane.activateTab(kind === "notes" ? "notes" : kind === "chinese" ? "chinese" : "dictionary");
       document.querySelector(".study-pane")?.scrollIntoView({block: "start"});
@@ -141,7 +141,7 @@
     if (!document.body.classList.contains("mobile-panel-open")) return showPanel("chinese");
     document.body.classList.remove("mobile-panel-open");
     const paneButton = document.querySelector('[data-mobile-action="pane"]');
-    if (paneButton) { paneButton.classList.remove("active"); paneButton.textContent = englishFirst ? "Pane" : russianFirst ? "Панель" : "窗格"; paneButton.setAttribute("aria-pressed", "false"); }
+    if (paneButton) { paneButton.classList.remove("active"); paneButton.textContent = englishFirst || russianFirst ? "Pane" : "窗格"; paneButton.setAttribute("aria-pressed", "false"); }
     document.querySelector(".paper,.editor-panel")?.scrollIntoView({block: "start"});
   }
 
@@ -192,12 +192,12 @@
       ? englishFirst
         ? '<button data-mobile-action="home">Home</button><button data-mobile-action="book">Books</button><button data-mobile-action="pane" aria-pressed="false">Pane</button><button data-mobile-action="immersive">Focus</button><button data-mobile-action="settings">Settings</button><button data-mobile-action="notes">Notes</button><button data-mobile-action="sync">Sync</button><button data-mobile-action="edit">Edit</button><button data-mobile-action="offline">Offline</button><button data-mobile-action="install">Install</button>'
         : russianFirst
-          ? '<button data-mobile-action="home">Главная</button><button data-mobile-action="book">Книги</button><button data-mobile-action="pane" aria-pressed="false">Панель</button><button data-mobile-action="immersive">Фокус</button><button data-mobile-action="settings">Настройки</button><button data-mobile-action="notes">Заметки</button><button data-mobile-action="sync">Синхр.</button><button data-mobile-action="edit">Правка</button><button data-mobile-action="offline">Офлайн</button><button data-mobile-action="install">Установить</button>'
+          ? '<button data-mobile-action="home">Home</button><button data-mobile-action="book">Books</button><button data-mobile-action="pane" aria-pressed="false">Pane</button><button data-mobile-action="immersive">Focus</button><button data-mobile-action="settings">Settings</button><button data-mobile-action="notes">Notes</button><button data-mobile-action="sync">Sync</button><button data-mobile-action="edit">Edit</button><button data-mobile-action="offline">Offline</button><button data-mobile-action="install">Install</button>'
         : '<button data-mobile-action="home">目录</button><button data-mobile-action="book">书目</button><button data-mobile-action="pane" aria-pressed="false">窗格</button><button data-mobile-action="immersive">沉浸</button><button data-mobile-action="settings">设置</button><button data-mobile-action="notes">札记</button><button data-mobile-action="sync">同步</button><button data-mobile-action="edit">编辑</button><button data-mobile-action="offline">离线</button><button data-mobile-action="install">安装</button>'
       : isBookPage
         ? '<button data-mobile-action="home">目录</button><button data-mobile-action="book-offline">保存本书</button><button data-mobile-action="book-remove">移除离线</button><button data-mobile-action="update">更新</button><button data-mobile-action="install">安装</button>'
         : '<button data-mobile-action="home" class="active">目录</button><button data-mobile-action="update">更新</button><button data-mobile-action="install">安装</button>';
-    document.body.insertAdjacentHTML("beforeend", `<div class="mobile-pwa-toast" role="status"></div><div class="mobile-pwa-update" role="status"><span>${englishFirst ? "A Mobile Reader update is available" : russianFirst ? "Доступно обновление Reader" : "发现新版 Mobile Reader"}</span><button type="button">${englishFirst ? "Update now" : russianFirst ? "Обновить" : "立即更新"}</button></div><nav class="mobile-pwa-bar${isEditor ? "" : " mobile-home-bar"}" aria-label="${englishFirst ? "Reader tools" : russianFirst ? "Инструменты чтения" : "阅读工具"}">${buttons}</nav>`);
+    document.body.insertAdjacentHTML("beforeend", `<div class="mobile-pwa-toast" role="status"></div><div class="mobile-pwa-update" role="status"><span>${englishFirst || russianFirst ? "A Mobile Reader update is available" : "发现新版 Mobile Reader"}</span><button type="button">${englishFirst || russianFirst ? "Update now" : "立即更新"}</button></div><nav class="mobile-pwa-bar${isEditor ? "" : " mobile-home-bar"}" aria-label="${englishFirst || russianFirst ? "Reader tools" : "阅读工具"}">${buttons}</nav>`);
     if (registration?.waiting && navigator.serviceWorker.controller) document.querySelector(".mobile-pwa-update").classList.add("show");
     document.querySelector(".mobile-pwa-update button").addEventListener("click", updateApp);
     document.querySelector(".mobile-pwa-bar").addEventListener("click", async event => {

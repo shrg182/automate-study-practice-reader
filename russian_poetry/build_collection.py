@@ -265,6 +265,75 @@ def translation_card(item: dict) -> str:
     return f'''<section class="card translation-card" lang="en"><h2>English translations</h2><p>External editions are provided for comparison. Wording, lineation, and interpretation may differ from this Russian text; these links are not line-by-line alignments.</p><div class="translation-links"><a class="translation-primary" href="{ruverses_url}" target="_blank" rel="noreferrer">{ruverses_label} <span aria-hidden="true">↗</span></a><a href="https://en.wikisource.org/w/index.php?search={query}" target="_blank" rel="noreferrer">Search English Wikisource <span aria-hidden="true">↗</span></a></div></section>'''
 
 
+def english_toolbar(page: str) -> str:
+    """Apply the English control wording supplied in the diary backup."""
+    replacements = {
+        "Открыть источник ↗": "View original source ↗",
+        "Без изменений": "No changes",
+        "Панель редактирования": "Editing toolbar",
+        "Вернуться к содержанию": "Return to contents",
+        ">Содержание</a>": ">Contents</a>",
+        "Свернуть панель и увеличить область текста": "Collapse the toolbar to enlarge the text area",
+        ">Свернуть панель</button>": ">Collapse toolbar</button>",
+        ">Показать примечания</button>": ">Show annotated text</button>",
+        "Режим: чистый текст": "View: Clean",
+        "Отменить Ctrl/⌘+Z": "Undo Ctrl/⌘+Z",
+        ">Отменить</button>": ">Undo</button>",
+        ">Повторить</button>": ">Redo</button>",
+        "Поиск по тексту": "Search text",
+        "Предыдущее совпадение": "Previous match",
+        "Следующее совпадение": "Next match",
+        "Форматирование текста": "Text formatting",
+        "Выделение и линии": "Highlight and lines",
+        "Жёлтое выделение": "Yellow highlight",
+        "Зелёное выделение": "Green highlight",
+        "Синее выделение": "Blue highlight",
+        "Розовое выделение": "Pink highlight",
+        "Фиолетовое выделение": "Purple highlight",
+        ">Жёлтый</button>": ">Yellow</button>",
+        ">Зелёный</button>": ">Green</button>",
+        ">Синий</button>": ">Blue</button>",
+        ">Розовый</button>": ">Pink</button>",
+        ">Фиолетовый</button>": ">Purple</button>",
+        "Подчёркивание": "Underline",
+        "Зачёркивание": "Strikethrough",
+        "Полужирное начертание": "Bold selected text",
+        ">Полужирный</span>": ">Bold</span>",
+        ">Произношение</button>": ">Pronunciation</button>",
+        ">Межстрочное примечание</button>": ">Interlinear note</button>",
+        ">Сноска</button>": ">Footnote</button>",
+        ">Комментарий</button>": ">Comment</button>",
+        ">Изображение</button>": ">Image</button>",
+        ">Проверить</button>": ">Check</button>",
+        ">Очистить формат</button>": ">Clear format</button>",
+        ">Словарь</a>": ">Dictionary</a>",
+        ">Русская поэзия</a>": ">Russian poetry</a>",
+        ">Читать вслух</button>": ">Read aloud</button>",
+        ">Пауза</button>": ">Pause</button>",
+        ">Стоп</button>": ">Stop</button>",
+        "Голос для чтения": "Reading voice",
+        "Голос по умолчанию": "Default voice",
+        "Скорость ": "Speed ",
+        ">Сохранить</button>": ">Save</button>",
+        ">Резервная копия</button>": ">Backup</button>",
+        ">Журнал</button>": ">Log</button>",
+        ">Импорт копии</label>": ">Import backup</label>",
+        ">Подсказки: вкл.</button>": ">Hints: On</button>",
+        ">Уровень ": ">Level ",
+        "Минимальный уровень словарных подсказок": "Minimum vocabulary hint level",
+        ">Исходный текст</button>": ">Original text</button>",
+        "Показать чистый текст": "Show clean text",
+        "Режим: примечания": "View: Annotated",
+        "Развернуть панель редактирования": "Expand the editing toolbar",
+        "Развернуть панель": "Expand toolbar",
+        "Подсказки: выкл.": "Hints: Off",
+        "Продолжить": "Resume",
+    }
+    for source, target in replacements.items():
+        page = page.replace(source, target)
+    return page
+
+
 def build_one(item: dict) -> None:
     folder = BASE / item["slug"]
     folder.mkdir(parents=True, exist_ok=True)
@@ -278,6 +347,7 @@ def build_one(item: dict) -> None:
         shared_library_href="../index.html", shared_library_label="Русская поэзия",
         source_site_label="Викитека",
     )
+    page = english_toolbar(page)
     body = poem_markup(item)
     page, count = re.subn(r'(<section id="editor" class="editor"[^>]*>)[\s\S]*?(</section>)', lambda m: m.group(1) + body + m.group(2), page, count=1)
     if count != 1:
