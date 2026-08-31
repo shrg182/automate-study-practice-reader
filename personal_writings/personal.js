@@ -1,4 +1,5 @@
 const KEY='personal-writings-studio-v1';
+(()=>{const style=document.createElement('link');style.rel='stylesheet';style.href='library.css';document.head.append(style);window.addEventListener('load',()=>{const script=document.createElement('script');script.src='library.js';document.body.append(script)})})();
 const $=id=>document.getElementById(id),editor=$('editor'),notes=$('notes'),writingType=$('writingType'),writingDate=$('writingDate'),writingTitle=$('writingTitle'),detailFields=$('detailFields'),scheduleEditor=$('scheduleEditor'),scheduleRows=$('scheduleRows'),previewSchedule=$('previewSchedule'),previewFootnotes=$('previewFootnotes'),statusBox=$('status'),splitter=$('splitter'),workspace=$('workspace'),importInput=$('importInput'),imageInput=$('imageInput');
 let saveTimer,savedRange=null,schedule=[],footnotes=[];
 const templates={
