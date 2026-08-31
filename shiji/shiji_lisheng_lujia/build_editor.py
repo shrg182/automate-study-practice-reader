@@ -225,6 +225,82 @@ def localize_english_first_ui(output: str) -> str:
     return output
 
 
+def localize_russian_first_ui(output: str) -> str:
+    """Localize the editor chrome for Russian-first readings."""
+    if "Russian Reader" not in output:
+        return output
+    replacements = [
+        ('<html lang="zh-CN">', '<html lang="ru">'),
+        (">查看原文来源 ↗</a>", ">Открыть источник ↗</a>"),
+        ('id="saveStatus">尚未修改</div>', 'id="saveStatus">Без изменений</div>'),
+        ('aria-label="编辑工具栏"', 'aria-label="Панель редактирования"'),
+        ('title="返回本书目录">书目</a>', 'title="Вернуться к содержанию">Содержание</a>'),
+        ('title="收起工具栏以扩大正文区域">收起工具栏</button>', 'title="Свернуть панель и увеличить область текста">Свернуть панель</button>'),
+        ('id="viewToggle" class="primary">切换为注音稿</button><span class="view-badge" id="viewBadge">当前：清稿', 'id="viewToggle" class="primary">Показать примечания</button><span class="view-badge" id="viewBadge">Режим: чистый текст'),
+        ('title="撤销 Ctrl/⌘+Z">撤销</button><button type="button" data-command="redo">重做', 'title="Отменить Ctrl/⌘+Z">Отменить</button><button type="button" data-command="redo">Повторить'),
+        ('placeholder="搜索正文关键词" aria-label="搜索正文关键词"', 'placeholder="Поиск по тексту" aria-label="Поиск по тексту"'),
+        ('title="上一个匹配"', 'title="Предыдущее совпадение"'),
+        ('title="下一个匹配"', 'title="Следующее совпадение"'),
+        ('aria-label="文字样式"', 'aria-label="Форматирование текста"'),
+        ('title="高亮与划线"', 'title="Выделение и линии"'),
+        ('aria-label="高亮与划线"', 'aria-label="Выделение и линии"'),
+        ('<span class="hidden">高亮与划线</span>', '<span class="hidden">Выделение и линии</span>'),
+        ('data-label="黄色高亮"', 'data-label="Жёлтое выделение"'),
+        ('data-label="绿色高亮"', 'data-label="Зелёное выделение"'),
+        ('data-label="蓝色高亮"', 'data-label="Синее выделение"'),
+        ('data-label="粉色高亮"', 'data-label="Розовое выделение"'),
+        ('data-label="紫色高亮"', 'data-label="Фиолетовое выделение"'),
+        ('</span>黄色</button>', '</span>Жёлтый</button>'),
+        ('</span>绿色</button>', '</span>Зелёный</button>'),
+        ('</span>蓝色</button>', '</span>Синий</button>'),
+        ('</span>粉色</button>', '</span>Розовый</button>'),
+        ('</span>紫色</button>', '</span>Фиолетовый</button>'),
+        ('data-label="下划线"', 'data-label="Подчёркивание"'),
+        ('data-label="删除线"', 'data-label="Зачёркивание"'),
+        ('</span>下划线</button>', '</span>Подчёркивание</button>'),
+        ('</span>删除线</button>', '</span>Зачёркивание</button>'),
+        ('title="加粗所选文字"', 'title="Полужирное начертание"'),
+        ('<span class="hidden">粗体</span>', '<span class="hidden">Полужирный</span>'),
+        ('id="notationBtn">添加注音/简注', 'id="notationBtn">Произношение'),
+        ('id="interlinearBtn">添加行间注', 'id="interlinearBtn">Межстрочное примечание'),
+        ('id="footnoteBtn">添加脚注', 'id="footnoteBtn">Сноска'),
+        ('id="commentBtn">插入按语', 'id="commentBtn">Комментарий'),
+        ('id="insertImageBtn">插入图片', 'id="insertImageBtn">Изображение'),
+        ('id="doubtBtn">标为待核', 'id="doubtBtn">Проверить'),
+        ('id="clearBtn">清除所选格式', 'id="clearBtn">Очистить формат'),
+        ('target="_blank">全书词典</a>', 'target="_blank">Словарь</a>'),
+        ('id="speakBtn" class="primary">朗读选中/全文', 'id="speakBtn" class="primary">Читать вслух'),
+        ('id="pauseBtn" disabled>暂停', 'id="pauseBtn" disabled>Пауза'),
+        ('id="stopBtn" disabled>停止', 'id="stopBtn" disabled>Стоп'),
+        ('aria-label="朗读声音"><option value="">系统默认声音', 'aria-label="Голос для чтения"><option value="">Голос по умолчанию'),
+        ('<label class="rate">语速 ', '<label class="rate">Скорость '),
+        ('id="saveBtn">保存到浏览器', 'id="saveBtn">Сохранить'),
+        ('id="printPdfBtn">导出 PDF', 'id="printPdfBtn">PDF'),
+        ('id="exportTxtBtn">导出 TXT', 'id="exportTxtBtn">TXT'),
+        ('id="exportHtmlBtn">导出 HTML', 'id="exportHtmlBtn">HTML'),
+        ('id="exportJsonBtn">导出备份', 'id="exportJsonBtn">Резервная копия'),
+        ('id="exportLogBtn">导出日志', 'id="exportLogBtn">Журнал'),
+        ('for="importJson">导入备份', 'for="importJson">Импорт копии'),
+        ('id="globalHintsBtn" class="active" aria-pressed="true">全书词典提示：开', 'id="globalHintsBtn" class="active" aria-pressed="true">Подсказки: вкл.'),
+        ('<label class="difficulty-control">阅读难度 ', '<label class="difficulty-control">Уровень '),
+        ('aria-label="阅读文章的最低词语难度"', 'aria-label="Минимальный уровень словарных подсказок"'),
+        ('id="resetBtn">恢复初始文本', 'id="resetBtn">Исходный текст'),
+        ("annotated?'切换为清稿':'切换为注音稿'", "annotated?'Показать чистый текст':'Показать примечания'"),
+        ("annotated?'当前：注音稿':'当前：清稿'", "annotated?'Режим: примечания':'Режим: чистый текст'"),
+        ("'<option value=\"\">系统默认声音</option>'", "'<option value=\"\">Голос по умолчанию</option>'"),
+        ("utterance.lang='zh-CN'", "utterance.lang='ru-RU'"),
+        ("collapsed?'展开工具栏':'收起工具栏'", "collapsed?'Развернуть панель':'Свернуть панель'"),
+        ("collapsed?'展开编辑工具栏':'收起工具栏以扩大正文区域'", "collapsed?'Развернуть панель редактирования':'Свернуть панель и увеличить область текста'"),
+        ("hidden?'全书词典提示：关':'全书词典提示：开'", "hidden?'Подсказки: выкл.':'Подсказки: вкл.'"),
+        ("event.target.textContent='继续'", "event.target.textContent='Продолжить'"),
+        ("event.target.textContent='暂停'", "event.target.textContent='Пауза'"),
+    ]
+    for source, target in replacements:
+        output = output.replace(source, target)
+    output = output.replace("voices=speechSynthesis.getVoices().sort((a,b)=>Number(!/^google\\b/i.test(a.name))", "voices=speechSynthesis.getVoices().sort((a,b)=>Number(!/^ru(?:-|$)/i.test(a.lang))-Number(!/^ru(?:-|$)/i.test(b.lang))||Number(!/^google\\b/i.test(a.name))")
+    return output
+
+
 def build_html(
     text: str,
     terms: list[dict[str, str]],
@@ -479,7 +555,7 @@ speechSynthesis.onvoiceschanged=loadVoices;loadVoices();renderTerms();mergeIniti
         .replace("shiji-lisheng-lujia-editor-v1", storage_key)
         .replace("lisheng_lujia_", f"{file_stem}_")
     )
-    return localize_english_first_ui(output)
+    return localize_russian_first_ui(localize_english_first_ui(output))
 
 
 def main() -> None:
