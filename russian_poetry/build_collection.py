@@ -275,6 +275,7 @@ def english_toolbar(page: str) -> str:
         ">Содержание</a>": ">Contents</a>",
         "Свернуть панель и увеличить область текста": "Collapse the toolbar to enlarge the text area",
         ">Свернуть панель</button>": ">Collapse toolbar</button>",
+        "Свернуть панель": "Collapse toolbar",
         ">Показать примечания</button>": ">Show annotated text</button>",
         "Режим: чистый текст": "View: Clean",
         "Отменить Ctrl/⌘+Z": "Undo Ctrl/⌘+Z",

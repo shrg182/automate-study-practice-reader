@@ -7,6 +7,11 @@
   const saved = localStorage.getItem(key);
   const englishFirst = /English-First Reader/i.test(document.title);
   const russianFirst = /Russian Reader/i.test(document.title) || document.documentElement.lang.toLowerCase().startsWith("ru");
+  const interfaceLanguageKey = "reading-workspace-interface-language-v1";
+  const interfacePreference = localStorage.getItem(interfaceLanguageKey) || "auto";
+  const interfaceLanguage = interfacePreference === "auto" ? (russianFirst ? "ru" : englishFirst ? "en" : "zh") : interfacePreference;
+  const englishInterface = englishFirst || (russianFirst && interfaceLanguage === "en");
+  const russianInterface = russianFirst && interfaceLanguage === "ru";
   const fallback = /目录/.test(document.title) ? "sheet" : "reading";
   const initial = requested === "reading" || requested === "sheet"
     ? requested
@@ -127,11 +132,11 @@
     const control = document.createElement("div");
     control.className = "workspace-skin-switch";
     control.setAttribute("role", "group");
-    control.setAttribute("aria-label", englishFirst || russianFirst ? "Interface style" : "界面风格");
-    control.innerHTML = englishFirst
+    control.setAttribute("aria-label", englishInterface ? "Interface style" : russianInterface ? "Стиль интерфейса" : "界面风格");
+    control.innerHTML = englishInterface
       ? '<button type="button" data-skin-choice="reading" title="A warm book style for extended reading">Reading</button><button type="button" data-skin-choice="sheet" title="A compact style for editing and navigation">Workspace</button>'
-      : russianFirst
-        ? '<button type="button" data-skin-choice="reading" title="A warm book style for extended reading">Reading</button><button type="button" data-skin-choice="sheet" title="A compact style for editing and navigation">Workspace</button>'
+      : russianInterface
+        ? '<button type="button" data-skin-choice="reading" title="Тёплый книжный вид для долгого чтения">Чтение</button><button type="button" data-skin-choice="sheet" title="Компактный вид для редактирования и навигации">Рабочий режим</button>'
       : '<button type="button" data-skin-choice="reading" title="适合长时间阅读的温暖书卷风格">阅读模式</button><button type="button" data-skin-choice="sheet" title="适合目录管理和密集编辑的表格风格">表格模式</button>';
     control.addEventListener("click", (event) => {
       const button = event.target.closest("[data-skin-choice]");
@@ -160,13 +165,18 @@
     let settings = defaults;
     try { settings = { ...defaults, ...JSON.parse(localStorage.getItem(key) || "{}") }; } catch {}
     const style = document.createElement("style");
-    style.textContent = `.editor,.rich-editor{font-size:var(--reading-content-font-size)!important;line-height:var(--reading-content-line-height)!important;background:var(--reading-content-background)!important}.paper,.editor-panel,.page-card{background:var(--reading-content-background,#fffdfa)!important}.reading-environment{position:relative;display:inline-flex}.reading-environment-trigger{min-height:30px!important;padding:4px 9px!important;border:1px solid #c9d2df!important;border-radius:5px!important;background:#fff!important;color:#202124!important;cursor:pointer}.reading-environment-panel{position:absolute;z-index:340;top:calc(100% + 6px);left:0;right:auto;display:none;width:min(260px,calc(100vw - 24px));padding:14px;border:1px solid #dadce0;border-radius:10px;background:#fff;color:#202124;box-shadow:0 10px 30px #0003;font:12px/1.4 Arial,"PingFang SC",sans-serif}.reading-environment.open .reading-environment-panel{display:grid;gap:12px}.reading-setting{display:grid;grid-template-columns:70px 1fr 42px;gap:8px;align-items:center}.reading-setting input{min-width:0;width:100%}.reading-colors{display:flex;gap:8px}.reading-color{width:30px;height:30px!important;min-height:30px!important;padding:0!important;border:2px solid #dadce0!important;border-radius:50%!important}.reading-color.active{border-color:#1a73e8!important;box-shadow:0 0 0 2px #d2e3fc}.reading-reset{justify-self:start}.bilingual-layout-popover{width:min(440px,calc(100vw - 24px))!important}.bilingual-presets button{line-height:1.2!important;white-space:normal}.bilingual-slider-label{grid-template-columns:auto minmax(140px,1fr) auto!important}.bilingual-slider-label>span{white-space:nowrap}.bilingual-layout-output{grid-column:1/-1!important}@media(max-width:520px){.bilingual-layout-popover{position:fixed!important;top:64px!important;left:12px!important;right:12px!important;width:auto!important}.bilingual-presets{grid-template-columns:repeat(3,1fr)!important}.bilingual-slider-label{grid-template-columns:1fr!important}.bilingual-slider-label>span:last-of-type{display:none}.bilingual-layout-output{grid-column:1!important}}@media print{.reading-environment{display:none!important}}`;
+    style.textContent = `.editor,.rich-editor{font-size:var(--reading-content-font-size)!important;line-height:var(--reading-content-line-height)!important;background:var(--reading-content-background)!important}.paper,.editor-panel,.page-card{background:var(--reading-content-background,#fffdfa)!important}.reading-environment{position:relative;display:inline-flex}.reading-environment-trigger{min-height:30px!important;padding:4px 9px!important;border:1px solid #c9d2df!important;border-radius:5px!important;background:#fff!important;color:#202124!important;cursor:pointer}.reading-environment-panel{position:absolute;z-index:340;top:calc(100% + 6px);left:0;right:auto;display:none;width:min(280px,calc(100vw - 24px));padding:14px;border:1px solid #dadce0;border-radius:10px;background:#fff;color:#202124;box-shadow:0 10px 30px #0003;font:12px/1.4 Arial,"PingFang SC",sans-serif}.reading-environment.open .reading-environment-panel{display:grid;gap:12px}.reading-setting{display:grid;grid-template-columns:70px 1fr 42px;gap:8px;align-items:center}.reading-setting input{min-width:0;width:100%}.reading-language-setting select{grid-column:2/4;width:100%;min-width:0}.reading-colors{display:flex;gap:8px}.reading-color{width:30px;height:30px!important;min-height:30px!important;padding:0!important;border:2px solid #dadce0!important;border-radius:50%!important}.reading-color.active{border-color:#1a73e8!important;box-shadow:0 0 0 2px #d2e3fc}.reading-reset{justify-self:start}.bilingual-layout-popover{width:min(440px,calc(100vw - 24px))!important}.bilingual-presets button{line-height:1.2!important;white-space:normal}.bilingual-slider-label{grid-template-columns:auto minmax(140px,1fr) auto!important}.bilingual-slider-label>span{white-space:nowrap}.bilingual-layout-output{grid-column:1/-1!important}@media(max-width:520px){.bilingual-layout-popover{position:fixed!important;top:64px!important;left:12px!important;right:12px!important;width:auto!important}.bilingual-presets{grid-template-columns:repeat(3,1fr)!important}.bilingual-slider-label{grid-template-columns:1fr!important}.bilingual-slider-label>span:last-of-type{display:none}.bilingual-layout-output{grid-column:1!important}}@media print{.reading-environment{display:none!important}}`;
     document.head.appendChild(style);
     const controls = document.createElement("div");
     controls.className = "reading-environment";
-    controls.innerHTML = englishFirst
-      ? `<button type="button" class="reading-environment-trigger" aria-expanded="false">Settings</button><div class="reading-environment-panel"><label class="reading-setting"><span>Font size</span><input data-reading-setting="fontSize" type="range" min="12" max="34" step="1"><output data-reading-output="fontSize"></output></label><label class="reading-setting"><span>Line spacing</span><input data-reading-setting="lineHeight" type="range" min="1.3" max="2.6" step="0.05"><output data-reading-output="lineHeight"></output></label><div><div style="margin-bottom:7px">Background</div><div class="reading-colors"><button class="reading-color" data-reading-color="#ffffff" style="background:#fff" title="White"></button><button class="reading-color" data-reading-color="#fffdfa" style="background:#fffdfa" title="Warm white"></button><button class="reading-color" data-reading-color="#f3eedf" style="background:#f3eedf" title="Parchment"></button><button class="reading-color" data-reading-color="#eaf2e7" style="background:#eaf2e7" title="Soft green"></button><button class="reading-color" data-reading-color="#e9f0f5" style="background:#e9f0f5" title="Soft blue"></button></div></div><button type="button" class="reading-reset">Reset</button></div>`
+    const languageSetting = russianFirst ? `<label class="reading-setting reading-language-setting"><span>${russianInterface ? "Язык" : "Language"}</span><select data-interface-language><option value="auto">Auto · Русский</option><option value="ru">Русский</option><option value="en">English</option></select></label>` : "";
+    controls.innerHTML = englishInterface
+      ? `<button type="button" class="reading-environment-trigger" aria-expanded="false">Settings</button><div class="reading-environment-panel">${languageSetting}<label class="reading-setting"><span>Font size</span><input data-reading-setting="fontSize" type="range" min="12" max="34" step="1"><output data-reading-output="fontSize"></output></label><label class="reading-setting"><span>Line spacing</span><input data-reading-setting="lineHeight" type="range" min="1.3" max="2.6" step="0.05"><output data-reading-output="lineHeight"></output></label><div><div style="margin-bottom:7px">Background</div><div class="reading-colors"><button class="reading-color" data-reading-color="#ffffff" style="background:#fff" title="White"></button><button class="reading-color" data-reading-color="#fffdfa" style="background:#fffdfa" title="Warm white"></button><button class="reading-color" data-reading-color="#f3eedf" style="background:#f3eedf" title="Parchment"></button><button class="reading-color" data-reading-color="#eaf2e7" style="background:#eaf2e7" title="Soft green"></button><button class="reading-color" data-reading-color="#e9f0f5" style="background:#e9f0f5" title="Soft blue"></button></div></div><button type="button" class="reading-reset">Reset</button></div>`
+      : russianInterface
+        ? `<button type="button" class="reading-environment-trigger" aria-expanded="false">Настройки</button><div class="reading-environment-panel">${languageSetting}<label class="reading-setting"><span>Размер</span><input data-reading-setting="fontSize" type="range" min="12" max="34" step="1"><output data-reading-output="fontSize"></output></label><label class="reading-setting"><span>Интервал</span><input data-reading-setting="lineHeight" type="range" min="1.3" max="2.6" step="0.05"><output data-reading-output="lineHeight"></output></label><div><div style="margin-bottom:7px">Фон</div><div class="reading-colors"><button class="reading-color" data-reading-color="#ffffff" style="background:#fff" title="Белый"></button><button class="reading-color" data-reading-color="#fffdfa" style="background:#fffdfa" title="Тёплый белый"></button><button class="reading-color" data-reading-color="#f3eedf" style="background:#f3eedf" title="Пергамент"></button><button class="reading-color" data-reading-color="#eaf2e7" style="background:#eaf2e7" title="Мягкий зелёный"></button><button class="reading-color" data-reading-color="#e9f0f5" style="background:#e9f0f5" title="Мягкий синий"></button></div></div><button type="button" class="reading-reset">Сбросить</button></div>`
       : `<button type="button" class="reading-environment-trigger" aria-expanded="false">阅读设置</button><div class="reading-environment-panel"><label class="reading-setting"><span>字号</span><input data-reading-setting="fontSize" type="range" min="12" max="34" step="1"><output data-reading-output="fontSize"></output></label><label class="reading-setting"><span>行距</span><input data-reading-setting="lineHeight" type="range" min="1.3" max="2.6" step="0.05"><output data-reading-output="lineHeight"></output></label><div><div style="margin-bottom:7px">背景颜色</div><div class="reading-colors"><button class="reading-color" data-reading-color="#ffffff" style="background:#fff" title="白色"></button><button class="reading-color" data-reading-color="#fffdfa" style="background:#fffdfa" title="米白"></button><button class="reading-color" data-reading-color="#f3eedf" style="background:#f3eedf" title="羊皮纸"></button><button class="reading-color" data-reading-color="#eaf2e7" style="background:#eaf2e7" title="护眼绿"></button><button class="reading-color" data-reading-color="#e9f0f5" style="background:#e9f0f5" title="浅蓝"></button></div></div><button type="button" class="reading-reset">恢复默认</button></div>`;
+    const languageSelect = controls.querySelector("[data-interface-language]");
+    if (languageSelect) { languageSelect.value = interfacePreference; languageSelect.addEventListener("change", () => { localStorage.setItem(interfaceLanguageKey, languageSelect.value); location.reload(); }); }
     const trigger = controls.querySelector(".reading-environment-trigger");
     const panel = controls.querySelector(".reading-environment-panel");
     const positionPanel = () => {
@@ -205,9 +215,13 @@
     if (document.querySelector(".workspace-file-menu")) return;
     const pdf = document.getElementById("printPdfBtn") || document.getElementById("pdfBtn");
     if (!pdf) return;
-    pdf.textContent = englishFirst ? "PDF draft" : "PDF 草稿";
+    pdf.textContent = englishInterface ? "PDF draft" : russianInterface ? "Черновик PDF" : "PDF 草稿";
     const ids = ["saveBtn", "exportTxtBtn", "exportHtmlBtn", "exportJsonBtn", "exportLogBtn", "exportTermsBtn", "exportNotesBtn", "exportBtn", "downloadBtn", "backupBtn", "resetBtn"];
     const controls = ids.map((id) => document.getElementById(id)).filter(Boolean);
+    const supplementalLabels = englishInterface
+      ? { exportTermsBtn: "Export CSV", exportNotesBtn: "Export notes" }
+      : russianInterface ? { exportTermsBtn: "Экспорт CSV", exportNotesBtn: "Экспорт заметок" } : {};
+    controls.forEach(control => { if (supplementalLabels[control.id]) control.textContent = supplementalLabels[control.id]; });
     const importInput = document.getElementById("importJson") || document.getElementById("importBackup") || document.getElementById("importInput");
     const importLabel = importInput ? document.querySelector(`label[for="${importInput.id}"]`) : null;
     if (!controls.length) return;
@@ -215,10 +229,10 @@
     style.textContent = `.workspace-file-menu{position:relative;display:inline-flex;align-items:center}.workspace-file-trigger{min-height:30px!important;padding:4px 9px!important;border:1px solid #c9d2df!important;border-radius:5px!important;background:#fff!important;color:#202124!important;white-space:nowrap;cursor:pointer}.workspace-file-trigger::after{content:" ▾";font-size:10px}.workspace-file-popover{position:absolute;z-index:100;top:calc(100% + 5px);left:0;right:auto;display:none;width:min(210px,calc(100vw - 24px));padding:6px;border:1px solid #dadce0;border-radius:8px;background:#fff;box-shadow:0 8px 24px #3c404333}.workspace-file-menu.open .workspace-file-popover{display:grid;gap:2px}.workspace-file-popover button,.workspace-file-popover label{display:flex!important;width:100%;min-height:32px!important;padding:6px 9px!important;align-items:center;border:0!important;border-radius:4px!important;background:#fff!important;color:#202124!important;text-align:left;font:12px/1.3 Arial,"PingFang SC",sans-serif!important;cursor:pointer}.workspace-file-popover button:hover,.workspace-file-popover label:hover{background:#edf2fa!important}.workspace-file-popover .export-all-action{margin-bottom:5px;border-bottom:1px solid #e3e7ed!important;border-radius:4px 4px 0 0!important;background:#e8f0fe!important;color:#174ea6!important;font-weight:700!important}.workspace-file-popover .danger-action{margin-top:5px;border-top:1px solid #eee!important;border-radius:0 0 4px 4px!important;color:#b3261e!important}.workspace-file-popover input{display:none!important}@media print{.workspace-file-menu{display:none!important}}`;
     document.head.appendChild(style);
     const menu = document.createElement("div"), trigger = document.createElement("button"), popover = document.createElement("div");
-    menu.className = "workspace-file-menu"; trigger.className = "workspace-file-trigger"; trigger.type = "button"; trigger.textContent = englishFirst ? "Files" : "文件与备份"; trigger.setAttribute("aria-haspopup", "menu"); trigger.setAttribute("aria-expanded", "false");
+    menu.className = "workspace-file-menu"; trigger.className = "workspace-file-trigger"; trigger.type = "button"; trigger.textContent = englishInterface ? "Files" : russianInterface ? "Файлы" : "文件与备份"; trigger.setAttribute("aria-haspopup", "menu"); trigger.setAttribute("aria-expanded", "false");
     popover.className = "workspace-file-popover"; popover.setAttribute("role", "menu");
     const exportAll = document.createElement("button");
-    exportAll.type = "button"; exportAll.className = "export-all-action"; exportAll.textContent = englishFirst ? "Export all" : "一键导出全部";
+    exportAll.type = "button"; exportAll.className = "export-all-action"; exportAll.textContent = englishInterface ? "Export all" : russianInterface ? "Экспортировать всё" : "一键导出全部";
     exportAll.addEventListener("click", () => {
       const downloadIds = ["exportTxtBtn", "exportHtmlBtn", "exportJsonBtn", "exportTermsBtn", "exportNotesBtn", "downloadBtn", "backupBtn", "downloadLogBtn"];
       const downloadLog = document.getElementById("downloadLogBtn");
@@ -261,7 +275,7 @@
     document.head.appendChild(style);
     const menu = document.createElement("div"), trigger = document.createElement("button"), popover = document.createElement("div");
     menu.className = "workspace-insert-menu";
-    trigger.className = "workspace-insert-trigger"; trigger.type = "button"; trigger.textContent = englishFirst ? "Annotate" : "插入与注释";
+    trigger.className = "workspace-insert-trigger"; trigger.type = "button"; trigger.textContent = englishInterface ? "Annotate" : russianInterface ? "Примечания" : "插入与注释";
     trigger.setAttribute("aria-haspopup", "menu"); trigger.setAttribute("aria-expanded", "false");
     popover.className = "workspace-insert-popover"; popover.setAttribute("role", "menu");
     host.insertBefore(menu, firstControl);
@@ -344,10 +358,10 @@
     style.textContent = `.user-notes-shortcut{min-height:30px!important;padding:4px 9px!important;border:1px solid #c9d2df!important;border-radius:5px!important;background:#fff!important;color:#174ea6!important;font-weight:700!important;white-space:nowrap;cursor:pointer}.note-item.duplicate-note-highlight{outline:3px solid #f9ab00;outline-offset:2px;background:#fef7e0!important;animation:noteDuplicatePulse .8s ease-in-out 2}@keyframes noteDuplicatePulse{50%{outline-color:#fdd663;background:#fff8d8!important}}@media print{.user-notes-shortcut{display:none!important}}`;
     document.head.appendChild(style);
     const shortcut = document.createElement("button");
-    shortcut.type = "button"; shortcut.className = "user-notes-shortcut"; shortcut.textContent = englishFirst ? "Notes (0)" : "札记（0）";
-    shortcut.title = englishFirst ? "View notes for this reading" : "查看本篇用户札记";
+    shortcut.type = "button"; shortcut.className = "user-notes-shortcut"; shortcut.textContent = englishInterface ? "Notes (0)" : russianInterface ? "Заметки (0)" : "札记（0）";
+    shortcut.title = englishInterface ? "View notes for this reading" : russianInterface ? "Открыть заметки к тексту" : "查看本篇用户札记";
     const rows = () => [...list.querySelectorAll(".note-item")];
-    const updateCount = () => { shortcut.textContent = englishFirst ? `Notes (${rows().length})` : `札记（${rows().length}）`; };
+    const updateCount = () => { shortcut.textContent = englishInterface ? `Notes (${rows().length})` : russianInterface ? `Заметки (${rows().length})` : `札记（${rows().length}）`; };
     shortcut.addEventListener("click", () => {
       window.BilingualStudyPane?.activateTab?.("notes");
       section.scrollIntoView({ behavior: "smooth", block: "start" });
@@ -445,8 +459,8 @@
     const home = document.createElement("a");
     home.className = "workspace-home-mark";
     home.href = new URL("index.html", workspaceRoot).href;
-    home.setAttribute("aria-label", english || russianFirst ? "Reader home" : "返回阅读器首页");
-    home.title = english || russianFirst ? "Reader home" : "返回阅读器首页";
+    home.setAttribute("aria-label", englishInterface ? "Reader home" : russianInterface ? "На главную страницу" : "返回阅读器首页");
+    home.title = englishInterface ? "Reader home" : russianInterface ? "На главную страницу" : "返回阅读器首页";
     topbar.classList.add("has-home-mark");
     topbar.prepend(home);
   }
@@ -604,11 +618,11 @@
     }).find(Boolean);
     if (!candidate) return;
     const { container, primary, secondary } = candidate;
-    const english = document.documentElement.lang.toLowerCase().startsWith("en") || englishFirst;
+    const english = englishInterface;
     const labels = english
       ? { trigger: "Pane layout", primaryOnly: "Text only", primaryFirst: "Text first", balanced: "Balanced", secondaryFirst: "Pane first", secondaryOnly: "Pane only", primary: "Text", secondary: "Pane" }
-      : russianFirst
-        ? { trigger: "Pane layout", primaryOnly: "Text only", primaryFirst: "Text first", balanced: "Balanced", secondaryFirst: "Pane first", secondaryOnly: "Pane only", primary: "Text", secondary: "Pane" }
+      : russianInterface
+        ? { trigger: "Панели", primaryOnly: "Только текст", primaryFirst: "Текст больше", balanced: "Поровну", secondaryFirst: "Панель больше", secondaryOnly: "Только панель", primary: "Текст", secondary: "Панель" }
       : { trigger: "分栏布局", primaryOnly: "仅正文", primaryFirst: "正文优先", balanced: "均衡", secondaryFirst: "窗格优先", secondaryOnly: "仅窗格", primary: "正文", secondary: "窗格" };
     const heading = secondary.querySelector("h1,h2,h3,.study-pane-title")?.textContent?.replace(/\s+/g, " ").trim();
     if (heading && heading.length <= 14) labels.secondary = heading.replace(/\s*\d+\s*$/, "") || labels.secondary;
@@ -648,7 +662,47 @@
     window.ReadingWorkspace.setPaneShare = applyShare;
   }
 
-  function installWorkspaceControls() { installContextNavigation(); installHomeMark(); installSwitch(); installReadingEnvironment(); installPaneBalancer(); installFileMenu(); installInsertMenu(); installUserNotesAccess(); installExpandingReviewFields(); installAnnotationSync(); installAllNotesView(); installImmersiveMode(); installGoogleVoicePriority(); }
+  function installRussianInterfaceTranslation() {
+    if (!russianInterface) return;
+    const translations = {
+      "View original source ↗": "Открыть источник ↗", "No changes": "Без изменений",
+      "Contents": "Содержание", "Collapse toolbar": "Свернуть панель", "Expand toolbar": "Развернуть панель",
+      "Show annotated text": "Показать примечания", "Show clean text": "Показать чистый текст",
+      "View: Clean": "Режим: чистый текст", "View: Annotated": "Режим: примечания",
+      "Undo": "Отменить", "Redo": "Повторить", "Search text": "Поиск по тексту",
+      "Highlight and lines": "Выделение и линии", "Bold": "Полужирный", "Annotate": "Примечания",
+      "Yellow": "Жёлтый", "Green": "Зелёный", "Blue": "Синий", "Pink": "Розовый", "Purple": "Фиолетовый",
+      "Underline": "Подчёркивание", "Strikethrough": "Зачёркивание", "Pronunciation": "Произношение",
+      "Interlinear note": "Межстрочное примечание", "Footnote": "Сноска", "Comment": "Комментарий",
+      "Image": "Изображение", "Check": "Проверить", "Clear format": "Очистить формат",
+      "Dictionary": "Словарь", "Russian poetry": "Русская поэзия", "Read aloud": "Читать вслух",
+      "Pause": "Пауза", "Resume": "Продолжить", "Stop": "Стоп", "Default voice": "Голос по умолчанию",
+      "Speed": "Скорость", "Save": "Сохранить", "Backup": "Резервная копия", "Log": "Журнал",
+      "Import backup": "Импорт копии", "Hints: On": "Подсказки: вкл.", "Hints: Off": "Подсказки: выкл.",
+      "Level": "Уровень", "Original text": "Исходный текст"
+    };
+    const attributes = { "View original source": "Открыть источник", "Search text": "Поиск по тексту", "Previous match": "Предыдущее совпадение", "Next match": "Следующее совпадение", "Return to contents": "Вернуться к содержанию", "Collapse the toolbar to enlarge the text area": "Свернуть панель и увеличить область текста", "Expand the editing toolbar": "Развернуть панель редактирования", "Reading voice": "Голос для чтения", "Minimum vocabulary hint level": "Минимальный уровень словарных подсказок" };
+    let translating = false;
+    const translate = () => {
+      if (translating) return;
+      translating = true;
+      document.querySelectorAll(".topbar,.toolbar").forEach(root => {
+        const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT);
+        while (walker.nextNode()) {
+          const node = walker.currentNode, trimmed = node.nodeValue.trim();
+          if (translations[trimmed]) node.nodeValue = node.nodeValue.replace(trimmed, translations[trimmed]);
+        }
+        root.querySelectorAll("[title],[aria-label],[placeholder]").forEach(node => ["title", "aria-label", "placeholder"].forEach(name => {
+          const value = node.getAttribute(name); if (value && attributes[value]) node.setAttribute(name, attributes[value]);
+        }));
+      });
+      translating = false;
+    };
+    translate();
+    new MutationObserver(() => queueMicrotask(translate)).observe(document.body, { childList: true, subtree: true, characterData: true });
+  }
+
+  function installWorkspaceControls() { installRussianInterfaceTranslation(); installContextNavigation(); installHomeMark(); installSwitch(); installReadingEnvironment(); installPaneBalancer(); installFileMenu(); installInsertMenu(); installUserNotesAccess(); installExpandingReviewFields(); installAnnotationSync(); installAllNotesView(); installImmersiveMode(); installGoogleVoicePriority(); window.ReadingWorkspace ||= {}; window.ReadingWorkspace.interfaceLanguage = interfaceLanguage; }
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", installWorkspaceControls);
   else installWorkspaceControls();
 })();
