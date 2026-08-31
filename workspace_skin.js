@@ -625,17 +625,21 @@
   }
 
   function installPaneBalancer() {
-    if (document.querySelector(".pane-balance,.bilingual-layout-control,.workspace-pane-balance")) return;
-    const containers = [...document.querySelectorAll(".workspace,.content-grid,.editor-shell,main")];
+    if (document.querySelector(".pane-balance,.bilingual-layout-control,.workspace-pane-balance,#layoutButton,[data-pane-balancer]")) return;
+    const containers = [...document.querySelectorAll(".workspace,.content-grid,.editor-shell,.reader-layout,.main-layout,.reading-layout,.split-layout,.layout,main")];
     const candidate = containers.map(container => {
-      const children = [...container.children].filter(node => !node.matches("script,style,template") && getComputedStyle(node).display !== "none");
-      const secondary = children.find(node => node.matches("aside,.sidebar,.notes-dock,.reference-pane,.side-pane"));
-      const primary = children.find(node => node !== secondary && node.matches("article,.paper,.editor-panel,.main-pane,.content-pane,section"));
-      return primary && secondary ? { container, primary, secondary } : null;
+      const allChildren = [...container.children].filter(node => !node.matches("script,style,template") && getComputedStyle(node).display !== "none");
+      const splitter = allChildren.find(node => node.matches(".splitter,.resizer,[role=separator]"));
+      const children = allChildren.filter(node => node !== splitter);
+      let secondary = children.find(node => node.matches("aside,.sidebar,.study,.study-pane,.preview-pane,.translation-pane,.notes-dock,.reference-pane,.side-pane"));
+      let primary = children.find(node => node !== secondary && node.matches("article,.paper,.editor-panel,.author-pane,.main-pane,.content-pane,.reading-pane,.pages,section"));
+      const structural = container.matches(".workspace,.content-grid,.editor-shell,.reader-layout,.main-layout,.reading-layout,.split-layout,.layout") || ["grid", "flex"].includes(getComputedStyle(container).display);
+      if ((!primary || !secondary) && structural && children.length === 2) [primary, secondary] = children;
+      return primary && secondary && primary !== secondary ? { container, primary, secondary, splitter, secondaryFirst: allChildren.indexOf(secondary) < allChildren.indexOf(primary) } : null;
     }).find(Boolean);
     if (!candidate) return;
-    const { container, primary, secondary } = candidate;
-    const english = englishInterface;
+    const { container, primary, secondary, splitter, secondaryFirst } = candidate;
+    const english = englishInterface || document.documentElement.lang.toLowerCase().startsWith("en");
     const labels = english
       ? { trigger: "Pane layout", primaryOnly: "Text only", primaryFirst: "Text first", balanced: "Balanced", secondaryFirst: "Pane first", secondaryOnly: "Pane only", primary: "Text", secondary: "Pane" }
       : russianInterface
@@ -644,17 +648,21 @@
     const heading = secondary.querySelector("h1,h2,h3,.study-pane-title")?.textContent?.replace(/\s+/g, " ").trim();
     if (heading && heading.length <= 14) labels.secondary = heading.replace(/\s*\d+\s*$/, "") || labels.secondary;
     const style = document.createElement("style");
-    style.textContent = `.workspace-pane-balance{position:relative;display:inline-flex}.workspace-pane-balance-trigger{white-space:nowrap}.workspace-pane-balance-popover{position:absolute;z-index:370;top:calc(100% + 6px);left:0;display:none;width:min(340px,calc(100vw - 24px));padding:12px;border:1px solid #c9d2df;border-radius:10px;background:#fff;color:#202124;box-shadow:0 10px 30px #0003}.workspace-pane-balance.open .workspace-pane-balance-popover{display:grid;gap:11px}.workspace-pane-presets{display:grid;grid-template-columns:repeat(5,1fr);gap:4px}.workspace-pane-presets button{min-width:0!important;padding:6px 3px!important;font-size:11px!important}.workspace-pane-presets button.active{background:#e6f4ea!important;color:#137333!important;font-weight:700}.workspace-pane-slider{display:grid;grid-template-columns:auto 1fr auto;gap:8px;align-items:center;color:#5f6368;font:12px/1.3 Arial,"PingFang SC",sans-serif}.workspace-pane-slider input{width:100%;min-width:80px}.workspace-pane-output{grid-column:1/-1;color:#202124;font-weight:700}.workspace-pane-layout.workspace-pane-primary-only>[data-pane-secondary],.workspace-pane-layout.workspace-pane-secondary-only>[data-pane-primary]{display:none!important}@media(min-width:901px){.workspace-pane-layout:not(.workspace-pane-primary-only):not(.workspace-pane-secondary-only){grid-template-columns:minmax(0,var(--workspace-primary-share,75fr)) minmax(260px,var(--workspace-secondary-share,25fr))!important}}@media(max-width:900px){.workspace-pane-presets{grid-template-columns:repeat(3,1fr)}.workspace-pane-slider{grid-template-columns:auto 1fr}.workspace-pane-slider>span:last-of-type,.workspace-pane-output{grid-column:1/-1}}@media print{.workspace-pane-balance{display:none!important}.workspace-pane-layout>[data-pane-primary]{display:block!important}.workspace-pane-layout>[data-pane-secondary]{display:none!important}}`;
+    style.textContent = `.workspace-pane-balance{position:relative;z-index:510;display:inline-flex}.workspace-pane-balance-trigger{white-space:nowrap}.workspace-pane-balance-popover{position:absolute;z-index:370;top:calc(100% + 6px);left:0;display:none;width:min(340px,calc(100vw - 24px));padding:12px;border:1px solid #c9d2df;border-radius:10px;background:#fff;color:#202124;box-shadow:0 10px 30px #0003}.workspace-pane-balance.open .workspace-pane-balance-popover{display:grid;gap:11px}.workspace-pane-presets{display:grid;grid-template-columns:repeat(5,1fr);gap:4px}.workspace-pane-presets button{min-width:0!important;padding:6px 3px!important;font-size:11px!important}.workspace-pane-presets button.active{background:#e6f4ea!important;color:#137333!important;font-weight:700}.workspace-pane-slider{display:grid;grid-template-columns:auto 1fr auto;gap:8px;align-items:center;color:#5f6368;font:12px/1.3 Arial,"PingFang SC",sans-serif}.workspace-pane-slider input{width:100%;min-width:80px}.workspace-pane-output{grid-column:1/-1;color:#202124;font-weight:700}.workspace-pane-layout.workspace-pane-primary-only>[data-pane-secondary],.workspace-pane-layout.workspace-pane-secondary-only>[data-pane-primary],.workspace-pane-layout.workspace-pane-primary-only>.splitter,.workspace-pane-layout.workspace-pane-secondary-only>.splitter{display:none!important}.workspace-pane-layout.workspace-pane-primary-only,.workspace-pane-layout.workspace-pane-secondary-only{grid-template-columns:1fr!important}@media(min-width:901px){.workspace-pane-layout:not(.workspace-pane-primary-only):not(.workspace-pane-secondary-only){grid-template-columns:minmax(0,var(--workspace-primary-share,75fr)) minmax(260px,var(--workspace-secondary-share,25fr))!important}.workspace-pane-layout.workspace-pane-secondary-first:not(.workspace-pane-primary-only):not(.workspace-pane-secondary-only){grid-template-columns:minmax(260px,var(--workspace-secondary-share,25fr)) minmax(0,var(--workspace-primary-share,75fr))!important}.workspace-pane-layout.workspace-pane-has-splitter:not(.workspace-pane-primary-only):not(.workspace-pane-secondary-only){grid-template-columns:minmax(0,var(--workspace-primary-share,75fr)) 8px minmax(260px,var(--workspace-secondary-share,25fr))!important}}@media(max-width:900px){.workspace-pane-presets{grid-template-columns:repeat(3,1fr)}.workspace-pane-slider{grid-template-columns:auto 1fr}.workspace-pane-slider>span:last-of-type,.workspace-pane-output{grid-column:1/-1}}@media print{.workspace-pane-balance{display:none!important}.workspace-pane-layout>[data-pane-primary]{display:block!important}.workspace-pane-layout>[data-pane-secondary]{display:none!important}}`;
     document.head.appendChild(style);
     container.classList.add("workspace-pane-layout");
+    container.classList.toggle("workspace-pane-secondary-first", secondaryFirst);
+    container.classList.toggle("workspace-pane-has-splitter", Boolean(splitter));
     primary.dataset.panePrimary = "";
     secondary.dataset.paneSecondary = "";
     const control = document.createElement("div");
     control.className = "workspace-pane-balance";
     control.innerHTML = `<button type="button" class="workspace-pane-balance-trigger" aria-expanded="false">${labels.trigger}</button><div class="workspace-pane-balance-popover"><div class="workspace-pane-presets"><button type="button" data-pane-share="0">${labels.primaryOnly}</button><button type="button" data-pane-share="25">${labels.primaryFirst}</button><button type="button" data-pane-share="50">${labels.balanced}</button><button type="button" data-pane-share="65">${labels.secondaryFirst}</button><button type="button" data-pane-share="100">${labels.secondaryOnly}</button></div><label class="workspace-pane-slider"><span>${labels.primary}</span><input type="range" min="0" max="100" step="1" value="25" aria-label="${english ? "Secondary pane share" : "右侧窗格所占比例"}"><span>${labels.secondary}</span><output class="workspace-pane-output"></output></label></div>`;
     const toolbar = document.querySelector(".toolbar,.actions,jianshang-editor-header .view-tools");
-    if (!toolbar) return;
-    (document.querySelector(".reading-environment") || toolbar.lastElementChild)?.insertAdjacentElement("afterend", control);
+    const host = toolbar && getComputedStyle(toolbar).display !== "none" ? toolbar : document.querySelector(".topbar,header,.actions");
+    if (!host) return;
+    const anchor = host === toolbar ? (document.querySelector(".reading-environment") || host.lastElementChild) : host.lastElementChild;
+    if (anchor) anchor.insertAdjacentElement("afterend", control); else host.appendChild(control);
     const trigger = control.querySelector(".workspace-pane-balance-trigger"), popover = control.querySelector(".workspace-pane-balance-popover"), slider = control.querySelector("input"), output = control.querySelector("output");
     const key = `reading-workspace-pane-balance:${location.pathname}`;
     const presetNames = { 0: labels.primaryOnly, 25: labels.primaryFirst, 50: labels.balanced, 65: labels.secondaryFirst, 100: labels.secondaryOnly };

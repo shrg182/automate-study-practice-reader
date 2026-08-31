@@ -15,6 +15,13 @@
   let editing = false;
   let originalEditable = [];
 
+  function ensureWorkspaceSkin() {
+    if (document.querySelector('script[src$="workspace_skin.js"]')) return;
+    const script = document.createElement("script");
+    script.src = new URL("workspace_skin.js", scriptRoot).href;
+    document.head.appendChild(script);
+  }
+
   function style() {
     const element = document.createElement("style");
     element.textContent = `
@@ -252,5 +259,5 @@
     window.addEventListener("pageshow", () => registration?.update().catch(() => {}));
     window.addEventListener("online", () => registration?.update().catch(() => {}));
   }
-  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", mount); else mount();
+  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", () => { ensureWorkspaceSkin(); mount(); }); else { ensureWorkspaceSkin(); mount(); }
 })();
