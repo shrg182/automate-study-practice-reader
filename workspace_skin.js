@@ -645,6 +645,11 @@
       : russianInterface
         ? { trigger: "Панели", primaryOnly: "Только текст", primaryFirst: "Текст больше", balanced: "Поровну", secondaryFirst: "Панель больше", secondaryOnly: "Только панель", primary: "Текст", secondary: "Панель" }
       : { trigger: "分栏布局", primaryOnly: "仅正文", primaryFirst: "正文优先", balanced: "均衡", secondaryFirst: "窗格优先", secondaryOnly: "仅窗格", primary: "正文", secondary: "窗格" };
+    if (secondary.matches(".preview-pane")) {
+      Object.assign(labels, english
+        ? { trigger: "Pane layout", primaryOnly: "Editor only", primaryFirst: "Editor first", secondaryFirst: "Preview first", secondaryOnly: "Preview only", primary: "Editor", secondary: "Preview" }
+        : { trigger: "分栏布局", primaryOnly: "仅编辑区", primaryFirst: "编辑区优先", secondaryFirst: "预览优先", secondaryOnly: "仅预览", primary: "编辑区", secondary: "预览" });
+    }
     const heading = secondary.querySelector("h1,h2,h3,.study-pane-title")?.textContent?.replace(/\s+/g, " ").trim();
     if (heading && heading.length <= 14) labels.secondary = heading.replace(/\s*\d+\s*$/, "") || labels.secondary;
     const style = document.createElement("style");

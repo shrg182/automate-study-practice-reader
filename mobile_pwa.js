@@ -86,6 +86,18 @@
     if (!silent) toast(enabled ? "已进入轻编辑模式" : "已返回受保护的阅读模式");
   }
 
+  function syncEditingToViewport() {
+    if (!isEditor) return;
+    if (mobile.matches) {
+      setEditing(false, true);
+      return;
+    }
+    editing = true;
+    document.body.classList.remove("mobile-edit-mode", "mobile-read-mode", "mobile-panel-open");
+    editableNodes().forEach((node, index) => node.setAttribute("contenteditable", originalEditable[index] || node.getAttribute("contenteditable") || "true"));
+    document.querySelector('[data-mobile-action="edit"]')?.classList.add("active");
+  }
+
   function articleUrls() {
     const urls = [new URL(location.pathname, location.href).href];
     document.querySelectorAll('link[rel="stylesheet"],script[src],img[src]').forEach(node => {
@@ -227,7 +239,7 @@
       if (action === "update") updateApp();
       if (action === "install") install();
     });
-    if (isEditor) setEditing(false, true);
+    syncEditingToViewport();
     storageLabel().then(value => {
       const offlineButton = document.querySelector('[data-mobile-action="offline"]');
       if (value && offlineButton) offlineButton.title = `已用空间 ${value}`;
@@ -235,6 +247,7 @@
   }
 
   window.addEventListener("beforeinstallprompt", event => { event.preventDefault(); installPrompt = event; });
+  mobile.addEventListener("change", syncEditingToViewport);
   document.addEventListener("click", event => {
     const button = event.target.closest("[data-offline-manifest]");
     if (button) manageOfflineBook(button.dataset.offlineRemove === "true", button.dataset.offlineManifest, button.dataset.offlineBook);
