@@ -3,6 +3,7 @@
   min-height: 0;
   flex: 1;
   background: #fff;
+  overflow: hidden;
 }
 
 .pane.loaded .epub-viewer {
