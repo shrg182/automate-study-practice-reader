@@ -9,8 +9,16 @@
   display: block;
 }
 
-.english-pane iframe {
+.english-pane.format-epub iframe {
   display: none !important;
+}
+
+.english-pane.format-pdf .epub-viewer {
+  display: none !important;
+}
+
+.english-pane.format-pdf .epub-controls {
+  display: none;
 }
 
 .epub-controls {

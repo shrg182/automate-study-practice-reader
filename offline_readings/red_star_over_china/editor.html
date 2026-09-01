@@ -15,7 +15,7 @@
     <h1>Red Star Over China · 《红星照耀中国》 · Offline Reader</h1><span id="saveStatus">Notes saved on this device</span>
   </header>
   <nav class="toolbar" id="toolbar" aria-label="Reading and annotation toolbar">
-    <a class="button" href="../../index.html#offline">Contents</a><button id="collapseToolbar">Collapse toolbar</button><label class="button file">Attach English EPUB<input id="englishFile" type="file" accept="application/epub+zip,.epub"></label><label class="button file">Attach Chinese PDF<input id="chineseFile" type="file" accept="application/pdf"></label><button id="undo" disabled>Undo</button><button id="redo" disabled>Redo</button><input id="noteSearch" type="search" placeholder="Search notes"><button id="addNote" class="accent">Add note / annotation</button><button id="showNotes">All notes <span id="noteCount">0</span></button><button id="layoutButton">Layout</button><button id="exportBackup">Export backup</button><label class="button file">Import backup<input id="importBackup" type="file" accept="application/json"></label><button id="settingsButton">Settings</button>
+    <a class="button" href="../../index.html#offline">Contents</a><button id="collapseToolbar">Collapse toolbar</button><label class="button file">Attach English EPUB / PDF<input id="englishFile" type="file" accept="application/epub+zip,application/pdf,.epub,.pdf"></label><label class="button file">Attach Chinese PDF<input id="chineseFile" type="file" accept="application/pdf"></label><button id="undo" disabled>Undo</button><button id="redo" disabled>Redo</button><input id="noteSearch" type="search" placeholder="Search notes"><button id="addNote" class="accent">Add note / annotation</button><button id="showNotes">All notes <span id="noteCount">0</span></button><button id="layoutButton">Layout</button><button id="exportBackup">Export backup</button><label class="button file">Import backup<input id="importBackup" type="file" accept="application/json"></label><button id="settingsButton">Settings</button>
     <div class="second-row">
       <label>Part <select id="chapter">
       </select></label><label class="english-location">English section <input id="englishPage" type="number" min="1" value="1" readonly></label><label>Chinese page <input id="chinesePage" type="number" min="1" value="19"></label><button data-go="chinese">Go</button><span class="privacy">Book files stay on this device. Notes work online with or without them.</span>
@@ -24,12 +24,12 @@
   <main id="workspace" data-layout="chinese-only">
     <section class="pane english-pane">
       <header>
-        <strong>English edition</strong><span id="englishState">No EPUB attached</span><span class="epub-controls"><button data-epub-nav="prev" title="Previous section">←</button><button data-epub-nav="next" title="Next section">→</button></span><button data-remove="english" hidden="">Remove</button>
+        <strong>English edition</strong><span id="englishState">No English file attached</span><span class="epub-controls"><button data-epub-nav="prev" title="Previous section">←</button><button data-epub-nav="next" title="Next section">→</button></span><button data-remove="english" hidden="">Remove</button>
       </header>
       <div class="empty" id="englishEmpty">
-        <strong>Attach your English EPUB to begin.</strong><br>
+        <strong>Attach your English EPUB or PDF to begin.</strong><br>
         The file is stored only in this browser on this device.
-      </div><div id="englishEpubViewer" class="epub-viewer" aria-label="English EPUB reader"></div><iframe id="englishViewer" title="English edition" name="englishViewer" hidden></iframe>
+      </div><div id="englishEpubViewer" class="epub-viewer" aria-label="English EPUB reader"></div><iframe id="englishViewer" title="English edition" name="englishViewer"></iframe>
     </section>
     <section class="pane chinese-pane">
       <header>
