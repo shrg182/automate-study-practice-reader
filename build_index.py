@@ -5,6 +5,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 import csv
+import json
 from html import escape
 from html.parser import HTMLParser
 from pathlib import Path
@@ -302,6 +303,31 @@ def collect_entries() -> dict[str, list[dict[str, str | None]]]:
                 "editor": ukraine_war.relative_to(BASE_DIR).as_posix(),
                 "pdf": None,
                 "search": "Russia Ukraine war developments August 29 2026 Donetsk Kostiantynivka drones logistics diplomacy",
+                "action_label": "Read article",
+                "direct_link": "yes",
+            })
+        known_article_editors = {global_issues, ukraine_war}
+        for article_editor in sorted((BASE_DIR / "reader_articles" / "entries").glob("*/editor.html"), key=natural_key):
+            if article_editor in known_article_editors:
+                continue
+            backups = sorted(article_editor.parent.glob("*_backup.json"))
+            if not backups:
+                continue
+            try:
+                article_data = json.loads(backups[0].read_text(encoding="utf-8"))
+                metadata = article_data.get("metadata", {})
+            except (OSError, json.JSONDecodeError):
+                continue
+            title = str(metadata.get("title") or editor_title(article_editor))
+            article_type = str(metadata.get("type") or "Article")
+            article_date = str(metadata.get("date") or "Undated")
+            byline = str(metadata.get("byline") or "Reader-authored article")
+            grouped["reader_articles"].append({
+                "title": title,
+                "context": f"{article_type} · {article_date} · {byline}",
+                "editor": article_editor.relative_to(BASE_DIR).as_posix(),
+                "pdf": None,
+                "search": f"{title} {article_type} {article_date} {byline} reader-authored article",
                 "action_label": "Read article",
                 "direct_link": "yes",
             })

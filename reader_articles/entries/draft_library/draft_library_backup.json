@@ -1,0 +1,17 @@
+{
+  "schema": "reader-article-v1",
+  "id": "54fab152-d649-47be-bb94-f0ba1a6b8dd0",
+  "savedAt": "2026-09-01T00:53:27.467Z",
+  "metadata": {
+    "type": "Article",
+    "date": "2026-09-01",
+    "title": "Draft library",
+    "byline": "Exported a new article. It seems that it has the same process as the diary which it is not listed in the article list after closing it."
+  },
+  "bodyHTML": "<p>Corrected. Reader Articles Studio now has a browser-local “Draft library.”</p><p>After refreshing the Studio:</p><ol start=\"1\"><li>Click “Draft library.”</li><li>The previously active article should migrate automatically.</li><li>If it is absent because another draft replaced it, use “Import backup” and select the exported JSON.</li><li>It will then remain listed alongside future drafts.</li></ol><p>The Draft library is private and browser-local. The Reader catalog remains reserved for deliberately published articles.</p><p>Source commit: <code dir=\"ltr\">aa8e6f8</code><br>Public commit: <code dir=\"ltr\">a1704f2</code><span style=\"vertical-align: super;\">1</span></p>",
+  "footnotes": [
+    "The personal writing should be able to share with other devices."
+  ],
+  "notes": "",
+  "splitPercent": 50
+}
