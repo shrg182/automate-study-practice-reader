@@ -1,0 +1,27 @@
+.epub-viewer {
+  display: none;
+  min-height: 0;
+  flex: 1;
+  background: #fff;
+}
+
+.pane.loaded .epub-viewer {
+  display: block;
+}
+
+.english-pane iframe {
+  display: none !important;
+}
+
+.epub-controls {
+  display: flex;
+  gap: 4px;
+}
+
+.epub-controls button {
+  padding: 3px 8px;
+  border: 1px solid #c7c7bf;
+  border-radius: 5px;
+  background: #fff;
+  cursor: pointer;
+}
