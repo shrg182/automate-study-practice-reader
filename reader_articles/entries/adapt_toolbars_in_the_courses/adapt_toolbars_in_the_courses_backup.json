@@ -1,0 +1,15 @@
+{
+  "schema": "reader-article-v1",
+  "id": "2db9ef2f-151f-42d9-b6aa-9d4329c2ce32",
+  "savedAt": "2026-09-01T08:59:33.102Z",
+  "metadata": {
+    "type": "Article",
+    "date": "2026-09-01",
+    "title": "Adapt toolbars in the courses",
+    "byline": "Implemented both course adaptations."
+  },
+  "bodyHTML": "<p>Implemented both course adaptations.</p><p>Key considerations:</p><ul><li>Python is now clearly grouped into Beginning, Intermediate, and Advanced.</li><li>Every class is explicitly labeled in ascending order: “Beginning 1,” “Intermediate 1,” “Advanced 1,” etc.</li><li>The grouped, collapsible layout remains compact on small screens.</li><li>Python lesson headers now include Contents, Previous, Next, Library, Save, and Download.</li><li>Previous/Next navigation continues correctly across level boundaries.</li><li>Chinese Medicine chapters now include Previous/Next chapter navigation.</li><li>Its complete annotation toolbar remains available and scrolls horizontally on narrow screens.</li><li>Bottom toolbars are enabled for both courses, including offline-book, update, installation, reading, and editing controls.</li><li>Python now has a 33-class offline manifest.</li><li>English pages automatically receive English toolbar labels.</li></ul><p>I rebuilt all generated pages and validated all 33 Python class paths and both generators successfully.</p>",
+  "footnotes": [],
+  "notes": "",
+  "splitPercent": 50
+}

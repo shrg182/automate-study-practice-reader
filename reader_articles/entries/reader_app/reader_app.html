@@ -1,0 +1,41 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><title>Reader App</title><style>
+@page { size: letter; margin: .65in; }
+* { box-sizing: border-box; }
+body { margin: 0; color: #202124; font: 11pt/1.62 Georgia, "Songti SC", serif; }
+article { max-width: 7.2in; margin: 0 auto; }
+header { text-align: center; border-bottom: 1px solid #b7c5d2; padding-bottom: 14px; }
+.type { color: #188038; font: 700 9pt Arial, sans-serif; letter-spacing: .12em; text-transform: uppercase; }
+h1 { margin: 8px 0 6px; font-size: 24pt; line-height: 1.2; }
+.meta { color: #5f6368; font: 9pt Arial, sans-serif; }
+.details { display: flex; flex-wrap: wrap; justify-content: center; gap: 7px; margin-top: 9px; }
+.details span { padding: 3px 7px; border: 1px solid #d9cce7; border-radius: 12px; color: #51376d; font: 9pt Arial, sans-serif; }
+.body { padding-top: 18px; }
+.body p { margin: 0 0 10pt; }
+.footnotes, .notes { margin-top: 22px; padding-top: 12px; border-top: 1px solid #dadce0; font-size: 9pt; color: #52606d; }
+.notes { padding: 10px 12px; border: 0; border-left: 4px solid #486581; background: #f0f4f8; white-space: pre-wrap; }
+table { width: 100%; margin-top: 18px; border-collapse: collapse; font: 9.5pt Arial, sans-serif; }
+th, td { padding: 7px; border: 1px solid #cdd3d8; text-align: left; }
+th { background: #ede6f3; color: #51376d; }
+tr:nth-child(even) { background: #faf8fc; }
+</style></head>
+<body><article><header><div class="type">Article</div><h1>Reader App</h1><div class="meta">2026-09-01 · Building an application for reading books</div></header>
+<main class="body"><p>[https://chatgpt.com/share/6a96a4bc-975c-83e9-88f2-5ff6cbde7302](https://chatgpt.com/share/6a96a4bc-975c-83e9-88f2-5ff6cbde7302)</p><p><br></p><p>Please consider if the scheme described in the conversation would be good for your reference in building this reader\_app.</p><p><br></p><p>Yes—the shared conversation is a good product and roadmap reference for <code dir="ltr">reader_app</code>, but I would refine its technical structure before implementation. The strongest ideas are the staged delivery and the separation of each user’s library, progress, annotations, and vocabulary. <a href="https://chatgpt.com/share/6a96a4bc-975c-83e9-88f2-5ff6cbde7302">Shared conversation</a></p><p>I recommend adopting:</p><ul><li>Flask, SQLite, SQLAlchemy, Flask-Login, and Werkzeug password hashing.</li><li>TXT and Markdown support first; EPUB and PDF later.</li><li>Library → reader → progress → annotations → vocabulary sequencing.</li><li>English, Chinese, and Russian as first-class text/language requirements.</li><li>Strict ownership checks so users can access only their own records and files.</li><li>Browser-based, responsive two-pane reading UI.</li></ul><p>I would change the proposed scaffold in several ways:</p><ul><li>Keep the existing <code dir="ltr">src/reader_app/</code> package layout instead of placing <code dir="ltr">app.py</code>, <code dir="ltr">models/</code>, and <code dir="ltr">routes/</code> at the repository root.</li><li>Use an application factory rather than one large global Flask application.</li><li>Group routes into Flask blueprints: <code dir="ltr">auth</code>, <code dir="ltr">library</code>, <code dir="ltr">reader</code>, <code dir="ltr">notes</code>, and <code dir="ltr">vocabulary</code>.</li><li>Put runtime data in Flask’s instance directory, excluded from source control.</li><li>Use one database initially, not separate library and vocabulary databases.</li><li>Add database migrations early rather than creating tables implicitly forever.</li><li>Represent reading locations with format-aware locators, not merely a percentage or raw scroll position.</li><li>Store immutable source files separately from parsed reading content.</li><li>Sanitize rendered Markdown and validate uploads by content, filename, and size.</li><li>Keep annotation anchors independent from display layout so font-size changes do not invalidate highlights.</li></ul><p>A suitable target structure would be:</p><pre dir="ltr"><code>reader_app/
+├── pyproject.toml
+├── README.md
+├── src/reader_app/
+│   ├── __init__.py
+│   ├── app.py
+│   ├── extensions.py
+│   ├── models/
+│   ├── auth/
+│   ├── library/
+│   ├── reader/
+│   ├── annotations/
+│   ├── vocabulary/
+│   ├── templates/
+│   └── static/
+├── instance/
+│   ├── reader.sqlite3
+│   └── books/
+├── migrations/
+└── tests/</code></pre><p>One product decision matters: if this will remain a private, single-user application on your Mac, registration and login are unnecessary overhead. If it may be hosted, accessed from multiple devices, or used by multiple people, authentication and per-user ownership should be foundational.</p><p>My recommended first milestone is therefore:</p><ol start="1"><li>Application factory and configuration.</li><li>User registration/login if multi-user operation is intended.</li><li>Library and safe TXT/Markdown import.</li><li>Comfortable multilingual reading view.</li><li>Durable progress saving.</li><li>Tests for authentication, ownership boundaries, uploads, and Unicode text.</li></ol><p>The conversation’s scheme is now useful context for this project, particularly its feature scope and staged roadmap; I would use the refined architecture above as the actual implementation blueprint.</p></main></article></body></html>
