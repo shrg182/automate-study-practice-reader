@@ -1,4 +1,4 @@
-const VERSION = "reading-room-v99";
+const VERSION = "reading-room-v100";
 const CORE_CACHE = `${VERSION}-core`;
 const ARTICLE_CACHE = `${VERSION}-articles`;
 const root = new URL("./", self.registration.scope);

@@ -24,7 +24,9 @@ Some projects benefit from both. ChatGPT may help clarify the audience, compare 
 
 Quick check: You want a plain-language explanation of gradient descent. Start in ChatGPT. You want to add that explanation as a new editable lesson, update the course index, regenerate the site, and test its links. That is a Codex task.
 
-Your turn: Write down three tasks you expect to do this month. Mark each one C for conversation-centered, A for artifact-centered, or B for both. Explain one choice in a sentence.
+Your turn: Write down three tasks you expect to do this month. Mark each one C for conversation-centered, A for artifact-centered, or B for both. Explain one choice in a sentence.〔2〕
+
+〔按语：https://chatgpt.com/c/6a9bfc19-f04c-83ea-812f-6651cfbf1a67〕
 
 Lesson 2: Write a Brief, Not a Magic Prompt
 
@@ -42,7 +44,7 @@ Constraints: Name requirements such as language, length, tone, file format, comp
 
 Quality standard: Describe how success will be judged. Useful standards include factual support, a passing test suite, no broken links, a clean mobile layout, preserved user edits, or a comparison against a reference example.
 
-Permission boundary: Say what the assistant may change and what requires approval. Reading and analyzing are different from sending, publishing, deleting, purchasing, or changing access. For Codex, identify whether the request is diagnosis only or authorizes implementation, testing, committing, and publishing.〔2〕
+Permission boundary: Say what the assistant may change and what requires approval. Reading and analyzing are different from sending, publishing, deleting, purchasing, or changing access. For Codex, identify whether the request is diagnosis only or authorizes implementation, testing, committing, and publishing.〔3〕
 
 Here is a reusable brief:
 
@@ -54,7 +56,7 @@ Do not overload one request with unrelated ambitions. A clear multi-step project
 
 Quick check: “Make this professional” hides the audience and standard. “Revise this memo for a city council audience; preserve every numerical claim; use plain English; place the recommendation first; flag any statement that needs a source” gives the assistant a reviewable target.
 
-Your turn: Rewrite one vague request from your own work using the six-part brief.
+Your turn: Rewrite one vague request from your own work using the six-part brief.〔4〕
 
 Lesson 3: Work with ChatGPT as an Iterative Reader and Thinker
 
@@ -72,7 +74,7 @@ When analyzing data, ask for the method, assumptions, and checks—not only the 
 
 End important sessions with a verification pass. Ask: Which claims are directly supported? Which are uncertain? What did we assume? What should a human check before using this? Then perform the check. The assistant’s list of risks is guidance, not independent verification by itself.
 
-Practice workflow: Attach a short article. Ask for a one-paragraph summary, a claim–evidence table, two plausible objections, and three questions the article leaves unanswered. Compare every row with the source. Correct one error or overstatement, then ask ChatGPT to revise the synthesis using your correction.
+Practice workflow: Attach a short article. Ask for a one-paragraph summary, a claim–evidence table, two plausible objections, and three questions the article leaves unanswered. Compare every row with the source. Correct one error or overstatement, then ask ChatGPT to revise the synthesis using your correction.〔5〕
 
 Lesson 4: Work with Codex as a Project Collaborator
 
@@ -106,7 +108,7 @@ The reverse handoff is also useful. After Codex produces a technical artifact, C
 
 Maintain one source of truth for each kind of information. Product requirements may live in a specification, course text in a canonical source file, and acceptance evidence in tests or screenshots. Repeatedly copying partially revised text between chats and files creates silent divergence.
 
-For long projects, use checkpoints based on observable artifacts: outline approved, first module readable, interface behavior tested, accessibility reviewed, publication verified. A checkpoint is stronger than a percentage estimate because it states what can actually be inspected.
+For long projects, use checkpoints based on observable artifacts: outline approved, first module readable, interface behavior tested, accessibility reviewed, publication verified. A checkpoint is stronger than a percentage estimate because it states what can actually be inspected.〔6〕
 
 Lesson 6: Reliability, Privacy, and Human Authority
 
@@ -120,7 +122,7 @@ Protect sensitive information by minimizing it. Do not provide secrets, password
 
 Watch the difference between reversible and consequential actions. Drafting a message is not sending it. Preparing a commit is not publishing it. Calculating a purchase is not placing an order. An assistant can do extensive preparation while a person retains the final decision.
 
-Human authority is not ceremonial. The reviewer should know the standard, have access to the evidence, and be able to reject or revise the result. “Human in the loop” means meaningful judgment and control, not a hurried click after an automated process.〔3〕
+Human authority is not ceremonial. The reviewer should know the standard, have access to the evidence, and be able to reject or revise the result. “Human in the loop” means meaningful judgment and control, not a hurried click after an automated process.〔7〕
 
 Responsible-use checklist: Is the goal clear? Are the inputs appropriate and lawful to use? Are important claims sourced? Have sensitive details been minimized? Were the relevant behaviors tested? Are limitations visible? Does a qualified person retain authority over consequential action?
 
@@ -152,14 +154,179 @@ Official Codex documentation and developer resources: https://developers.openai.
 
 Because interfaces and availability change, consult current official documentation for account-specific features, limits, and setup instructions.
 
-Эффективная работа с ChatGPT и Codex начинается с ясной цели, подходящего контекста и чётких границ полномочий. ChatGPT помогает исследовать, объяснять и уточнять идеи, а Codex переносит утверждённый замысел в реальные файлы, проверки и рабочие результаты. В обоих случаях человек должен проверять важные утверждения, защищать конфиденциальные данные и сохранять право принимать окончательные решения.〔4〕
+Эффективная работа с ChatGPT и Codex начинается с ясной цели, подходящего контекста и чётких границ полномочий. ChatGPT помогает исследовать, объяснять и уточнять идеи, а Codex переносит утверждённый замысел в реальные файлы, проверки и рабочие результаты. В обоих случаях человек должен проверять важные утверждения, защищать конфиденциальные данные и сохранять право принимать окончательные решения.〔8〕
 
 脚注
 
 〔1〕The correct working surface depends on the desired outcome: conversational understanding, durable artifact change, or a planned combination of both.
+〔2〕🧙🏾‍♂️ Here is a ready-to-submit answer based on the homework. The article distinguishes **conversation-centered work** from **artifact-centered work**, and notes that some projects use both: ChatGPT can help clarify and plan, while Codex can implement and verify changes in project files.  The exercise specifically asks for three monthly tasks labeled **C**, **A**, or **B**.
 
-〔2〕A permission boundary distinguishes analysis and preparation from consequential actions such as publication, deletion, purchase, communication, or access changes.
+| Task I expect to do this month                                                                                                         | Type  |
+| -------------------------------------------------------------------------------------------------------------------------------------- | ----- |
+| 1. Ask ChatGPT to explain Python and AI concepts that I am studying.                                                                   | **C** |
+| 2. Add or revise Python scripts and documentation in my study project, then run tests to check them.                                   | **A** |
+| 3. Plan improvements to my multilingual dictionary/reading application with ChatGPT, then use Codex to implement and test the changes. | **B** |
 
-〔3〕Meaningful human review requires a standard, relevant evidence, and genuine authority to reject, revise, or stop the result.
+**Explanation of one choice:**
+I marked Task 3 as **B** because I can use ChatGPT to discuss and refine the design first, and then use Codex to change the actual project files and verify that the application works.
 
-〔4〕Editor’s note: This Russian paragraph summarizes the complementary roles of ChatGPT and Codex and emphasizes verification, privacy, and human authority.
+**Shorter version for the homework form:**
+
+> 1. Learn and discuss Python or AI concepts — **C**
+> 2. Update and test files in my Python study project — **A**
+> 3. Plan and develop my dictionary/reading application — **B**
+>
+> I chose **B** for the third task because it requires both conversation to develop the idea and work on actual files to implement and test it.
+
+Recommended next step: use the **shorter version** if this is a quick course exercise.
+〔3〕A permission boundary distinguishes analysis and preparation from consequential actions such as publication, deletion, purchase, communication, or access changes.
+〔4〕🧙🏾‍♂️ Here is a ready-to-submit example using the article’s six-part brief: **outcome, context, inputs, constraints, quality standard, and permission boundary**.
+
+**Vague request:**
+“Improve my Python study project.”
+
+**Rewritten using the six-part brief:**
+
+* **Outcome:** Improve the organization and documentation of my Python study project so that it is easier to study and maintain.
+* **Context:** I use this project to learn Python, practice small programs, and review earlier lessons.
+* **Inputs:** Use the existing project folders, Python scripts, `README.md`, and study notes as the main sources.
+* **Constraints:** Keep the current folder structure and existing working scripts. Use clear, beginner-friendly English and follow normal Python conventions.
+* **Quality standard:** The project should have a clear README, consistent file organization, no broken commands, and Python scripts that run successfully.
+* **Permission boundary:** You may suggest changes and edit documentation or study files, but do not delete files, change major project structure, or publish anything without my approval.
+
+**Compact homework version:**
+
+> **Goal:** Improve the organization and documentation of my Python study project.
+> **Audience:** Me, as a Python learner.
+> **Use:** Existing scripts, folders, README files, and notes.
+> **Preserve:** Working code and the current main folder structure.
+> **Requirements:** Clear organization, beginner-friendly explanations, and standard Python conventions.
+> **Verify by:** Running relevant scripts and checking that commands and documentation are correct.
+> **Authority:** Suggestions and ordinary edits are allowed, but deletion, major restructuring, and publishing require my approval.
+
+Recommended next step: use the **compact version** for the homework, because it closely follows the reusable brief format in the article.
+〔5〕🧙🏾‍♂️ We can complete the practice workflow using the attached article, **“Using ChatGPT and Codex: From Conversation to Completed Work.”** The article’s main distinction is between conversation-centered work in ChatGPT and artifact-centered work in Codex, while emphasizing clear briefs, verification, privacy, and human judgment.
+
+### 1. One-paragraph summary
+
+The article explains how ChatGPT and Codex can be used for different but complementary kinds of work. ChatGPT is most useful when the main task involves conversation, such as explaining ideas, comparing arguments, planning, writing, or analyzing information, while Codex is designed for work that requires inspecting, editing, and testing actual project files.  It recommends giving either system a clear brief that specifies the desired outcome, context, inputs, constraints, quality standard, and permission boundary.  It also stresses that AI-generated work should be verified, sensitive information should be protected, and humans should retain authority over consequential actions.
+
+### 2. Claim–evidence table
+
+| Claim                                                                   | Evidence from the article                                                                                                                                          | Check against source |
+| ----------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------ | -------------------- |
+| ChatGPT is best suited to conversation-centered work.                   | The article says ChatGPT is appropriate for explaining difficult ideas, comparing arguments, planning lessons, revising prose, and analyzing documents.            | **Supported.**       |
+| Codex is useful when work requires changes to actual project artifacts. | Codex can inspect projects, edit files, run commands, test results, and carry out multi-step implementations.                                                      | **Supported.**       |
+| A strong prompt should contain six major elements.                      | The article identifies outcome, context, inputs, constraints, quality standard, and permission boundary.                                                           | **Supported.**       |
+| AI results should be accepted only after appropriate verification.      | The article recommends checking sources, tests, privacy, limitations, and human authority, with verification increasing according to consequence and uncertainty.  | **Supported.**       |
+| ChatGPT and Codex can be used together in one project.                  | The article describes ChatGPT helping clarify structure and Codex implementing the approved structure, regenerating files, and running validation.                 | **Supported.**       |
+
+### 3. Two plausible objections
+
+**Objection 1:** The distinction between ChatGPT and Codex may sometimes be less clear than the article suggests. ChatGPT can also work with files and write code, while Codex can write prose and documentation. The article itself acknowledges this overlap and says the important distinction is the nature of the desired outcome rather than simply “writing versus coding.”
+
+**Objection 2:** The recommended workflow may be more elaborate than necessary for very small tasks. Creating a six-part brief, defining permission boundaries, and conducting several verification steps could be excessive for a simple, low-risk request. The article partly addresses this by saying that verification should increase with consequence, uncertainty, and irreversibility.
+
+### 4. Three questions the article leaves unanswered
+
+1. How should a user decide when a task is large enough to move from ChatGPT to Codex?
+2. What specific tests should beginners use to verify different kinds of Codex projects?
+3. How should users measure whether using both ChatGPT and Codex actually saves time compared with completing the work manually?
+
+These questions are reasonable because the article gives general principles and examples, but it does not provide a precise threshold, universal testing procedure, or quantitative measure of efficiency.
+
+### 5. Correct one error or overstatement
+
+A possible **first-pass overstatement** would be:
+
+> “Whenever a task involves files, it should be done in Codex.”
+
+After checking the source, this is too broad. The article explicitly says ChatGPT can analyze uploaded documents and that both systems can work with prose, code, documents, and other files. The key question is whether the desired result is mainly an **answer** or whether actual project files and checks must be changed together.
+
+**Correction:**
+
+> Codex is preferable when successful completion requires inspecting, editing, and verifying real project artifacts; merely working with or analyzing a file does not automatically make the task a Codex task.
+
+### 6. Revised synthesis using the correction
+
+The article presents ChatGPT and Codex as complementary working environments rather than tools separated simply by whether files or code are involved. ChatGPT is strongest when conversation helps the user understand, compare, draft, analyze, or decide, while Codex becomes especially useful when the desired outcome requires coordinated changes to real project files followed by testing or other verification.  Effective use of either system depends on a clear brief, appropriate evidence, careful verification, protection of sensitive information, and meaningful human control over important decisions.
+
+**Recommended next step:** submit sections **1–6** as your completed practice workflow; if your instructor expects a shorter answer, keep the summary, three-row table, one objection, three questions, and the corrected synthesis.
+〔6〕🧙🏾‍♂️ Here is a ready-to-submit example using one of your small Python study projects. The exercise asks you to have Codex add a visible feature, preserve existing behavior, run checks, summarize the change, review the diff, and then diagnose a realistic failure before allowing a fix.
+
+### Practice workflow example
+
+**Small local project:**
+A Python to-do list application with a simple HTML interface.
+
+**Request to Codex:**
+
+> Add a visible **“Completed Tasks”** section to the to-do list page.
+> Preserve all existing behavior, including adding, removing, and marking tasks as complete.
+> Inspect the existing project structure before making changes.
+> Update only the necessary source files.
+> Run the relevant checks or tests after implementation.
+> Summarize which files were changed, what behavior was added, and how you verified it.
+
+This follows the article’s recommended Codex workflow: inspect the project, implement a bounded change, verify the result, and report the outcome.
+
+### Example Codex summary
+
+> Added a “Completed Tasks” section to the page. Completed tasks are now displayed separately from active tasks. Existing add, remove, and completion behavior was preserved.
+>
+> Changed:
+>
+> * `app.py`
+> * `templates/index.html`
+> * `styles.css`
+>
+> Verification:
+>
+> * Existing tests passed.
+> * The application started successfully.
+> * Adding, completing, and deleting tasks were checked manually.
+
+### Review the diff
+
+I would review the diff before accepting the change and check that:
+
+* only the expected files were modified;
+* existing task functions were not unnecessarily rewritten;
+* completed tasks are displayed in the new section;
+* no unrelated code was deleted;
+* the HTML and Python changes are consistent.
+
+The article specifically recommends reviewing important diffs and keeping the user responsible for scope and acceptance.
+
+### Realistic failure report
+
+After testing the new feature, I notice this problem:
+
+> “When I mark a task as completed, it appears correctly in the Completed Tasks section. However, after I restart the application, the task appears in the active list again.”
+
+### Ask Codex for diagnosis only
+
+> Diagnose why completed tasks lose their completed status after the application restarts.
+> Inspect the relevant code and data-storage logic.
+> Explain the likely cause and identify the files or functions involved.
+> **Do not modify any files yet.**
+
+This is important because the exercise asks for **diagnosis before authorizing a fix**, and the article recommends giving Codex concrete failure information such as observed behavior, expected behavior, and reproduction details.
+
+### Example diagnosis
+
+> The interface correctly changes the task status while the program is running, but the completed state is not being saved to persistent storage. When the application restarts, it reloads the task without the completion field, so the task defaults to active. The likely issue is in the function that writes tasks to the JSON file.
+
+### Authorization after reviewing the diagnosis
+
+If the diagnosis looks correct, I would then say:
+
+> Proceed with the fix. Save the completion status in persistent storage, preserve compatibility with existing task data, run the relevant tests, and summarize the final change.
+
+**Short homework version:**
+
+> I gave Codex a small Python to-do project and asked it to add a visible “Completed Tasks” section while preserving existing behavior. I asked it to inspect the project, make only necessary changes, run tests, and summarize the result. After reviewing the diff, I reported that completed tasks returned to the active list after restarting the program. I asked Codex to diagnose the problem without changing any files. Codex identified that the completion status was not being saved to persistent storage. After reviewing the diagnosis, I authorized the fix and asked it to test the corrected behavior.
+
+Recommended next step: use the **short homework version** for submission and keep the longer workflow as your reference example.
+〔7〕Meaningful human review requires a standard, relevant evidence, and genuine authority to reject, revise, or stop the result.
+〔8〕Editor’s note: This Russian paragraph summarizes the complementary roles of ChatGPT and Codex and emphasizes verification, privacy, and human authority.

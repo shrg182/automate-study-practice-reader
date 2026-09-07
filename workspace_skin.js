@@ -39,6 +39,74 @@
     document.head.appendChild(style);
   }
 
+  function installColoredUnderlines() {
+    const popovers = [...document.querySelectorAll(".format-popover")];
+    if (!popovers.length) return;
+    const editorSelector = ".rich-editor,#editor.editor,.editor[contenteditable]";
+    const colors = [
+      ["#d39e00", englishInterface ? "Yellow underline" : russianInterface ? "Жёлтое подчёркивание" : "黄色下划线"],
+      ["#2e8b57", englishInterface ? "Green underline" : russianInterface ? "Зелёное подчёркивание" : "绿色下划线"],
+      ["#2474a6", englishInterface ? "Blue underline" : russianInterface ? "Синее подчёркивание" : "蓝色下划线"],
+      ["#d94f87", englishInterface ? "Pink underline" : russianInterface ? "Розовое подчёркивание" : "粉色下划线"],
+      ["#8e44ad", englishInterface ? "Purple underline" : russianInterface ? "Фиолетовое подчёркивание" : "紫色下划线"]
+    ];
+    let underlineRange = null;
+    const captureRange = () => {
+      const selection = getSelection();
+      if (!selection || selection.rangeCount === 0 || selection.isCollapsed) return;
+      const range = selection.getRangeAt(0);
+      const container = range.commonAncestorContainer.nodeType === Node.ELEMENT_NODE ? range.commonAncestorContainer : range.commonAncestorContainer.parentElement;
+      if (container?.closest(editorSelector)) underlineRange = range.cloneRange();
+    };
+    document.addEventListener("selectionchange", captureRange);
+    document.addEventListener("mouseup", captureRange, true);
+    const style = document.createElement("style");
+    style.textContent = `.format-underline-swatch{position:relative;width:15px;height:15px;flex:0 0 auto}.format-underline-swatch::after{position:absolute;left:1px;right:1px;bottom:2px;height:3px;border-radius:2px;background:var(--underline-color);content:""}`;
+    document.head.appendChild(style);
+    for (const popover of popovers) {
+      if (popover.querySelector("[data-underline-color]")) continue;
+      const neutralUnderline = popover.querySelector('[data-command="underline"]');
+      if (!neutralUnderline) continue;
+      const fragment = document.createDocumentFragment();
+      for (const [color, label] of colors) {
+        const button = document.createElement("button");
+        button.type = "button";
+        button.className = "format-option";
+        button.setAttribute("role", "menuitem");
+        button.dataset.underlineColor = color;
+        button.dataset.label = label;
+        button.innerHTML = `<span class="format-underline-swatch" style="--underline-color:${color}" aria-hidden="true"></span>${label}`;
+        fragment.appendChild(button);
+      }
+      neutralUnderline.before(fragment);
+    }
+    document.addEventListener("mousedown", event => {
+      if (event.target.closest("[data-underline-color]")) event.preventDefault();
+    }, true);
+    document.addEventListener("click", event => {
+      const button = event.target.closest("[data-underline-color]");
+      if (!button) return;
+      event.preventDefault();
+      event.stopImmediatePropagation();
+      const range = underlineRange;
+      const container = range && (range.commonAncestorContainer.nodeType === Node.ELEMENT_NODE ? range.commonAncestorContainer : range.commonAncestorContainer.parentElement);
+      const editor = container?.closest(editorSelector);
+      if (!range || range.collapsed || !editor) return;
+      const span = document.createElement("span");
+      span.style.textDecorationLine = "underline";
+      span.style.textDecorationColor = button.dataset.underlineColor;
+      span.style.textDecorationThickness = "1.5px";
+      span.style.textUnderlineOffset = ".2em";
+      try { range.surroundContents(span); }
+      catch { span.append(range.extractContents()); range.insertNode(span); }
+      editor.dispatchEvent(new InputEvent("input", { bubbles: true, inputType: "formatUnderline" }));
+      const menu = button.closest(".format-menu");
+      menu?.classList.remove("open");
+      menu?.querySelector("[aria-expanded]")?.setAttribute("aria-expanded", "false");
+      underlineRange = null;
+    }, true);
+  }
+
   function installPwaAssets() {
     if (!document.querySelector('meta[name="viewport"]')) {
       const viewport = document.createElement("meta");
@@ -732,7 +800,7 @@
     new MutationObserver(() => queueMicrotask(translate)).observe(document.body, { childList: true, subtree: true, characterData: true });
   }
 
-  function installWorkspaceControls() { installToolbarLayering(); installProjectDictionaryLinks(); installRussianInterfaceTranslation(); installContextNavigation(); installHomeMark(); installSwitch(); installReadingEnvironment(); installPaneBalancer(); installFileMenu(); installInsertMenu(); installUserNotesAccess(); installExpandingReviewFields(); installAnnotationSync(); installAllNotesView(); installImmersiveMode(); installGoogleVoicePriority(); window.ReadingWorkspace ||= {}; window.ReadingWorkspace.interfaceLanguage = interfaceLanguage; }
+  function installWorkspaceControls() { installToolbarLayering(); installColoredUnderlines(); installProjectDictionaryLinks(); installRussianInterfaceTranslation(); installContextNavigation(); installHomeMark(); installSwitch(); installReadingEnvironment(); installPaneBalancer(); installFileMenu(); installInsertMenu(); installUserNotesAccess(); installExpandingReviewFields(); installAnnotationSync(); installAllNotesView(); installImmersiveMode(); installGoogleVoicePriority(); window.ReadingWorkspace ||= {}; window.ReadingWorkspace.interfaceLanguage = interfaceLanguage; }
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", installWorkspaceControls);
   else installWorkspaceControls();
 })();
