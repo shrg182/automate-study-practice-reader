@@ -64,3 +64,37 @@ class JianshangEditorHeader extends HTMLElement {
 if (!customElements.get("jianshang-editor-header")) {
   customElements.define("jianshang-editor-header", JianshangEditorHeader);
 }
+
+function revealDictionaryTerm() {
+  const term = new URLSearchParams(window.location.search).get("dictionary_term");
+  if (!term) return;
+  const editors = document.querySelectorAll(".rich-editor");
+  for (const editor of editors) {
+    const walker = document.createTreeWalker(editor, NodeFilter.SHOW_TEXT);
+    let node;
+    while ((node = walker.nextNode())) {
+      const index = node.data.indexOf(term);
+      if (index < 0) continue;
+      const range = document.createRange();
+      range.setStart(node, index);
+      range.setEnd(node, index + term.length);
+      if (CSS.highlights && window.Highlight) {
+        if (!document.querySelector("style[data-dictionary-deep-link]")) {
+          const style = document.createElement("style");
+          style.dataset.dictionaryDeepLink = "true";
+          style.textContent = "::highlight(dictionary-deep-link){background:#ffe168;color:#17130a}";
+          document.head.append(style);
+        }
+        CSS.highlights.set("dictionary-deep-link", new Highlight(range));
+      } else {
+        const selection = window.getSelection();
+        selection.removeAllRanges();
+        selection.addRange(range);
+      }
+      range.startContainer.parentElement?.scrollIntoView({ block: "center" });
+      return;
+    }
+  }
+}
+
+window.addEventListener("load", () => setTimeout(revealDictionaryTerm, 150));

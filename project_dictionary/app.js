@@ -38,6 +38,18 @@
     "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#039;"
   })[character]);
 
+  function sourceHref(target, term) {
+    const relativeTarget = location.protocol === "file:" ? target : target.replace(/^practice\//, "");
+    const encodedTerm = encodeURIComponent(term);
+    return `../${relativeTarget}?dictionary_term=${encodedTerm}#:~:text=${encodedTerm}`;
+  }
+
+  function sourceItems(entry) {
+    const labels = String(entry.source_details || entry.sources || "").split("; ").filter(Boolean);
+    const targets = String(entry.source_targets || "").split("; ");
+    return labels.map((label, index) => ({ label, target: targets[index] || "" }));
+  }
+
   try {
     overrides = JSON.parse(localStorage.getItem(STORAGE_KEY) || "{}");
   } catch (_error) {
@@ -86,7 +98,7 @@
       const index = entries.indexOf(entry);
       const sourceDetails = entry.source_details || entry.sources || "Source unavailable";
       const difficulty = Number(entry.difficulty) || 3;
-      const targets = String(entry.source_targets || entry.sources || "").split("; ").filter(Boolean);
+      const targets = String(entry.source_targets || "").split("; ").filter(Boolean);
       const sourceLinks = targets.slice(0, 2).map((target, targetIndex) =>
         `<a href="../${escapeHtml(location.protocol === "file:" ? target : target.replace(/^practice\//, ""))}" target="_blank" aria-label="Open source ${targetIndex + 1} for ${escapeHtml(entry.term)}">${targetIndex ? "Open 2" : "Open"}</a>`
       ).join("");
@@ -134,7 +146,7 @@
   }
 
   function renderDetail(entry, editing = false) {
-    const sources = String(entry.source_details || entry.sources || "").split("; ").filter(Boolean);
+    const sources = sourceItems(entry);
     const difficulty = Number(entry.difficulty) || 3;
     if (editing) {
       elements.detail.innerHTML = `
@@ -178,7 +190,9 @@
       ${entry.example ? `<section class="detail-section"><h3>In context</h3><p>“${escapeHtml(entry.example)}”</p></section>` : ""}
       <section class="detail-section">
         <h3>${entry.occurrence_count} ${Number(entry.occurrence_count) === 1 ? "occurrence" : "occurrences"}</h3>
-        <ul class="source-list">${sources.map((source) => `<li>${escapeHtml(source)}</li>`).join("")}</ul>
+        <ul class="source-list">${sources.map(({ label, target }) => `<li>${target
+          ? `<a href="${escapeHtml(sourceHref(target, entry.term))}" target="_blank" rel="noopener" title="Open and highlight ${escapeHtml(entry.term)} in the source text">${escapeHtml(label)}</a>`
+          : escapeHtml(label)}</li>`).join("")}</ul>
       </section>`;
   }
 

@@ -58,14 +58,9 @@ def entry_time_for(path: Path) -> str:
 
 
 def source_target_for(path: Path, root: Path) -> str:
-    """Prefer the reading text beside a vocabulary file, then the file itself."""
-    candidates = [
-        path.parent / "source.txt",
-        path.parent / "editor.html",
-    ]
-    candidates.extend(sorted(path.parent.glob("*_clean.txt")))
-    target = next((candidate for candidate in candidates if candidate.is_file()), path)
-    return relative(target, root)
+    """Return the reading editor beside a vocabulary file, when one exists."""
+    target = path.parent / "editor.html"
+    return relative(target, root) if target.is_file() else ""
 
 
 def difficulty_for(entry_type: str, explicit: object = "") -> int:
@@ -303,6 +298,14 @@ def merge(rows: list[Occurrence]) -> list[dict[str, str | int]]:
 
     result: list[dict[str, str | int]] = []
     for (_, _), occurrences in sorted(groups.items()):
+        source_pairs: dict[str, str] = {}
+        for row in occurrences:
+            label = (
+                f"{row.source} · {row.source_detail}"
+                if row.source_detail
+                else row.source
+            )
+            source_pairs.setdefault(label, row.source_target)
         result.append(
             {
                 "term": occurrences[0].term,
@@ -313,18 +316,10 @@ def merge(rows: list[Occurrence]) -> list[dict[str, str | int]]:
                 "example": unique_join([row.example for row in occurrences]),
                 "occurrence_count": len(occurrences),
                 "sources": unique_join([row.source for row in occurrences], "; "),
-                "source_details": unique_join(
-                    [
-                        f"{row.source} · {row.source_detail}"
-                        if row.source_detail
-                        else row.source
-                        for row in occurrences
-                    ],
-                    "; ",
-                ),
-                "source_targets": unique_join(
-                    [row.source_target for row in occurrences], "; "
-                ),
+                "source_details": "; ".join(source_pairs),
+                # Preserve empty positions so each displayed source remains paired
+                # with its own editor target (or lack of one).
+                "source_targets": "; ".join(source_pairs.values()),
                 "entry_time": max(row.entry_time for row in occurrences),
                 "difficulty": max(row.difficulty for row in occurrences),
             }

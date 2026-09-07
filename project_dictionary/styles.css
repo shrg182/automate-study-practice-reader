@@ -919,6 +919,9 @@ select {
 .source-list { margin: 0; padding: 0; list-style: none; }
 .source-list li { padding: 9px 0; font: 11px/1.5 var(--sans); overflow-wrap: anywhere; }
 .source-list li::before { margin-right: 8px; color: var(--red); content: "↳"; }
+.source-list a { color: inherit; text-decoration-color: var(--sheet-blue, currentColor); text-underline-offset: 3px; }
+.source-list a:hover { color: var(--sheet-blue, var(--red)); }
+.source-list a:focus-visible { outline: 2px solid var(--sheet-blue, var(--red)); outline-offset: 3px; border-radius: 2px; }
 
 .entry-edit-form { display: grid; gap: 20px; }
 

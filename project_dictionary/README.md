@@ -62,8 +62,12 @@ Common, Intermediate, Advanced, Rare, and Specialist. A source row can override
 this heuristic with `difficulty` or `difficulty_level` (number 1–5 or a label).
 The Difficulty column dropdown acts as a minimum-level filter: for example,
 “3+ Advanced” includes Advanced, Rare, and Specialist entries.
-The Open column targets a nearby `source.txt`, `editor.html`, or clean reading
-text when present, and otherwise opens the structured vocabulary source.
+The Open column and occurrence paths target a nearby `editor.html`. They are
+left unlinked when that reading does not yet have an editor, rather than opening
+or downloading its structured vocabulary file. In browsers that support text
+fragments, opening a link scrolls to and highlights the entry's term in the
+editor text. A future reader app should preserve this term-level deep-link
+behavior with a stable occurrence identifier when available.
 
 Each detail card has an Edit entry mode for term, reading, type, difficulty,
 definition, example, and displayed source details. These overrides are stored
