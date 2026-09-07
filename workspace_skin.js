@@ -35,8 +35,113 @@
     if (!document.querySelector(".toolbar") || !document.querySelector(".workspace") || document.getElementById("workspace-toolbar-layering")) return;
     const style = document.createElement("style");
     style.id = "workspace-toolbar-layering";
-    style.textContent = `@media(min-width:851px){.topbar,.toolbar{position:relative!important;z-index:500!important}.toolbar{max-height:none!important;overflow:visible!important}.workspace{position:relative!important;z-index:1!important}}`;
+    style.textContent = `.toolbar{position:sticky!important;top:0!important;z-index:500!important}.topbar{position:relative!important;z-index:501!important}@media(min-width:851px){.toolbar{max-height:none!important;overflow:visible!important}.workspace{position:relative!important;z-index:1!important}}`;
     document.head.appendChild(style);
+  }
+
+  function installDictionaryOccurrences() {
+    const lists = [...document.querySelectorAll(".term-list")];
+    const editor = document.querySelector(".rich-editor,#editor.editor,.editor[contenteditable]");
+    if (!lists.length || !editor) return;
+    const labels = englishInterface
+      ? { heading: "Occurrences", none: "Not found in the current text.", previous: "Previous", next: "Next", result: "occurrence" }
+      : russianInterface
+        ? { heading: "Вхождения", none: "В текущем тексте не найдено.", previous: "Назад", next: "Далее", result: "вхождение" }
+        : { heading: "正文用例", none: "当前正文中未找到这个词。", previous: "上一处", next: "下一处", result: "处" };
+    const style = document.createElement("style");
+    style.textContent = `.dictionary-occurrences{margin-top:9px;padding:10px;border:1px solid #c9d8df;border-radius:6px;background:#f7fbfc;color:#202124;font:12px/1.45 Arial,"PingFang SC",sans-serif}.dictionary-occurrences[hidden]{display:none}.dictionary-occurrences-header{display:flex;gap:7px;align-items:center;margin-bottom:7px}.dictionary-occurrences-header strong{margin-right:auto}.dictionary-occurrences-header button{min-height:27px!important;padding:3px 7px!important}.dictionary-occurrence-list{display:grid;gap:5px;max-height:190px;overflow:auto}.dictionary-occurrence{display:grid!important;grid-template-columns:24px 1fr;gap:6px;width:100%;min-height:0!important;padding:6px 7px!important;text-align:left!important;border:1px solid #dbe5e9!important;background:#fff!important;color:#3c4043!important}.dictionary-occurrence.active{border-color:#1a73e8!important;background:#e8f0fe!important}.dictionary-occurrence-index{color:#5f6368;font-weight:700}.dictionary-occurrence-hit{background:#fff1a8;color:#202124}.dictionary-text-target{border-radius:2px;outline:3px solid #f4c542;outline-offset:2px}.toolbar.collapsed{min-height:42px}`;
+    document.head.appendChild(style);
+    const excluded = "rt,.inline-gloss,.comment-block,.footnote-ref,.inline-media,.annotation-register,[contenteditable=false]";
+    const escapeMarkup = value => String(value).replace(/[&<>"']/g, character => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[character]);
+    let matches = [], activeIndex = -1, activeTarget = null, timer = 0;
+    const clearTarget = () => {
+      if (activeTarget) activeTarget.classList?.remove("dictionary-text-target");
+      activeTarget = null;
+      clearTimeout(timer);
+    };
+    const textMatches = term => {
+      const found = [], walker = document.createTreeWalker(editor, NodeFilter.SHOW_TEXT);
+      let node;
+      while (node = walker.nextNode()) {
+        if (!node.nodeValue.includes(term) || node.parentElement?.closest(excluded)) continue;
+        let offset = 0;
+        while ((offset = node.nodeValue.indexOf(term, offset)) !== -1) {
+          found.push({ node, offset, term });
+          offset += Math.max(term.length, 1);
+        }
+      }
+      return found;
+    };
+    const excerpt = match => {
+      const block = match.node.parentElement?.closest("p,li,td,th,h1,h2,h3") || match.node.parentElement;
+      const text = (block?.innerText || block?.textContent || match.node.nodeValue).replace(/\s+/g, " ").trim();
+      const position = Math.max(0, text.indexOf(match.term));
+      const start = Math.max(0, position - 22), end = Math.min(text.length, position + match.term.length + 30);
+      return `${start ? "…" : ""}${text.slice(start, end)}${end < text.length ? "…" : ""}`;
+    };
+    const selectMatch = (index, panel) => {
+      if (!matches.length) return;
+      activeIndex = (index + matches.length) % matches.length;
+      const match = matches[activeIndex];
+      if (!match.node.isConnected) return;
+      clearTarget();
+      const range = document.createRange();
+      range.setStart(match.node, match.offset);
+      range.setEnd(match.node, match.offset + match.term.length);
+      const selection = getSelection();
+      selection.removeAllRanges();
+      selection.addRange(range);
+      activeTarget = match.node.parentElement;
+      activeTarget?.classList.add("dictionary-text-target");
+      activeTarget?.scrollIntoView({ behavior: "smooth", block: "center" });
+      timer = setTimeout(clearTarget, 2400);
+      panel.querySelectorAll(".dictionary-occurrence").forEach((button, buttonIndex) => button.classList.toggle("active", buttonIndex === activeIndex));
+      panel.querySelector("[data-occurrence-count]").textContent = `${activeIndex + 1}/${matches.length}`;
+    };
+    for (const list of lists) {
+      if (list.parentElement.querySelector(":scope > .dictionary-occurrences")) continue;
+      const panel = document.createElement("section");
+      panel.className = "dictionary-occurrences";
+      panel.hidden = true;
+      panel.innerHTML = `<div class="dictionary-occurrences-header"><strong>${labels.heading}</strong><span data-occurrence-count></span><button type="button" data-occurrence-previous>${labels.previous}</button><button type="button" data-occurrence-next>${labels.next}</button></div><div class="dictionary-occurrence-list"></div>`;
+      list.after(panel);
+      list.addEventListener("click", event => {
+        if (event.target.closest(".edit-term")) return;
+        const row = event.target.closest(".term");
+        if (!row || !list.contains(row)) return;
+        event.preventDefault();
+        event.stopImmediatePropagation();
+        const term = row.querySelector("strong")?.textContent?.trim();
+        if (!term) return;
+        matches = textMatches(term);
+        activeIndex = -1;
+        panel.hidden = false;
+        const results = panel.querySelector(".dictionary-occurrence-list");
+        if (!matches.length) {
+          results.innerHTML = `<div>${labels.none}</div>`;
+          panel.querySelector("[data-occurrence-count]").textContent = "0";
+          return;
+        }
+        results.replaceChildren(...matches.map((match, index) => {
+          const button = document.createElement("button");
+          button.type = "button";
+          button.className = "dictionary-occurrence";
+          button.dataset.occurrenceIndex = String(index);
+          const source = excerpt(match), hit = source.indexOf(term);
+          const rendered = hit < 0 ? escapeMarkup(source) : `${escapeMarkup(source.slice(0, hit))}<mark class="dictionary-occurrence-hit">${escapeMarkup(term)}</mark>${escapeMarkup(source.slice(hit + term.length))}`;
+          button.innerHTML = `<span class="dictionary-occurrence-index">${index + 1}</span><span>${rendered}</span>`;
+          button.setAttribute("aria-label", `${term}: ${labels.result} ${index + 1}/${matches.length}`);
+          return button;
+        }));
+        selectMatch(0, panel);
+      }, true);
+      panel.addEventListener("click", event => {
+        const result = event.target.closest("[data-occurrence-index]");
+        if (result) selectMatch(Number(result.dataset.occurrenceIndex), panel);
+        else if (event.target.closest("[data-occurrence-previous]")) selectMatch(activeIndex - 1, panel);
+        else if (event.target.closest("[data-occurrence-next]")) selectMatch(activeIndex + 1, panel);
+      });
+    }
   }
 
   function installColoredUnderlines() {
@@ -800,7 +905,7 @@
     new MutationObserver(() => queueMicrotask(translate)).observe(document.body, { childList: true, subtree: true, characterData: true });
   }
 
-  function installWorkspaceControls() { installToolbarLayering(); installColoredUnderlines(); installProjectDictionaryLinks(); installRussianInterfaceTranslation(); installContextNavigation(); installHomeMark(); installSwitch(); installReadingEnvironment(); installPaneBalancer(); installFileMenu(); installInsertMenu(); installUserNotesAccess(); installExpandingReviewFields(); installAnnotationSync(); installAllNotesView(); installImmersiveMode(); installGoogleVoicePriority(); window.ReadingWorkspace ||= {}; window.ReadingWorkspace.interfaceLanguage = interfaceLanguage; }
+  function installWorkspaceControls() { installToolbarLayering(); installColoredUnderlines(); installDictionaryOccurrences(); installProjectDictionaryLinks(); installRussianInterfaceTranslation(); installContextNavigation(); installHomeMark(); installSwitch(); installReadingEnvironment(); installPaneBalancer(); installFileMenu(); installInsertMenu(); installUserNotesAccess(); installExpandingReviewFields(); installAnnotationSync(); installAllNotesView(); installImmersiveMode(); installGoogleVoicePriority(); window.ReadingWorkspace ||= {}; window.ReadingWorkspace.interfaceLanguage = interfaceLanguage; }
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", installWorkspaceControls);
   else installWorkspaceControls();
 })();
