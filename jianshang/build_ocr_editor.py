@@ -970,6 +970,7 @@ def render_editor(mapping: ChapterMap, chunks: list[str]) -> str:
     let voices = [];
     let allowSave = true;
     let savedFormatRange = null;
+    let sourceNavigationLockUntil = 0;
     function setStatus(text, tone = '') {{ statusEl.textContent = text; statusEl.style.color = tone === 'ok' ? 'var(--ok)' : tone === 'warn' ? 'var(--warn)' : 'var(--muted)'; }}
     function textareas() {{ return Array.from(document.querySelectorAll('.rich-editor[data-page]')); }}
     function syncSourceViewer(area) {{
@@ -984,6 +985,7 @@ def render_editor(mapping: ChapterMap, chunks: list[str]) -> str:
       const area = target?.matches('.rich-editor') ? target : target?.querySelector('.rich-editor');
       if (!area) return false;
       activeArea = area;
+      sourceNavigationLockUntil = Date.now() + 1400;
       syncSourceViewer(area);
       if (matchMedia('(max-width:980px)').matches) {{
         const page = area.closest('.page');
@@ -1270,6 +1272,7 @@ def render_editor(mapping: ChapterMap, chunks: list[str]) -> str:
     syncSourceViewer(activeArea);
     textareas().forEach(area => area.addEventListener('focusin', () => syncSourceViewer(area)));
     const sourcePageObserver = new IntersectionObserver(entries => {{
+      if (Date.now() < sourceNavigationLockUntil) return;
       const visible = entries.filter(entry => entry.isIntersecting).sort((a,b) => b.intersectionRatio - a.intersectionRatio)[0];
       if (visible) syncSourceViewer(visible.target);
     }}, {{ rootMargin:'-15% 0px -65% 0px', threshold:[0,.25,.5] }});
