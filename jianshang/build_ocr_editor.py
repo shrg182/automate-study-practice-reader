@@ -455,7 +455,7 @@ class JianshangEditorToc extends HTMLElement {{
     section.id = "toc";
     section.innerHTML = `<div class="toc-head"><h2>目录</h2><span>手工校订工作台</span></div>
       <div class="toc-body"><div><h3>章节</h3><div class="toc-legend"><span class="legend-current">当前章节</span><span class="legend-available">可打开</span><span class="legend-unavailable">尚未生成</span></div><div class="toc-links"></div></div>
-      <div><h3>工作说明</h3><p>左侧文字来自已处理的 clean 文本，并按段落近似切分到 PDF 页。右侧为源 PDF 页面图像。手工修改后请使用“生成文本”或“下载 TXT”，作为 manual edition 输出。</p><p>浏览器自动保存只保存在本机 localStorage；长期保存请下载 TXT 和日志。</p></div></div>`;
+      <div class="toc-work-notes"><h3>工作说明</h3><p>左侧文字来自已处理的 clean 文本，并按段落近似切分到 PDF 页。右侧为源 PDF 页面图像。手工修改后请使用“生成文本”或“下载 TXT”，作为 manual edition 输出。</p><p>浏览器自动保存只保存在本机 localStorage；长期保存请下载 TXT 和日志。</p></div></div>`;
     const links = section.querySelector(".toc-links");
     for (const item of JIANSHANG_CHAPTERS) {{
       const link = document.createElement("a");
@@ -768,7 +768,7 @@ def render_editor(mapping: ChapterMap, chunks: list[str]) -> str:
     main {{ width:min(1440px,calc(100% - 28px)); margin:18px auto 48px; }}
     .layout {{ display:grid; grid-template-columns:minmax(0,7fr) minmax(320px,3fr); gap:18px; align-items:start; }}
     .editing-pane, .layout > aside {{ min-width:0; }}
-    aside {{ position:sticky; top:calc(var(--editor-header-height, 75px) + 12px); display:grid; gap:14px; max-height:calc(100vh - var(--editor-header-height, 75px) - 24px); overflow:auto; }}
+    aside {{ position:sticky; top:calc(var(--editor-header-height, 75px) + 12px); display:grid; gap:14px; max-height:calc(100vh - var(--editor-header-height, 75px) - 24px); overflow:auto; container-type:inline-size; }}
     body.source-layout-text-primary .layout {{ grid-template-columns:minmax(0,7fr) minmax(320px,3fr) !important; }}
     body.source-layout-balanced .layout {{ grid-template-columns:minmax(0,1fr) minmax(320px,1fr) !important; }}
     body.source-layout-pdf-primary .layout {{ grid-template-columns:minmax(0,2fr) minmax(320px,3fr) !important; }}
@@ -791,9 +791,12 @@ def render_editor(mapping: ChapterMap, chunks: list[str]) -> str:
     .toc-page, .reference-panel, .page {{ scroll-margin-top:86px; }}
     .toc-head {{ display:flex; justify-content:space-between; gap:14px; align-items:baseline; padding:14px 16px; border-bottom:1px solid var(--line); background:#fff; }}
     .toc-head h2 {{ margin:0; font-size:1.15rem; }}
-    .toc-body {{ display:grid; grid-template-columns:minmax(0,1fr) minmax(280px,.72fr); gap:18px; padding:14px 16px 16px; }}
+    .toc-body {{ display:grid; grid-template-columns:minmax(0,1fr); gap:18px; padding:14px 16px 16px; }}
     .toc-body h3 {{ margin:0 0 8px; font-size:.95rem; }}
     .toc-links {{ display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:6px; }}
+    .toc-work-notes {{ padding-top:14px; border-top:1px solid var(--line); }}
+    .toc-work-notes p:last-child {{ margin-bottom:0; }}
+    @container (max-width:560px) {{ .toc-links {{ grid-template-columns:minmax(0,1fr); }} }}
     .toc-link {{ display:flex; justify-content:space-between; gap:10px; border:1px solid var(--line); border-radius:6px; background:#fff; color:var(--ink); text-decoration:none; padding:7px 9px; min-height:34px; align-items:center; }}
     .toc-link.available {{ border-left:4px solid var(--ok); background:#f4fbf6; }}
     .toc-link.current {{ border:2px solid var(--accent); background:#fff0ec; color:var(--accent); font-weight:700; }}

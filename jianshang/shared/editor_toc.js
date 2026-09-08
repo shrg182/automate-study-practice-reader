@@ -221,7 +221,7 @@ class JianshangEditorToc extends HTMLElement {
     section.id = "toc";
     section.innerHTML = `<div class="toc-head"><h2>目录</h2><span>手工校订工作台</span></div>
       <div class="toc-body"><div><h3>章节</h3><div class="toc-legend"><span class="legend-current">当前章节</span><span class="legend-available">可打开</span><span class="legend-unavailable">尚未生成</span></div><div class="toc-links"></div></div>
-      <div><h3>工作说明</h3><p>左侧文字来自已处理的 clean 文本，并按段落近似切分到 PDF 页。右侧为源 PDF 页面图像。手工修改后请使用“生成文本”或“下载 TXT”，作为 manual edition 输出。</p><p>浏览器自动保存只保存在本机 localStorage；长期保存请下载 TXT 和日志。</p></div></div>`;
+      <div class="toc-work-notes"><h3>工作说明</h3><p>左侧文字来自已处理的 clean 文本，并按段落近似切分到 PDF 页。右侧为源 PDF 页面图像。手工修改后请使用“生成文本”或“下载 TXT”，作为 manual edition 输出。</p><p>浏览器自动保存只保存在本机 localStorage；长期保存请下载 TXT 和日志。</p></div></div>`;
     const links = section.querySelector(".toc-links");
     for (const item of JIANSHANG_CHAPTERS) {
       const link = document.createElement("a");
