@@ -16,6 +16,27 @@
   const initial = requested === "reading" || requested === "sheet"
     ? requested
     : (saved === "reading" || saved === "sheet" ? saved : fallback);
+  const readingThemeKey = "reading-workspace-color-theme-v1";
+  const initialReadingTheme = localStorage.getItem(readingThemeKey) === "night" ? "night" : "day";
+
+  document.documentElement.dataset.readingTheme = initialReadingTheme;
+  const readingThemeStyle = document.createElement("style");
+  readingThemeStyle.id = "reading-workspace-color-theme";
+  readingThemeStyle.textContent = `
+    html[data-reading-theme="night"]{color-scheme:dark;--bg:#090b0e!important;--paper:#11151a!important;--panel:#14191f!important;--ink:#e8eaed!important;--muted:#aeb4bc!important;--line:#343b44!important;--soft:#20262d!important;--accent:#ef9a9a!important;--accent-ink:#17191c!important;--warn:#f6c26b!important;--ok:#81c995!important;--workspace-surface:#11151a!important;--workspace-canvas:#090b0e!important;--workspace-border:#343b44!important;--workspace-text:#e8eaed!important;--workspace-muted:#aeb4bc!important;--workspace-green-soft:#173b2a!important;--workspace-blue-soft:#172b46!important;--reading-content-background:#11151a!important}
+    html[data-reading-theme="night"] body,html[data-reading-theme="night"] .app,html[data-reading-theme="night"] main,html[data-reading-theme="night"] .shell{background:#090b0e!important;color:#e8eaed!important}
+    html[data-reading-theme="night"] header,html[data-reading-theme="night"] .topbar,html[data-reading-theme="night"] .toolbar,html[data-reading-theme="night"] .actions,html[data-reading-theme="night"] .controls,html[data-reading-theme="night"] .masthead,html[data-reading-theme="night"] footer{background:#11151a!important;color:#e8eaed!important;border-color:#343b44!important}
+    html[data-reading-theme="night"] .paper,html[data-reading-theme="night"] .editor,html[data-reading-theme="night"] .rich-editor,html[data-reading-theme="night"] .editor-panel,html[data-reading-theme="night"] .page,html[data-reading-theme="night"] .page-card,html[data-reading-theme="night"] .panel,html[data-reading-theme="night"] .reference-panel,html[data-reading-theme="night"] .source-viewer,html[data-reading-theme="night"] .source-viewer-head,html[data-reading-theme="night"] .toc-page,html[data-reading-theme="night"] .toc-head,html[data-reading-theme="night"] .toc-link,html[data-reading-theme="night"] .collection,html[data-reading-theme="night"] .entry,html[data-reading-theme="night"] .book,html[data-reading-theme="night"] .book-header,html[data-reading-theme="night"] .category-header,html[data-reading-theme="night"] .note-controls,html[data-reading-theme="night"] .log-list{background:#11151a!important;color:#e8eaed!important;border-color:#343b44!important}
+    html[data-reading-theme="night"] input,html[data-reading-theme="night"] textarea,html[data-reading-theme="night"] select,html[data-reading-theme="night"] button,html[data-reading-theme="night"] .action-link,html[data-reading-theme="night"] .file-label,html[data-reading-theme="night"] .category-chip,html[data-reading-theme="night"] .collection-tool{background:#1a2027!important;color:#e8eaed!important;border-color:#434b55!important}
+    html[data-reading-theme="night"] table,html[data-reading-theme="night"] th,html[data-reading-theme="night"] td{background:#11151a!important;color:#e8eaed!important;border-color:#343b44!important}
+    html[data-reading-theme="night"] a{color:#8ab4f8}html[data-reading-theme="night"] .source,html[data-reading-theme="night"] .status,html[data-reading-theme="night"] .subtitle,html[data-reading-theme="night"] .log-meta,html[data-reading-theme="night"] .entry-number,html[data-reading-theme="night"] time{color:#aeb4bc!important}
+    html[data-reading-theme="night"] .rich-editor.annotated-view{background:#1d1a10!important;color:#f1e1aa!important}html[data-reading-theme="night"] .dictionary-occurrence-hit{background:#705b00!important;color:#fff4bd!important}
+    .reading-theme-toggle{min-height:32px;padding:5px 11px;border:1px solid #c9c3b7;border-radius:18px;background:#fff;color:#202124;font:12px/1.2 Arial,"PingFang SC",sans-serif;cursor:pointer;white-space:nowrap}
+    html[data-reading-theme="night"] .reading-theme-toggle{background:#242a31!important;color:#f1f3f4!important;border-color:#59636f!important}
+    @media(max-width:700px){.reading-theme-toggle{min-height:38px}}
+    @media print{.reading-theme-toggle{display:none!important}}
+  `;
+  document.head.appendChild(readingThemeStyle);
 
   function applySkin(skin, persist) {
     document.documentElement.dataset.workspaceSkin = skin;
@@ -30,6 +51,31 @@
   }
 
   applySkin(initial, false);
+
+  function installReadingThemeToggle() {
+    if (document.querySelector(".reading-theme-toggle")) return;
+    const host = document.querySelector(".masthead-inner") || document.querySelector(".topbar") || document.querySelector(".toolbar");
+    if (!host) return;
+    const button = document.createElement("button");
+    button.type = "button";
+    button.className = "reading-theme-toggle";
+    const apply = (theme, persist = true) => {
+      const night = theme === "night";
+      document.documentElement.dataset.readingTheme = night ? "night" : "day";
+      button.textContent = night
+        ? (englishInterface ? "☀ Day" : russianInterface ? "☀ День" : "☀ 日间")
+        : (englishInterface ? "☾ Night" : russianInterface ? "☾ Ночь" : "☾ 夜间");
+      button.title = night
+        ? (englishInterface ? "Switch to light appearance" : russianInterface ? "Включить светлую тему" : "切换为日间模式")
+        : (englishInterface ? "Switch to dark appearance" : russianInterface ? "Включить тёмную тему" : "切换为夜间模式");
+      button.setAttribute("aria-pressed", String(night));
+      document.querySelector('meta[name="theme-color"]')?.setAttribute("content", night ? "#090b0e" : "#188038");
+      if (persist) localStorage.setItem(readingThemeKey, night ? "night" : "day");
+    };
+    button.addEventListener("click", () => apply(document.documentElement.dataset.readingTheme === "night" ? "day" : "night"));
+    host.appendChild(button);
+    apply(initialReadingTheme, false);
+  }
 
   function installToolbarLayering() {
     if (!document.querySelector(".toolbar") || !document.querySelector(".workspace") || document.getElementById("workspace-toolbar-layering")) return;
@@ -905,7 +951,7 @@
     new MutationObserver(() => queueMicrotask(translate)).observe(document.body, { childList: true, subtree: true, characterData: true });
   }
 
-  function installWorkspaceControls() { installToolbarLayering(); installColoredUnderlines(); installDictionaryOccurrences(); installProjectDictionaryLinks(); installRussianInterfaceTranslation(); installContextNavigation(); installHomeMark(); installSwitch(); installReadingEnvironment(); installPaneBalancer(); installFileMenu(); installInsertMenu(); installUserNotesAccess(); installExpandingReviewFields(); installAnnotationSync(); installAllNotesView(); installImmersiveMode(); installGoogleVoicePriority(); window.ReadingWorkspace ||= {}; window.ReadingWorkspace.interfaceLanguage = interfaceLanguage; }
+  function installWorkspaceControls() { installToolbarLayering(); installColoredUnderlines(); installDictionaryOccurrences(); installProjectDictionaryLinks(); installRussianInterfaceTranslation(); installContextNavigation(); installHomeMark(); installSwitch(); installReadingThemeToggle(); installReadingEnvironment(); installPaneBalancer(); installFileMenu(); installInsertMenu(); installUserNotesAccess(); installExpandingReviewFields(); installAnnotationSync(); installAllNotesView(); installImmersiveMode(); installGoogleVoicePriority(); window.ReadingWorkspace ||= {}; window.ReadingWorkspace.interfaceLanguage = interfaceLanguage; }
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", installWorkspaceControls);
   else installWorkspaceControls();
 })();
