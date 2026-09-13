@@ -35,8 +35,16 @@
     .format-divider { height:1px; margin:5px 4px; background:#ddd7cb; }
     .status { color:var(--muted); font-size:.86rem; min-width:132px; text-align:right; }
     main { width:min(1440px,calc(100% - 28px)); margin:18px auto 48px; }
-    .layout { display:grid; grid-template-columns:280px minmax(0,1fr); gap:18px; align-items:start; }
-    aside { position:sticky; top:calc(var(--editor-header-height, 75px) + 12px); display:grid; gap:14px; max-height:calc(100vh - var(--editor-header-height, 75px) - 24px); overflow:auto; }
+    .layout { display:grid; grid-template-columns:minmax(0,7fr) minmax(320px,3fr); gap:18px; align-items:start; }
+    .editing-pane, .layout > aside { min-width:0; }
+    aside { position:sticky; top:calc(var(--editor-header-height, 75px) + 12px); display:grid; gap:14px; max-height:calc(100vh - var(--editor-header-height, 75px) - 24px); overflow:auto; container-type:inline-size; }
+    body.source-layout-text-primary .layout { grid-template-columns:minmax(0,7fr) minmax(320px,3fr) !important; }
+    body.source-layout-balanced .layout { grid-template-columns:minmax(0,1fr) minmax(320px,1fr) !important; }
+    body.source-layout-pdf-primary .layout { grid-template-columns:minmax(0,2fr) minmax(320px,3fr) !important; }
+    body.source-layout-text .layout, body.source-layout-pdf .layout { grid-template-columns:minmax(0,1fr) !important; }
+    body.source-layout-text .editing-pane { order:1; } body.source-layout-text .layout > aside { order:2; }
+    body.source-layout-pdf .layout > aside { order:1; } body.source-layout-pdf .editing-pane { order:2; }
+    body.source-layout-text .layout > aside, body.source-layout-pdf .layout > aside { position:static; max-height:none; }
     .panel, .page, .toc-page, .reference-panel, .notes-dock, .export-dock { background:var(--paper); border:1px solid var(--line); box-shadow:var(--shadow); }
     .panel h2, .reference-panel h2, .notes-dock h2, .export-dock h2 { margin:0; padding:10px 12px; font-size:.95rem; border-bottom:1px solid var(--line); background:var(--soft); }
     .page-number-legend { padding:8px 11px; font-size:.82rem; color:var(--muted); }
@@ -52,9 +60,12 @@
     .toc-page, .reference-panel, .page { scroll-margin-top:86px; }
     .toc-head { display:flex; justify-content:space-between; gap:14px; align-items:baseline; padding:14px 16px; border-bottom:1px solid var(--line); background:#fff; }
     .toc-head h2 { margin:0; font-size:1.15rem; }
-    .toc-body { display:grid; grid-template-columns:minmax(0,1fr) minmax(280px,.72fr); gap:18px; padding:14px 16px 16px; }
+    .toc-body { display:grid; grid-template-columns:minmax(0,1fr); gap:18px; padding:14px 16px 16px; }
     .toc-body h3 { margin:0 0 8px; font-size:.95rem; }
     .toc-links { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:6px; }
+    .toc-work-notes { padding-top:14px; border-top:1px solid var(--line); }
+    .toc-work-notes p:last-child { margin-bottom:0; }
+    @container (max-width:560px) { .toc-links { grid-template-columns:minmax(0,1fr); } }
     .toc-link { display:flex; justify-content:space-between; gap:10px; border:1px solid var(--line); border-radius:6px; background:#fff; color:var(--ink); text-decoration:none; padding:7px 9px; min-height:34px; align-items:center; }
     .toc-link.available { border-left:4px solid var(--ok); background:#f4fbf6; }
     .toc-link.current { border:2px solid var(--accent); background:#fff0ec; color:var(--accent); font-weight:700; }
@@ -64,7 +75,7 @@
     .legend-current::before { background:var(--accent); } .legend-available::before { background:var(--ok); } .legend-unavailable::before { background:#aaa; }
     .toc-link span:first-child { overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
     .toc-link span:last-child { color:var(--muted); font-size:.86rem; font-variant-numeric:tabular-nums; white-space:nowrap; }
-    .reference-grid { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:14px; margin:18px 0; align-items:start; }
+    .reference-grid { display:grid; grid-template-columns:1fr; gap:14px; align-items:start; }
     #user-notes { grid-column:1 / -1; }
     #user-notes .table-scroll { max-height:440px; }
     #user-notes table { table-layout:fixed; }
@@ -87,14 +98,13 @@
     .page-title { font-weight:700; }
     .page-title span { color:var(--muted); font-weight:500; margin-left:8px; }
     .page-tools { display:flex; gap:8px; flex-wrap:wrap; }
-    .source-layout-control { margin:12px auto; max-width:760px; padding:10px 14px; border:1px solid var(--line); border-radius:10px; background:#fff; display:flex; align-items:center; gap:10px; flex-wrap:wrap; }
-    .source-layout-control strong { margin-right:auto; }
-    .source-layout-control input { width:min(280px,48vw); }
-    .source-layout-control output { min-width:145px; color:var(--muted); font-size:.86rem; }
-    .workbench { display:grid; grid-template-columns:minmax(340px,var(--text-share,70fr)) minmax(300px,var(--pdf-share,30fr)); gap:0; align-items:stretch; }
-    body.text-only .workbench, body.pdf-only .workbench { grid-template-columns:1fr; }
-    body.text-only .scan, body.pdf-only .editor-wrap { display:none; }
-    .editor-wrap { padding:12px; border-right:1px solid var(--line); display:flex; min-height:560px; }
+    .source-layout-control { position:relative; display:inline-flex; }
+    .source-layout-popover { position:absolute; z-index:60; top:calc(100% + 6px); right:0; display:none; min-width:150px; padding:6px; border:1px solid var(--line); border-radius:8px; background:#fff; box-shadow:0 10px 30px #2927202e; }
+    .source-layout-control.open .source-layout-popover { display:grid; gap:4px; }
+    .source-layout-popover button { width:100%; text-align:left; white-space:nowrap; }
+    .source-layout-popover button.active { background:#e6f4ea; color:#137333; font-weight:700; }
+    .workbench { display:block; }
+    .editor-wrap { padding:12px; display:flex; min-height:560px; }
     textarea { width:100%; min-height:0; border:1px solid var(--line); background:#fff; color:var(--ink); padding:14px; border-radius:6px; line-height:1.85; font-size:1.02rem; letter-spacing:0; overflow:auto; }
     .rich-editor { width:100%; min-height:536px; border:1px solid var(--line); background:#fff; color:var(--ink); padding:14px; border-radius:6px; line-height:1.85; font-size:1.02rem; letter-spacing:0; overflow:auto; white-space:pre-wrap; overflow-wrap:anywhere; }
     .rich-editor.annotated-view { background:#fff9e8; color:#5b481f; }
@@ -104,8 +114,13 @@
     .speech-rate { display:flex; align-items:center; gap:4px; color:var(--muted); font-size:.82rem; }
     #speechRate { width:82px; }
     .hidden { display:none !important; }
-    .scan { padding:12px; background:#fbfaf6; display:flex; }
-    .scan img { width:100%; height:auto; display:block; border:1px solid var(--line); background:#fff; align-self:flex-start; }
+    .source-viewer { background:#fbfaf6; }
+    .source-viewer-head { display:flex; justify-content:space-between; gap:8px; padding:9px 11px; border-bottom:1px solid var(--line); align-items:center; }
+    .source-viewer-head strong { font-size:.9rem; }
+    .source-viewer-meta { color:var(--muted); font-size:.78rem; }
+    .source-viewer img { width:100%; height:auto; display:block; background:#fff; }
+    .source-viewer-actions { display:flex; gap:7px; padding:9px; border-top:1px solid var(--line); }
+    .source-viewer-actions a { flex:1; justify-content:center; text-align:center; }
     .notes-dock { margin-top:18px; scroll-margin-top:86px; }
     .note-grid { display:grid; grid-template-columns:minmax(240px,.75fr) minmax(320px,1fr); gap:12px; padding:12px; }
     .note-controls { display:grid; gap:10px; align-content:start; }
@@ -124,7 +139,7 @@
     .export-dock { margin-top:18px; }
     #exportText { min-height:240px; border:0; border-radius:0; }
     .quick-note-jump { position:fixed; right:18px; bottom:18px; z-index:25; background:var(--accent); color:var(--accent-ink); border-color:var(--accent); box-shadow:0 8px 24px rgba(30,24,16,.18); }
-    @media (max-width:980px) { .topbar { grid-template-columns:1fr; } .actions { justify-content:flex-start; } .status { text-align:left; } .layout { grid-template-columns:1fr; } aside { position:static; max-height:none; } .toc-body, .note-grid { grid-template-columns:1fr; } .toc-links { grid-template-columns:1fr; } .reference-grid { grid-template-columns:1fr; } .workbench { grid-template-columns:1fr; } .editor-wrap { border-right:0; border-bottom:1px solid var(--line); } body.pdf-priority .scan { grid-row:1; } body.pdf-priority .editor-wrap { grid-row:2; } .rich-editor { min-height:520px; } .quick-note-jump { right:12px; bottom:12px; } }
+    @media (max-width:980px) { .topbar { grid-template-columns:1fr; } .actions { justify-content:flex-start; } .status { text-align:left; } .layout, body.source-layout-text-primary .layout, body.source-layout-balanced .layout, body.source-layout-pdf-primary .layout { grid-template-columns:minmax(0,1fr) !important; } aside { position:static; max-height:none; } body.source-layout-pdf-primary .layout > aside, body.source-layout-pdf .layout > aside { order:1; } body.source-layout-pdf-primary .editing-pane, body.source-layout-pdf .editing-pane { order:2; } body.source-layout-text .editing-pane, body.source-layout-text-primary .editing-pane, body.source-layout-balanced .editing-pane { order:1; } body.source-layout-text .layout > aside, body.source-layout-text-primary .layout > aside, body.source-layout-balanced .layout > aside { order:2; } .source-layout-popover { position:fixed; top:var(--editor-header-height,75px); right:12px; } .toc-body, .note-grid { grid-template-columns:1fr; } .toc-links { grid-template-columns:1fr; } .reference-grid { grid-template-columns:1fr; } .rich-editor { min-height:520px; } .quick-note-jump { right:12px; bottom:12px; } }
   </style>
 </head>
 <body>
@@ -134,24 +149,468 @@
     reference-href="../reference_tables.html">
     <noscript>此编辑器需要启用 JavaScript。</noscript>
   </jianshang-editor-header>
-  <section class="source-layout-control" aria-label="正文与 PDF 布局">
-    <strong>正文 / PDF</strong>
-    <button type="button" data-pdf-share="0">仅正文</button>
-    <button type="button" data-pdf-share="30">正文优先</button>
-    <button type="button" data-pdf-share="50">均衡</button>
-    <button type="button" data-pdf-share="100">仅 PDF</button>
-    <input id="sourceLayoutSlider" type="range" min="0" max="100" step="5" aria-label="PDF 所占比例">
-    <output id="sourceLayoutOutput"></output>
-  </section>
   <main>
     <div class="layout">
+      <section class="editing-pane">
+        <div class="pages">
+        <section class="page" id="page-573">
+          <div class="page-head">
+            <div class="page-title">原书阅读器页 573<span>原书物理 PDF 页 571</span><span>印刷页 559</span></div>
+            <div class="page-tools">
+              <button type="button" data-copy-page="573">复制本页</button>
+              <button type="button" data-export-page="573">导出本页</button>
+            </div>
+          </div>
+          <div class="workbench">
+            <div class="editor-wrap">
+              <div class="rich-editor" data-page="573" data-source-page="571" data-printed-page="559" data-source-image="pdf_pages/page-571.jpg" contenteditable="true" role="textbox" aria-multiline="true" spellcheck="false">尾声：周公到孔子
+
+〔按语：epilogue〕
+
+自五千年前的仰韶文化晚期以来，黄河中下游静态的部落生活渐被战乱、征服和群体杀戮打破，华夏旧（早期）文明与国家由此产生。
+
+从孕育到成熟，华夏旧文明跨越两千年。和同期的其他古代人类文明一样，它们都属于神权与王权合一、宗教主导的社会。如果一直延续下去，历史将充斥族群壁垒、杀戮与献祭。
+
+但周灭商后，以杀戮和人祭为特色的华夏旧文明戛然而止，取代它的，是周公营造的新华夏文明。周公消灭了旧华夏文明及其相关记忆，打破了族群血缘壁垒，让尘世生活远离宗教和鬼神世界，不再把人类族群的差异看作神创的贵贱之别。这是华夏文明最彻底的一次自我否定与重生。
+
+在三千年前的古人类文明中，只有华夏独自走出了神权的掌控，成为一个“异类”。这是一种过于早熟的世俗文明，一直持续到今日。
+
+儒家起源与人祭文明
+
+使华夏文明突然转向的根源，是周公一代人无法言说的恐惧，就像武王周发的惊梦。他们可能都在殷都生活过，不仅目睹了商人的血腥献祭，甚至兄长伯邑考的惨死。恐惧使武王更加依赖人祭宗教，而周公则极端憎恨人祭宗教，势必将其彻底灭绝。这是兄弟二人截然不同的解脱路径。
+
+后世人对周公的认识，有事功和制度文化两方面：事功，主要是周公辅佐成王、平定三监之乱，为西周王朝奠定开局；制度文化，主要是周公“制礼作乐”，确立西周的政体，包括诸侯列国分封格局和贵族等级制度。在考古发现商朝的遗址与人祭文化之前，人们对周公的理解只能达到这种程度。
+
+但事实上，周公最重要的工作是消灭商人的人祭宗教，以及与之配套的弱肉强食的宗教价值体系。他不仅阻止了周人模仿和继承这种宗教文化，也在殷商遗民和东夷族群中根除了它。尤其关键的是，周公还抹除了与商朝人祭有关的记忆，甚至也隐藏了自己禁绝人祭行为的种种举措。这是为防止人祭宗教的死灰复燃和卷土重来，也是为掩盖周人曾为商朝捕俘人牲的那段不光彩的历史。</div>
+            </div>
+          </div>
+        </section>
+        <section class="page" id="page-574">
+          <div class="page-head">
+            <div class="page-title">原书阅读器页 574<span>原书物理 PDF 页 572</span><span>印刷页 560</span></div>
+            <div class="page-tools">
+              <button type="button" data-copy-page="574">复制本页</button>
+              <button type="button" data-export-page="574">导出本页</button>
+            </div>
+          </div>
+          <div class="workbench">
+            <div class="editor-wrap">
+              <div class="rich-editor" data-page="574" data-source-page="572" data-printed-page="560" data-source-image="pdf_pages/page-572.jpg" contenteditable="true" role="textbox" aria-multiline="true" spellcheck="false">为了填补人祭宗教退场造成的真空，周公发展出了一套新的历史叙事、道德体系和宗教理念。这主要体现在《尚书》的几篇诰命中：
+
+一，淡化商人对“帝”的崇拜。在商朝末期，“帝”已经和商王身份重叠，商王具有“帝”的神性。但周灭商后，王已经不能身兼“帝”之名号，对周人来说，帝在高高的天庭之上，不会化身为世间凡人。
+
+虽然我们还不能完全确定这个原则就是由周公确立的，但从《尚书》的几篇诰命可以发现：在对殷商遗民讲话（如《多士》）时，周公会频频引用上帝的命令来威吓和诱导商人，这是因为商人格外信奉上帝，只能因势利导；但在对周族自己人讲话时，如册命弟弟周封为卫侯的三篇诰命，周公却极少谈到上帝，尤其是对族人谈论现实和规划未来时，他从不动用上帝进行论证，更不涉及其他的神灵。这显然是一种有意识地“敬而远之”，让现实和神界保持距离。从这些迹象看，周朝人“疏远”上帝或其他诸神的传统的确是由周公奠定的。
+
+二，为减少神界对现实的干预，周公会尽量用“天”的概念来代替“帝' 因此，上帝发布的命令（“帝命”）变成了含糊的“天命”。
+
+天命的观念在后来的中国一直存在，但人们已经忘记了它的缘起。[[fn:1]] “天”无形无像，无言无行，不容易被赋予拟人化的个性。在《诗经》里，上帝曾频频给文王下达命令，如命令文王攻打崇国，武王灭商据说也是来自上帝的意旨，但后世周王已经无法接收神界的具体指示，所以改称为“天命”后，它变成了一种更为抽象的、近乎隐喻的道德规训。
+
+当然，周公时代还不可能有科学主义的无神论认知，神界即使被放置得比较远，也不会和王朝政治完全绝缘。比如，西周的王就被称为“天子”，也就是天的儿子，而这是连商代甲骨文也没有的词，但无论怎样，“天”还是过于含糊，周人及其以后的历代王朝从未给“天子”增加更具体的神性定义与功能。即便秦始皇使用“皇帝”尊号，其直观用意也是强调自己和六国之王的不同，虽有强调王者尊贵的这一层神性之意，但也使“帝”落入凡尘，并不比“天子”概念更神秘。</div>
+            </div>
+          </div>
+        </section>
+        <section class="page" id="page-575">
+          <div class="page-head">
+            <div class="page-title">原书阅读器页 575<span>原书物理 PDF 页 573</span><span>印刷页 561</span></div>
+            <div class="page-tools">
+              <button type="button" data-copy-page="575">复制本页</button>
+              <button type="button" data-export-page="575">导出本页</button>
+            </div>
+          </div>
+          <div class="workbench">
+            <div class="editor-wrap">
+              <div class="rich-editor" data-page="575" data-source-page="573" data-printed-page="561" data-source-image="pdf_pages/page-573.jpg" contenteditable="true" role="textbox" aria-multiline="true" spellcheck="false">三，周公宣称，王者应当爱民、德治和勤勉，这样才会受到“天命”青睐，长寿享国；如果王者残暴对待庶民和小人，天命就会转移到更有德的候选君王身上，从而改朝换代。[[fn:2]]
+
+本质上，周公的这样一种政治-道德体系是一种“性善论”的社会模型，回避了统治者对民众的征敛和暴力统治，认为王者的使命是护佑和教化万民，进而把道德伦理推进到一切人群中。[[fn:3]] 商朝人对此则是直言不讳，承认暴力的必要性。
+
+按照周公的理论，夏商周都是根据“天命”建立和更迭的，夏朝和商朝的多数君王，特别是开国君王，勤政爱民，得到天佑，只是因为末代的夏桀和商纣道德沦丧，这才天命转移，改朝换代。经过周公改造，商朝残酷的人祭行为被隐去，由此，周人之前的暴力时代也成了和周朝同质的德治王朝。
+
+和周公的理论相配套，周人还重新创造了一套上古圣王的历史，尧舜禹的温情禅让从此成为华夏世界的标准版历史叙事，更早版本的商人的“创世记”和上古史则被取代和湮没，未能流传下来。当然，也可能有某些与周公原则不太冲突的内容被纳入了周人的历史叙事，但这些已经不易分辨。
+
+孔子和儒家最推崇周公，而周公思想是儒家文化的源头。周公思想的产生和形成，主要源于对人祭宗教的恐惧，以及消灭人祭宗教的需要。这是后人从未堪破的秘密。
+
+周公构建世俗道德体系
+
+对于宗教之于商周两朝的作用，以及之于人的影响，孔子曾有过一番颇不寻常的总结：
+
+殷人尊神，率民以事神，先鬼而后礼，先罚而后赏，尊而不亲。其民之敝，荡而不静，胜而无耻。
+
+周人尊礼尚施，事鬼敬神而远之，近人而忠焉，其赏罚，用爵列，亲而不尊。其民之敝，利而巧，文而不惭，贼而蔽。[[fn:4]]</div>
+            </div>
+          </div>
+        </section>
+        <section class="page" id="page-576">
+          <div class="page-head">
+            <div class="page-title">原书阅读器页 576<span>原书物理 PDF 页 574</span><span>印刷页 562</span></div>
+            <div class="page-tools">
+              <button type="button" data-copy-page="576">复制本页</button>
+              <button type="button" data-export-page="576">导出本页</button>
+            </div>
+          </div>
+          <div class="workbench">
+            <div class="editor-wrap">
+              <div class="rich-editor" data-page="576" data-source-page="574" data-printed-page="562" data-source-image="pdf_pages/page-574.jpg" contenteditable="true" role="textbox" aria-multiline="true" spellcheck="false">大意是说，殷商统治者尊崇神，要求民众必须敬神，对鬼神的重视程度超过正常礼俗，对民众的刑罚多于奖赏，多威严而缺少亲和力。这造成了民众性情躁动不安、争强好胜、缺少羞耻感的缺点。
+
+周朝统治者则推崇世俗的礼仪，对民众比较宽容，虽然敬拜鬼神，但不让它们干预人间事务，更重视人间的世俗秩序和信用，人间的身份等级则依据爵位高低有所区别，有亲和力，但缺少威严。这造成了民众趋利且心计巧诈，善于掩饰欲望和自我包装，心中少有真诚，奸滑而有欺骗性的缺点。
+
+孔子描绘的殷周之区别，在古代文献里可谓独家，不仅如此，现代考古学展示的商代文化和孔子的总结也非常一致。
+
+因为周公掐断了神对人间的直接干预，这意味着华夏世界不会再有主导性宗教，以神的名义颁布的道德律条（如摩西十诫、佛家五戒）也无从产生，所以周人必须另行寻找一套用于世俗生活的道德原则。这种世俗道德的原理，是“推己及人”，也就是把自己放在他人的位置上考虑，从而决定自己对待他人的方式。
+
+在《诗经•小雅》中有一首《巧言》：“秩秩大猷，圣人莫之。他人有心，予忖度之。”翻译为白话就是，世间的伟大秩序啊，是古代圣人规划的；别人心里怎么考虑的，我设身处地想一下也就知道了。
+
+再到春秋晚期，孔子则用了一个字来定义人和人之间的道德标准，这便是“仁他的学生樊迟问他仁的含义，孔子曰：“爱人。”（《论语•颜渊》）而实现仁爱的方法，则是“恕”：“己所不欲，勿施于人。”（《论语•卫灵公》）人类的一切道德原则和行为规范，都可以从这八个字推导出来。所以，孔子从不教育学生们不许杀人，不许偷抢……因为这都已在“己所不欲，勿施于人”的原则里了。</div>
+            </div>
+          </div>
+        </section>
+        <section class="page" id="page-577">
+          <div class="page-head">
+            <div class="page-title">原书阅读器页 577<span>原书物理 PDF 页 575</span><span>印刷页 563</span></div>
+            <div class="page-tools">
+              <button type="button" data-copy-page="577">复制本页</button>
+              <button type="button" data-export-page="577">导出本页</button>
+            </div>
+          </div>
+          <div class="workbench">
+            <div class="editor-wrap">
+              <div class="rich-editor" data-page="577" data-source-page="575" data-printed-page="563" data-source-image="pdf_pages/page-575.jpg" contenteditable="true" role="textbox" aria-multiline="true" spellcheck="false">把他人等同于自己来对待，其实是人类固有的（但不是唯一的）一种思维和基本道德律，在宗教文化中，它可能会被教义遮蔽，却一直存在。
+
+如何掩盖《易经》的本意
+
+从周公到孔子，包含了西周和春秋，时间跨度五百年。我们很难断言，这五百年是否足以让华夏彻底忘却殷商时代的真相。
+
+从今天往前倒推五百年，是16世纪初叶，明代中国的嘉靖年间；1521年，西班牙殖民军攻占阿兹特克帝国，中美洲曾经繁荣的人祭文明开始萧条，并迅速被欧洲的天主教取代。天主教会曾经系统性地摧毁中美洲人关于人祭宗教的抄本、神庙与记忆，但当时的殖民亲历者还是记录下了阿兹特克人祭的诸多细节，一直流传至今。
+
+当然，周朝和最近五百年的世界有很多不可比之处。在没有经典文本叙事的前提下，零碎的、口耳相传的民间记忆很容易走样失真，以至消亡。上古能进行书写记录和传承的人很少，基本集中在“朝廷”生态圈内。周文王时代的一些真实片段之所以能够流传下来，是因为有文本记录，哪怕是在小范围人群中的，甚或长期无人问津的，也会有被再次发现的机会。
+
+如前文所述，周公销毁了商朝诸多甲骨文记录，也禁止殷周贵族书写真实的历史。但周公唯一不敢销毁的，是文王留下的《易经》。这不仅是出于对父亲的尊重，也因为《易经》是周人对翦商事业（起步）的记录，里面很可能包含着父亲获得的天机，销毁它也就是对父亲和诸神的不敬。
+
+周公的办法是对《易经》进行再解释，具体方法则是在文王创作的卦爻辞后面加上一段象传进行说明。象传不再鼓励任何投机和以下犯上的非分之想，全是君子应当如何朝乾夕惕，履行社会责任的励志说教，和文王卦爻辞的本意完全不同。[[fn:5]] 比如，乾卦的象传是“天行健，君子以自强不息”，坤卦的象传是“地势坤，君子以厚德载物”，远比文王卦爻辞清晰易懂，而且富于积极和励志的色调。</div>
+            </div>
+          </div>
+        </section>
+        <section class="page" id="page-578">
+          <div class="page-head">
+            <div class="page-title">原书阅读器页 578<span>原书物理 PDF 页 576</span><span>印刷页 564</span></div>
+            <div class="page-tools">
+              <button type="button" data-copy-page="578">复制本页</button>
+              <button type="button" data-export-page="578">导出本页</button>
+            </div>
+          </div>
+          <div class="workbench">
+            <div class="editor-wrap">
+              <div class="rich-editor" data-page="578" data-source-page="576" data-printed-page="564" data-source-image="pdf_pages/page-576.jpg" contenteditable="true" role="textbox" aria-multiline="true" spellcheck="false">春秋时，有位晋国贵族韩宣子访问鲁国，参观太史官收藏的典籍，发现其中就有《易象》（应当是《易经》和《象传》的合称）。韩宣子因此感叹：“周礼尽在鲁矣！吾乃今知周公之德，与周之所以王也！”这是周公写作《象传》的间接证据。[[fn:6]] 但另一方面，这一记载也说明，尽管《易象》保存在鲁国朝廷，但并不太普及，哪怕是晋国执政的高级贵族也只是首次见到。
+
+到春秋中后期，已经开始有使用《易经》占算的史料记录，而且还有了其他的卦爻辞版本。比如，有的爻辞里就出现了“千乘”一词，[[fn:7]] 意思是一千辆战车，但在文王的时代，即便商王朝也是很难集中起一千辆战车的，这只能是春秋时期创造的词。
+
+文王《易经》的内容本就很晦涩，所以春秋时期的贵族用它占算时，大都已经不知道或者说不再关注它的本意。其中比较明显的例子就是《易经》中的“贞”字，它的本意是甲骨卜辞中的“占”，但春秋时人却已经将其误解为“贞正”“贞操”之意了：“随，元亨，利贞……弃位而姣，不可谓贞。”（《左传•襄公九年》）
+
+那么，春秋时期的贵族会忘记《易经》中的文王事迹吗？这是个令人疑惑的问题，毕竟，这些贵族多是文王和周公的后裔。后世可以拿来比较的是，明初洪洞大槐树和南京珠矶巷移民的后人也可能已经不记得先祖当年的具体生活经历，保留至今的多是族谱文本中有记载的内容。
+
+如前所述，春秋时期有少许恢复人祭行为的个案，这说明五百年前的风俗记忆仍可以潜流传承。是不是《易经》也造成了某种暗黑记忆的保存？这背后藏着太多我们无法破解的谜团。
+
+孔子破解周公
+
+鲁国执政者季平子用莒人俘虏献祭的那一年，孔子二十岁，正在季平子的采邑里从事基层小吏工作，所以，这次人祭在曲阜造成的恐怖传闻，肯定会对孔子有所影响。</div>
+            </div>
+          </div>
+        </section>
+        <section class="page" id="page-579">
+          <div class="page-head">
+            <div class="page-title">原书阅读器页 579<span>原书物理 PDF 页 577</span><span>印刷页 565</span></div>
+            <div class="page-tools">
+              <button type="button" data-copy-page="579">复制本页</button>
+              <button type="button" data-export-page="579">导出本页</button>
+            </div>
+          </div>
+          <div class="workbench">
+            <div class="editor-wrap">
+              <div class="rich-editor" data-page="579" data-source-page="577" data-printed-page="565" data-source-image="pdf_pages/page-577.jpg" contenteditable="true" role="textbox" aria-multiline="true" spellcheck="false">孔子虽是鲁国人，但他的先祖出自宋国国君家族，所以他是商人后裔。而当孔子从事文献整理与学术工作后，他的身份自然会让他对商周之际的历史产生很大兴趣。
+
+在《论语》和《礼记》里，孔子经常比较殷、周乃至夏三代的文化制度异同，类似什么“殷之大白，周之大赤”等。（《礼记•明堂位》）当然，这些比较的结果自然是，商周制度大同小异。
+
+子曰：“殷因于夏礼，所损益，可知也；周因于殷礼，所损益，可知也；其或继周者，虽百世可知也。”（《论语•为政》）
+
+孔子还说：“周监（鉴）于二代（夏商），郁郁乎文哉！吾从周（《论语•八佾》）这都和周公奠定的官方历史论调完全相同。
+
+但是，前述孔子关于“殷人尊神，率民以事神，先鬼而后礼，先罚而后赏，尊而不亲。其民之敝，荡而不静，胜而无耻”的描述，却又是西周和春秋时期绝无仅有的，不仅不符合周朝官方的政治正确，而且孔子的信息来源也是个谜。
+
+我们至少知道的是，在孔子的春秋时代，上述“殷人”的特征早已经消失。宋国是商王族的继承者，但宋国上层已被周人完全同化，有时固然争强好胜，但主要还是为面子，或者说是周人文化里的“贵族精神”，绝对不是为了利益的“胜而无耻。
+
+以比孔子早一百多年的宋襄公为例，他最著名的事迹是和楚国的“泓之战”。宋襄公风格甚高，不肯攻击正在渡河及未成列的楚国军队，结果惨败，受伤而死，而且死前还振振有词地自我辩护，阐述道义是战争的首要原则：“君子不重伤，不禽二毛。古之为军也，不以阻隘也。寡人虽亡国之馀，不鼓不成列。”（《左传•僖公二十二年》）可见，宋襄公绝对不是“无耻”，而是耻感过分发达。至于崇拜鬼神的程度，宋国人也不比春秋列国更严重。</div>
+            </div>
+          </div>
+        </section>
+        <section class="page" id="page-580">
+          <div class="page-head">
+            <div class="page-title">原书阅读器页 580<span>原书物理 PDF 页 578</span><span>印刷页 566</span></div>
+            <div class="page-tools">
+              <button type="button" data-copy-page="580">复制本页</button>
+              <button type="button" data-export-page="580">导出本页</button>
+            </div>
+          </div>
+          <div class="workbench">
+            <div class="editor-wrap">
+              <div class="rich-editor" data-page="580" data-source-page="578" data-printed-page="566" data-source-image="pdf_pages/page-578.jpg" contenteditable="true" role="textbox" aria-multiline="true" spellcheck="false">但前述孔子关于商周文化之别的评价显示，即便是在周公五百年之后，应该也还存在着碎片化的关于商朝的真实历史记忆。考虑到孔子是专职搜集历史文献的学者，待他收集起足够多的关于商朝的碎片化知识后，是有可能逐渐拼合出一些“非官方”版本的真实历史的。
+
+其实，这在《论语》里有些迹象。
+
+在周公版的历史中，商人从没有过残忍的人祭宗教，商朝的灭亡只是因为纣王-帝辛个人的道德堕落，但孔子的学生子贡却试图为纣王“翻案”：
+
+纣之不善，不如是之甚也。是以君子恶居下流，天下之恶皆归焉。（《论语•子张》）
+
+大意是说，纣王的恶行并不像人们传说的那样过分，这就像是一个地方被当成了垃圾场，人们就专门往那里丢垃圾，纣王的形象也是被这样堆积出来的。
+
+在《论语》中，这段话是和子贡为晚年孔子辩护的几段话放在一起的。子贡是孔子晚年最信赖的学生，孔门十哲之一，复姓端木，殷商旧地卫国人，所以很可能也是商人后裔。这么说来，他和孔子可能有遥远的同族亲缘。据此，这师徒二人显然交流过一些官方版之外的商代秘史。子贡这段话被载入《论语》，说明编辑《论语》的孔门弟子认可其权威性。
+
+而孔子很可能就是从《易经》开始探索真实的商代的。从可靠的文献史料看，孔子平生从不关注“算命”问题，也从未给自己或别人占算过命运，不管是用甲骨还是易卦。孔子最常谈论的是诗、书、礼、乐，但他几乎从未对《易经》发表过评论。
+
+然而，到了晚年，孔子却突然对《易经》产生了兴趣，他说：
+
+加我数年，五十以学易，可以无大过矣。
+
+《论语•述而》里的这则记载很可靠，但具体含义有争议。有人将其解读为：“我如果能多活几年，比如五年或十年，用来学习《易经》，就不会有大错误了！”或者：“如果这几年我能重新再来一次，我会从五十岁开始学习《易经》，也就不会有大错误了！”</div>
+            </div>
+          </div>
+        </section>
+        <section class="page" id="page-581">
+          <div class="page-head">
+            <div class="page-title">原书阅读器页 581<span>原书物理 PDF 页 579</span><span>印刷页 567</span></div>
+            <div class="page-tools">
+              <button type="button" data-copy-page="581">复制本页</button>
+              <button type="button" data-export-page="581">导出本页</button>
+            </div>
+          </div>
+          <div class="workbench">
+            <div class="editor-wrap">
+              <div class="rich-editor" data-page="581" data-source-page="579" data-printed-page="567" data-source-image="pdf_pages/page-579.jpg" contenteditable="true" role="textbox" aria-multiline="true" spellcheck="false">〔按语：孔二不懂辩证法，一昧复辟。〕
+
+不管是哪种解释，这都是孔子晚年才会有的感慨。《史记》与此相关的记载是，孔子晚年频繁地研读《易经》，结果编竹简的皮条磨损严重，经常断裂，所谓“韦编三绝”。
+
+孔子晚而喜易，序彖、系、象、说卦、文言。读易，韦编三绝。日：“假我数年，若是，我于易则彬彬矣。”（《史记•孔子世家》）
+
+《礼记•礼运》还记载，孔子曾对弟子言偃（子游）说：
+
+我欲观殷道，是故之宋，而不足徵也，吾得《坤乾》焉。
+
+为之做“正义”的唐代学者孔颖达认为，这部《坤乾》是殷商（宋）人版本的易卦占算书，“谓得殷家阴阳之书也”，它的坤卦排在乾卦前面，和《易经》相反，所以称为《坤乾》。
+
+这个说法已经难以验证，但在此之前，孔子肯定有机会读到文王的《易经》。如前所述，韩宣子访问鲁国，“观书于大史氏，见《易象》与鲁《春秋》”，而孔子离开鲁国去宋国，发生在他五十七岁这年，也就是说，从五十岁到五十六岁期间，他一直身处鲁国高层，完全有条件读到官方收藏的周公注解版《易经》。
+
+作为周公后人，鲁国人对《易经》的理解可能非常阳光，完全沿用周公《象辞》的曲解，从而使孔子没有意识到它的史料价值。但当在宋国得到《坤乾》时，孔子却可能会获悉某些保存于《易经》中的真实的商周之际历史，毕竟，作为商人后裔的宋国最有可能保存这种暗黑记忆。
+
+司马迁认为，《易传》里的《系辞》是孔子所作。其实，这应当是孔门弟子记录的孔子观点。《系辞》对《易经》（文王卦爻辞）的来历有个推测，认为它是殷商末期周族兴起时的产物，内容主要是周文王和商纣王交往的事件，所以充满了危机之辞，所谓：
+
+《易》之兴也，其当殷之末世、周之盛德邪？当文王与纣之事邪？是故其辞危。</div>
+            </div>
+          </div>
+        </section>
+        <section class="page" id="page-582">
+          <div class="page-head">
+            <div class="page-title">原书阅读器页 582<span>原书物理 PDF 页 580</span><span>印刷页 568</span></div>
+            <div class="page-tools">
+              <button type="button" data-copy-page="582">复制本页</button>
+              <button type="button" data-export-page="582">导出本页</button>
+            </div>
+          </div>
+          <div class="workbench">
+            <div class="editor-wrap">
+              <div class="rich-editor" data-page="582" data-source-page="580" data-printed-page="568" data-source-image="pdf_pages/page-580.jpg" contenteditable="true" role="textbox" aria-multiline="true" spellcheck="false">此外，《系辞》还认为《易经》的作者充满了忧患之情：
+
+作《易》者，其有忧患乎？
+
+这种理解已经很接近真实的文王时期，而和周公的《象辞》很不一致，说明五十七岁之后的孔子已发掘出越来越多当年被周公隐藏的真相（商朝的血祭文化）。但是，孔子没有继续点破真相，而是频繁地翻检《易经》，以至“韦编三绝”。或许，孔子正是想从隐晦而杂乱的文王卦爻辞中复原出尽可能多的内容。
+
+今天的我们对商代的有效知识主要来自出土的遗址和甲骨文，而这只是商代极为有限的局部片段，犹如管中窥豹；而孔子通过收集当时的口述史与文献（孔子能见到的文献要比今天多得多）也同样可以建立起一部分有效知识。因此，孔子对商代的认知和现代人的认知应当存在一些交集，但也会有互不重合的部分。
+
+可以合理推测，孔子应该就是在逐渐认知真实商朝文化的过程中，更加理解了周公当年为何一定要埋葬商朝的真历史而重构一套夏商史。
+
+孔子是商王族后裔，他应该会感念周公给了商人生存的机会，还替他们抹去了血腥人祭的记忆，让子孙后代不必活在羞辱中。周公的这些宽容而伟大的事迹，被他自己掩埋五百年，又终被孔子再次破译。这或许才是他衷心服膺周公的根本原因。
+
+孔子甚至常常梦到周公，而周公本以为武王解梦著称。只有到临终前，孔子才感慨很难梦到周公了：
+
+甚矣吾衰也！久矣吾不复梦见周公。（《论语•述而》）
+
+在传统的历史叙事框架中，孔子梦周公这件事不是那么容易让人理解，甚至有些人还会觉得这是不是有点虚假，但将其放在真实的商周之际的历史背景中就好理解了：越是接近商文化的残酷真相，孔子就越是对周公有真正的理解和感激。换句话说，从民族间的征服与杀戮走向和解与融合，孔子是受益者，也是这段隐秘史的破译者。他有太多想说又不能明说的，只能在梦中倾诉。</div>
+            </div>
+          </div>
+        </section>
+        <section class="page" id="page-583">
+          <div class="page-head">
+            <div class="page-title">原书阅读器页 583<span>原书物理 PDF 页 581</span><span>印刷页 569</span></div>
+            <div class="page-tools">
+              <button type="button" data-copy-page="583">复制本页</button>
+              <button type="button" data-export-page="583">导出本页</button>
+            </div>
+          </div>
+          <div class="workbench">
+            <div class="editor-wrap">
+              <div class="rich-editor" data-page="583" data-source-page="581" data-printed-page="569" data-source-image="pdf_pages/page-581.jpg" contenteditable="true" role="textbox" aria-multiline="true" spellcheck="false">附录：孔子晚年编辑“六经”
+
+孔子晚年最重大的工作，是编辑儒家经典“六经”。
+
+这是按照周公精神对历史文献进行的一次前所未有的系统整理。“六经”成书后，从上古到孔子时代的历史叙事的权威版本就此诞生，也标志着周公开创新华夏、埋葬旧华夏的工作得以正式完成。而孔子则以此向周公致敬，并参与、发展了周公的事业。
+
+本书目的之一是再现夏商周更迭的历史，所以使用了“六经”中的很多史料素材，但也对有些史料进行了辨析，指出其不可靠或刻意作伪之处。
+
+“六经”具体是指《诗经》《尚书》《仪礼》《乐经》《易经》《春秋》。其中，《诗经》《尚书》《易经》包含大量商周易代时期的史料。在“六经”成书之前，社会上传抄流行的主要是单篇文章，真伪混杂，质量良莠不齐。为此，孔子选择了最可信且符合周公精神的汇编成书，而不符合这两点的篇章就逐渐失传了。
+
+《诗经》记载了周族从姜嫄、后稷以来的多篇史诗，包括周族早期历史、文王确立翦商大计、武王的灭商战争、周公平定三监叛乱以及对商文化的改造等，属于经过周公修订的官方正式版本。
+
+孔子继承周公事业的用心，则主要表现在他对《尚书》的编辑和选裁上。
+
+书是文献之意，《尚书》就是古代的文献。按时间顺序，《尚书》分为《虞书》（尧舜禹时期）、《夏书》、《商书》和《周书》。在收入“六经”之前，《尚书》中各篇都是单行本，基本规律是越古老的越不可信，内容大都是西周及之后的人按照周公重写上古历史的精神，虚构了尧舜禹和夏商时期的很多帝王故事和讲话稿，基本是周公式的道德说教，不具备史料价值。当然，也会有个别真正的商代文献，比如盘庚迁都的讲话稿，内容上和周公精神抵触不大，或者已经被周公授意删削过，所以保留了下来。总之，这些真真假假的篇章被孔子分别收入了《尚书》的《虞书》《夏书》和《商书》部分。</div>
+            </div>
+          </div>
+        </section>
+        <section class="page" id="page-584">
+          <div class="page-head">
+            <div class="page-title">原书阅读器页 584<span>原书物理 PDF 页 582</span><span>印刷页 570</span></div>
+            <div class="page-tools">
+              <button type="button" data-copy-page="584">复制本页</button>
+              <button type="button" data-export-page="584">导出本页</button>
+            </div>
+          </div>
+          <div class="workbench">
+            <div class="editor-wrap">
+              <div class="rich-editor" data-page="584" data-source-page="582" data-printed-page="570" data-source-image="pdf_pages/page-582.jpg" contenteditable="true" role="textbox" aria-multiline="true" spellcheck="false">而《周书》部分，则多数是周朝的官方文献，作伪的成分较少，而且肯定符合周公精神，所以在整部《尚书》里，商末周初这部分占的比重最大。
+
+以上是孔子认为符合周公精神、被收入《尚书》的文稿。此外，在西周朝，还有人写了一些关于商周之际的历史篇章，他们显然部分了解那段真实的历史，但并不完全遵循周公精神，所以和周公版文献很不一样。比如，有些文稿记载，灭商之前的武王生活在对商朝的恐惧之中，经常夜不成寐，需要周公的宽慰，但里面记载的周公的长篇大论有明显的虚构成分，因为兄弟二人的深夜谈话不可能被如实记录下来。还有的文稿记载了武王灭商后曾大量屠杀商人俘虏进行献祭，但关于人祭过程的描写不仅完全符合殷墟甲骨卜辞的记录，而且比卜辞更细致，这显然也不符合周公精神。
+
+这些稍有违背周公精神的历史篇章，并没有被孔子收录进《尚书》，但经过孔门的汇集、抄写和校勘，也形成了一个汇编本，被命名为《逸周书》，意思是“未能收入《尚书•周书》的文献”。开始的时候，《逸周书》可能只保存在孔门内部，只有少数弟子说得清这部离经叛道的书的来历。而到了战国之后，真正的商代历史已经被彻底遗忘，以“六经”为代表的周公版历史成了唯一的存在，所以《逸周书》虽然没有失传，但在此后两千多年的历史里，处境一直比较尴尬，不太受学者重视。只有到现代考古学诞生和商代遗址发掘后，人们这才发现，它的有些内容居然很符合商文化的本来面貌。
+
+至于《易经》，孔子虽然很精准地选择了文王而非春秋时流行的其他版本（如本书所述，文王的《易经》隐含的商末往事很多，周公的《象辞》其实是对文王原意的掩盖和曲解），但却继续奉行周公的原则，在给弟子讲授《易经》时，尽量避开商末的真实历史，重点从《易经》文本引申出宇宙秩序和社会伦理。这些讲授被他的学生整理成《文言》《系辞》《说卦》《序卦》等篇章，与周公《象传》合编在一起，被称为《易传》（对《易经》的解释）。[[fn:8]] 文王的《易经》和之后的《易传》，则被后人合称为《周易》。因此，要还原文王时代的历史，必须研究文王《易经》本身，而非《易传》，这样才能避免周公和孔子刻意制造的误导。</div>
+            </div>
+          </div>
+        </section>
+        <section class="page" id="page-585">
+          <div class="page-head">
+            <div class="page-title">原书阅读器页 585<span>原书物理 PDF 页 583</span><span>印刷页 571</span></div>
+            <div class="page-tools">
+              <button type="button" data-copy-page="585">复制本页</button>
+              <button type="button" data-export-page="585">导出本页</button>
+            </div>
+          </div>
+          <div class="workbench">
+            <div class="editor-wrap">
+              <div class="rich-editor" data-page="585" data-source-page="583" data-printed-page="571" data-source-image="pdf_pages/page-583.jpg" contenteditable="true" role="textbox" aria-multiline="true" spellcheck="false">在孔子生活的春秋时代，周王室早已丧失权威，诸侯列国并不真正关心所谓文化建设或王朝合法性问题，编辑“六经”可以说完全是孔子个人的追求，但此举确实继承了周公的事业，实现了周公的目的：掩埋真正的商文化，用重构的道德历史建构华夏文明起源。
+
+周公在事实上扭转了历史进程，改变了人们的认知；孔子则把这一切文本成果汇总起来，形成盖棺定论的“六经”经典，传递给后世：华夏文明的源头就是如此，再无其他。
+
+当然，孔子编辑“六经”的作用不止于此，其中还保存了从西周创立直到孔子时代的文化成果，这就是周人贵族社会的诗歌（《诗经》）、礼俗（《仪礼》）和历史（《春秋》）。
+
+可以说，“六经”是截至孔子时代的符合周公精神的华夏世界社会历史知识的总集，不仅是儒家学派的基石，也是传统时代的人们了解商周及更早时代的几乎唯一信息源。换句话说，“六经”决定了华夏新文明独有的内核与特质，是华夏新文明的源代码。孔子时代尚还保留着一些关于真实商文化的口传记忆，但到战国初年，伴随着各国的变法运动，贵族社会逐渐瓦解，新的集权君主制和官僚制国家机器建立了起来，而在这巨大的社会动荡和重组中，即便稍有文化的人也都只能忙于适应大变革，无人会留心渺茫的上古历史传说。就这样，有关商文化的残余记忆终于彻底失传。
+
+战国时期的诸子百家争鸣，还曾先后出现道、墨、法、名、兵等学派，但它们所拥有的古典知识根本无法和儒家相提并论，何况其对上古历史的认识也只能来自儒家“六经”，因此，即使对儒家理论有所不满，也无法脱离儒家知识走太远。
+
+概而言之，周公时代变革的最大结果，是神权退场，这让中国的文化过于“早熟”；战国时代变革的最大结果，是贵族退场，这让中国的政治过于“早熟”。而在其他诸人类文明中，神权和贵族政治的退场，都发生在公元1500年之后的所谓近现代时期。</div>
+            </div>
+          </div>
+        </section>
+        <section class="page" id="page-586">
+          <div class="page-head">
+            <div class="page-title">原书阅读器页 586<span>原书物理 PDF 页 584</span><span>印刷页 572</span></div>
+            <div class="page-tools">
+              <button type="button" data-copy-page="586">复制本页</button>
+              <button type="button" data-export-page="586">导出本页</button>
+            </div>
+          </div>
+          <div class="workbench">
+            <div class="editor-wrap">
+              <div class="rich-editor" data-page="586" data-source-page="584" data-printed-page="572" data-source-image="pdf_pages/page-584.jpg" contenteditable="true" role="textbox" aria-multiline="true" spellcheck="false">周公和孔子的努力维持了两三千年，直到考古学家的铲子挖出夏、商遗址，被“六经”等古文献掩盖和误读的历史真实，才得到重新诠释与复原。
+
+我们被考古学改变的认知，不只是夏商。
+
+注释
+
+1杜勇：《尚书•周初八诰研究》，中国社会科学出版社，1998年，第206页。另，在《尚书•盘庚》中，盘庚的发言中也有“天命”，但陈梦家认为，“商人称‘帝命’，无作天命者，天命乃周人之说法……此亦战国宋人之拟作”。参见陈梦家《尚书通论》，中华书局，1985年，第207页。本书认为，《盘庚》中的“天命”可能有西周之后的改动，但该文主体仍是盘庚时代的作品。
+
+2周公这方面的理论主张在《尚书•无逸》篇中体现较多。
+
+3按后世孔孟儒家的学说，能够完成这种角色的王者，就是“圣人”。在周公时代的文献中，“圣”字出现得还不多，在《尚书•多方》篇中，成王云“惟圣罔念作狂，惟狂克念作圣”，但其含义较模糊。
+
+4《礼记•表记》。这里区分了鬼和神，鬼指死者（先祖）的魂灵，神指上帝等至高神或自然神。
+
+5“象传”分大、小两种，解释卦辞的是“大象传”，解释爻辞的是“小象传”。此外，还有一种解释卦辞的“彖传”很可能也是周公所作。
+
+6《左传•昭公二年》：（韩宣子访问鲁国）观书于大史氏，见《易象》与鲁《春秋》，曰：“周礼尽在鲁矣！吾乃今知周公之德，与周之所以王也！”关于《易传•象传》的作者，史书有不同说法，《史记》认为是孔子所作。参见李学勤《周易经传溯源》，长春出版社，1992年，第46页。
+
+7秦国占卜师卜徒父说：“其卦遇《蛊》，曰：‘千乘三去，三去之余，获其雄狐。' 乃大吉也！ ”这里引用的卦爻辞不属于文王《易经》。参见《左传・僖公十五年》。</div>
+            </div>
+          </div>
+        </section>
+        <section class="page" id="page-587">
+          <div class="page-head">
+            <div class="page-title">原书阅读器页 587<span>原书物理 PDF 页 585</span><span>印刷页 573</span></div>
+            <div class="page-tools">
+              <button type="button" data-copy-page="587">复制本页</button>
+              <button type="button" data-export-page="587">导出本页</button>
+            </div>
+          </div>
+          <div class="workbench">
+            <div class="editor-wrap">
+              <div class="rich-editor" data-page="587" data-source-page="585" data-printed-page="573" data-source-image="pdf_pages/page-585.jpg" contenteditable="true" role="textbox" aria-multiline="true" spellcheck="false">8《史记•孔子世家》说，孔子晚年为《易经》撰写了很多种注解，所谓《十翼》或《易传》。但司马迁这个说法有些问题，因为《十翼》并不都是孔子所写，如《象传》和《彖传》可能是周公作品。其他篇章里常出现“子曰”，孔子自己肯定不会这样写，它们应当是孔门弟子编写的。《周易》经传的详细知识，可参考廖明春《周易经传十五讲》，北京大学出版社，2012年。
+
+[[editor-fn:1]]
+
+〔编者注1〕此版主要对生僻字注音，其余不予考虑，凡有注释均为系统测试。</div>
+            </div>
+          </div>
+        </section>
+        <section class="page" id="page-588">
+          <div class="page-head">
+            <div class="page-title">原书阅读器页 588<span>原书物理 PDF 页 586</span><span>印刷页 574</span></div>
+            <div class="page-tools">
+              <button type="button" data-copy-page="588">复制本页</button>
+              <button type="button" data-export-page="588">导出本页</button>
+            </div>
+          </div>
+          <div class="workbench">
+            <div class="editor-wrap">
+              <div class="rich-editor" data-page="588" data-source-page="586" data-printed-page="574" data-source-image="pdf_pages/page-586.jpg" contenteditable="true" role="textbox" aria-multiline="true" spellcheck="false"></div>
+            </div>
+          </div>
+        </section></div>
+        <section class="notes-dock" id="notes">
+          <h2>编辑札记</h2>
+          <div class="note-grid">
+            <div class="note-controls">
+              <label>页<select id="notePage"></select></label>
+              <div class="marker-composer" id="markerComposer">
+                <h3>标记</h3>
+                <label>类型<select id="markerType">
+                  <option value="pinyin">注音</option>
+                  <option value="editor-note">编者注／脚注</option>
+                  <option value="inline-note">按语</option>
+                  <option value="pending">待核</option>
+                  <option value="user-note">用户札记</option>
+                </select></label>
+                <label>内容<input id="markerText" type="text" autocomplete="off" placeholder="输入拼音或笔记内容"></label>
+                <p class="marker-help" id="markerHelp">先在正文中选择文字，再输入拼音；可用“拼音；简注”。</p>
+                <div class="note-actions"><button id="applyMarkerBtn" type="button">应用标记</button></div>
+              </div>
+              <label>工作日志标签<input id="noteTag" type="text" value="校订" autocomplete="off"></label>
+              <textarea id="noteText" spellcheck="false"></textarea>
+              <div class="note-actions">
+                <button id="addNoteBtn" type="button">记录到编辑日志</button>
+                <button id="exportLogBtn" type="button">导出日志</button>
+                <button id="downloadLogBtn" type="button">下载日志</button>
+                <button id="clearLogBtn" type="button">清空日志</button>
+              </div>
+            </div>
+            <div><div id="logList" class="log-list"></div></div>
+          </div>
+        </section>
+        <section class="export-dock"><h2>导出文本</h2><textarea id="exportText" spellcheck="false"></textarea></section>
+      </section>
       <aside>
+        <section class="panel source-viewer" aria-label="当前原书 PDF 页">
+          <div class="source-viewer-head"><strong>当前原书 PDF 页</strong><span class="source-viewer-meta" id="sourceViewerMeta"></span></div>
+          <img id="sourceViewerImage" src="pdf_pages/page-571.jpg" alt="原书 PDF 页 571">
+          <div class="source-viewer-actions"><a class="action-link" href="epilogue_annotated.pdf" target="_blank" rel="noopener">打开注音版 PDF</a></div>
+        </section>
         <section class="panel"><h2>页码说明</h2><div class="page-number-legend"><p><strong>原阅</strong> 573-588：原书在阅读器中显示的页码</p><p><strong>原PDF</strong> 571-586：原书文件的物理页码</p><p><strong>印</strong> 559-574：书页印刷页码</p><p><strong>注音PDF</strong> 1-16：独立重排页码，不与原书逐页对应</p></div></section>
         <section class="panel"><h2>页</h2><div class="nav-list"><button type="button" class="nav-button" data-target="toc"><span>目录</span><span>top</span></button><button type="button" class="nav-button" data-target="notes"><span>编辑札记</span><span>log</span></button><button type="button" class="nav-button" data-target="page-573"><span>原阅 573 · 原PDF 571</span><span>印 559</span></button><button type="button" class="nav-button" data-target="page-574"><span>原阅 574 · 原PDF 572</span><span>印 560</span></button><button type="button" class="nav-button" data-target="page-575"><span>原阅 575 · 原PDF 573</span><span>印 561</span></button><button type="button" class="nav-button" data-target="page-576"><span>原阅 576 · 原PDF 574</span><span>印 562</span></button><button type="button" class="nav-button" data-target="page-577"><span>原阅 577 · 原PDF 575</span><span>印 563</span></button><button type="button" class="nav-button" data-target="page-578"><span>原阅 578 · 原PDF 576</span><span>印 564</span></button><button type="button" class="nav-button" data-target="page-579"><span>原阅 579 · 原PDF 577</span><span>印 565</span></button><button type="button" class="nav-button" data-target="page-580"><span>原阅 580 · 原PDF 578</span><span>印 566</span></button><button type="button" class="nav-button" data-target="page-581"><span>原阅 581 · 原PDF 579</span><span>印 567</span></button><button type="button" class="nav-button" data-target="page-582"><span>原阅 582 · 原PDF 580</span><span>印 568</span></button><button type="button" class="nav-button" data-target="page-583"><span>原阅 583 · 原PDF 581</span><span>印 569</span></button><button type="button" class="nav-button" data-target="page-584"><span>原阅 584 · 原PDF 582</span><span>印 570</span></button><button type="button" class="nav-button" data-target="page-585"><span>原阅 585 · 原PDF 583</span><span>印 571</span></button><button type="button" class="nav-button" data-target="page-586"><span>原阅 586 · 原PDF 584</span><span>印 572</span></button><button type="button" class="nav-button" data-target="page-587"><span>原阅 587 · 原PDF 585</span><span>印 573</span></button><button type="button" class="nav-button" data-target="page-588"><span>原阅 588 · 原PDF 586</span><span>印 574</span></button></div></section>
-        <section class="panel"><h2>参考表</h2><div class="nav-list"><button type="button" class="nav-button" data-target="yueducibiao"><span>阅读词表</span><span>表</span></button><button type="button" class="nav-button" data-target="qingtongqicibiao"><span>青铜器词表</span><span>表</span></button><button type="button" class="nav-button" data-target="dushuzhaji"><span>章节导读札记</span><span>表</span></button><button type="button" class="nav-button" data-target="user-notes"><span>用户札记</span><span>注</span></button></div></section>
-        <section class="panel"><h2>术语</h2><div class="term-list"><button type="button" class="term" data-term="周公" data-pinyin="zhōu gōng" data-difficulty="3" data-domain="proper_name"><span>周公</span><span>zhōu gōng</span></button><button type="button" class="term" data-term="孔子" data-pinyin="kǒng zǐ" data-difficulty="3" data-domain="proper_name"><span>孔子</span><span>kǒng zǐ</span></button><button type="button" class="term" data-term="易经" data-pinyin="yì jīng" data-difficulty="4" data-domain="general"><span>易经</span><span>yì jīng</span></button><button type="button" class="term" data-term="尚书" data-pinyin="shàng shū" data-difficulty="4" data-domain="general"><span>尚书</span><span>shàng shū</span></button><button type="button" class="term" data-term="春秋" data-pinyin="chūn qiū" data-difficulty="4" data-domain="general"><span>春秋</span><span>chūn qiū</span></button><button type="button" class="term" data-term="六经" data-pinyin="liù jīng" data-difficulty="4" data-domain="general"><span>六经</span><span>liù jīng</span></button><button type="button" class="term" data-term="象传" data-pinyin="xiàng zhuàn" data-difficulty="4" data-domain="general"><span>象传</span><span>xiàng zhuàn</span></button><button type="button" class="term" data-term="儒家" data-pinyin="rú jiā" data-difficulty="3" data-domain="general"><span>儒家</span><span>rú jiā</span></button><button type="button" class="term" data-term="诗经" data-pinyin="shī jīng" data-difficulty="4" data-domain="general"><span>诗经</span><span>shī jīng</span></button><button type="button" class="term" data-term="易传" data-pinyin="yì zhuàn" data-difficulty="4" data-domain="general"><span>易传</span><span>yì zhuàn</span></button><button type="button" class="term" data-term="华夏文明" data-pinyin="huá xià wén míng" data-difficulty="3" data-domain="general"><span>华夏文明</span><span>huá xià wén míng</span></button><button type="button" class="term" data-term="周易" data-pinyin="zhōu yì" data-difficulty="4" data-domain="general"><span>周易</span><span>zhōu yì</span></button><button type="button" class="term" data-term="神权" data-pinyin="shén quán" data-difficulty="3" data-domain="general"><span>神权</span><span>shén quán</span></button><button type="button" class="term" data-term="逸周书" data-pinyin="yì zhōu shū" data-difficulty="4" data-domain="general"><span>逸周书</span><span>yì zhōu shū</span></button><button type="button" class="term" data-term="韦编三绝" data-pinyin="wéi biān sān jué" data-difficulty="3" data-domain="phrase"><span>韦编三绝</span><span>wéi biān sān jué</span></button><button type="button" class="term" data-term="彖传" data-pinyin="tuàn zhuàn" data-difficulty="4" data-domain="general"><span>彖传</span><span>tuàn zhuàn</span></button><button type="button" class="term" data-term="忖度" data-pinyin="cǔn duó" data-difficulty="4" data-domain="general"><span>忖度</span><span>cǔn duó</span></button><button type="button" class="term" data-term="佾" data-pinyin="yì" data-difficulty="4" data-domain="general"><span>佾</span><span>yì</span></button><button type="button" class="term" data-term="服膺" data-pinyin="fú yīng" data-difficulty="4" data-domain="general"><span>服膺</span><span>fú yīng</span></button><button type="button" class="term" data-term="诠释" data-pinyin="quán shì" data-difficulty="4" data-domain="general"><span>诠释</span><span>quán shì</span></button><button type="button" class="term" data-term="神权退场" data-pinyin="shén quán tuì chǎng" data-difficulty="3" data-domain="general"><span>神权退场</span><span>shén quán tuì chǎng</span></button><button type="button" class="term" data-term="贵族政治" data-pinyin="guì zú zhèng zhì" data-difficulty="3" data-domain="general"><span>贵族政治</span><span>guì zú zhèng zhì</span></button><button type="button" class="term" data-term="三监之乱" data-pinyin="sān jiān zhī luàn" data-difficulty="3" data-domain="general"><span>三监之乱</span><span>sān jiān zhī luàn</span></button><button type="button" class="term" data-term="口耳相传" data-pinyin="kǒu ěr xiāng chuán" data-difficulty="2" data-domain="phrase"><span>口耳相传</span><span>kǒu ěr xiāng chuán</span></button><button type="button" class="term" data-term="殷商遗民" data-pinyin="yīn shāng yí mín" data-difficulty="3" data-domain="general"><span>殷商遗民</span><span>yīn shāng yí mín</span></button><button type="button" class="term" data-term="甲骨卜辞" data-pinyin="jiǎ gǔ bǔ cí" data-difficulty="4" data-domain="general"><span>甲骨卜辞</span><span>jiǎ gǔ bǔ cí</span></button><button type="button" class="term" data-term="阿兹特克" data-pinyin="ā zī tè kè" data-difficulty="5" data-domain="archaeology"><span>阿兹特克</span><span>ā zī tè kè</span></button><button type="button" class="term" data-term="伯邑考" data-pinyin="bó yì kǎo" data-difficulty="3" data-domain="proper_name"><span>伯邑考</span><span>bó yì kǎo</span></button><button type="button" class="term" data-term="卦爻辞" data-pinyin="guà yáo cí" data-difficulty="4" data-domain="general"><span>卦爻辞</span><span>guà yáo cí</span></button><button type="button" class="term" data-term="周文王" data-pinyin="zhōu wén wáng" data-difficulty="3" data-domain="proper_name"><span>周文王</span><span>zhōu wén wáng</span></button><button type="button" class="term" data-term="孔颖达" data-pinyin="kǒng yǐng dá" data-difficulty="3" data-domain="proper_name"><span>孔颖达</span><span>kǒng yǐng dá</span></button><button type="button" class="term" data-term="上帝" data-pinyin="shàng dì" data-difficulty="3" data-domain="general"><span>上帝</span><span>shàng dì</span></button><button type="button" class="term" data-term="人牲" data-pinyin="rén shēng" data-difficulty="3" data-domain="general"><span>人牲</span><span>rén shēng</span></button><button type="button" class="term" data-term="人祭" data-pinyin="rén jì" data-difficulty="3" data-domain="general"><span>人祭</span><span>rén jì</span></button><button type="button" class="term" data-term="先后" data-pinyin="xiān hòu" data-difficulty="4" data-domain="general"><span>先后</span><span>xiān hòu</span></button><button type="button" class="term" data-term="分封" data-pinyin="fēn fēng" data-difficulty="3" data-domain="general"><span>分封</span><span>fēn fēng</span></button><button type="button" class="term" data-term="卜辞" data-pinyin="bǔ cí" data-difficulty="4" data-domain="general"><span>卜辞</span><span>bǔ cí</span></button><button type="button" class="term" data-term="卦辞" data-pinyin="guà cí" data-difficulty="3" data-domain="general"><span>卦辞</span><span>guà cí</span></button><button type="button" class="term" data-term="卫国" data-pinyin="wèi guó" data-difficulty="3" data-domain="proper_name"><span>卫国</span><span>wèi guó</span></button><button type="button" class="term" data-term="后稷" data-pinyin="hòu jì" data-difficulty="3" data-domain="proper_name"><span>后稷</span><span>hòu jì</span></button><button type="button" class="term" data-term="商王" data-pinyin="shāng wáng" data-difficulty="3" data-domain="proper_name"><span>商王</span><span>shāng wáng</span></button><button type="button" class="term" data-term="夏桀" data-pinyin="xià jié" data-difficulty="3" data-domain="proper_name"><span>夏桀</span><span>xià jié</span></button><button type="button" class="term" data-term="多方" data-pinyin="duō fāng" data-difficulty="4" data-domain="general"><span>多方</span><span>duō fāng</span></button><button type="button" class="term" data-term="大过" data-pinyin="dà guò" data-difficulty="4" data-domain="general"><span>大过</span><span>dà guò</span></button><button type="button" class="term" data-term="姜嫄" data-pinyin="jiāng yuán" data-difficulty="4" data-domain="general"><span>姜嫄</span><span>jiāng yuán</span></button><button type="button" class="term" data-term="宋国" data-pinyin="sòng guó" data-difficulty="3" data-domain="proper_name"><span>宋国</span><span>sòng guó</span></button><button type="button" class="term" data-term="崇国" data-pinyin="chóng guó" data-difficulty="3" data-domain="proper_name"><span>崇国</span><span>chóng guó</span></button><button type="button" class="term" data-term="左传" data-pinyin="zuǒ zhuàn" data-difficulty="4" data-domain="general"><span>左传</span><span>zuǒ zhuàn</span></button><button type="button" class="term" data-term="帝辛" data-pinyin="dì xīn" data-difficulty="3" data-domain="proper_name"><span>帝辛</span><span>dì xīn</span></button><button type="button" class="term" data-term="成王" data-pinyin="chéng wáng" data-difficulty="3" data-domain="proper_name"><span>成王</span><span>chéng wáng</span></button><button type="button" class="term" data-term="政体" data-pinyin="zhèng tǐ" data-difficulty="3" data-domain="general"><span>政体</span><span>zhèng tǐ</span></button><button type="button" class="term" data-term="无逸" data-pinyin="wú yì" data-difficulty="4" data-domain="general"><span>无逸</span><span>wú yì</span></button><button type="button" class="term" data-term="楚国" data-pinyin="chǔ guó" data-difficulty="3" data-domain="proper_name"><span>楚国</span><span>chǔ guó</span></button><button type="button" class="term" data-term="武王" data-pinyin="wǔ wáng" data-difficulty="3" data-domain="proper_name"><span>武王</span><span>wǔ wáng</span></button><button type="button" class="term" data-term="殷商" data-pinyin="yīn shāng" data-difficulty="5" data-domain="general"><span>殷商</span><span>yīn shāng</span></button><button type="button" class="term" data-term="殷墟" data-pinyin="yīn xū" data-difficulty="5" data-domain="archaeology"><span>殷墟</span><span>yīn xū</span></button><button type="button" class="term" data-term="殷都" data-pinyin="yīn dū" data-difficulty="5" data-domain="general"><span>殷都</span><span>yīn dū</span></button><button type="button" class="term" data-term="沦丧" data-pinyin="lún sàng" data-difficulty="4" data-domain="general"><span>沦丧</span><span>lún sàng</span></button><button type="button" class="term" data-term="爻辞" data-pinyin="yáo cí" data-difficulty="3" data-domain="general"><span>爻辞</span><span>yáo cí</span></button><button type="button" class="term" data-term="献祭" data-pinyin="xiàn jì" data-difficulty="3" data-domain="general"><span>献祭</span><span>xiàn jì</span></button><button type="button" class="term" data-term="王权" data-pinyin="wáng quán" data-difficulty="3" data-domain="general"><span>王权</span><span>wáng quán</span></button><button type="button" class="term" data-term="盘庚" data-pinyin="pán gēng" data-difficulty="3" data-domain="proper_name"><span>盘庚</span><span>pán gēng</span></button><button type="button" class="term" data-term="纣王" data-pinyin="zhòu wáng" data-difficulty="3" data-domain="proper_name"><span>纣王</span><span>zhòu wáng</span></button><button type="button" class="term" data-term="翦商" data-pinyin="jiǎn shāng" data-difficulty="4" data-domain="general"><span>翦商</span><span>jiǎn shāng</span></button><button type="button" class="term" data-term="鲁国" data-pinyin="lǔ guó" data-difficulty="3" data-domain="proper_name"><span>鲁国</span><span>lǔ guó</span></button><button type="button" class="term" data-term="爵" data-pinyin="jué" data-difficulty="5" data-domain="bronze_vessel"><span>爵</span><span>jué</span></button></div></section>
-      </aside>
-      <section>
         <jianshang-editor-toc current-chapter="epilogue">
           <noscript>目录需要启用 JavaScript。</noscript>
         </jianshang-editor-toc>
@@ -201,473 +660,9 @@
             </table>
           </div>
         </section></div>
-        <div class="pages">
-        <section class="page" id="page-573">
-          <div class="page-head">
-            <div class="page-title">原书阅读器页 573<span>原书物理 PDF 页 571</span><span>印刷页 559</span></div>
-            <div class="page-tools">
-              <button type="button" data-copy-page="573">复制本页</button>
-              <button type="button" data-export-page="573">导出本页</button>
-            </div>
-          </div>
-          <div class="workbench">
-            <div class="editor-wrap">
-              <div class="rich-editor" data-page="573" contenteditable="true" role="textbox" aria-multiline="true" spellcheck="false">尾声：周公到孔子
-
-〔按语：epilogue〕
-
-自五千年前的仰韶文化晚期以来，黄河中下游静态的部落生活渐被战乱、征服和群体杀戮打破，华夏旧（早期）文明与国家由此产生。
-
-从孕育到成熟，华夏旧文明跨越两千年。和同期的其他古代人类文明一样，它们都属于神权与王权合一、宗教主导的社会。如果一直延续下去，历史将充斥族群壁垒、杀戮与献祭。
-
-但周灭商后，以杀戮和人祭为特色的华夏旧文明戛然而止，取代它的，是周公营造的新华夏文明。周公消灭了旧华夏文明及其相关记忆，打破了族群血缘壁垒，让尘世生活远离宗教和鬼神世界，不再把人类族群的差异看作神创的贵贱之别。这是华夏文明最彻底的一次自我否定与重生。
-
-在三千年前的古人类文明中，只有华夏独自走出了神权的掌控，成为一个“异类”。这是一种过于早熟的世俗文明，一直持续到今日。
-
-儒家起源与人祭文明
-
-使华夏文明突然转向的根源，是周公一代人无法言说的恐惧，就像武王周发的惊梦。他们可能都在殷都生活过，不仅目睹了商人的血腥献祭，甚至兄长伯邑考的惨死。恐惧使武王更加依赖人祭宗教，而周公则极端憎恨人祭宗教，势必将其彻底灭绝。这是兄弟二人截然不同的解脱路径。
-
-后世人对周公的认识，有事功和制度文化两方面：事功，主要是周公辅佐成王、平定三监之乱，为西周王朝奠定开局；制度文化，主要是周公“制礼作乐”，确立西周的政体，包括诸侯列国分封格局和贵族等级制度。在考古发现商朝的遗址与人祭文化之前，人们对周公的理解只能达到这种程度。
-
-但事实上，周公最重要的工作是消灭商人的人祭宗教，以及与之配套的弱肉强食的宗教价值体系。他不仅阻止了周人模仿和继承这种宗教文化，也在殷商遗民和东夷族群中根除了它。尤其关键的是，周公还抹除了与商朝人祭有关的记忆，甚至也隐藏了自己禁绝人祭行为的种种举措。这是为防止人祭宗教的死灰复燃和卷土重来，也是为掩盖周人曾为商朝捕俘人牲的那段不光彩的历史。</div>
-            </div>
-            <div class="scan"><img src="pdf_pages/page-571.jpg" alt="PDF page 573"></div>
-          </div>
-        </section>
-        <section class="page" id="page-574">
-          <div class="page-head">
-            <div class="page-title">原书阅读器页 574<span>原书物理 PDF 页 572</span><span>印刷页 560</span></div>
-            <div class="page-tools">
-              <button type="button" data-copy-page="574">复制本页</button>
-              <button type="button" data-export-page="574">导出本页</button>
-            </div>
-          </div>
-          <div class="workbench">
-            <div class="editor-wrap">
-              <div class="rich-editor" data-page="574" contenteditable="true" role="textbox" aria-multiline="true" spellcheck="false">为了填补人祭宗教退场造成的真空，周公发展出了一套新的历史叙事、道德体系和宗教理念。这主要体现在《尚书》的几篇诰命中：
-
-一，淡化商人对“帝”的崇拜。在商朝末期，“帝”已经和商王身份重叠，商王具有“帝”的神性。但周灭商后，王已经不能身兼“帝”之名号，对周人来说，帝在高高的天庭之上，不会化身为世间凡人。
-
-虽然我们还不能完全确定这个原则就是由周公确立的，但从《尚书》的几篇诰命可以发现：在对殷商遗民讲话（如《多士》）时，周公会频频引用上帝的命令来威吓和诱导商人，这是因为商人格外信奉上帝，只能因势利导；但在对周族自己人讲话时，如册命弟弟周封为卫侯的三篇诰命，周公却极少谈到上帝，尤其是对族人谈论现实和规划未来时，他从不动用上帝进行论证，更不涉及其他的神灵。这显然是一种有意识地“敬而远之”，让现实和神界保持距离。从这些迹象看，周朝人“疏远”上帝或其他诸神的传统的确是由周公奠定的。
-
-二，为减少神界对现实的干预，周公会尽量用“天”的概念来代替“帝' 因此，上帝发布的命令（“帝命”）变成了含糊的“天命”。
-
-天命的观念在后来的中国一直存在，但人们已经忘记了它的缘起。[[fn:1]] “天”无形无像，无言无行，不容易被赋予拟人化的个性。在《诗经》里，上帝曾频频给文王下达命令，如命令文王攻打崇国，武王灭商据说也是来自上帝的意旨，但后世周王已经无法接收神界的具体指示，所以改称为“天命”后，它变成了一种更为抽象的、近乎隐喻的道德规训。
-
-当然，周公时代还不可能有科学主义的无神论认知，神界即使被放置得比较远，也不会和王朝政治完全绝缘。比如，西周的王就被称为“天子”，也就是天的儿子，而这是连商代甲骨文也没有的词，但无论怎样，“天”还是过于含糊，周人及其以后的历代王朝从未给“天子”增加更具体的神性定义与功能。即便秦始皇使用“皇帝”尊号，其直观用意也是强调自己和六国之王的不同，虽有强调王者尊贵的这一层神性之意，但也使“帝”落入凡尘，并不比“天子”概念更神秘。</div>
-            </div>
-            <div class="scan"><img src="pdf_pages/page-572.jpg" alt="PDF page 574"></div>
-          </div>
-        </section>
-        <section class="page" id="page-575">
-          <div class="page-head">
-            <div class="page-title">原书阅读器页 575<span>原书物理 PDF 页 573</span><span>印刷页 561</span></div>
-            <div class="page-tools">
-              <button type="button" data-copy-page="575">复制本页</button>
-              <button type="button" data-export-page="575">导出本页</button>
-            </div>
-          </div>
-          <div class="workbench">
-            <div class="editor-wrap">
-              <div class="rich-editor" data-page="575" contenteditable="true" role="textbox" aria-multiline="true" spellcheck="false">三，周公宣称，王者应当爱民、德治和勤勉，这样才会受到“天命”青睐，长寿享国；如果王者残暴对待庶民和小人，天命就会转移到更有德的候选君王身上，从而改朝换代。[[fn:2]]
-
-本质上，周公的这样一种政治-道德体系是一种“性善论”的社会模型，回避了统治者对民众的征敛和暴力统治，认为王者的使命是护佑和教化万民，进而把道德伦理推进到一切人群中。[[fn:3]] 商朝人对此则是直言不讳，承认暴力的必要性。
-
-按照周公的理论，夏商周都是根据“天命”建立和更迭的，夏朝和商朝的多数君王，特别是开国君王，勤政爱民，得到天佑，只是因为末代的夏桀和商纣道德沦丧，这才天命转移，改朝换代。经过周公改造，商朝残酷的人祭行为被隐去，由此，周人之前的暴力时代也成了和周朝同质的德治王朝。
-
-和周公的理论相配套，周人还重新创造了一套上古圣王的历史，尧舜禹的温情禅让从此成为华夏世界的标准版历史叙事，更早版本的商人的“创世记”和上古史则被取代和湮没，未能流传下来。当然，也可能有某些与周公原则不太冲突的内容被纳入了周人的历史叙事，但这些已经不易分辨。
-
-孔子和儒家最推崇周公，而周公思想是儒家文化的源头。周公思想的产生和形成，主要源于对人祭宗教的恐惧，以及消灭人祭宗教的需要。这是后人从未堪破的秘密。
-
-周公构建世俗道德体系
-
-对于宗教之于商周两朝的作用，以及之于人的影响，孔子曾有过一番颇不寻常的总结：
-
-殷人尊神，率民以事神，先鬼而后礼，先罚而后赏，尊而不亲。其民之敝，荡而不静，胜而无耻。
-
-周人尊礼尚施，事鬼敬神而远之，近人而忠焉，其赏罚，用爵列，亲而不尊。其民之敝，利而巧，文而不惭，贼而蔽。[[fn:4]]</div>
-            </div>
-            <div class="scan"><img src="pdf_pages/page-573.jpg" alt="PDF page 575"></div>
-          </div>
-        </section>
-        <section class="page" id="page-576">
-          <div class="page-head">
-            <div class="page-title">原书阅读器页 576<span>原书物理 PDF 页 574</span><span>印刷页 562</span></div>
-            <div class="page-tools">
-              <button type="button" data-copy-page="576">复制本页</button>
-              <button type="button" data-export-page="576">导出本页</button>
-            </div>
-          </div>
-          <div class="workbench">
-            <div class="editor-wrap">
-              <div class="rich-editor" data-page="576" contenteditable="true" role="textbox" aria-multiline="true" spellcheck="false">大意是说，殷商统治者尊崇神，要求民众必须敬神，对鬼神的重视程度超过正常礼俗，对民众的刑罚多于奖赏，多威严而缺少亲和力。这造成了民众性情躁动不安、争强好胜、缺少羞耻感的缺点。
-
-周朝统治者则推崇世俗的礼仪，对民众比较宽容，虽然敬拜鬼神，但不让它们干预人间事务，更重视人间的世俗秩序和信用，人间的身份等级则依据爵位高低有所区别，有亲和力，但缺少威严。这造成了民众趋利且心计巧诈，善于掩饰欲望和自我包装，心中少有真诚，奸滑而有欺骗性的缺点。
-
-孔子描绘的殷周之区别，在古代文献里可谓独家，不仅如此，现代考古学展示的商代文化和孔子的总结也非常一致。
-
-因为周公掐断了神对人间的直接干预，这意味着华夏世界不会再有主导性宗教，以神的名义颁布的道德律条（如摩西十诫、佛家五戒）也无从产生，所以周人必须另行寻找一套用于世俗生活的道德原则。这种世俗道德的原理，是“推己及人”，也就是把自己放在他人的位置上考虑，从而决定自己对待他人的方式。
-
-在《诗经•小雅》中有一首《巧言》：“秩秩大猷，圣人莫之。他人有心，予忖度之。”翻译为白话就是，世间的伟大秩序啊，是古代圣人规划的；别人心里怎么考虑的，我设身处地想一下也就知道了。
-
-再到春秋晚期，孔子则用了一个字来定义人和人之间的道德标准，这便是“仁他的学生樊迟问他仁的含义，孔子曰：“爱人。”（《论语•颜渊》）而实现仁爱的方法，则是“恕”：“己所不欲，勿施于人。”（《论语•卫灵公》）人类的一切道德原则和行为规范，都可以从这八个字推导出来。所以，孔子从不教育学生们不许杀人，不许偷抢……因为这都已在“己所不欲，勿施于人”的原则里了。</div>
-            </div>
-            <div class="scan"><img src="pdf_pages/page-574.jpg" alt="PDF page 576"></div>
-          </div>
-        </section>
-        <section class="page" id="page-577">
-          <div class="page-head">
-            <div class="page-title">原书阅读器页 577<span>原书物理 PDF 页 575</span><span>印刷页 563</span></div>
-            <div class="page-tools">
-              <button type="button" data-copy-page="577">复制本页</button>
-              <button type="button" data-export-page="577">导出本页</button>
-            </div>
-          </div>
-          <div class="workbench">
-            <div class="editor-wrap">
-              <div class="rich-editor" data-page="577" contenteditable="true" role="textbox" aria-multiline="true" spellcheck="false">把他人等同于自己来对待，其实是人类固有的（但不是唯一的）一种思维和基本道德律，在宗教文化中，它可能会被教义遮蔽，却一直存在。
-
-如何掩盖《易经》的本意
-
-从周公到孔子，包含了西周和春秋，时间跨度五百年。我们很难断言，这五百年是否足以让华夏彻底忘却殷商时代的真相。
-
-从今天往前倒推五百年，是16世纪初叶，明代中国的嘉靖年间；1521年，西班牙殖民军攻占阿兹特克帝国，中美洲曾经繁荣的人祭文明开始萧条，并迅速被欧洲的天主教取代。天主教会曾经系统性地摧毁中美洲人关于人祭宗教的抄本、神庙与记忆，但当时的殖民亲历者还是记录下了阿兹特克人祭的诸多细节，一直流传至今。
-
-当然，周朝和最近五百年的世界有很多不可比之处。在没有经典文本叙事的前提下，零碎的、口耳相传的民间记忆很容易走样失真，以至消亡。上古能进行书写记录和传承的人很少，基本集中在“朝廷”生态圈内。周文王时代的一些真实片段之所以能够流传下来，是因为有文本记录，哪怕是在小范围人群中的，甚或长期无人问津的，也会有被再次发现的机会。
-
-如前文所述，周公销毁了商朝诸多甲骨文记录，也禁止殷周贵族书写真实的历史。但周公唯一不敢销毁的，是文王留下的《易经》。这不仅是出于对父亲的尊重，也因为《易经》是周人对翦商事业（起步）的记录，里面很可能包含着父亲获得的天机，销毁它也就是对父亲和诸神的不敬。
-
-周公的办法是对《易经》进行再解释，具体方法则是在文王创作的卦爻辞后面加上一段象传进行说明。象传不再鼓励任何投机和以下犯上的非分之想，全是君子应当如何朝乾夕惕，履行社会责任的励志说教，和文王卦爻辞的本意完全不同。[[fn:5]] 比如，乾卦的象传是“天行健，君子以自强不息”，坤卦的象传是“地势坤，君子以厚德载物”，远比文王卦爻辞清晰易懂，而且富于积极和励志的色调。</div>
-            </div>
-            <div class="scan"><img src="pdf_pages/page-575.jpg" alt="PDF page 577"></div>
-          </div>
-        </section>
-        <section class="page" id="page-578">
-          <div class="page-head">
-            <div class="page-title">原书阅读器页 578<span>原书物理 PDF 页 576</span><span>印刷页 564</span></div>
-            <div class="page-tools">
-              <button type="button" data-copy-page="578">复制本页</button>
-              <button type="button" data-export-page="578">导出本页</button>
-            </div>
-          </div>
-          <div class="workbench">
-            <div class="editor-wrap">
-              <div class="rich-editor" data-page="578" contenteditable="true" role="textbox" aria-multiline="true" spellcheck="false">春秋时，有位晋国贵族韩宣子访问鲁国，参观太史官收藏的典籍，发现其中就有《易象》（应当是《易经》和《象传》的合称）。韩宣子因此感叹：“周礼尽在鲁矣！吾乃今知周公之德，与周之所以王也！”这是周公写作《象传》的间接证据。[[fn:6]] 但另一方面，这一记载也说明，尽管《易象》保存在鲁国朝廷，但并不太普及，哪怕是晋国执政的高级贵族也只是首次见到。
-
-到春秋中后期，已经开始有使用《易经》占算的史料记录，而且还有了其他的卦爻辞版本。比如，有的爻辞里就出现了“千乘”一词，[[fn:7]] 意思是一千辆战车，但在文王的时代，即便商王朝也是很难集中起一千辆战车的，这只能是春秋时期创造的词。
-
-文王《易经》的内容本就很晦涩，所以春秋时期的贵族用它占算时，大都已经不知道或者说不再关注它的本意。其中比较明显的例子就是《易经》中的“贞”字，它的本意是甲骨卜辞中的“占”，但春秋时人却已经将其误解为“贞正”“贞操”之意了：“随，元亨，利贞……弃位而姣，不可谓贞。”（《左传•襄公九年》）
-
-那么，春秋时期的贵族会忘记《易经》中的文王事迹吗？这是个令人疑惑的问题，毕竟，这些贵族多是文王和周公的后裔。后世可以拿来比较的是，明初洪洞大槐树和南京珠矶巷移民的后人也可能已经不记得先祖当年的具体生活经历，保留至今的多是族谱文本中有记载的内容。
-
-如前所述，春秋时期有少许恢复人祭行为的个案，这说明五百年前的风俗记忆仍可以潜流传承。是不是《易经》也造成了某种暗黑记忆的保存？这背后藏着太多我们无法破解的谜团。
-
-孔子破解周公
-
-鲁国执政者季平子用莒人俘虏献祭的那一年，孔子二十岁，正在季平子的采邑里从事基层小吏工作，所以，这次人祭在曲阜造成的恐怖传闻，肯定会对孔子有所影响。</div>
-            </div>
-            <div class="scan"><img src="pdf_pages/page-576.jpg" alt="PDF page 578"></div>
-          </div>
-        </section>
-        <section class="page" id="page-579">
-          <div class="page-head">
-            <div class="page-title">原书阅读器页 579<span>原书物理 PDF 页 577</span><span>印刷页 565</span></div>
-            <div class="page-tools">
-              <button type="button" data-copy-page="579">复制本页</button>
-              <button type="button" data-export-page="579">导出本页</button>
-            </div>
-          </div>
-          <div class="workbench">
-            <div class="editor-wrap">
-              <div class="rich-editor" data-page="579" contenteditable="true" role="textbox" aria-multiline="true" spellcheck="false">孔子虽是鲁国人，但他的先祖出自宋国国君家族，所以他是商人后裔。而当孔子从事文献整理与学术工作后，他的身份自然会让他对商周之际的历史产生很大兴趣。
-
-在《论语》和《礼记》里，孔子经常比较殷、周乃至夏三代的文化制度异同，类似什么“殷之大白，周之大赤”等。（《礼记•明堂位》）当然，这些比较的结果自然是，商周制度大同小异。
-
-子曰：“殷因于夏礼，所损益，可知也；周因于殷礼，所损益，可知也；其或继周者，虽百世可知也。”（《论语•为政》）
-
-孔子还说：“周监（鉴）于二代（夏商），郁郁乎文哉！吾从周（《论语•八佾》）这都和周公奠定的官方历史论调完全相同。
-
-但是，前述孔子关于“殷人尊神，率民以事神，先鬼而后礼，先罚而后赏，尊而不亲。其民之敝，荡而不静，胜而无耻”的描述，却又是西周和春秋时期绝无仅有的，不仅不符合周朝官方的政治正确，而且孔子的信息来源也是个谜。
-
-我们至少知道的是，在孔子的春秋时代，上述“殷人”的特征早已经消失。宋国是商王族的继承者，但宋国上层已被周人完全同化，有时固然争强好胜，但主要还是为面子，或者说是周人文化里的“贵族精神”，绝对不是为了利益的“胜而无耻。
-
-以比孔子早一百多年的宋襄公为例，他最著名的事迹是和楚国的“泓之战”。宋襄公风格甚高，不肯攻击正在渡河及未成列的楚国军队，结果惨败，受伤而死，而且死前还振振有词地自我辩护，阐述道义是战争的首要原则：“君子不重伤，不禽二毛。古之为军也，不以阻隘也。寡人虽亡国之馀，不鼓不成列。”（《左传•僖公二十二年》）可见，宋襄公绝对不是“无耻”，而是耻感过分发达。至于崇拜鬼神的程度，宋国人也不比春秋列国更严重。</div>
-            </div>
-            <div class="scan"><img src="pdf_pages/page-577.jpg" alt="PDF page 579"></div>
-          </div>
-        </section>
-        <section class="page" id="page-580">
-          <div class="page-head">
-            <div class="page-title">原书阅读器页 580<span>原书物理 PDF 页 578</span><span>印刷页 566</span></div>
-            <div class="page-tools">
-              <button type="button" data-copy-page="580">复制本页</button>
-              <button type="button" data-export-page="580">导出本页</button>
-            </div>
-          </div>
-          <div class="workbench">
-            <div class="editor-wrap">
-              <div class="rich-editor" data-page="580" contenteditable="true" role="textbox" aria-multiline="true" spellcheck="false">但前述孔子关于商周文化之别的评价显示，即便是在周公五百年之后，应该也还存在着碎片化的关于商朝的真实历史记忆。考虑到孔子是专职搜集历史文献的学者，待他收集起足够多的关于商朝的碎片化知识后，是有可能逐渐拼合出一些“非官方”版本的真实历史的。
-
-其实，这在《论语》里有些迹象。
-
-在周公版的历史中，商人从没有过残忍的人祭宗教，商朝的灭亡只是因为纣王-帝辛个人的道德堕落，但孔子的学生子贡却试图为纣王“翻案”：
-
-纣之不善，不如是之甚也。是以君子恶居下流，天下之恶皆归焉。（《论语•子张》）
-
-大意是说，纣王的恶行并不像人们传说的那样过分，这就像是一个地方被当成了垃圾场，人们就专门往那里丢垃圾，纣王的形象也是被这样堆积出来的。
-
-在《论语》中，这段话是和子贡为晚年孔子辩护的几段话放在一起的。子贡是孔子晚年最信赖的学生，孔门十哲之一，复姓端木，殷商旧地卫国人，所以很可能也是商人后裔。这么说来，他和孔子可能有遥远的同族亲缘。据此，这师徒二人显然交流过一些官方版之外的商代秘史。子贡这段话被载入《论语》，说明编辑《论语》的孔门弟子认可其权威性。
-
-而孔子很可能就是从《易经》开始探索真实的商代的。从可靠的文献史料看，孔子平生从不关注“算命”问题，也从未给自己或别人占算过命运，不管是用甲骨还是易卦。孔子最常谈论的是诗、书、礼、乐，但他几乎从未对《易经》发表过评论。
-
-然而，到了晚年，孔子却突然对《易经》产生了兴趣，他说：
-
-加我数年，五十以学易，可以无大过矣。
-
-《论语•述而》里的这则记载很可靠，但具体含义有争议。有人将其解读为：“我如果能多活几年，比如五年或十年，用来学习《易经》，就不会有大错误了！”或者：“如果这几年我能重新再来一次，我会从五十岁开始学习《易经》，也就不会有大错误了！”</div>
-            </div>
-            <div class="scan"><img src="pdf_pages/page-578.jpg" alt="PDF page 580"></div>
-          </div>
-        </section>
-        <section class="page" id="page-581">
-          <div class="page-head">
-            <div class="page-title">原书阅读器页 581<span>原书物理 PDF 页 579</span><span>印刷页 567</span></div>
-            <div class="page-tools">
-              <button type="button" data-copy-page="581">复制本页</button>
-              <button type="button" data-export-page="581">导出本页</button>
-            </div>
-          </div>
-          <div class="workbench">
-            <div class="editor-wrap">
-              <div class="rich-editor" data-page="581" contenteditable="true" role="textbox" aria-multiline="true" spellcheck="false">〔按语：孔二不懂辩证法，一昧复辟。〕
-
-不管是哪种解释，这都是孔子晚年才会有的感慨。《史记》与此相关的记载是，孔子晚年频繁地研读《易经》，结果编竹简的皮条磨损严重，经常断裂，所谓“韦编三绝”。
-
-孔子晚而喜易，序彖、系、象、说卦、文言。读易，韦编三绝。日：“假我数年，若是，我于易则彬彬矣。”（《史记•孔子世家》）
-
-《礼记•礼运》还记载，孔子曾对弟子言偃（子游）说：
-
-我欲观殷道，是故之宋，而不足徵也，吾得《坤乾》焉。
-
-为之做“正义”的唐代学者孔颖达认为，这部《坤乾》是殷商（宋）人版本的易卦占算书，“谓得殷家阴阳之书也”，它的坤卦排在乾卦前面，和《易经》相反，所以称为《坤乾》。
-
-这个说法已经难以验证，但在此之前，孔子肯定有机会读到文王的《易经》。如前所述，韩宣子访问鲁国，“观书于大史氏，见《易象》与鲁《春秋》”，而孔子离开鲁国去宋国，发生在他五十七岁这年，也就是说，从五十岁到五十六岁期间，他一直身处鲁国高层，完全有条件读到官方收藏的周公注解版《易经》。
-
-作为周公后人，鲁国人对《易经》的理解可能非常阳光，完全沿用周公《象辞》的曲解，从而使孔子没有意识到它的史料价值。但当在宋国得到《坤乾》时，孔子却可能会获悉某些保存于《易经》中的真实的商周之际历史，毕竟，作为商人后裔的宋国最有可能保存这种暗黑记忆。
-
-司马迁认为，《易传》里的《系辞》是孔子所作。其实，这应当是孔门弟子记录的孔子观点。《系辞》对《易经》（文王卦爻辞）的来历有个推测，认为它是殷商末期周族兴起时的产物，内容主要是周文王和商纣王交往的事件，所以充满了危机之辞，所谓：
-
-《易》之兴也，其当殷之末世、周之盛德邪？当文王与纣之事邪？是故其辞危。</div>
-            </div>
-            <div class="scan"><img src="pdf_pages/page-579.jpg" alt="PDF page 581"></div>
-          </div>
-        </section>
-        <section class="page" id="page-582">
-          <div class="page-head">
-            <div class="page-title">原书阅读器页 582<span>原书物理 PDF 页 580</span><span>印刷页 568</span></div>
-            <div class="page-tools">
-              <button type="button" data-copy-page="582">复制本页</button>
-              <button type="button" data-export-page="582">导出本页</button>
-            </div>
-          </div>
-          <div class="workbench">
-            <div class="editor-wrap">
-              <div class="rich-editor" data-page="582" contenteditable="true" role="textbox" aria-multiline="true" spellcheck="false">此外，《系辞》还认为《易经》的作者充满了忧患之情：
-
-作《易》者，其有忧患乎？
-
-这种理解已经很接近真实的文王时期，而和周公的《象辞》很不一致，说明五十七岁之后的孔子已发掘出越来越多当年被周公隐藏的真相（商朝的血祭文化）。但是，孔子没有继续点破真相，而是频繁地翻检《易经》，以至“韦编三绝”。或许，孔子正是想从隐晦而杂乱的文王卦爻辞中复原出尽可能多的内容。
-
-今天的我们对商代的有效知识主要来自出土的遗址和甲骨文，而这只是商代极为有限的局部片段，犹如管中窥豹；而孔子通过收集当时的口述史与文献（孔子能见到的文献要比今天多得多）也同样可以建立起一部分有效知识。因此，孔子对商代的认知和现代人的认知应当存在一些交集，但也会有互不重合的部分。
-
-可以合理推测，孔子应该就是在逐渐认知真实商朝文化的过程中，更加理解了周公当年为何一定要埋葬商朝的真历史而重构一套夏商史。
-
-孔子是商王族后裔，他应该会感念周公给了商人生存的机会，还替他们抹去了血腥人祭的记忆，让子孙后代不必活在羞辱中。周公的这些宽容而伟大的事迹，被他自己掩埋五百年，又终被孔子再次破译。这或许才是他衷心服膺周公的根本原因。
-
-孔子甚至常常梦到周公，而周公本以为武王解梦著称。只有到临终前，孔子才感慨很难梦到周公了：
-
-甚矣吾衰也！久矣吾不复梦见周公。（《论语•述而》）
-
-在传统的历史叙事框架中，孔子梦周公这件事不是那么容易让人理解，甚至有些人还会觉得这是不是有点虚假，但将其放在真实的商周之际的历史背景中就好理解了：越是接近商文化的残酷真相，孔子就越是对周公有真正的理解和感激。换句话说，从民族间的征服与杀戮走向和解与融合，孔子是受益者，也是这段隐秘史的破译者。他有太多想说又不能明说的，只能在梦中倾诉。</div>
-            </div>
-            <div class="scan"><img src="pdf_pages/page-580.jpg" alt="PDF page 582"></div>
-          </div>
-        </section>
-        <section class="page" id="page-583">
-          <div class="page-head">
-            <div class="page-title">原书阅读器页 583<span>原书物理 PDF 页 581</span><span>印刷页 569</span></div>
-            <div class="page-tools">
-              <button type="button" data-copy-page="583">复制本页</button>
-              <button type="button" data-export-page="583">导出本页</button>
-            </div>
-          </div>
-          <div class="workbench">
-            <div class="editor-wrap">
-              <div class="rich-editor" data-page="583" contenteditable="true" role="textbox" aria-multiline="true" spellcheck="false">附录：孔子晚年编辑“六经”
-
-孔子晚年最重大的工作，是编辑儒家经典“六经”。
-
-这是按照周公精神对历史文献进行的一次前所未有的系统整理。“六经”成书后，从上古到孔子时代的历史叙事的权威版本就此诞生，也标志着周公开创新华夏、埋葬旧华夏的工作得以正式完成。而孔子则以此向周公致敬，并参与、发展了周公的事业。
-
-本书目的之一是再现夏商周更迭的历史，所以使用了“六经”中的很多史料素材，但也对有些史料进行了辨析，指出其不可靠或刻意作伪之处。
-
-“六经”具体是指《诗经》《尚书》《仪礼》《乐经》《易经》《春秋》。其中，《诗经》《尚书》《易经》包含大量商周易代时期的史料。在“六经”成书之前，社会上传抄流行的主要是单篇文章，真伪混杂，质量良莠不齐。为此，孔子选择了最可信且符合周公精神的汇编成书，而不符合这两点的篇章就逐渐失传了。
-
-《诗经》记载了周族从姜嫄、后稷以来的多篇史诗，包括周族早期历史、文王确立翦商大计、武王的灭商战争、周公平定三监叛乱以及对商文化的改造等，属于经过周公修订的官方正式版本。
-
-孔子继承周公事业的用心，则主要表现在他对《尚书》的编辑和选裁上。
-
-书是文献之意，《尚书》就是古代的文献。按时间顺序，《尚书》分为《虞书》（尧舜禹时期）、《夏书》、《商书》和《周书》。在收入“六经”之前，《尚书》中各篇都是单行本，基本规律是越古老的越不可信，内容大都是西周及之后的人按照周公重写上古历史的精神，虚构了尧舜禹和夏商时期的很多帝王故事和讲话稿，基本是周公式的道德说教，不具备史料价值。当然，也会有个别真正的商代文献，比如盘庚迁都的讲话稿，内容上和周公精神抵触不大，或者已经被周公授意删削过，所以保留了下来。总之，这些真真假假的篇章被孔子分别收入了《尚书》的《虞书》《夏书》和《商书》部分。</div>
-            </div>
-            <div class="scan"><img src="pdf_pages/page-581.jpg" alt="PDF page 583"></div>
-          </div>
-        </section>
-        <section class="page" id="page-584">
-          <div class="page-head">
-            <div class="page-title">原书阅读器页 584<span>原书物理 PDF 页 582</span><span>印刷页 570</span></div>
-            <div class="page-tools">
-              <button type="button" data-copy-page="584">复制本页</button>
-              <button type="button" data-export-page="584">导出本页</button>
-            </div>
-          </div>
-          <div class="workbench">
-            <div class="editor-wrap">
-              <div class="rich-editor" data-page="584" contenteditable="true" role="textbox" aria-multiline="true" spellcheck="false">而《周书》部分，则多数是周朝的官方文献，作伪的成分较少，而且肯定符合周公精神，所以在整部《尚书》里，商末周初这部分占的比重最大。
-
-以上是孔子认为符合周公精神、被收入《尚书》的文稿。此外，在西周朝，还有人写了一些关于商周之际的历史篇章，他们显然部分了解那段真实的历史，但并不完全遵循周公精神，所以和周公版文献很不一样。比如，有些文稿记载，灭商之前的武王生活在对商朝的恐惧之中，经常夜不成寐，需要周公的宽慰，但里面记载的周公的长篇大论有明显的虚构成分，因为兄弟二人的深夜谈话不可能被如实记录下来。还有的文稿记载了武王灭商后曾大量屠杀商人俘虏进行献祭，但关于人祭过程的描写不仅完全符合殷墟甲骨卜辞的记录，而且比卜辞更细致，这显然也不符合周公精神。
-
-这些稍有违背周公精神的历史篇章，并没有被孔子收录进《尚书》，但经过孔门的汇集、抄写和校勘，也形成了一个汇编本，被命名为《逸周书》，意思是“未能收入《尚书•周书》的文献”。开始的时候，《逸周书》可能只保存在孔门内部，只有少数弟子说得清这部离经叛道的书的来历。而到了战国之后，真正的商代历史已经被彻底遗忘，以“六经”为代表的周公版历史成了唯一的存在，所以《逸周书》虽然没有失传，但在此后两千多年的历史里，处境一直比较尴尬，不太受学者重视。只有到现代考古学诞生和商代遗址发掘后，人们这才发现，它的有些内容居然很符合商文化的本来面貌。
-
-至于《易经》，孔子虽然很精准地选择了文王而非春秋时流行的其他版本（如本书所述，文王的《易经》隐含的商末往事很多，周公的《象辞》其实是对文王原意的掩盖和曲解），但却继续奉行周公的原则，在给弟子讲授《易经》时，尽量避开商末的真实历史，重点从《易经》文本引申出宇宙秩序和社会伦理。这些讲授被他的学生整理成《文言》《系辞》《说卦》《序卦》等篇章，与周公《象传》合编在一起，被称为《易传》（对《易经》的解释）。[[fn:8]] 文王的《易经》和之后的《易传》，则被后人合称为《周易》。因此，要还原文王时代的历史，必须研究文王《易经》本身，而非《易传》，这样才能避免周公和孔子刻意制造的误导。</div>
-            </div>
-            <div class="scan"><img src="pdf_pages/page-582.jpg" alt="PDF page 584"></div>
-          </div>
-        </section>
-        <section class="page" id="page-585">
-          <div class="page-head">
-            <div class="page-title">原书阅读器页 585<span>原书物理 PDF 页 583</span><span>印刷页 571</span></div>
-            <div class="page-tools">
-              <button type="button" data-copy-page="585">复制本页</button>
-              <button type="button" data-export-page="585">导出本页</button>
-            </div>
-          </div>
-          <div class="workbench">
-            <div class="editor-wrap">
-              <div class="rich-editor" data-page="585" contenteditable="true" role="textbox" aria-multiline="true" spellcheck="false">在孔子生活的春秋时代，周王室早已丧失权威，诸侯列国并不真正关心所谓文化建设或王朝合法性问题，编辑“六经”可以说完全是孔子个人的追求，但此举确实继承了周公的事业，实现了周公的目的：掩埋真正的商文化，用重构的道德历史建构华夏文明起源。
-
-周公在事实上扭转了历史进程，改变了人们的认知；孔子则把这一切文本成果汇总起来，形成盖棺定论的“六经”经典，传递给后世：华夏文明的源头就是如此，再无其他。
-
-当然，孔子编辑“六经”的作用不止于此，其中还保存了从西周创立直到孔子时代的文化成果，这就是周人贵族社会的诗歌（《诗经》）、礼俗（《仪礼》）和历史（《春秋》）。
-
-可以说，“六经”是截至孔子时代的符合周公精神的华夏世界社会历史知识的总集，不仅是儒家学派的基石，也是传统时代的人们了解商周及更早时代的几乎唯一信息源。换句话说，“六经”决定了华夏新文明独有的内核与特质，是华夏新文明的源代码。孔子时代尚还保留着一些关于真实商文化的口传记忆，但到战国初年，伴随着各国的变法运动，贵族社会逐渐瓦解，新的集权君主制和官僚制国家机器建立了起来，而在这巨大的社会动荡和重组中，即便稍有文化的人也都只能忙于适应大变革，无人会留心渺茫的上古历史传说。就这样，有关商文化的残余记忆终于彻底失传。
-
-战国时期的诸子百家争鸣，还曾先后出现道、墨、法、名、兵等学派，但它们所拥有的古典知识根本无法和儒家相提并论，何况其对上古历史的认识也只能来自儒家“六经”，因此，即使对儒家理论有所不满，也无法脱离儒家知识走太远。
-
-概而言之，周公时代变革的最大结果，是神权退场，这让中国的文化过于“早熟”；战国时代变革的最大结果，是贵族退场，这让中国的政治过于“早熟”。而在其他诸人类文明中，神权和贵族政治的退场，都发生在公元1500年之后的所谓近现代时期。</div>
-            </div>
-            <div class="scan"><img src="pdf_pages/page-583.jpg" alt="PDF page 585"></div>
-          </div>
-        </section>
-        <section class="page" id="page-586">
-          <div class="page-head">
-            <div class="page-title">原书阅读器页 586<span>原书物理 PDF 页 584</span><span>印刷页 572</span></div>
-            <div class="page-tools">
-              <button type="button" data-copy-page="586">复制本页</button>
-              <button type="button" data-export-page="586">导出本页</button>
-            </div>
-          </div>
-          <div class="workbench">
-            <div class="editor-wrap">
-              <div class="rich-editor" data-page="586" contenteditable="true" role="textbox" aria-multiline="true" spellcheck="false">周公和孔子的努力维持了两三千年，直到考古学家的铲子挖出夏、商遗址，被“六经”等古文献掩盖和误读的历史真实，才得到重新诠释与复原。
-
-我们被考古学改变的认知，不只是夏商。
-
-注释
-
-1杜勇：《尚书•周初八诰研究》，中国社会科学出版社，1998年，第206页。另，在《尚书•盘庚》中，盘庚的发言中也有“天命”，但陈梦家认为，“商人称‘帝命’，无作天命者，天命乃周人之说法……此亦战国宋人之拟作”。参见陈梦家《尚书通论》，中华书局，1985年，第207页。本书认为，《盘庚》中的“天命”可能有西周之后的改动，但该文主体仍是盘庚时代的作品。
-
-2周公这方面的理论主张在《尚书•无逸》篇中体现较多。
-
-3按后世孔孟儒家的学说，能够完成这种角色的王者，就是“圣人”。在周公时代的文献中，“圣”字出现得还不多，在《尚书•多方》篇中，成王云“惟圣罔念作狂，惟狂克念作圣”，但其含义较模糊。
-
-4《礼记•表记》。这里区分了鬼和神，鬼指死者（先祖）的魂灵，神指上帝等至高神或自然神。
-
-5“象传”分大、小两种，解释卦辞的是“大象传”，解释爻辞的是“小象传”。此外，还有一种解释卦辞的“彖传”很可能也是周公所作。
-
-6《左传•昭公二年》：（韩宣子访问鲁国）观书于大史氏，见《易象》与鲁《春秋》，曰：“周礼尽在鲁矣！吾乃今知周公之德，与周之所以王也！”关于《易传•象传》的作者，史书有不同说法，《史记》认为是孔子所作。参见李学勤《周易经传溯源》，长春出版社，1992年，第46页。
-
-7秦国占卜师卜徒父说：“其卦遇《蛊》，曰：‘千乘三去，三去之余，获其雄狐。' 乃大吉也！ ”这里引用的卦爻辞不属于文王《易经》。参见《左传・僖公十五年》。</div>
-            </div>
-            <div class="scan"><img src="pdf_pages/page-584.jpg" alt="PDF page 586"></div>
-          </div>
-        </section>
-        <section class="page" id="page-587">
-          <div class="page-head">
-            <div class="page-title">原书阅读器页 587<span>原书物理 PDF 页 585</span><span>印刷页 573</span></div>
-            <div class="page-tools">
-              <button type="button" data-copy-page="587">复制本页</button>
-              <button type="button" data-export-page="587">导出本页</button>
-            </div>
-          </div>
-          <div class="workbench">
-            <div class="editor-wrap">
-              <div class="rich-editor" data-page="587" contenteditable="true" role="textbox" aria-multiline="true" spellcheck="false">8《史记•孔子世家》说，孔子晚年为《易经》撰写了很多种注解，所谓《十翼》或《易传》。但司马迁这个说法有些问题，因为《十翼》并不都是孔子所写，如《象传》和《彖传》可能是周公作品。其他篇章里常出现“子曰”，孔子自己肯定不会这样写，它们应当是孔门弟子编写的。《周易》经传的详细知识，可参考廖明春《周易经传十五讲》，北京大学出版社，2012年。
-
-[[editor-fn:1]]
-
-〔编者注1〕此版主要对生僻字注音，其余不予考虑，凡有注释均为系统测试。</div>
-            </div>
-            <div class="scan"><img src="pdf_pages/page-585.jpg" alt="PDF page 587"></div>
-          </div>
-        </section>
-        <section class="page" id="page-588">
-          <div class="page-head">
-            <div class="page-title">原书阅读器页 588<span>原书物理 PDF 页 586</span><span>印刷页 574</span></div>
-            <div class="page-tools">
-              <button type="button" data-copy-page="588">复制本页</button>
-              <button type="button" data-export-page="588">导出本页</button>
-            </div>
-          </div>
-          <div class="workbench">
-            <div class="editor-wrap">
-              <div class="rich-editor" data-page="588" contenteditable="true" role="textbox" aria-multiline="true" spellcheck="false"></div>
-            </div>
-            <div class="scan"><img src="pdf_pages/page-586.jpg" alt="PDF page 588"></div>
-          </div>
-        </section></div>
-        <section class="notes-dock" id="notes">
-          <h2>编辑札记</h2>
-          <div class="note-grid">
-            <div class="note-controls">
-              <label>页<select id="notePage"></select></label>
-              <div class="marker-composer" id="markerComposer">
-                <h3>标记</h3>
-                <label>类型<select id="markerType">
-                  <option value="pinyin">注音</option>
-                  <option value="editor-note">编者注／脚注</option>
-                  <option value="inline-note">按语</option>
-                  <option value="pending">待核</option>
-                  <option value="user-note">用户札记</option>
-                </select></label>
-                <label>内容<input id="markerText" type="text" autocomplete="off" placeholder="输入拼音或笔记内容"></label>
-                <p class="marker-help" id="markerHelp">先在正文中选择文字，再输入拼音；可用“拼音；简注”。</p>
-                <div class="note-actions"><button id="applyMarkerBtn" type="button">应用标记</button></div>
-              </div>
-              <label>工作日志标签<input id="noteTag" type="text" value="校订" autocomplete="off"></label>
-              <textarea id="noteText" spellcheck="false"></textarea>
-              <div class="note-actions">
-                <button id="addNoteBtn" type="button">记录到编辑日志</button>
-                <button id="exportLogBtn" type="button">导出日志</button>
-                <button id="downloadLogBtn" type="button">下载日志</button>
-                <button id="clearLogBtn" type="button">清空日志</button>
-              </div>
-            </div>
-            <div><div id="logList" class="log-list"></div></div>
-          </div>
-        </section>
-        <section class="export-dock"><h2>导出文本</h2><textarea id="exportText" spellcheck="false"></textarea></section>
-      </section>
+        <section class="panel"><h2>参考表</h2><div class="nav-list"><button type="button" class="nav-button" data-target="yueducibiao"><span>阅读词表</span><span>表</span></button><button type="button" class="nav-button" data-target="qingtongqicibiao"><span>青铜器词表</span><span>表</span></button><button type="button" class="nav-button" data-target="dushuzhaji"><span>章节导读札记</span><span>表</span></button><button type="button" class="nav-button" data-target="user-notes"><span>用户札记</span><span>注</span></button></div></section>
+        <section class="panel"><h2>术语</h2><div class="term-list"><button type="button" class="term" data-term="周公" data-pinyin="zhōu gōng" data-difficulty="3" data-domain="proper_name"><span>周公</span><span>zhōu gōng</span></button><button type="button" class="term" data-term="孔子" data-pinyin="kǒng zǐ" data-difficulty="3" data-domain="proper_name"><span>孔子</span><span>kǒng zǐ</span></button><button type="button" class="term" data-term="易经" data-pinyin="yì jīng" data-difficulty="4" data-domain="general"><span>易经</span><span>yì jīng</span></button><button type="button" class="term" data-term="尚书" data-pinyin="shàng shū" data-difficulty="4" data-domain="general"><span>尚书</span><span>shàng shū</span></button><button type="button" class="term" data-term="春秋" data-pinyin="chūn qiū" data-difficulty="4" data-domain="general"><span>春秋</span><span>chūn qiū</span></button><button type="button" class="term" data-term="六经" data-pinyin="liù jīng" data-difficulty="4" data-domain="general"><span>六经</span><span>liù jīng</span></button><button type="button" class="term" data-term="象传" data-pinyin="xiàng zhuàn" data-difficulty="4" data-domain="general"><span>象传</span><span>xiàng zhuàn</span></button><button type="button" class="term" data-term="儒家" data-pinyin="rú jiā" data-difficulty="3" data-domain="general"><span>儒家</span><span>rú jiā</span></button><button type="button" class="term" data-term="诗经" data-pinyin="shī jīng" data-difficulty="4" data-domain="general"><span>诗经</span><span>shī jīng</span></button><button type="button" class="term" data-term="易传" data-pinyin="yì zhuàn" data-difficulty="4" data-domain="general"><span>易传</span><span>yì zhuàn</span></button><button type="button" class="term" data-term="华夏文明" data-pinyin="huá xià wén míng" data-difficulty="3" data-domain="general"><span>华夏文明</span><span>huá xià wén míng</span></button><button type="button" class="term" data-term="周易" data-pinyin="zhōu yì" data-difficulty="4" data-domain="general"><span>周易</span><span>zhōu yì</span></button><button type="button" class="term" data-term="神权" data-pinyin="shén quán" data-difficulty="3" data-domain="general"><span>神权</span><span>shén quán</span></button><button type="button" class="term" data-term="逸周书" data-pinyin="yì zhōu shū" data-difficulty="4" data-domain="general"><span>逸周书</span><span>yì zhōu shū</span></button><button type="button" class="term" data-term="韦编三绝" data-pinyin="wéi biān sān jué" data-difficulty="3" data-domain="phrase"><span>韦编三绝</span><span>wéi biān sān jué</span></button><button type="button" class="term" data-term="彖传" data-pinyin="tuàn zhuàn" data-difficulty="4" data-domain="general"><span>彖传</span><span>tuàn zhuàn</span></button><button type="button" class="term" data-term="忖度" data-pinyin="cǔn duó" data-difficulty="4" data-domain="general"><span>忖度</span><span>cǔn duó</span></button><button type="button" class="term" data-term="佾" data-pinyin="yì" data-difficulty="4" data-domain="general"><span>佾</span><span>yì</span></button><button type="button" class="term" data-term="服膺" data-pinyin="fú yīng" data-difficulty="4" data-domain="general"><span>服膺</span><span>fú yīng</span></button><button type="button" class="term" data-term="诠释" data-pinyin="quán shì" data-difficulty="4" data-domain="general"><span>诠释</span><span>quán shì</span></button><button type="button" class="term" data-term="神权退场" data-pinyin="shén quán tuì chǎng" data-difficulty="3" data-domain="general"><span>神权退场</span><span>shén quán tuì chǎng</span></button><button type="button" class="term" data-term="贵族政治" data-pinyin="guì zú zhèng zhì" data-difficulty="3" data-domain="general"><span>贵族政治</span><span>guì zú zhèng zhì</span></button><button type="button" class="term" data-term="三监之乱" data-pinyin="sān jiān zhī luàn" data-difficulty="3" data-domain="general"><span>三监之乱</span><span>sān jiān zhī luàn</span></button><button type="button" class="term" data-term="口耳相传" data-pinyin="kǒu ěr xiāng chuán" data-difficulty="2" data-domain="phrase"><span>口耳相传</span><span>kǒu ěr xiāng chuán</span></button><button type="button" class="term" data-term="殷商遗民" data-pinyin="yīn shāng yí mín" data-difficulty="3" data-domain="general"><span>殷商遗民</span><span>yīn shāng yí mín</span></button><button type="button" class="term" data-term="甲骨卜辞" data-pinyin="jiǎ gǔ bǔ cí" data-difficulty="4" data-domain="general"><span>甲骨卜辞</span><span>jiǎ gǔ bǔ cí</span></button><button type="button" class="term" data-term="阿兹特克" data-pinyin="ā zī tè kè" data-difficulty="5" data-domain="archaeology"><span>阿兹特克</span><span>ā zī tè kè</span></button><button type="button" class="term" data-term="伯邑考" data-pinyin="bó yì kǎo" data-difficulty="3" data-domain="proper_name"><span>伯邑考</span><span>bó yì kǎo</span></button><button type="button" class="term" data-term="卦爻辞" data-pinyin="guà yáo cí" data-difficulty="4" data-domain="general"><span>卦爻辞</span><span>guà yáo cí</span></button><button type="button" class="term" data-term="周文王" data-pinyin="zhōu wén wáng" data-difficulty="3" data-domain="proper_name"><span>周文王</span><span>zhōu wén wáng</span></button><button type="button" class="term" data-term="孔颖达" data-pinyin="kǒng yǐng dá" data-difficulty="3" data-domain="proper_name"><span>孔颖达</span><span>kǒng yǐng dá</span></button><button type="button" class="term" data-term="上帝" data-pinyin="shàng dì" data-difficulty="3" data-domain="general"><span>上帝</span><span>shàng dì</span></button><button type="button" class="term" data-term="人牲" data-pinyin="rén shēng" data-difficulty="3" data-domain="general"><span>人牲</span><span>rén shēng</span></button><button type="button" class="term" data-term="人祭" data-pinyin="rén jì" data-difficulty="3" data-domain="general"><span>人祭</span><span>rén jì</span></button><button type="button" class="term" data-term="先后" data-pinyin="xiān hòu" data-difficulty="4" data-domain="general"><span>先后</span><span>xiān hòu</span></button><button type="button" class="term" data-term="分封" data-pinyin="fēn fēng" data-difficulty="3" data-domain="general"><span>分封</span><span>fēn fēng</span></button><button type="button" class="term" data-term="卜辞" data-pinyin="bǔ cí" data-difficulty="4" data-domain="general"><span>卜辞</span><span>bǔ cí</span></button><button type="button" class="term" data-term="卦辞" data-pinyin="guà cí" data-difficulty="3" data-domain="general"><span>卦辞</span><span>guà cí</span></button><button type="button" class="term" data-term="卫国" data-pinyin="wèi guó" data-difficulty="3" data-domain="proper_name"><span>卫国</span><span>wèi guó</span></button><button type="button" class="term" data-term="后稷" data-pinyin="hòu jì" data-difficulty="3" data-domain="proper_name"><span>后稷</span><span>hòu jì</span></button><button type="button" class="term" data-term="商王" data-pinyin="shāng wáng" data-difficulty="3" data-domain="proper_name"><span>商王</span><span>shāng wáng</span></button><button type="button" class="term" data-term="夏桀" data-pinyin="xià jié" data-difficulty="3" data-domain="proper_name"><span>夏桀</span><span>xià jié</span></button><button type="button" class="term" data-term="多方" data-pinyin="duō fāng" data-difficulty="4" data-domain="general"><span>多方</span><span>duō fāng</span></button><button type="button" class="term" data-term="大过" data-pinyin="dà guò" data-difficulty="4" data-domain="general"><span>大过</span><span>dà guò</span></button><button type="button" class="term" data-term="姜嫄" data-pinyin="jiāng yuán" data-difficulty="4" data-domain="general"><span>姜嫄</span><span>jiāng yuán</span></button><button type="button" class="term" data-term="宋国" data-pinyin="sòng guó" data-difficulty="3" data-domain="proper_name"><span>宋国</span><span>sòng guó</span></button><button type="button" class="term" data-term="崇国" data-pinyin="chóng guó" data-difficulty="3" data-domain="proper_name"><span>崇国</span><span>chóng guó</span></button><button type="button" class="term" data-term="左传" data-pinyin="zuǒ zhuàn" data-difficulty="4" data-domain="general"><span>左传</span><span>zuǒ zhuàn</span></button><button type="button" class="term" data-term="帝辛" data-pinyin="dì xīn" data-difficulty="3" data-domain="proper_name"><span>帝辛</span><span>dì xīn</span></button><button type="button" class="term" data-term="成王" data-pinyin="chéng wáng" data-difficulty="3" data-domain="proper_name"><span>成王</span><span>chéng wáng</span></button><button type="button" class="term" data-term="政体" data-pinyin="zhèng tǐ" data-difficulty="3" data-domain="general"><span>政体</span><span>zhèng tǐ</span></button><button type="button" class="term" data-term="无逸" data-pinyin="wú yì" data-difficulty="4" data-domain="general"><span>无逸</span><span>wú yì</span></button><button type="button" class="term" data-term="楚国" data-pinyin="chǔ guó" data-difficulty="3" data-domain="proper_name"><span>楚国</span><span>chǔ guó</span></button><button type="button" class="term" data-term="武王" data-pinyin="wǔ wáng" data-difficulty="3" data-domain="proper_name"><span>武王</span><span>wǔ wáng</span></button><button type="button" class="term" data-term="殷商" data-pinyin="yīn shāng" data-difficulty="5" data-domain="general"><span>殷商</span><span>yīn shāng</span></button><button type="button" class="term" data-term="殷墟" data-pinyin="yīn xū" data-difficulty="5" data-domain="archaeology"><span>殷墟</span><span>yīn xū</span></button><button type="button" class="term" data-term="殷都" data-pinyin="yīn dū" data-difficulty="5" data-domain="general"><span>殷都</span><span>yīn dū</span></button><button type="button" class="term" data-term="沦丧" data-pinyin="lún sàng" data-difficulty="4" data-domain="general"><span>沦丧</span><span>lún sàng</span></button><button type="button" class="term" data-term="爻辞" data-pinyin="yáo cí" data-difficulty="3" data-domain="general"><span>爻辞</span><span>yáo cí</span></button><button type="button" class="term" data-term="献祭" data-pinyin="xiàn jì" data-difficulty="3" data-domain="general"><span>献祭</span><span>xiàn jì</span></button><button type="button" class="term" data-term="王权" data-pinyin="wáng quán" data-difficulty="3" data-domain="general"><span>王权</span><span>wáng quán</span></button><button type="button" class="term" data-term="盘庚" data-pinyin="pán gēng" data-difficulty="3" data-domain="proper_name"><span>盘庚</span><span>pán gēng</span></button><button type="button" class="term" data-term="纣王" data-pinyin="zhòu wáng" data-difficulty="3" data-domain="proper_name"><span>纣王</span><span>zhòu wáng</span></button><button type="button" class="term" data-term="翦商" data-pinyin="jiǎn shāng" data-difficulty="4" data-domain="general"><span>翦商</span><span>jiǎn shāng</span></button><button type="button" class="term" data-term="鲁国" data-pinyin="lǔ guó" data-difficulty="3" data-domain="proper_name"><span>鲁国</span><span>lǔ guó</span></button><button type="button" class="term" data-term="爵" data-pinyin="jué" data-difficulty="5" data-domain="bronze_vessel"><span>爵</span><span>jué</span></button></div></section>
+      </aside>
     </div>
   </main>
   <button class="quick-note-jump" type="button" data-target="notes">札记</button>
@@ -698,6 +693,11 @@
     const chapterNotesBodyEl = document.getElementById('chapterNotesBody');
     const chapterNoteTitleEl = document.getElementById('chapterNoteTitle');
     const chapterNoteTextEl = document.getElementById('chapterNoteText');
+    const sourceViewerImageEl = document.getElementById('sourceViewerImage');
+    const sourceViewerMetaEl = document.getElementById('sourceViewerMeta');
+    const sourceViewerEl = document.querySelector('.source-viewer');
+    const sourceViewerHome = document.createComment('source-viewer-home');
+    sourceViewerEl.before(sourceViewerHome);
     let activeArea = null;
     let viewMode = 'clean';
     let cleanViewTexts = {};
@@ -705,8 +705,35 @@
     let voices = [];
     let allowSave = true;
     let savedFormatRange = null;
+    let sourceNavigationLockUntil = 0;
     function setStatus(text, tone = '') { statusEl.textContent = text; statusEl.style.color = tone === 'ok' ? 'var(--ok)' : tone === 'warn' ? 'var(--warn)' : 'var(--muted)'; }
     function textareas() { return Array.from(document.querySelectorAll('.rich-editor[data-page]')); }
+    function syncSourceViewer(area) {
+      if (!area || !sourceViewerImageEl) return;
+      sourceViewerImageEl.src = area.dataset.sourceImage;
+      sourceViewerImageEl.alt = `原书 PDF 页 ${area.dataset.sourcePage}`;
+      sourceViewerMetaEl.textContent = `原阅 ${area.dataset.page} · 原PDF ${area.dataset.sourcePage} · 印 ${area.dataset.printedPage}`;
+    }
+    function restoreSourceViewer() { sourceViewerHome.after(sourceViewerEl); }
+    function currentSourceLayout() { return SOURCE_LAYOUTS.find(name => document.body.classList.contains(`source-layout-${name}`)) || 'text-primary'; }
+    function showPagePair(target) {
+      const area = target?.matches('.rich-editor') ? target : target?.querySelector('.rich-editor');
+      if (!area) return false;
+      activeArea = area;
+      sourceNavigationLockUntil = Date.now() + 1400;
+      syncSourceViewer(area);
+      if (matchMedia('(max-width:980px)').matches) {
+        const page = area.closest('.page');
+        const pdfFirst = ['pdf-primary','pdf'].includes(currentSourceLayout());
+        pdfFirst ? page.before(sourceViewerEl) : page.after(sourceViewerEl);
+        (pdfFirst ? sourceViewerEl : page).scrollIntoView({ behavior:'smooth', block:'start' });
+      } else {
+        restoreSourceViewer();
+        applySourceLayout('text-primary');
+        target.scrollIntoView({ behavior:'smooth', block:'start' });
+      }
+      return true;
+    }
     function editorText(area) { return area.innerText.replace(/ /g, ' ').replace(/\n$/, ''); }
     function nodeAtOffset(root, wanted) {
       const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT);
@@ -899,7 +926,7 @@
     document.getElementById('insertImageBtn').addEventListener('click',()=>{if(viewMode!=='clean'){setStatus('请先切换回清稿再插入图片','warn');return}if(!activeArea){setStatus('请先在正文中放置光标','warn');return}document.getElementById('editorImageInput').click();});
     document.getElementById('editorImageInput').addEventListener('change',async event=>{const file=event.target.files[0];if(!file)return;try{const caption=prompt('请输入图片说明和来源（可稍后在正文中修改）：',file.name)||file.name;insertEditorialImage(await prepareImage(file),file.name,caption)}catch(error){setStatus(error.message,'warn')}finally{event.target.value=''}});
     document.addEventListener('click',event=>{const size=event.target.closest('[data-image-size]'),remove=event.target.closest('[data-image-remove]'),figure=event.target.closest('.editorial-image');if(size&&figure){figure.dataset.size=size.dataset.imageSize;figure.closest('.rich-editor')?.dispatchEvent(new Event('input',{bubbles:true}))}else if(remove&&figure&&confirm('删除这张插图？')){const area=figure.closest('.rich-editor'),page=area?.dataset.page;figure.remove();area?.dispatchEvent(new Event('input',{bubbles:true}));addLog('删除图片','',page)}});
-    document.querySelectorAll('[data-target]').forEach(button => button.addEventListener('click', () => document.getElementById(button.dataset.target)?.scrollIntoView({ behavior: 'smooth', block: 'start' })));
+    document.querySelectorAll('[data-target]').forEach(button => button.addEventListener('click', () => { const target=document.getElementById(button.dataset.target);if (!showPagePair(target)) target?.scrollIntoView({ behavior:'smooth',block:'start' }); }));
     textareas().forEach(initializeRichEditor);
     textareas().forEach(area => { area.addEventListener('input', () => { queueSave(); renderUserNotes(); }); area.addEventListener('focus', () => { activeArea = area; notePageEl.value = area.dataset.page; }); area.addEventListener('click', () => captureEditorSelection(area)); area.addEventListener('keyup', () => captureEditorSelection(area)); area.addEventListener('mouseup', () => captureEditorSelection(area)); area.addEventListener('keydown',event=>{if(event.key==='Enter'&&viewMode==='clean'){event.preventDefault();captureEditorSelection(area);area.setRangeText('\n');area.dispatchEvent(new Event('input',{bubbles:true}));}}); area.addEventListener('paste',event=>{if(viewMode!=='clean')return;event.preventDefault();captureEditorSelection(area);area.setRangeText(event.clipboardData.getData('text/plain'));area.dispatchEvent(new Event('input',{bubbles:true}));}); });
     document.querySelectorAll('button.term').forEach(button => button.addEventListener('click', () => addNotation(button.dataset.term, button.dataset.pinyin)));
@@ -954,30 +981,45 @@
     document.getElementById('clearLogBtn').addEventListener('click', () => { if (!confirm('清空本浏览器保存的编辑日志？')) return; localStorage.removeItem(LOG_KEY); renderLog(); setStatus('日志已清空', 'ok'); });
     document.getElementById('resetBtn').addEventListener('click', () => { if (!confirm('恢复 chapter clean 原稿会清除本浏览器保存的编辑内容。继续？')) return; clearTimeout(timer); allowSave = false; if (viewMode === 'annotated') setView('clean'); textareas().forEach(area => area.value = ORIGINAL_TEXTS[area.dataset.page] ?? ''); cleanViewTexts = { ...ORIGINAL_TEXTS }; cleanViewHtml = {}; localStorage.removeItem(STORAGE_KEY); sessionStorage.removeItem(`${STORAGE_KEY}:view`); viewMode = 'clean'; textareas().forEach(area => { area.readOnly = false; area.classList.remove('annotated-view'); }); document.getElementById('viewToggleBtn').textContent = '切换为注音稿'; modeBadgeEl.textContent = '当前：清稿'; modeBadgeEl.classList.remove('annotated'); allowSave = true; setStatus('已恢复 chapter clean 原稿', 'ok'); addLog('恢复 clean 原稿', '', currentPage()); });
     window.addEventListener('beforeunload', () => { if (allowSave) saveNow(false); });
-    const sourceLayoutSlider = document.getElementById('sourceLayoutSlider');
-    const sourceLayoutOutput = document.getElementById('sourceLayoutOutput');
-    const SOURCE_LAYOUT_KEY = 'jianshang-text-pdf-layout-v1';
+    const sourceLayoutControl = document.querySelector('.source-layout-control');
+    const sourceLayoutButton = document.getElementById('sourceLayoutButton');
+    const SOURCE_LAYOUT_KEY = 'jianshang-primary-reference-layout-v3';
+    const SOURCE_LAYOUTS = ['text','text-primary','balanced','pdf-primary','pdf'];
+    const SOURCE_LAYOUT_LABELS = { text:'正文', 'text-primary':'正文为主', balanced:'均衡', 'pdf-primary':'PDF为主', pdf:'PDF' };
     function applySourceLayout(raw, persist=true) {
-      const pdf = Math.max(0, Math.min(100, Number(raw)));
-      const text = 100 - pdf;
-      document.documentElement.style.setProperty('--text-share', `${text || 1}fr`);
-      document.documentElement.style.setProperty('--pdf-share', `${pdf || 1}fr`);
-      document.body.classList.toggle('text-only', pdf === 0);
-      document.body.classList.toggle('pdf-only', pdf === 100);
-      document.body.classList.toggle('pdf-priority', pdf > 50 && pdf < 100);
-      sourceLayoutSlider.value = String(pdf);
-      sourceLayoutOutput.textContent = pdf === 0 ? '仅正文' : pdf === 100 ? '仅 PDF' : `正文 ${text}% · PDF ${pdf}%`;
-      if (persist) localStorage.setItem(SOURCE_LAYOUT_KEY, String(pdf));
+      const mode = SOURCE_LAYOUTS.includes(raw) ? raw : 'text-primary';
+      const layout = document.querySelector('.layout');
+      layout.classList.remove('workspace-pane-layout','workspace-pane-primary-only','workspace-pane-secondary-only','workspace-pane-secondary-first','workspace-pane-has-splitter');
+      layout.style.removeProperty('--workspace-primary-share');
+      layout.style.removeProperty('--workspace-secondary-share');
+      layout.querySelectorAll('[data-pane-primary],[data-pane-secondary]').forEach(node => { delete node.dataset.panePrimary; delete node.dataset.paneSecondary; });
+      document.querySelector('.workspace-pane-balance')?.remove();
+      SOURCE_LAYOUTS.forEach(name => document.body.classList.toggle(`source-layout-${name}`, name === mode));
+      document.querySelectorAll('[data-source-layout]').forEach(button => button.classList.toggle('active', button.dataset.sourceLayout === mode));
+      sourceLayoutButton.textContent = '分栏布局';
+      sourceLayoutButton.setAttribute('aria-label', `分栏布局，当前：${SOURCE_LAYOUT_LABELS[mode]}`);
+      if (!matchMedia('(max-width:980px)').matches) restoreSourceViewer();
+      if (persist) localStorage.setItem(SOURCE_LAYOUT_KEY, mode);
     }
-    sourceLayoutSlider.addEventListener('input', event => applySourceLayout(event.target.value));
-    document.querySelectorAll('[data-pdf-share]').forEach(button => button.addEventListener('click', () => applySourceLayout(button.dataset.pdfShare)));
-    applySourceLayout(localStorage.getItem(SOURCE_LAYOUT_KEY) ?? (matchMedia('(max-width:980px)').matches ? 0 : 30), false);
+    sourceLayoutButton.addEventListener('click', event => { event.stopPropagation(); const open = sourceLayoutControl.classList.toggle('open'); sourceLayoutButton.setAttribute('aria-expanded', String(open)); });
+    document.querySelectorAll('[data-source-layout]').forEach(button => button.addEventListener('click', () => { applySourceLayout(button.dataset.sourceLayout); sourceLayoutControl.classList.remove('open'); sourceLayoutButton.setAttribute('aria-expanded','false'); }));
+    document.addEventListener('click', event => { if (!sourceLayoutControl.contains(event.target)) { sourceLayoutControl.classList.remove('open'); sourceLayoutButton.setAttribute('aria-expanded','false'); } });
+    document.addEventListener('keydown', event => { if (event.key === 'Escape') { sourceLayoutControl.classList.remove('open'); sourceLayoutButton.setAttribute('aria-expanded','false'); } });
+    applySourceLayout(localStorage.getItem(SOURCE_LAYOUT_KEY) ?? 'text-primary', false);
     populateNotePages();
     updateMarkerGuidance();
     loadSaved();
     renderUserNotes();
     renderChapterNotes();
     activeArea = textareas()[0] || null;
+    syncSourceViewer(activeArea);
+    textareas().forEach(area => area.addEventListener('focusin', () => syncSourceViewer(area)));
+    const sourcePageObserver = new IntersectionObserver(entries => {
+      if (Date.now() < sourceNavigationLockUntil) return;
+      const visible = entries.filter(entry => entry.isIntersecting).sort((a,b) => b.intersectionRatio - a.intersectionRatio)[0];
+      if (visible) syncSourceViewer(visible.target);
+    }, { rootMargin:'-15% 0px -65% 0px', threshold:[0,.25,.5] });
+    textareas().forEach(area => sourcePageObserver.observe(area));
     applyDictionarySettings();
     loadProjectDictionaryOverrides();
     loadVoices();

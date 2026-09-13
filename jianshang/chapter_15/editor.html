@@ -35,8 +35,16 @@
     .format-divider { height:1px; margin:5px 4px; background:#ddd7cb; }
     .status { color:var(--muted); font-size:.86rem; min-width:132px; text-align:right; }
     main { width:min(1440px,calc(100% - 28px)); margin:18px auto 48px; }
-    .layout { display:grid; grid-template-columns:280px minmax(0,1fr); gap:18px; align-items:start; }
-    aside { position:sticky; top:calc(var(--editor-header-height, 75px) + 12px); display:grid; gap:14px; max-height:calc(100vh - var(--editor-header-height, 75px) - 24px); overflow:auto; }
+    .layout { display:grid; grid-template-columns:minmax(0,7fr) minmax(320px,3fr); gap:18px; align-items:start; }
+    .editing-pane, .layout > aside { min-width:0; }
+    aside { position:sticky; top:calc(var(--editor-header-height, 75px) + 12px); display:grid; gap:14px; max-height:calc(100vh - var(--editor-header-height, 75px) - 24px); overflow:auto; container-type:inline-size; }
+    body.source-layout-text-primary .layout { grid-template-columns:minmax(0,7fr) minmax(320px,3fr) !important; }
+    body.source-layout-balanced .layout { grid-template-columns:minmax(0,1fr) minmax(320px,1fr) !important; }
+    body.source-layout-pdf-primary .layout { grid-template-columns:minmax(0,2fr) minmax(320px,3fr) !important; }
+    body.source-layout-text .layout, body.source-layout-pdf .layout { grid-template-columns:minmax(0,1fr) !important; }
+    body.source-layout-text .editing-pane { order:1; } body.source-layout-text .layout > aside { order:2; }
+    body.source-layout-pdf .layout > aside { order:1; } body.source-layout-pdf .editing-pane { order:2; }
+    body.source-layout-text .layout > aside, body.source-layout-pdf .layout > aside { position:static; max-height:none; }
     .panel, .page, .toc-page, .reference-panel, .notes-dock, .export-dock { background:var(--paper); border:1px solid var(--line); box-shadow:var(--shadow); }
     .panel h2, .reference-panel h2, .notes-dock h2, .export-dock h2 { margin:0; padding:10px 12px; font-size:.95rem; border-bottom:1px solid var(--line); background:var(--soft); }
     .page-number-legend { padding:8px 11px; font-size:.82rem; color:var(--muted); }
@@ -52,9 +60,12 @@
     .toc-page, .reference-panel, .page { scroll-margin-top:86px; }
     .toc-head { display:flex; justify-content:space-between; gap:14px; align-items:baseline; padding:14px 16px; border-bottom:1px solid var(--line); background:#fff; }
     .toc-head h2 { margin:0; font-size:1.15rem; }
-    .toc-body { display:grid; grid-template-columns:minmax(0,1fr) minmax(280px,.72fr); gap:18px; padding:14px 16px 16px; }
+    .toc-body { display:grid; grid-template-columns:minmax(0,1fr); gap:18px; padding:14px 16px 16px; }
     .toc-body h3 { margin:0 0 8px; font-size:.95rem; }
     .toc-links { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:6px; }
+    .toc-work-notes { padding-top:14px; border-top:1px solid var(--line); }
+    .toc-work-notes p:last-child { margin-bottom:0; }
+    @container (max-width:560px) { .toc-links { grid-template-columns:minmax(0,1fr); } }
     .toc-link { display:flex; justify-content:space-between; gap:10px; border:1px solid var(--line); border-radius:6px; background:#fff; color:var(--ink); text-decoration:none; padding:7px 9px; min-height:34px; align-items:center; }
     .toc-link.available { border-left:4px solid var(--ok); background:#f4fbf6; }
     .toc-link.current { border:2px solid var(--accent); background:#fff0ec; color:var(--accent); font-weight:700; }
@@ -64,7 +75,7 @@
     .legend-current::before { background:var(--accent); } .legend-available::before { background:var(--ok); } .legend-unavailable::before { background:#aaa; }
     .toc-link span:first-child { overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
     .toc-link span:last-child { color:var(--muted); font-size:.86rem; font-variant-numeric:tabular-nums; white-space:nowrap; }
-    .reference-grid { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:14px; margin:18px 0; align-items:start; }
+    .reference-grid { display:grid; grid-template-columns:1fr; gap:14px; align-items:start; }
     #user-notes { grid-column:1 / -1; }
     #user-notes .table-scroll { max-height:440px; }
     #user-notes table { table-layout:fixed; }
@@ -87,14 +98,13 @@
     .page-title { font-weight:700; }
     .page-title span { color:var(--muted); font-weight:500; margin-left:8px; }
     .page-tools { display:flex; gap:8px; flex-wrap:wrap; }
-    .source-layout-control { margin:12px auto; max-width:760px; padding:10px 14px; border:1px solid var(--line); border-radius:10px; background:#fff; display:flex; align-items:center; gap:10px; flex-wrap:wrap; }
-    .source-layout-control strong { margin-right:auto; }
-    .source-layout-control input { width:min(280px,48vw); }
-    .source-layout-control output { min-width:145px; color:var(--muted); font-size:.86rem; }
-    .workbench { display:grid; grid-template-columns:minmax(340px,var(--text-share,70fr)) minmax(300px,var(--pdf-share,30fr)); gap:0; align-items:stretch; }
-    body.text-only .workbench, body.pdf-only .workbench { grid-template-columns:1fr; }
-    body.text-only .scan, body.pdf-only .editor-wrap { display:none; }
-    .editor-wrap { padding:12px; border-right:1px solid var(--line); display:flex; min-height:560px; }
+    .source-layout-control { position:relative; display:inline-flex; }
+    .source-layout-popover { position:absolute; z-index:60; top:calc(100% + 6px); right:0; display:none; min-width:150px; padding:6px; border:1px solid var(--line); border-radius:8px; background:#fff; box-shadow:0 10px 30px #2927202e; }
+    .source-layout-control.open .source-layout-popover { display:grid; gap:4px; }
+    .source-layout-popover button { width:100%; text-align:left; white-space:nowrap; }
+    .source-layout-popover button.active { background:#e6f4ea; color:#137333; font-weight:700; }
+    .workbench { display:block; }
+    .editor-wrap { padding:12px; display:flex; min-height:560px; }
     textarea { width:100%; min-height:0; border:1px solid var(--line); background:#fff; color:var(--ink); padding:14px; border-radius:6px; line-height:1.85; font-size:1.02rem; letter-spacing:0; overflow:auto; }
     .rich-editor { width:100%; min-height:536px; border:1px solid var(--line); background:#fff; color:var(--ink); padding:14px; border-radius:6px; line-height:1.85; font-size:1.02rem; letter-spacing:0; overflow:auto; white-space:pre-wrap; overflow-wrap:anywhere; }
     .rich-editor.annotated-view { background:#fff9e8; color:#5b481f; }
@@ -104,8 +114,13 @@
     .speech-rate { display:flex; align-items:center; gap:4px; color:var(--muted); font-size:.82rem; }
     #speechRate { width:82px; }
     .hidden { display:none !important; }
-    .scan { padding:12px; background:#fbfaf6; display:flex; }
-    .scan img { width:100%; height:auto; display:block; border:1px solid var(--line); background:#fff; align-self:flex-start; }
+    .source-viewer { background:#fbfaf6; }
+    .source-viewer-head { display:flex; justify-content:space-between; gap:8px; padding:9px 11px; border-bottom:1px solid var(--line); align-items:center; }
+    .source-viewer-head strong { font-size:.9rem; }
+    .source-viewer-meta { color:var(--muted); font-size:.78rem; }
+    .source-viewer img { width:100%; height:auto; display:block; background:#fff; }
+    .source-viewer-actions { display:flex; gap:7px; padding:9px; border-top:1px solid var(--line); }
+    .source-viewer-actions a { flex:1; justify-content:center; text-align:center; }
     .notes-dock { margin-top:18px; scroll-margin-top:86px; }
     .note-grid { display:grid; grid-template-columns:minmax(240px,.75fr) minmax(320px,1fr); gap:12px; padding:12px; }
     .note-controls { display:grid; gap:10px; align-content:start; }
@@ -124,7 +139,7 @@
     .export-dock { margin-top:18px; }
     #exportText { min-height:240px; border:0; border-radius:0; }
     .quick-note-jump { position:fixed; right:18px; bottom:18px; z-index:25; background:var(--accent); color:var(--accent-ink); border-color:var(--accent); box-shadow:0 8px 24px rgba(30,24,16,.18); }
-    @media (max-width:980px) { .topbar { grid-template-columns:1fr; } .actions { justify-content:flex-start; } .status { text-align:left; } .layout { grid-template-columns:1fr; } aside { position:static; max-height:none; } .toc-body, .note-grid { grid-template-columns:1fr; } .toc-links { grid-template-columns:1fr; } .reference-grid { grid-template-columns:1fr; } .workbench { grid-template-columns:1fr; } .editor-wrap { border-right:0; border-bottom:1px solid var(--line); } body.pdf-priority .scan { grid-row:1; } body.pdf-priority .editor-wrap { grid-row:2; } .rich-editor { min-height:520px; } .quick-note-jump { right:12px; bottom:12px; } }
+    @media (max-width:980px) { .topbar { grid-template-columns:1fr; } .actions { justify-content:flex-start; } .status { text-align:left; } .layout, body.source-layout-text-primary .layout, body.source-layout-balanced .layout, body.source-layout-pdf-primary .layout { grid-template-columns:minmax(0,1fr) !important; } aside { position:static; max-height:none; } body.source-layout-pdf-primary .layout > aside, body.source-layout-pdf .layout > aside { order:1; } body.source-layout-pdf-primary .editing-pane, body.source-layout-pdf .editing-pane { order:2; } body.source-layout-text .editing-pane, body.source-layout-text-primary .editing-pane, body.source-layout-balanced .editing-pane { order:1; } body.source-layout-text .layout > aside, body.source-layout-text-primary .layout > aside, body.source-layout-balanced .layout > aside { order:2; } .source-layout-popover { position:fixed; top:var(--editor-header-height,75px); right:12px; } .toc-body, .note-grid { grid-template-columns:1fr; } .toc-links { grid-template-columns:1fr; } .reference-grid { grid-template-columns:1fr; } .rich-editor { min-height:520px; } .quick-note-jump { right:12px; bottom:12px; } }
   </style>
 </head>
 <body>
@@ -134,24 +149,681 @@
     reference-href="../reference_tables.html">
     <noscript>此编辑器需要启用 JavaScript。</noscript>
   </jianshang-editor-header>
-  <section class="source-layout-control" aria-label="正文与 PDF 布局">
-    <strong>正文 / PDF</strong>
-    <button type="button" data-pdf-share="0">仅正文</button>
-    <button type="button" data-pdf-share="30">正文优先</button>
-    <button type="button" data-pdf-share="50">均衡</button>
-    <button type="button" data-pdf-share="100">仅 PDF</button>
-    <input id="sourceLayoutSlider" type="range" min="0" max="100" step="5" aria-label="PDF 所占比例">
-    <output id="sourceLayoutOutput"></output>
-  </section>
   <main>
     <div class="layout">
+      <section class="editing-pane">
+        <div class="pages">
+        <section class="page" id="page-301">
+          <div class="page-head">
+            <div class="page-title">原书阅读器页 301<span>原书物理 PDF 页 299</span><span>印刷页 287</span></div>
+            <div class="page-tools">
+              <button type="button" data-copy-page="301">复制本页</button>
+              <button type="button" data-export-page="301">导出本页</button>
+            </div>
+          </div>
+          <div class="workbench">
+            <div class="editor-wrap">
+              <div class="rich-editor" data-page="301" data-source-page="299" data-printed-page="287" data-source-image="pdf_pages/page-299.jpg" contenteditable="true" role="textbox" aria-multiline="true" spellcheck="false">第十五章周族的起源史诗与考古
+
+周，是一个兴起于西土的部族。
+
+和商人的传说类似，周人的始祖也是未婚女子遇到神迹而生下伟大的儿子，但比起夏商两代的族源，周人史诗包含的信息量要多得多。可以说，从一开始，周族的来源就相对清晰可靠，不仅后世考古有发现周族开国三百年前的聚落，亦和文献中的很多记载有呼应。
+
+但是，讲述周族的起源也有很大的困难。周族本来没有文字，只有口头的传说，是灭商之后才开始用商人发明的文字记录自己的历史，难免会渗入一些商文化元素。而且，西周之后，人们还创造了那些更古老的半神帝王的“创世记”，比如黄帝和炎帝，嫁接和混淆了很多周族早期传说，造成了很多混乱。
+
+所以，我们需要剔除那些西周以后附会的故事，“正本清源”地讲述周族的起源。
+
+周族出自羌人
+
+《诗经•大雅》中《生民》，记载了周族的创始传说。
+
+厥初生民，时维姜嫄。生民如何？克禋克祀，以弗无子。履帝武敏、歆，攸介攸止，载震载夙。载生载育，时维后稷。
+
+诞弥厥月，先生如达。不坼不副，无菑无害，以赫厥灵。上帝不宁，不康禋祀，居然生子。
+
+诞寘之隘巷，牛羊腓字之。诞寘之平林，会伐平林。诞寘之寒冰，鸟覆翼之。鸟乃去矣，后稷呱矣。实覃实訏，厥声载路。
+
+诞实匍匐，克岐克嶷，以就口食。蓺之荏菽，荏菽旆旆。禾役穟穟，麻麦幪幪，瓜瓞唪唪。
+
+诞后稷之穑，有相之道。茀厥丰草，种之黄茂。实方实苞，实种实褎。实发实秀，实坚实好。实颖实栗，即有邰家室。
+
+诞降嘉种：维秬维秠，维穈维芑。恒之秬秠，是获是亩。恒之穈芑，是任是负，以归肇祀。</div>
+            </div>
+          </div>
+        </section>
+        <section class="page" id="page-302">
+          <div class="page-head">
+            <div class="page-title">原书阅读器页 302<span>原书物理 PDF 页 300</span><span>印刷页 288</span></div>
+            <div class="page-tools">
+              <button type="button" data-copy-page="302">复制本页</button>
+              <button type="button" data-export-page="302">导出本页</button>
+            </div>
+          </div>
+          <div class="workbench">
+            <div class="editor-wrap">
+              <div class="rich-editor" data-page="302" data-source-page="300" data-printed-page="288" data-source-image="pdf_pages/page-300.jpg" contenteditable="true" role="textbox" aria-multiline="true" spellcheck="false">诞我祀如何，或舂或揄，或簸或蹂。释之叟叟，烝之浮浮。载谋载惟，取萧祭脂。取羝以軷，载燔载烈，以兴嗣岁。
+
+卬盛于豆，于豆于登，其香始升。上帝居歆，胡臭亶时。后稷肇祀，庶无罪悔，以迄于今。
+
+[[editor-fn:1]]
+
+这篇史诗说，周族的始祖是一位叫“姜嫄”的女子，她生活在一个定居村落里，有房屋院落和小巷，有放牧的牛羊，村外平地上生长着树林，村民在林中伐木建屋。看来，这是一座位于平原，至少不是崎岖山地的小村落。
+
+姜嫄曾经向神明献祭，祈求自己婚后能生育儿子。然后，她便踩到了上帝留下的巨大脚印（郑玄注疏说，是大脚印上的拇指部分），从而怀孕，最终顺利生下了一个儿子。姜嫄非常紧张：“还未结婚就生下孩子，难道是我的祭品没能让上帝满意才导致这结果吗？ ”
+
+她试图扔掉这个婴儿，结果一系列神迹保护着婴儿活了下来：被扔在小巷里，有牛羊来给他喂奶；被扔在平旷的树林里，结果遇到村民们来伐木；被扔在寒冰上，鸟群飞来用翅膀给他取暖。婴儿的哭声响亮，一直传到大路上，所以总会有人发现和照顾他。等到他能够爬行，就可以自己找食物吃了……
+
+姜嫄最终是否“收回”了儿子，史诗里一直没有提及。等这个儿子长大之后，他开始从事农业种植工作，播种大豆、粟米、麻、麦、瓜，还掌握了一系列管理庄稼的技术，比如除去杂草以让各种作物长得茂盛，培育出各种庄稼的优良品种。
+
+这个儿子，名为“后稷”，字面的意思是“谷物首领”。在上古，“后”的意思是首领，“稷”是谷物。《史记•周本纪》说，因为儿时被母亲遗弃，所以他的名字是“弃”。这应该是较早的本名；[[fn:1]] 等他壮年事业有成后，才有可能被尊称为“后稷”。
+
+〔编者注1〕https://www.guwendao.net/mingju/juv_a850a5307ff0.aspx</div>
+            </div>
+          </div>
+        </section>
+        <section class="page" id="page-303">
+          <div class="page-head">
+            <div class="page-title">原书阅读器页 303<span>原书物理 PDF 页 301</span><span>印刷页 289</span></div>
+            <div class="page-tools">
+              <button type="button" data-copy-page="303">复制本页</button>
+              <button type="button" data-export-page="303">导出本页</button>
+            </div>
+          </div>
+          <div class="workbench">
+            <div class="editor-wrap">
+              <div class="rich-editor" data-page="303" data-source-page="301" data-printed-page="289" data-source-image="pdf_pages/page-301.jpg" contenteditable="true" role="textbox" aria-multiline="true" spellcheck="false">在史诗的最后，是弃-后稷用自己的收获向上帝献祭。他舂粮食去皮，簸扬淘洗干净，蒸出香气（用的应该是新石器晚期常见的陶甗）；还屠宰公羊，在香蒿上涂抹羊脂，放在柴堆中焚烧；所有的饭食都盛在高足陶盘（豆）里。上帝正在天上安居，闻到了祭品的香气，感叹：“哪里来的香味这么及时！”
+
+后稷靠祭祀得到上帝的保佑，一直没发生灾祸。周人的祭祀从此一直持续下来。
+
+同样是未婚生子，简狄繁衍出商族，姜嫄繁衍出周族。有学者认为，这是人类早期母系家族的表现：女子不出嫁，男子到外部落约会临时性伴侣，所谓生子“知其母，不知其父”。不过要注意，在《生民》里，姜嫄发现自己未婚先孕后，还是会感到恐惧。而这是父系家族时代的观念。所以，《生民》反映的应该是母系家族和父系家族正交替的时代，在当时，两种家族观念还杂糅并存。这也正是男性始祖领袖产生的背景：从母系家族诞生，然后建立起自己的父系家族与国族。
+
+在《生民》里，“上帝”频繁地出现。通过殷墟甲骨卜辞可知，“帝”或“上帝”本来是商人的说法和宗教概念，也就是说，这是后来的周人从商人那里学来的，并非周人自有。在《生民》史诗的最初版本里，这位周族之神应当有另外的名分，比如当地的某个山神或天神。
+
+《生民》还说，在经营农业获得成功之后，弃-后稷在母亲的有邰氏部族建立了家庭。古代注家说，邰在陕西的武功县，属于关中盆地内的平坦地区，地貌接近《生民》中的描写。而且，武功县距离周原地区很近，也可以说是广义周原的一部分，所以后稷的后人有了“周”族之名。[[fn:2]] 但古代史家忽略了一点，姜嫄的姓是“姜”，其本意是女性的羌人。这意味着，姜嫄是羌人，周族是从羌人繁衍出来的。当然，这不是说我们比古人聪明，只是因为我们今天可以借助殷墟甲骨卜辞知道，关中地区的居民主要是羌人。</div>
+            </div>
+          </div>
+        </section>
+        <section class="page" id="page-304">
+          <div class="page-head">
+            <div class="page-title">原书阅读器页 304<span>原书物理 PDF 页 302</span><span>印刷页 290</span></div>
+            <div class="page-tools">
+              <button type="button" data-copy-page="304">复制本页</button>
+              <button type="button" data-export-page="304">导出本页</button>
+            </div>
+          </div>
+          <div class="workbench">
+            <div class="editor-wrap">
+              <div class="rich-editor" data-page="304" data-source-page="302" data-printed-page="290" data-source-image="pdf_pages/page-302.jpg" contenteditable="true" role="textbox" aria-multiline="true" spellcheck="false">后稷成年之后，需要按照父系家族的规则娶妻。他的妻子是个姞（jí）姓女子，后世的周人也因此形成了一种观念：“姬姞耦，其子孙必蕃（fán；繁衍）。”意思是说，姬姓和姞姓通婚能生育很多后代。[[fn:3]] 但这背后还隐藏着一个问题，就是西部族群的“同姓不婚”禁忌（商族人很可能没有）。后稷此时还身在姜姓有邰氏部族，属于姜姓成员，不适合在母亲的姜姓部族里找配偶，而附近有一些姞姓族群，可以和姜姓婚配。
+
+农牧兼营与迁徙
+
+《生民》里还藏着一个大问题：后稷之前有没有农业？如果有，后稷就只是农业的改良者；如果没有，他就是农业的创始人，地位更加重要。
+
+从《生民》的预设环境来看，并没有渲染后稷生活在过于远古、蛮荒的世界。《史记•周本纪游己载的周族历代首领，从始祖后稷到文王，一共有十五位。这个数字也许不是全部，但至少说明后稷时代并非过于久远和洪荒，换句话说，《生民》并未预设是后稷发明了农业。
+
+再从考古来看。周族起源的关中地区，在后稷之前的三四千年里，大地湾和仰韶文化遗址已经星罗棋布，新石器农业发展兴盛。在如此悠久的农业文化圈中，周人也不大可能想象是自己的先祖发明了农业。
+
+《生民》说，后稷被丢弃时，有成群的牛羊保护和哺育了他。本书认为，当时畜牧业的繁荣更值得关注。
+
+从距今四千年开始，全新世[[editor-fn:2]]大暖期逐渐结束，中国西北部海拔较高的地区首先受到影响，气候呈现从暖湿转向干凉的趋势。这种变化更适合畜牧，所以高地居民的粮食种植逐渐减少，牛羊畜牧业比重则缓慢上升。
+
+到商代，山西和陕西的很多土著被商人称为“羌丁羌的甲骨文写作（甲骨文，近似7），羊头人身，说明畜牧业在其生活里占重要地位。但这些人仍然有农业经济，并未变成完全依靠牲畜的游牧人。商朝灭亡后，周人和羌人学习商的文字，把羌人的族姓写作为“姜”——女性的羌人。
+
+〔按语：姜太公〕
+
+〔编者注2〕全新世是地球上最近的一个地质年代，始于大约11,700年前，持续至今。它的名字来自希腊语，意思是“完全新近的”。人类的全部文明、农业发展和历史记录，都发生在全新世。</div>
+            </div>
+          </div>
+        </section>
+        <section class="page" id="page-305">
+          <div class="page-head">
+            <div class="page-title">原书阅读器页 305<span>原书物理 PDF 页 303</span><span>印刷页 291</span></div>
+            <div class="page-tools">
+              <button type="button" data-copy-page="305">复制本页</button>
+              <button type="button" data-export-page="305">导出本页</button>
+            </div>
+          </div>
+          <div class="workbench">
+            <div class="editor-wrap">
+              <div class="rich-editor" data-page="305" data-source-page="303" data-printed-page="291" data-source-image="pdf_pages/page-303.jpg" contenteditable="true" role="textbox" aria-multiline="true" spellcheck="false">周人之所以强调后稷精于农业的形象，应该是为了强调自己和羌人旧邻的区别 ,让自己显得更为“进步”和“开化”。在畜牧和农业之间，后稷选择了优先发展农业。那么，这两者到底有何区别？
+
+动植物的自然繁殖周期告诉我们，相比畜牧业，农业的收获周期短，投入产出比高，“周转”增殖更快。牛、马以及未经现代改良的羊，一年只能生一胎，每胎生一只，不仅如此，牛羊还需要数年的生长期才可以繁殖。这些都决定了畜牧业的增殖速度较慢，即使有无限充裕的草场和人力，也无法加速循环。在家畜当中，相比牛羊，猪每胎产仔数量多一些，增殖更快，但猪的食物主要依赖农业，单靠养猪无法形成畜牧业。
+
+跟牛羊相比，哪怕是传统低效的粮食品种，收获和播种的比率也很容易超过十倍（一颗粟米种子能收获上千颗粟米），而且，粮食每年至少可以收获一季。这意味着，在土地和人力足够的情况下，农业的规模和提供的食物数量可以高速递增。因此，少年时代的后稷勤于农作，很快便发家致富。当然，在史诗里，他被赋予了无穷的精力和丰富的经验值。
+
+关中盆地的面积不太大，四周被山地环绕，宜农的平地和宜牧的山地相距很近，所以后稷（及早期周族人）有机会深入了解这两种经济形态，并作出自己的选择。
+
+到“野蛮人”中去
+
+《史记》说，后稷曾经在尧帝的朝廷担任“农师”，负责农业指导工作，一直供职到夏朝。后稷的儿子叫不窜，后遭遇夏朝的动荡，丢掉了农师的职位，只好带着一批族人离开周原（以及关中盆地），迁徙到戎狄野蛮人中谋生，继续繁衍。从此，周人在陕北山地生活了十一代，直到文王的祖父亶父一代才迁回周原。</div>
+            </div>
+          </div>
+        </section>
+        <section class="page" id="page-306">
+          <div class="page-head">
+            <div class="page-title">原书阅读器页 306<span>原书物理 PDF 页 304</span><span>印刷页 292</span></div>
+            <div class="page-tools">
+              <button type="button" data-copy-page="306">复制本页</button>
+              <button type="button" data-export-page="306">导出本页</button>
+            </div>
+          </div>
+          <div class="workbench">
+            <div class="editor-wrap">
+              <div class="rich-editor" data-page="306" data-source-page="304" data-printed-page="292" data-source-image="pdf_pages/page-304.jpg" contenteditable="true" role="textbox" aria-multiline="true" spellcheck="false">后稷卒，子不窋（zhú）立。不窋末年，夏后氏政衰，去稷不务，不窋以失其官而奔戎狄之间。
+
+古公亶父复修后稷、公刘之业，积德行义，国人皆戴之。 ……乃与私属遂去豳（bīn），度漆、沮，逾梁山，止于岐下。豳人举国扶老携弱，尽复归古公于岐下。
+
+[[editor-fn:3]]
+
+上述传说中关于尧帝和夏朝的内容已经无法验证，二里头文化并没有延伸到周原地区，很难证明早期周人和夏朝-二里头古国有什么联系。
+
+至于不窋向北方迁徙的时代，很可能是在商朝前期，正值商人征服者侵入关中。不窋家族虽然还未必全面了解扩张中的商朝，但很显然，那些使用青铜兵器、到处抓捕俘虏的人让他们感到非常可怕。而且周原地区过于平坦，完全暴露在入侵者的视野中，所以为了安全起见，他们只好选择躲到北方山地。
+
+后来，周人称这段流亡为“窜于戎狄”。现代史家经常误以为戎狄就是游牧族，其实不然。这需要解释戎和狄在周人眼里的含义。
+
+在商人的甲骨卜辞里，没有戎和狄。周人说的戎，是地域和文化与周族比较接近，但略微“野蛮落后”一点的族群。最明显的是，戎人也有族姓，比如姬姓和姜姓，从这里也能看出来，他们和周人有渊源。实际上，在商人看来，周与戎区别不大，都属于广义的羌人。
+
+而在周人眼里，狄则是个更野蛮的族群。春秋之前的文献，几乎没有关于狄人的记录。春秋的狄人，族姓是“隗二而商代甲骨卜辞中有“鬼方”，也许他们之间有些关系。
+
+故而，不窋“窜于戎狄”，并非投奔游牧族，因为当时还没有纯粹的游牧族；不窋去的，实是关中盆地以北的山地，在那里生活的是姜姓戎人（羌人），他们的畜牧业经济虽多一些，但也有农业，过的是定居生活。
+
+〔编者注3〕史记 周本纪 https://ctext.org/shiji/zhou-ben-ji/zh</div>
+            </div>
+          </div>
+        </section>
+        <section class="page" id="page-307">
+          <div class="page-head">
+            <div class="page-title">原书阅读器页 307<span>原书物理 PDF 页 305</span><span>印刷页 293</span></div>
+            <div class="page-tools">
+              <button type="button" data-copy-page="307">复制本页</button>
+              <button type="button" data-export-page="307">导出本页</button>
+            </div>
+          </div>
+          <div class="workbench">
+            <div class="editor-wrap">
+              <div class="rich-editor" data-page="307" data-source-page="305" data-printed-page="293" data-source-image="pdf_pages/page-305.jpg" contenteditable="true" role="textbox" aria-multiline="true" spellcheck="false">不过，不窋和他的儿子鞠具体生活在哪里，史书中没有记载。这个空白期，也可能不止两代人，毕竟对于遥远的古代，口耳相传的先民传说难免会有脱漏。脱离姜姓有邰氏部族的生活圈后，后稷的后人为自己选择了一个新的族姓——姬，以表示他们和姜姓群体的血缘关系已经足够遥远，可以通婚了。这就是后来建立周王朝的姬周族。
+
+《诗经》中，有一首鞠的儿子公刘带领族人再次迁徙的史诗—— 《公刘》。
+
+先周部族迁徙图示（图）
+
+笃公刘，匪居匪康。乃埸乃疆，乃积乃仓；乃裹餱粮，于橐于囊。思辑用光，弓矢斯张；干戈戚扬，爰方启行。
+
+笃公刘，于胥斯原。既庶既繁，既顺乃宣，而无永叹。陟则在巘，复降在原。何以舟之？维玉及瑶，鞞琫容刀。
+
+笃公刘，逝彼百泉。瞻彼溥原，乃陟南冈。乃觏于京，京师之野。于时处处，于时庐旅，于时言言，于时语语。
+
+笃公刘，于京斯依。跄跄济济，俾筵俾几。既登乃依，乃造其曹。执豕于牢，酌之用匏。食之饮之，君之宗之。
+
+笃公刘，既溥既长。既景乃冈，相其阴阳，观其流泉。其军三单，度其隰原。彻田为粮，度其夕阳。豳居允荒。
+
+笃公刘，于豳斯馆。涉渭为乱，取厉取锻，止基乃理。爰众爰有，夹其皇涧。溯其过涧。止旅乃密，芮鞫之即。
+
+[[editor-fn:4]]
+这次迁徙的目的地是豳地，过程隆重而欢快。他们已经提前做好了准备，把收获的粮食装进口袋和筐里，族人拿着弓箭、戈和盾戒备而行。一路时而翻过山梁，时而下降到低洼的平地，涉渡众多泉水，终于看到一片平坦的山间谷地。然后，他们在高地上安家，搭起草棚，在临水的平地上开荒，还杀猪备酒举行宴会。作为部族首领，公刘受到众人景仰。
+
+〔编者注4〕https://www.guwendao.net/mingju/juv_c4e8593f552e.aspx</div>
+            </div>
+          </div>
+        </section>
+        <section class="page" id="page-308">
+          <div class="page-head">
+            <div class="page-title">原书阅读器页 308<span>原书物理 PDF 页 306</span><span>印刷页 294</span></div>
+            <div class="page-tools">
+              <button type="button" data-copy-page="308">复制本页</button>
+              <button type="button" data-export-page="308">导出本页</button>
+            </div>
+          </div>
+          <div class="workbench">
+            <div class="editor-wrap">
+              <div class="rich-editor" data-page="308" data-source-page="306" data-printed-page="294" data-source-image="pdf_pages/page-306.jpg" contenteditable="true" role="textbox" aria-multiline="true" spellcheck="false">那么，豳地在哪？《汉书•地理志》认为，在旬邑县。据后世考古，位于今陕西咸阳城西148公里处的长武县碾子坡村，有一处先周文化遗址，应当属于公刘开始定居的豳地时期。在后世周人的回忆里，那还属于“窜于戎狄”的岁月；而从考古看，则属于半农半牧的经济形态。
+
+窑洞与高粱
+
+今陕西省长武县，属于关中盆地北缘的黄土高原沟壑区。1959年，中国社科院考古所在这里发现了先周碾子坡遗址，1980—1986年，考古所泾渭考古队对遗址进行了十多次发掘。[[fn:4]]
+
+这是泾河支流冲刷出的一条大型沟谷，碾子坡遗址就位于向阳的山坡上，而且有多个不同时期的文化地层。
+
+最早的遗迹距今6000年左右，生活着仰韶半坡文化晚期的居民。半坡文化遗址已经发掘过很多，而碾子坡的特殊之处是，这里的居民留下了用马骨制作的器物：两件骨锥和一件骨笄。而同时期的华北新石器遗址还很少出土有马骨，小小的碾子坡却能发现三件，且还出自不同的灰坑。这说明，这里的人经常捕猎和食用野马，用马骨制作器具。
+
+这些半坡文化和后来的姬周族可能没有关系，但它展示了公刘和周族人到来时的环境：这里比关中更有北方特征。
+
+从地理上看，碾子坡虽距离农业繁荣的关中盆地不远，只有100公里左右，但它已属于陕北黄土高原地貌，从此向北到鄂尔多斯、蒙古草原，地形开阔，属于后来的内亚游牧地带边缘。碾子坡的海拔接近1000米，比关中盆地气候干爽，更适合野马生存。
+
+半坡时代之后，碾子坡有一段长达2500年的空白期。到商代，这里出现了繁荣的村落，碳十四测年距今3500—3100年，发掘者称之为“先周”文化，并把它划分为早期和晚期两段。这里的“先周”指的可能就是迁到豳地的公刘部族时期。</div>
+            </div>
+          </div>
+        </section>
+        <section class="page" id="page-309">
+          <div class="page-head">
+            <div class="page-title">原书阅读器页 309<span>原书物理 PDF 页 307</span><span>印刷页 295</span></div>
+            <div class="page-tools">
+              <button type="button" data-copy-page="309">复制本页</button>
+              <button type="button" data-export-page="309">导出本页</button>
+            </div>
+          </div>
+          <div class="workbench">
+            <div class="editor-wrap">
+              <div class="rich-editor" data-page="309" data-source-page="307" data-printed-page="295" data-source-image="pdf_pages/page-307.jpg" contenteditable="true" role="textbox" aria-multiline="true" spellcheck="false">先周阶段的碾子坡出土了很多农具，有用石头或骨头做的铲、镰，收割用的穿孔石刀，以及石臼，等等。农作物应该有粟和黍，但碾子坡遗址发掘得比较早，当时还没有使用“浮选法”收集细小的植物种子。
+
+先周碾子坡人有好几种房屋，最常见的是黄土坡上的“窑洞建筑”。当时的上古人应该还没有能力把土坡削成垂直面，他们会先向土坡里面挖一条1米多高的巷道，深入内部之后再向周围掏挖以扩大居住面积，从而形成一间穹顶的窑洞居室。巷道就是进出的门道。窑洞墙壁上还挖掘出壁龛，作为储藏收纳的空间。
+
+后来，周人的史诗《诗经•绵》回顾了这段住窑洞的生活：“陶复陶穴，未有家室。” 这是新石器晚期黄土地带的常见民居，再早一千年，山西陶寺古国的普通居民也是住这种窑洞。
+
+比窑洞数量少一些的是半地穴式房屋，先挖约1米深的坑做居室，再用树枝搭起墙体和屋顶，最后抹黄泥覆盖。在华北新石器时代，这种半地穴式房屋很常见。
+
+碾子坡还有一座夯土版筑的地面房屋F1。它坐西朝东，房基为整体夯筑，土墙厚约1米，室内空间不大：长5.4米，宽约3米。门外地面铺垫着多块石板，还有呈品字形的三个灶坑。普通民居不大可能同时使用三个灶坑，它应当是村落集中活动的场地——可能是敬神的祠庙。
+
+F1后面有一座坑（H189），坑底是一处高粱作物的堆积：东西长1.8米，南北宽1.2米，面积和形状近似一口棺材；厚度5—20厘米，这是被土层压实之后，估计掩埋之前厚度在半米左右。
+
+碾子坡的先周半地穴房屋和窑洞复原剖面图（图）
+
+碾子坡夯土房屋F1复原图（图）
+
+这些高粱不是单纯的种子，而是整个穗子连带二三十厘米长的茎秆，还带着少量叶子。它和F1前后相邻，而且都指向东方。这恐怕不是巧合，很可能是一处祭祀遗存。</div>
+            </div>
+          </div>
+        </section>
+        <section class="page" id="page-310">
+          <div class="page-head">
+            <div class="page-title">原书阅读器页 310<span>原书物理 PDF 页 308</span><span>印刷页 296</span></div>
+            <div class="page-tools">
+              <button type="button" data-copy-page="310">复制本页</button>
+              <button type="button" data-export-page="310">导出本页</button>
+            </div>
+          </div>
+          <div class="workbench">
+            <div class="editor-wrap">
+              <div class="rich-editor" data-page="310" data-source-page="308" data-printed-page="296" data-source-image="pdf_pages/page-308.jpg" contenteditable="true" role="textbox" aria-multiline="true" spellcheck="false">在中国上古时代遗址中，极少有高粱出土。距今约5000年前，郑州大河村遗址仰韶文化晚期房址中曾发现一只装满粮食的陶罐，经鉴定是高粱种子。但此结论仍有争议。碾子坡的这处高粱遗存距今约3300年，则完全没有争议，因为它有完整的高粱穗、秆和叶子。另外，在一所窑洞式房屋（H823）的壁龛里也发现了一小堆尚未去皮的高粱种子。
+
+周人始祖名后稷，在古代，稷泛指谷物，但也有狭义的高粱之意。[[fn:5]] 碾子坡遗址有掩埋高粱祭祀的遗存，说明在早期周人的观念里，高粱与周始祖有着密切联系。
+
+碾子坡的房屋（窑洞）和粮食作物显示的是一种定居农业生活；而它的垃圾坑，则又显示了畜牧业的发达：
+
+我们在发掘中收集到大量的兽骨，主要是牛、马、羊和猪等牲畜的骨头，其中又以牛骨为最多，它们显然是这个遗址中的先周居民的食后残余。该现象充分表明，以放养牛群为主的畜牧业生产在当时是艮发达的……
+
+除了大量牲畜骨头，还发掘出土了很多屠宰和剥皮的工具。各种骨制工具里面，用马骨制作的占了很大比重；除了常见的骨锥和骨匕，还有一种用马的下颚骨磨制的铲形骨刀，多达27件，发掘报告认为，它是一种加工肉类的工具。看来碾子坡先周居民不缺乏肉食。
+
+用石头和骨头制作的箭微数量也很多，但很少有食余的野兽骨骸。从地理环境看，古碾子坡周边应该有各种野兽，但他们的捕猎行为应该不多，这可能是因为饲养的家畜已经足够肉食之需求。
+
+在其中的一座灰坑（H2018）发掘出一具完整的马骨架，发掘报告称，没有发现捆绑的痕迹，应是死后埋进去的。灰坑纵轴和马头都朝东，联系前述宗教性建筑F1和高粱祭祀坑H189也都是朝东，这很可能也是座祭祀坑，背后应该有先周居民的宗教信仰因素。</div>
+            </div>
+          </div>
+        </section>
+        <section class="page" id="page-311">
+          <div class="page-head">
+            <div class="page-title">原书阅读器页 311<span>原书物理 PDF 页 309</span><span>印刷页 297</span></div>
+            <div class="page-tools">
+              <button type="button" data-copy-page="311">复制本页</button>
+              <button type="button" data-export-page="311">导出本页</button>
+            </div>
+          </div>
+          <div class="workbench">
+            <div class="editor-wrap">
+              <div class="rich-editor" data-page="311" data-source-page="309" data-printed-page="297" data-source-image="pdf_pages/page-309.jpg" contenteditable="true" role="textbox" aria-multiline="true" spellcheck="false">除单独的葬马坑，还有用马殉葬的做法。在先周晚期墓葬中，有一座女性二次葬墓（M195），墓主四十岁左右，墓穴深近3米，在墓穴上层有一匹献祭的小马。在碾子坡两百多座先周墓葬中，殉马墓目前只发现这一座。
+
+在碾子坡，在食用和利用皮、骨之外，马还有没有其他用途？此时的碾子坡还没有掌握马拉战车技术，因为制造马车需要发达的青铜工具，而且这里属于黄土高原丘壑环境，垂直高差大，沟谷纵横，并不适合马车行驶。
+
+碾子坡人饲养的马、牛、羊很多，这些牲畜需要较大的草场，仅靠农作物秸秆和村落附近的草地应该很难维持。为了放牧，他们需要在一二十公里的半径范围内移动放牧。而牛羊容易走失，还要防范野兽和异族人的袭击，所以最合适骑马放牧。碾子坡人很可能已经学会了骑马。
+
+商人难民带来铜器？
+
+在先周碾子坡，没有发现炼铜和铸铜的遗迹，但有少量铜器。这显示了碾子坡和外界（很可能是商王朝）的联系。
+
+最大的铜器来自一座先周前期的窖藏坑，共有三件，一瓿、两鼎。窖藏坑呈椭圆形，长径超过2米，深约1.1米，坑挖好之后，先在坑底铺了一层30厘米厚的土层，然后呈品字形紧贴着放置三件铜器，都是口部朝下倒放，最后，填土掩埋。
+
+埋葬过程比较从容，仪式感很强，因躲避战乱而藏宝的可能性不大。发掘报告推测，这处铜器埋藏可能具有祭祀性质。
+
+在关中和陕北地区，较少发现埋葬器物的祭祀。这不属于本地宗教仪式，容易让人联想到郑州商城晚期的三座青铜器窖藏祭祀坑。也许，郑州商城的“宗教改革”曾经波及这座遥远的山村聚落？</div>
+            </div>
+          </div>
+        </section>
+        <section class="page" id="page-312">
+          <div class="page-head">
+            <div class="page-title">原书阅读器页 312<span>原书物理 PDF 页 310</span><span>印刷页 298</span></div>
+            <div class="page-tools">
+              <button type="button" data-copy-page="312">复制本页</button>
+              <button type="button" data-export-page="312">导出本页</button>
+            </div>
+          </div>
+          <div class="workbench">
+            <div class="editor-wrap">
+              <div class="rich-editor" data-page="312" data-source-page="310" data-printed-page="298" data-source-image="pdf_pages/page-310.jpg" contenteditable="true" role="textbox" aria-multiline="true" spellcheck="false">从时间上看，碾子坡埋祭坑只略晚于郑州商城的那场“宗教改革”，而且其墓葬也显示有商文化移民的存在，这就是先周晚期的M163墓。墓主是一名五十岁左右的男子，墓穴中央挖有一脸盆大小的坑，里面有兽骨，发掘者推测是狗骨，其上先是被一块石板盖好，再安放棺木。这是典型的商人“腰坑殉狗”葬俗。
+
+在碾子坡墓区，目前只发现了这一座商式墓。但这名商族男子肯定不是孤身一人，至少得是一家人，因为给他构筑墓穴的人显然也懂得商人的墓葬习俗。
+
+故而，上述青铜器埋祭遗存和商人葬俗显示了这样一种可能性：在郑州商城的宗教改革引发内战后，可能有少量失败的“革新派”商人逃亡到了遥远的碾子坡，并把郑州商城新生的（从长江流域盘龙城引进的）埋祭宗教理念带到了这里。西土没有杀人献祭的宗教，这些流亡商人容易得到土著的接纳。
+
+再来看这三件铜器。其中，瓿是青铜铸造，没有铭文和族徽，做工较精细，显然是从商朝境内输入的高端商品。两件铜鼎则不同，都是红铜铸造，没有纹饰，不含铅和锡，所以铜液流动性差，致使器物表面有很多沙眼和褶皱。此外，足跟不平整，其中一只的足底呈疙瘩粘连状，发掘报告推测，这应该是第一次铸造失败再次补铸所致。
+
+虽然技术不佳，但这两件鼎的分量不小，都重约10公斤，口径约30厘米。看来主人并不缺铜料，但缺相关技术。主人应该还长期用它们炊煮食物，因为在鼎足及鼎的下部有约2毫米厚的烟灰层。青铜瓿是盛食器而非炊器，所以没有烟灰。
+
+M163出土铜鼎（图）
+
+两只红铜鼎有可能代表的是流亡商人的铸造技术。铸造铜鼎需要制作好几块外范、内范和芯范，这不是揣摩成品实物就能获得的知识，必须曾经参与过铸造才能仿制。这些操作者很可能只知道铸铜工艺，但缺乏关于青铜的配方知识，或者是因为西部山地难以获得铅和锡。</div>
+            </div>
+          </div>
+        </section>
+        <section class="page" id="page-313">
+          <div class="page-head">
+            <div class="page-title">原书阅读器页 313<span>原书物理 PDF 页 311</span><span>印刷页 299</span></div>
+            <div class="page-tools">
+              <button type="button" data-copy-page="313">复制本页</button>
+              <button type="button" data-export-page="313">导出本页</button>
+            </div>
+          </div>
+          <div class="workbench">
+            <div class="editor-wrap">
+              <div class="rich-editor" data-page="313" data-source-page="311" data-printed-page="299" data-source-image="pdf_pages/page-311.jpg" contenteditable="true" role="textbox" aria-multiline="true" spellcheck="false">总之，外来者未能使陕北土著成功生产青铜制品（至少是大件青铜器）。碾子坡发现的其他铜器都是小件工具，如铜制的小刀、匕首、锥和铜泡，且都出自垃圾坑。先周墓葬中，随葬铜器的极少，只有晚期墓出土有铜镞两枚和铜铃一枚，还分别出于三座墓葬。其中，有一位墓主是中箭身亡的，一枚铜镞射入了他的右大腿骨（M169），显然，铜镞的真正主人属于敌对部落。
+
+安宁部族
+
+目前，已发掘分属先周碾子坡早期和晚期的两片墓地，都没有发现人殉和人祭的现象。
+
+这些墓葬很简单，多数死者有木棺材，几乎看不出贫富差异：前期墓葬几乎没有随葬品；后期平均每座墓有一件，基本都是煮饭的陶鬲。可见，碾子坡-周族几乎没有产生贫富分化。均等并不意味着贫穷，从遗址的家畜骨头看，碾子坡人的肉食摄入量远超任何已发现的古代农业聚落，他们甚至都懒得去射猎和捕鱼。
+
+此外，先周墓葬还有两个特点：一，男人和女人下葬的姿势不同，男人俯身直肢，女人仰身直肢。二，有很多“斩肢葬”，死者的部分手或脚被砍掉，有些砍下的肢体放在了墓穴里。斩肢葬在仰韶半坡文化中曾颇为流行，从半坡到先周长达三四千年，中间经历过好几轮新石器文化更替，但斩肢葬却一直保留了下来。考古学者迄今还未能读解其背后的原因。
+
+再来看部落生活中的暴力因素。墓穴中的尸体基本完整，没有发现被砍头或分尸后埋葬的现象。有极少数是用灰坑或废弃的水井和窑洞埋人的，死者直身，两手交叉，身边放有一件随葬品。很明显，这不是被杀死后的抛尸，而是由家人正常殡葬，只是可能因为某些原因而不宜埋入部落公墓。</div>
+            </div>
+          </div>
+        </section>
+        <section class="page" id="page-314">
+          <div class="page-head">
+            <div class="page-title">原书阅读器页 314<span>原书物理 PDF 页 312</span><span>印刷页 300</span></div>
+            <div class="page-tools">
+              <button type="button" data-copy-page="314">复制本页</button>
+              <button type="button" data-export-page="314">导出本页</button>
+            </div>
+          </div>
+          <div class="workbench">
+            <div class="editor-wrap">
+              <div class="rich-editor" data-page="314" data-source-page="312" data-printed-page="300" data-source-image="pdf_pages/page-312.jpg" contenteditable="true" role="textbox" aria-multiline="true" spellcheck="false">碾子坡的灰坑中没有发现散碎的人骨，但有一件经过切割的人骨，像是肢骨一端。发掘报告说，它不是用刀具切割的，而是采用了一种类似加工玉器的线切割工艺。
+
+比较特殊的是利用废弃灰坑埋人的M501。这座灰坑比较大，在快被填满时，埋进了两具成年人尸骨：一具相对完整，是一名二十五岁左右的男子；另一具则性别不明，只残留部分四肢骨，且摆放凌乱。在两具尸骨旁边，还各摆放了一件随葬的陶豆。看上去，这两具尸骨像是在野外被野兽咬死后吃剩的。
+
+H318是一口废弃的水井，后被当作灰坑，在较深处埋有一枚人头骨，中间段有一具俯身直肢且缺手的十八岁女性尸骨。在碾子坡先周时期发现的所有尸骨中，这具看上去最接近非正常死亡。
+
+总体上，碾子坡遗址的非正常死亡和被随意或恶意抛掷的尸骨极少，占比非常低，甚至远低于仰韶半坡文化时期的典型遗址。可以说，这里的生活非常和平。后来周族之所以能够消灭商朝的人祭文化，建立起全新的周文明，很可能有些文化基因在碾子坡时期就已经决定了。当然，碾子坡先周遗址只是一座小村落，充其量有数百居民，并不能代表豳地时期的整个姬周族（部落）。当时的姬周应当有几座甚至十几座这种规模的村落。
+
+《公刘》中说，姬周族人在豳地定居后，还会南下关中盆地，渡过渭河，以获取一些小件铜制品：“笃公刘，于豳斯馆。涉渭为乱，取厉取锻。”这其中就应该包含着姬周族对商朝据点的最初印象。看来，商人在渭河南岸的城邑（如老牛坡）生产的铜器对远在山地的姬周人有很强的吸引力。而“取厉取锻”，说明这些铜器还需要磨砺和锻打，显然，这不是大件容器，而是小件的刀、锥等工具。这也正是蛮荒的姬周人最需要且能交换得起的铜器。</div>
+            </div>
+          </div>
+        </section>
+        <section class="page" id="page-315">
+          <div class="page-head">
+            <div class="page-title">原书阅读器页 315<span>原书物理 PDF 页 313</span><span>印刷页 301</span></div>
+            <div class="page-tools">
+              <button type="button" data-copy-page="315">复制本页</button>
+              <button type="button" data-export-page="315">导出本页</button>
+            </div>
+          </div>
+          <div class="workbench">
+            <div class="editor-wrap">
+              <div class="rich-editor" data-page="315" data-source-page="313" data-printed-page="301" data-source-image="pdf_pages/page-313.jpg" contenteditable="true" role="textbox" aria-multiline="true" spellcheck="false">那姬周族人拿什么交换呢？商人城邑统治着周边土著居民，应该不太会缺粮食，所以姬周最适合用来贸易的商品是牲畜，尤其是马和牛。史诗里之所以没有提及这些，有可能是因为在他们看来，牲畜容易和受歧视的野蛮人身份联系在一起。
+
+自始祖后稷以来，周族一直有谨小慎微的自我保护意识。周是小族群，生长在羌人为主的大环境里；自命姬姓，以显示自己和羌人不同；未参与西土族群抵制商朝的战争，而是躲进山地，远离冲突。他们知道，和强者保持距离才是最好的生存之道。
+
+在陕北山地，周人宁静地生活了三百多年，历经十几代人。直到周文王的祖父“古公亶父”一代，周族才和强大的商王朝建立了联系。从此，周族人的命运发生了剧变。
+
+而关于周族和姬姓的起源，以及与黄帝传说的关系，因为还有许多学术争论尚未厘清，所以本书暂把相关讨论作为本章附录。
+
+附录：华夏起源故事的来历
+
+炎、黄来自羌和周
+
+在《诗经•生民》里，弃-后稷的结局只是家业兴旺，受上帝福佑，成为家乡颇有威信的长老。但到春秋，后人又创造出了更古老的、《诗经》里没有的尧和舜，于是，后稷的经历再被翻新，增添了更显赫的内容：尧帝闻知弃的才能后，举荐他担任“农师”，教导天下百姓农业；到了舜帝，则更受重用，还获得“后稷”的称号。
+
+但让后稷给尧舜效力，时间上很难对应。尧舜被安排在夏朝之前，而夏朝和商朝加起来有一千年左右，在这期间，周族首领却只传了十五代人。这样算起来，平均每代首领要在位七十年。这不符合常识。[[fn:6]]
+
+不仅是后稷，商族的始祖契也被拉进了这个半神伟人们的职场，成为大禹治水的助手。其实，周族和商族刚诞生时距离遥远，不太可能知道彼此的存在，其始祖更不会发生联系。只有到了西周，商周各自的始祖传说才被改编整理到一起，分享身份认同。某种意义上，这也是一种对失去王朝的商人的安抚。</div>
+            </div>
+          </div>
+        </section>
+        <section class="page" id="page-316">
+          <div class="page-head">
+            <div class="page-title">原书阅读器页 316<span>原书物理 PDF 页 314</span><span>印刷页 302</span></div>
+            <div class="page-tools">
+              <button type="button" data-copy-page="316">复制本页</button>
+              <button type="button" data-export-page="316">导出本页</button>
+            </div>
+          </div>
+          <div class="workbench">
+            <div class="editor-wrap">
+              <div class="rich-editor" data-page="316" data-source-page="314" data-printed-page="302" data-source-image="pdf_pages/page-314.jpg" contenteditable="true" role="textbox" aria-multiline="true" spellcheck="false">春秋末年，孔子编辑《尚书》，他认为，那些最古老且可靠的半神帝王是尧、舜和禹，后稷和弃则是他们的部下，这构成《尚书》叙事的起点。以现代学术标准看，《尚书》中那些最古老的篇章，如尧、舜、禹及夏朝，都是不可靠的，只有到了商朝才开始有一些可信的内容，如《盘庚》。
+
+关于周人更古老的始祖，或者说商、周等各民族的始祖，春秋时还出现了黄帝和炎帝的说法。有一种说法是：“黄帝以姬水成，炎帝以姜水成。”意思是说，黄帝住在“姬水”旁边，所以用“姬”姓；炎帝住在“姜水”旁边，所以用“姜”姓。[[fn:7]] 这其实是把羌人和周人曾经的共生关系推到了更古老的时代：炎帝成了羌人的始祖，黄帝则成了周人、商人以及其他各族群的始祖。
+
+史学大家顾颉刚称这种现象为“层累地造成的中国古史”，意思是说，越晚产生的传说，反倒在神谱里面越古老，就像人们堆柴堆，“后来者居上”。因为时代越晚，各族群的祖先传说就越是逐渐汇总到一起，这时，各自的先祖孰先孰后以及谁比谁厉害就成了问题。因此，为了制造更大范围的身份认同，就只能创作更古老的先祖，给各族群增添一位共同的始祖。先祖诸神的关系和谐了，世间各族群的关系才能和谐。
+
+这种创造各族共同祖先“黄帝”的工作，从春秋就已经开始。孔子编辑《尚书》时，比较谨慎，没有采用。但到西汉时，黄帝的故事已经有了各种版本。司马迁认为，这些都不太可靠，有学问的人不应该轻信它们：“然《尚书》独载尧以来。而百家言黄帝，其文不雅驯，荐绅先生难言之。”（《史记•五帝本纪》）</div>
+            </div>
+          </div>
+        </section>
+        <section class="page" id="page-317">
+          <div class="page-head">
+            <div class="page-title">原书阅读器页 317<span>原书物理 PDF 页 315</span><span>印刷页 303</span></div>
+            <div class="page-tools">
+              <button type="button" data-copy-page="317">复制本页</button>
+              <button type="button" data-export-page="317">导出本页</button>
+            </div>
+          </div>
+          <div class="workbench">
+            <div class="editor-wrap">
+              <div class="rich-editor" data-page="317" data-source-page="315" data-printed-page="303" data-source-image="pdf_pages/page-315.jpg" contenteditable="true" role="textbox" aria-multiline="true" spellcheck="false">但司马迁还不可能有顾颉刚所说的那种科学认知方法，也没有孔子的自信心，他只能选择把相对显得不那么荒诞的黄帝及其他四位古帝的传说编排起来，写成《史记》第一卷《五帝本纪》。
+
+〔按语：层累地造史〕
+
+再来看周人“姬”姓的来历。它应当和后来被创造的黄帝没关系。有古代经学家解释，姬字是女字旁加一个脚印的造型，象征姜嫄踩到的上帝足迹。东汉许慎的《说文解字》则认为，姬是形声字，右边是它的音旁。确实，它和“巨”字造型很像，但问题是，姬字来自商人的甲骨文，而商人是不太可能关注一个遥远的小部族的族源神话的，所以脚印的说法应该不实。
+
+那么，周人的这个姬姓到底是怎么来的？应该是来自居住的地名。剔除后起的黄帝传说，可以推测，后稷的某一代后人应该曾经居住在一条姬水附近，故而给自己的部族冠以了姬姓。从这以后，他们就可以和姜姓部族通婚了。
+
+长期以来，周人都是只有口头语言而没有文字，直到商朝末年与商朝接触后，周族上层族长才开始学习商人文字，并从中选了音近且带女字旁的“姬”字，从此一直沿用下来。商人姬字的本意，可能是女子梳头用的篦子，其实也是一种人祭方式。上古的族姓多用女字旁的字，如姜、姞、姒等，这可能和他们的女性始祖传说有关。
+
+三个“周”的纠缠
+
+武丁时期的殷墟卜辞里有“周”，但卜辞里关于“周”的事件，从未出现在周文王族人的记忆里，也没有进入《诗经》等文献。这有点难以解释，因为商末的周族很热衷攀附商朝，不应当遗漏掉武丁王时期的荣耀。
+
+其实，这背后的问题是，“周”本来只是一个地名，生活在这里的族群曾经发生过更迭变换，先后有三个人群生活在周原地区，彼此区别很大，不能混淆。</div>
+            </div>
+          </div>
+        </section>
+        <section class="page" id="page-318">
+          <div class="page-head">
+            <div class="page-title">原书阅读器页 318<span>原书物理 PDF 页 316</span><span>印刷页 304</span></div>
+            <div class="page-tools">
+              <button type="button" data-copy-page="318">复制本页</button>
+              <button type="button" data-export-page="318">导出本页</button>
+            </div>
+          </div>
+          <div class="workbench">
+            <div class="editor-wrap">
+              <div class="rich-editor" data-page="318" data-source-page="316" data-printed-page="304" data-source-image="pdf_pages/page-316.jpg" contenteditable="true" role="textbox" aria-multiline="true" spellcheck="false">先来看最早的。后稷的儿子离开故乡周原和有邰氏部落后，那块土地上还有居民吗？当然，有邰氏的多数人还是会在故乡继续生活，不仅如此，他们在周原还形成了以“周”为名的部落。
+
+《山海经•大荒西经》记载说，是后稷之弟台玺（xi3）的儿子叔均继承了后稷的农耕事业，建立了一个“西周之国”：
+
+有西周之国，姬姓，食谷。有人方耕，名日叔均。帝俊生后稷，稷降以百谷。稷之弟曰台玺，生叔均。叔均是代其父及稷播百谷，始作耕。有赤国妻氏。有双山。
+
+这里说的“帝俊（喾（kù））生后稷”，不再是姜嫄未婚生子，显然属于后人加上去的附会之辞。根据《诗经•生民》，姜嫄生后稷之后，应该还会继续生育，所以后稷会有同母弟弟台玺。台玺的台就是邰，说明他属于姜嫄的有邰氏部族，而台玺的儿子叔均自然生息在周原，并将其发展为“西周之国”。这个“西”周容易和后来的西周王朝混淆，实际上，《山海经》之所以称其为“西周之国”，可能是为了和后稷、不窜后人那一支远行的周族相区别：后稷和不窜的后人（姬周）迁入了戎狄山林；台玺和叔均的后人则开发故乡周原，沿袭后稷的农耕事业。
+
+另外，《山海经》可能还混淆了一点：叔均这支周族未必是姬姓，很可能沿袭的是姜嫄旧有的姜姓。只是后稷那一支姬姓周族后来建立了周王朝，名气太大，使得后人误以为周人必然大都是姬姓。
+
+在不窋“远窜于戎狄”期间，周原的姜姓周族应该一度比较繁荣。如前所述，武丁时代的甲骨曾多次记载对“周”的讨伐（“寇周”），光卜辞就有近十条，说明商人对其印象深刻。当然，结局是姜周被商人征服，大多数人可能被押送殷都成了武丁卜辞中的祭品。从此，这一支姜姓周族就在历史上永远地消失了。</div>
+            </div>
+          </div>
+        </section>
+        <section class="page" id="page-319">
+          <div class="page-head">
+            <div class="page-title">原书阅读器页 319<span>原书物理 PDF 页 317</span><span>印刷页 305</span></div>
+            <div class="page-tools">
+              <button type="button" data-copy-page="319">复制本页</button>
+              <button type="button" data-export-page="319">导出本页</button>
+            </div>
+          </div>
+          <div class="workbench">
+            <div class="editor-wrap">
+              <div class="rich-editor" data-page="319" data-source-page="317" data-printed-page="305" data-source-image="pdf_pages/page-317.jpg" contenteditable="true" role="textbox" aria-multiline="true" spellcheck="false">这之后，武丁王应该是把周地分封给了一位商人贵族，建立了一个商人的“周侯之国”。甲骨卜辞里也有关于它的记录，都是一些和王室关系亲密的内容。武丁朝后，商人势力退潮，这个商人的周国也随之消失，周原遂成为荒芜之地，只有少数族属不详的人群在这里活动。
+
+总结一下，“周地”只有一个，就是周原地区；但名为“周”的人群，则有三个：
+
+一，姜姓的周族。这是台玺和叔均的后人形成的族群，可能从夏代起就一直住在周原，到商王武丁时被剿灭。这里说的夏只是时间概念，夏朝并不能统治关中。
+
+二，武丁王分封的商人周侯之国，存在时间很短。
+
+三，后稷和不宙的后人形成的族群。他们从夏代就离开周原，迁入山林过戎狄的生活去了，但到商朝末期，又迁回周原（叔均后人曾经的生息之地），成为后世熟知的姬周族，并且灭商建立了周朝。
+
+长期以来，人们都没有意识到前面两个周族（国）的存在，只知道后稷后人这支姬姓周族，所以容易产生这样的疑问：在武丁时期，后稷和不留的后人形成的这支姬姓周族还是深山戎狄，不但根本没有和商朝作战的能力，更主要是也没这种机会，为什么当时的甲骨卜辞里还经常出现“周”？再有，倘若姬姓周族在武丁王时期就和商朝频繁地发生战争，那灭商后的周人为什么没有大肆宣扬，把这些事迹写到史诗和史书里去？
+
+最先意识到这个矛盾的是徐中舒，他推论说，在姬姓周族来到之前，在周原生息的是“姜族女国”，也就是姜嫄部族的后人，曾和姬姓的周族长期保持通婚关系。[[fn:8]] 这个推论非常重要，本章就是对徐中舒观点的深化。</div>
+            </div>
+          </div>
+        </section>
+        <section class="page" id="page-320">
+          <div class="page-head">
+            <div class="page-title">原书阅读器页 320<span>原书物理 PDF 页 318</span><span>印刷页 306</span></div>
+            <div class="page-tools">
+              <button type="button" data-copy-page="320">复制本页</button>
+              <button type="button" data-export-page="320">导出本页</button>
+            </div>
+          </div>
+          <div class="workbench">
+            <div class="editor-wrap">
+              <div class="rich-editor" data-page="320" data-source-page="318" data-printed-page="306" data-source-image="pdf_pages/page-318.jpg" contenteditable="true" role="textbox" aria-multiline="true" spellcheck="false">“周”字的甲骨文写作图或用，古文字学家认为，这是耕作的农田的形状，因后稷以来的周人擅长耕作，所以便用农田的造型来表示周。但这个说法其实是有问题的。甲骨文是商人创造的，在商人眼里，西土的羌人是野蛮人，所谓周人的农业水平高也只是就西土的环境而言，和商王朝相比，他们的农业技术不值一提，商人不可能为远方蛮族专门造一个表示农业的字。
+
+所以，甲骨文里的“周”可能就是周围、周边之意，属于生活中常用的会意字。而周人自称的“周”，可能只是个地名发音，没有文字，也没有明确的含义，也或者我们迄今还不知道。
+
+神农是炎帝，也是羌人
+
+不窋为什么离开周原？很可能是因为和自己的堂兄弟叔均不睦，只好远走他乡，重新立足。[[fn:9]]
+
+姬和姜这两支周族，虽然很早就分家了，但姬姓周族应该仍保留着对台玺和叔均这支亲族的记忆。特别是，当他们迁回周原定居时，叔均一支虽早已绝迹，但姬姓周族知道，周原这块土地本是叔均的族人耕种的，于是叔均被抬升为“田祖”之神：姬姓周人以弹琴和敲鼓的方式来祭祀田祖，祈求降雨；当庄稼发生虫害，会捕捉害虫投到火堆里，以此祈求田祖帮忙除虫，所谓“田祖有神，秉畀炎火”。[[fn:10]]
+
+大约是春秋以后，因为人们要创造更古老的帝王传说，叔均的地位又有了上升，成了神农。[[fn:11]] 而在传说里，神农和炎帝经常被纠结为一个人，这就出现了一个有趣的现象：从春秋始，人们创造的更古老的帝王传说（黄帝和炎帝）的素材主要来自后稷和叔均这伯侄二人，结果，后稷化身成了黄帝，叔均化身成了炎帝（神农）。甚至在有些版本里，黄帝和炎帝还成了兄弟，这又是后稷和叔均之父台玺关系的翻版。</div>
+            </div>
+          </div>
+        </section>
+        <section class="page" id="page-321">
+          <div class="page-head">
+            <div class="page-title">原书阅读器页 321<span>原书物理 PDF 页 319</span><span>印刷页 307</span></div>
+            <div class="page-tools">
+              <button type="button" data-copy-page="321">复制本页</button>
+              <button type="button" data-export-page="321">导出本页</button>
+            </div>
+          </div>
+          <div class="workbench">
+            <div class="editor-wrap">
+              <div class="rich-editor" data-page="321" data-source-page="319" data-printed-page="307" data-source-image="pdf_pages/page-319.jpg" contenteditable="true" role="textbox" aria-multiline="true" spellcheck="false">姜嫄生的这一对儿子，不仅分化成为两支周族，也被后世创造为黄帝和炎帝，成为整个华夏世界的共同祖先。这背后的原理是，自西周以来，姬周文化成为正统，他们的族源故事自然成为重新创作古史的首选素材。当然，其他东方部族的族源传说也会是素材，但地位远不如周族始祖化身那样处于核心地位。
+
+了解了叔均这一支姜姓周人，不仅可以解释武丁卜辞中的“周”，还有助于理解《诗经・大雅•文王》中那句著名的“周虽旧邦，其命维新”。对于姬姓周族来说，称为“旧邦”不太确切，他们并没什么太显赫的历史，但姜姓周族不一样，至少武丁王的卜辞能证明，他们曾经是商朝比较重视的对手。所以，这个旧邦应主要是指早已灭亡的姜姓周族。
+
+〔按语：姜姓周族亡〕
+
+注释
+
+1《国语•郑语》中，郑桓公和史伯对话，史伯说“周弃能播殖百谷蔬”。郑国出自周王室，是后稷-弃的直系后人，可见周人都知道自己的始祖名弃。
+
+2汉魏以来，学者理解的“周原”多在岐山县和扶风县之间，但这只是狭义的周原。史地学家史念海认为，上古周原的范围更大：“当时的周原包括现在陕西省凤翔、岐山、扶风、武功四个县的大部分，兼有宝鸡、梅县、乾县、永寿四个县的小部分。”史念海：《周原的历史地理与周原考古》，《陕西师范大学学报》（哲学社会科学版）1978年第2期；尹盛平：《周原文化与西周文明》，江苏教育出版社，2005年，第107页。
+
+3《左传•宣公三年》。这是一位郑国大臣的发言，郑国出自周王室，此语应有依据。
+
+4中国社科院考古所：《南邠州・碾子坡》，世界图书出版公司，2007年。以下有关该遗址考古的基本信息、数据及图片未注明出处的，皆出自该书，不再详注。</div>
+            </div>
+          </div>
+        </section>
+        <section class="page" id="page-322">
+          <div class="page-head">
+            <div class="page-title">原书阅读器页 322<span>原书物理 PDF 页 320</span><span>印刷页 308</span></div>
+            <div class="page-tools">
+              <button type="button" data-copy-page="322">复制本页</button>
+              <button type="button" data-export-page="322">导出本页</button>
+            </div>
+          </div>
+          <div class="workbench">
+            <div class="editor-wrap">
+              <div class="rich-editor" data-page="322" data-source-page="320" data-printed-page="308" data-source-image="pdf_pages/page-320.jpg" contenteditable="true" role="textbox" aria-multiline="true" spellcheck="false">5“稷”到底代表什么粮食，古人有不同说法，有的认为是某种粟，也有的认为是高粱。这是学术史上的一桩公案，清代学者程瑶田、王念孙都属于高粱派。
+
+6唐代经学家孔颖达在给《诗经•大雅•公刘》做注解时，已经提出了这个疑问。
+
+7见《国语•晋语》。晋国出自周王室，这个说法虽然未必真实，但属于周人给自己创造的更显赫的始祖。
+
+8徐中舒：《周原甲骨初论》，载《徐中舒历史论文选辑》（下册），中华书局，1998年，第1423页。
+
+9后来姬姓周族又发生过类似的一幕，亶父的长子泰伯和次子仲雍“窜入荆蛮”，留下的幼子季历则继承了族长。
+
+10《山海经》：“叔均乃为田祖。”《诗经•小雅•甫田》：“琴瑟击鼓，以御田祖，以祈甘雨。”《诗经•小雅•大田》：“去其螟螣，及其蟊贼，无害我田稚！田祖有神，秉畀炎火！”《周礼•春官宗伯》：“凡国祈年于田祖，龡豳雅，击土鼓。”
+
+11《山海经》：“稷之孙曰叔均，是始作牛耕。”《周礼•春官宗伯》郑玄注：“田祖，始耕田者，谓神农。”《诗经•小雅•甫田》郑玄注：“田祖，先啬也。”《礼记•郊特牲》郑玄注：“先啬，若神农。”</div>
+            </div>
+          </div>
+        </section>
+        <section class="page" id="page-323">
+          <div class="page-head">
+            <div class="page-title">原书阅读器页 323<span>原书物理 PDF 页 321</span><span>印刷页 309</span></div>
+            <div class="page-tools">
+              <button type="button" data-copy-page="323">复制本页</button>
+              <button type="button" data-export-page="323">导出本页</button>
+            </div>
+          </div>
+          <div class="workbench">
+            <div class="editor-wrap">
+              <div class="rich-editor" data-page="323" data-source-page="321" data-printed-page="309" data-source-image="pdf_pages/page-321.jpg" contenteditable="true" role="textbox" aria-multiline="true" spellcheck="false"></div>
+            </div>
+          </div>
+        </section>
+        <section class="page" id="page-324">
+          <div class="page-head">
+            <div class="page-title">原书阅读器页 324<span>原书物理 PDF 页 322</span><span>印刷页 310</span></div>
+            <div class="page-tools">
+              <button type="button" data-copy-page="324">复制本页</button>
+              <button type="button" data-export-page="324">导出本页</button>
+            </div>
+          </div>
+          <div class="workbench">
+            <div class="editor-wrap">
+              <div class="rich-editor" data-page="324" data-source-page="322" data-printed-page="310" data-source-image="pdf_pages/page-322.jpg" contenteditable="true" role="textbox" aria-multiline="true" spellcheck="false"></div>
+            </div>
+          </div>
+        </section></div>
+        <section class="notes-dock" id="notes">
+          <h2>编辑札记</h2>
+          <div class="note-grid">
+            <div class="note-controls">
+              <label>页<select id="notePage"></select></label>
+              <div class="marker-composer" id="markerComposer">
+                <h3>标记</h3>
+                <label>类型<select id="markerType">
+                  <option value="pinyin">注音</option>
+                  <option value="editor-note">编者注／脚注</option>
+                  <option value="inline-note">按语</option>
+                  <option value="pending">待核</option>
+                  <option value="user-note">用户札记</option>
+                </select></label>
+                <label>内容<input id="markerText" type="text" autocomplete="off" placeholder="输入拼音或笔记内容"></label>
+                <p class="marker-help" id="markerHelp">先在正文中选择文字，再输入拼音；可用“拼音；简注”。</p>
+                <div class="note-actions"><button id="applyMarkerBtn" type="button">应用标记</button></div>
+              </div>
+              <label>工作日志标签<input id="noteTag" type="text" value="校订" autocomplete="off"></label>
+              <textarea id="noteText" spellcheck="false"></textarea>
+              <div class="note-actions">
+                <button id="addNoteBtn" type="button">记录到编辑日志</button>
+                <button id="exportLogBtn" type="button">导出日志</button>
+                <button id="downloadLogBtn" type="button">下载日志</button>
+                <button id="clearLogBtn" type="button">清空日志</button>
+              </div>
+            </div>
+            <div><div id="logList" class="log-list"></div></div>
+          </div>
+        </section>
+        <section class="export-dock"><h2>导出文本</h2><textarea id="exportText" spellcheck="false"></textarea></section>
+      </section>
       <aside>
+        <section class="panel source-viewer" aria-label="当前原书 PDF 页">
+          <div class="source-viewer-head"><strong>当前原书 PDF 页</strong><span class="source-viewer-meta" id="sourceViewerMeta"></span></div>
+          <img id="sourceViewerImage" src="pdf_pages/page-299.jpg" alt="原书 PDF 页 299">
+          <div class="source-viewer-actions"><a class="action-link" href="chapter_15_annotated.pdf" target="_blank" rel="noopener">打开注音版 PDF</a></div>
+        </section>
         <section class="panel"><h2>页码说明</h2><div class="page-number-legend"><p><strong>原阅</strong> 301-324：原书在阅读器中显示的页码</p><p><strong>原PDF</strong> 299-322：原书文件的物理页码</p><p><strong>印</strong> 287-310：书页印刷页码</p><p><strong>注音PDF</strong> 1-24：独立重排页码，不与原书逐页对应</p></div></section>
         <section class="panel"><h2>页</h2><div class="nav-list"><button type="button" class="nav-button" data-target="toc"><span>目录</span><span>top</span></button><button type="button" class="nav-button" data-target="notes"><span>编辑札记</span><span>log</span></button><button type="button" class="nav-button" data-target="page-301"><span>原阅 301 · 原PDF 299</span><span>印 287</span></button><button type="button" class="nav-button" data-target="page-302"><span>原阅 302 · 原PDF 300</span><span>印 288</span></button><button type="button" class="nav-button" data-target="page-303"><span>原阅 303 · 原PDF 301</span><span>印 289</span></button><button type="button" class="nav-button" data-target="page-304"><span>原阅 304 · 原PDF 302</span><span>印 290</span></button><button type="button" class="nav-button" data-target="page-305"><span>原阅 305 · 原PDF 303</span><span>印 291</span></button><button type="button" class="nav-button" data-target="page-306"><span>原阅 306 · 原PDF 304</span><span>印 292</span></button><button type="button" class="nav-button" data-target="page-307"><span>原阅 307 · 原PDF 305</span><span>印 293</span></button><button type="button" class="nav-button" data-target="page-308"><span>原阅 308 · 原PDF 306</span><span>印 294</span></button><button type="button" class="nav-button" data-target="page-309"><span>原阅 309 · 原PDF 307</span><span>印 295</span></button><button type="button" class="nav-button" data-target="page-310"><span>原阅 310 · 原PDF 308</span><span>印 296</span></button><button type="button" class="nav-button" data-target="page-311"><span>原阅 311 · 原PDF 309</span><span>印 297</span></button><button type="button" class="nav-button" data-target="page-312"><span>原阅 312 · 原PDF 310</span><span>印 298</span></button><button type="button" class="nav-button" data-target="page-313"><span>原阅 313 · 原PDF 311</span><span>印 299</span></button><button type="button" class="nav-button" data-target="page-314"><span>原阅 314 · 原PDF 312</span><span>印 300</span></button><button type="button" class="nav-button" data-target="page-315"><span>原阅 315 · 原PDF 313</span><span>印 301</span></button><button type="button" class="nav-button" data-target="page-316"><span>原阅 316 · 原PDF 314</span><span>印 302</span></button><button type="button" class="nav-button" data-target="page-317"><span>原阅 317 · 原PDF 315</span><span>印 303</span></button><button type="button" class="nav-button" data-target="page-318"><span>原阅 318 · 原PDF 316</span><span>印 304</span></button><button type="button" class="nav-button" data-target="page-319"><span>原阅 319 · 原PDF 317</span><span>印 305</span></button><button type="button" class="nav-button" data-target="page-320"><span>原阅 320 · 原PDF 318</span><span>印 306</span></button><button type="button" class="nav-button" data-target="page-321"><span>原阅 321 · 原PDF 319</span><span>印 307</span></button><button type="button" class="nav-button" data-target="page-322"><span>原阅 322 · 原PDF 320</span><span>印 308</span></button><button type="button" class="nav-button" data-target="page-323"><span>原阅 323 · 原PDF 321</span><span>印 309</span></button><button type="button" class="nav-button" data-target="page-324"><span>原阅 324 · 原PDF 322</span><span>印 310</span></button></div></section>
-        <section class="panel"><h2>参考表</h2><div class="nav-list"><button type="button" class="nav-button" data-target="yueducibiao"><span>阅读词表</span><span>表</span></button><button type="button" class="nav-button" data-target="qingtongqicibiao"><span>青铜器词表</span><span>表</span></button><button type="button" class="nav-button" data-target="dushuzhaji"><span>章节导读札记</span><span>表</span></button><button type="button" class="nav-button" data-target="user-notes"><span>用户札记</span><span>注</span></button><a class="nav-button action-link" href="shengmin_annotated.md" target="_blank" rel="noopener"><span>《生民》注音注释</span><span>MD ↗</span></a><a class="nav-button action-link" href="gongliu_annotated.md" target="_blank" rel="noopener"><span>《公刘》注音注释</span><span>MD ↗</span></a></div></section>
-        <section class="panel"><h2>术语</h2><div class="term-list"><button type="button" class="term" data-term="稷" data-pinyin="jì" data-difficulty="4" data-domain="general"><span>稷</span><span>jì</span></button><button type="button" class="term" data-term="字" data-pinyin="zì" data-difficulty="4" data-domain="general"><span>字</span><span>zì</span></button><button type="button" class="term" data-term="姜嫄" data-pinyin="jiāng yuán" data-difficulty="4" data-domain="general"><span>姜嫄</span><span>jiāng yuán</span></button><button type="button" class="term" data-term="嫄" data-pinyin="yuán" data-difficulty="4" data-domain="general"><span>嫄</span><span>yuán</span></button><button type="button" class="term" data-term="公刘" data-pinyin="gōng liú" data-difficulty="3" data-domain="proper_name"><span>公刘</span><span>gōng liú</span></button><button type="button" class="term" data-term="相" data-pinyin="xiàng" data-difficulty="4" data-domain="general"><span>相</span><span>xiàng</span></button><button type="button" class="term" data-term="豳" data-pinyin="bīn" data-difficulty="3" data-domain="proper_name"><span>豳</span><span>bīn</span></button><button type="button" class="term" data-term="诞" data-pinyin="dàn" data-difficulty="4" data-domain="general"><span>诞</span><span>dàn</span></button><button type="button" class="term" data-term="不窋" data-pinyin="bù zhú" data-difficulty="3" data-domain="proper_name"><span>不窋</span><span>bù zhú</span></button><button type="button" class="term" data-term="邰" data-pinyin="tái" data-difficulty="4" data-domain="general"><span>邰</span><span>tái</span></button><button type="button" class="term" data-term="台玺" data-pinyin="tái xǐ" data-difficulty="3" data-domain="proper_name"><span>台玺</span><span>tái xǐ</span></button><button type="button" class="term" data-term="达" data-pinyin="dá" data-difficulty="4" data-domain="general"><span>达</span><span>dá</span></button><button type="button" class="term" data-term="灰坑" data-pinyin="huī kēng" data-difficulty="3" data-domain="general"><span>灰坑</span><span>huī kēng</span></button><button type="button" class="term" data-term="笃" data-pinyin="dǔ" data-difficulty="4" data-domain="general"><span>笃</span><span>dǔ</span></button><button type="button" class="term" data-term="乱" data-pinyin="luàn" data-difficulty="4" data-domain="general"><span>乱</span><span>luàn</span></button><button type="button" class="term" data-term="厥" data-pinyin="jué" data-difficulty="4" data-domain="general"><span>厥</span><span>jué</span></button><button type="button" class="term" data-term="豆" data-pinyin="dòu" data-difficulty="4" data-domain="general"><span>豆</span><span>dòu</span></button><button type="button" class="term" data-term="亶" data-pinyin="dǎn" data-difficulty="4" data-domain="general"><span>亶</span><span>dǎn</span></button><button type="button" class="term" data-term="姞" data-pinyin="jí" data-difficulty="4" data-domain="general"><span>姞</span><span>jí</span></button><button type="button" class="term" data-term="赫" data-pinyin="hè" data-difficulty="4" data-domain="general"><span>赫</span><span>hè</span></button><button type="button" class="term" data-term="辑" data-pinyin="jí" data-difficulty="4" data-domain="general"><span>辑</span><span>jí</span></button><button type="button" class="term" data-term="厉" data-pinyin="lì" data-difficulty="4" data-domain="general"><span>厉</span><span>lì</span></button><button type="button" class="term" data-term="寘" data-pinyin="zhì" data-difficulty="4" data-domain="general"><span>寘</span><span>zhì</span></button><button type="button" class="term" data-term="即" data-pinyin="jí" data-difficulty="4" data-domain="general"><span>即</span><span>jí</span></button><button type="button" class="term" data-term="迄" data-pinyin="qì" data-difficulty="4" data-domain="general"><span>迄</span><span>qì</span></button><button type="button" class="term" data-term="景" data-pinyin="yǐng" data-difficulty="4" data-domain="general"><span>景</span><span>yǐng</span></button><button type="button" class="term" data-term="爰" data-pinyin="yuán" data-difficulty="4" data-domain="general"><span>爰</span><span>yuán</span></button><button type="button" class="term" data-term="殷墟" data-pinyin="yīn xū" data-difficulty="5" data-domain="archaeology"><span>殷墟</span><span>yīn xū</span></button><button type="button" class="term" data-term="铜镞" data-pinyin="tóng zú" data-difficulty="5" data-domain="bronze_vessel"><span>铜镞</span><span>tóng zú</span></button><button type="button" class="term" data-term="祭祀坑" data-pinyin="jì sì kēng" data-difficulty="3" data-domain="general"><span>祭祀坑</span><span>jì sì kēng</span></button><button type="button" class="term" data-term="人祭" data-pinyin="rén jì" data-difficulty="3" data-domain="general"><span>人祭</span><span>rén jì</span></button><button type="button" class="term" data-term="禋" data-pinyin="yīn" data-difficulty="4" data-domain="general"><span>禋</span><span>yīn</span></button><button type="button" class="term" data-term="歆" data-pinyin="xīn" data-difficulty="4" data-domain="general"><span>歆</span><span>xīn</span></button><button type="button" class="term" data-term="攸" data-pinyin="yōu" data-difficulty="4" data-domain="general"><span>攸</span><span>yōu</span></button><button type="button" class="term" data-term="荏菽" data-pinyin="rěn shū" data-difficulty="4" data-domain="general"><span>荏菽</span><span>rěn shū</span></button><button type="button" class="term" data-term="颖" data-pinyin="yǐng" data-difficulty="4" data-domain="general"><span>颖</span><span>yǐng</span></button><button type="button" class="term" data-term="恒" data-pinyin="héng" data-difficulty="4" data-domain="general"><span>恒</span><span>héng</span></button><button type="button" class="term" data-term="肇" data-pinyin="zhào" data-difficulty="4" data-domain="general"><span>肇</span><span>zhào</span></button><button type="button" class="term" data-term="舂" data-pinyin="chōng" data-difficulty="4" data-domain="general"><span>舂</span><span>chōng</span></button><button type="button" class="term" data-term="簸" data-pinyin="bǒ" data-difficulty="4" data-domain="general"><span>簸</span><span>bǒ</span></button><button type="button" class="term" data-term="登" data-pinyin="dēng" data-difficulty="4" data-domain="general"><span>登</span><span>dēng</span></button><button type="button" class="term" data-term="庶" data-pinyin="shù" data-difficulty="4" data-domain="general"><span>庶</span><span>shù</span></button><button type="button" class="term" data-term="陟" data-pinyin="zhì" data-difficulty="4" data-domain="general"><span>陟</span><span>zhì</span></button><button type="button" class="term" data-term="溥" data-pinyin="pǔ" data-difficulty="4" data-domain="general"><span>溥</span><span>pǔ</span></button><button type="button" class="term" data-term="俾" data-pinyin="bǐ" data-difficulty="4" data-domain="general"><span>俾</span><span>bǐ</span></button><button type="button" class="term" data-term="骨锥" data-pinyin="gǔ zhuī" data-difficulty="5" data-domain="archaeology"><span>骨锥</span><span>gǔ zhuī</span></button><button type="button" class="term" data-term="半地穴式" data-pinyin="bàn dì xué shì" data-difficulty="3" data-domain="general"><span>半地穴式</span><span>bàn dì xué shì</span></button><button type="button" class="term" data-term="武敏" data-pinyin="wǔ mǐn" data-difficulty="4" data-domain="general"><span>武敏</span><span>wǔ mǐn</span></button><button type="button" class="term" data-term="攸介攸止" data-pinyin="yōu jiè yōu zhǐ" data-difficulty="4" data-domain="general"><span>攸介攸止</span><span>yōu jiè yōu zhǐ</span></button><button type="button" class="term" data-term="介" data-pinyin="jiè" data-difficulty="4" data-domain="general"><span>介</span><span>jiè</span></button><button type="button" class="term" data-term="载震载夙" data-pinyin="zài zhèn zài sù" data-difficulty="4" data-domain="general"><span>载震载夙</span><span>zài zhèn zài sù</span></button><button type="button" class="term" data-term="震" data-pinyin="zhèn" data-difficulty="4" data-domain="general"><span>震</span><span>zhèn</span></button><button type="button" class="term" data-term="夙" data-pinyin="sù" data-difficulty="4" data-domain="general"><span>夙</span><span>sù</span></button><button type="button" class="term" data-term="弥" data-pinyin="mí" data-difficulty="4" data-domain="general"><span>弥</span><span>mí</span></button><button type="button" class="term" data-term="坼" data-pinyin="chè" data-difficulty="4" data-domain="general"><span>坼</span><span>chè</span></button><button type="button" class="term" data-term="副" data-pinyin="pì" data-difficulty="4" data-domain="general"><span>副</span><span>pì</span></button><button type="button" class="term" data-term="菑" data-pinyin="zāi" data-difficulty="4" data-domain="general"><span>菑</span><span>zāi</span></button><button type="button" class="term" data-term="腓" data-pinyin="féi" data-difficulty="4" data-domain="general"><span>腓</span><span>féi</span></button><button type="button" class="term" data-term="呱" data-pinyin="gū" data-difficulty="4" data-domain="general"><span>呱</span><span>gū</span></button><button type="button" class="term" data-term="覃" data-pinyin="tán" data-difficulty="4" data-domain="general"><span>覃</span><span>tán</span></button><button type="button" class="term" data-term="訏" data-pinyin="xū" data-difficulty="4" data-domain="general"><span>訏</span><span>xū</span></button><button type="button" class="term" data-term="蓺" data-pinyin="yì" data-difficulty="4" data-domain="general"><span>蓺</span><span>yì</span></button><button type="button" class="term" data-term="旆旆" data-pinyin="pèi pèi" data-difficulty="4" data-domain="general"><span>旆旆</span><span>pèi pèi</span></button><button type="button" class="term" data-term="穟穟" data-pinyin="suì suì" data-difficulty="4" data-domain="general"><span>穟穟</span><span>suì suì</span></button><button type="button" class="term" data-term="幪幪" data-pinyin="méng méng" data-difficulty="4" data-domain="general"><span>幪幪</span><span>méng méng</span></button><button type="button" class="term" data-term="瓜瓞" data-pinyin="guā dié" data-difficulty="4" data-domain="general"><span>瓜瓞</span><span>guā dié</span></button><button type="button" class="term" data-term="唪唪" data-pinyin="běng běng" data-difficulty="4" data-domain="general"><span>唪唪</span><span>běng běng</span></button><button type="button" class="term" data-term="穑" data-pinyin="sè" data-difficulty="4" data-domain="general"><span>穑</span><span>sè</span></button><button type="button" class="term" data-term="茀" data-pinyin="fú" data-difficulty="4" data-domain="general"><span>茀</span><span>fú</span></button><button type="button" class="term" data-term="苞" data-pinyin="bāo" data-difficulty="4" data-domain="general"><span>苞</span><span>bāo</span></button><button type="button" class="term" data-term="褎" data-pinyin="yòu" data-difficulty="4" data-domain="general"><span>褎</span><span>yòu</span></button><button type="button" class="term" data-term="栗" data-pinyin="lì" data-difficulty="4" data-domain="general"><span>栗</span><span>lì</span></button><button type="button" class="term" data-term="秬秠" data-pinyin="jù pī" data-difficulty="4" data-domain="general"><span>秬秠</span><span>jù pī</span></button><button type="button" class="term" data-term="穈芑" data-pinyin="mén qǐ" data-difficulty="4" data-domain="general"><span>穈芑</span><span>mén qǐ</span></button><button type="button" class="term" data-term="揄" data-pinyin="yóu" data-difficulty="4" data-domain="general"><span>揄</span><span>yóu</span></button><button type="button" class="term" data-term="蹂" data-pinyin="róu" data-difficulty="4" data-domain="general"><span>蹂</span><span>róu</span></button><button type="button" class="term" data-term="叟叟" data-pinyin="sǒu sǒu" data-difficulty="4" data-domain="general"><span>叟叟</span><span>sǒu sǒu</span></button><button type="button" class="term" data-term="烝" data-pinyin="zhēng" data-difficulty="4" data-domain="general"><span>烝</span><span>zhēng</span></button><button type="button" class="term" data-term="浮浮" data-pinyin="fú fú" data-difficulty="4" data-domain="general"><span>浮浮</span><span>fú fú</span></button><button type="button" class="term" data-term="萧" data-pinyin="xiāo" data-difficulty="4" data-domain="general"><span>萧</span><span>xiāo</span></button><button type="button" class="term" data-term="羝" data-pinyin="dī" data-difficulty="4" data-domain="general"><span>羝</span><span>dī</span></button><button type="button" class="term" data-term="軷" data-pinyin="bá" data-difficulty="4" data-domain="general"><span>軷</span><span>bá</span></button><button type="button" class="term" data-term="燔" data-pinyin="fán" data-difficulty="4" data-domain="general"><span>燔</span><span>fán</span></button><button type="button" class="term" data-term="嗣岁" data-pinyin="sì suì" data-difficulty="4" data-domain="general"><span>嗣岁</span><span>sì suì</span></button><button type="button" class="term" data-term="卬" data-pinyin="áng" data-difficulty="4" data-domain="general"><span>卬</span><span>áng</span></button><button type="button" class="term" data-term="臭" data-pinyin="xiù" data-difficulty="4" data-domain="general"><span>臭</span><span>xiù</span></button><button type="button" class="term" data-term="蕃" data-pinyin="fán" data-difficulty="4" data-domain="general"><span>蕃</span><span>fán</span></button><button type="button" class="term" data-term="埸" data-pinyin="yì" data-difficulty="4" data-domain="general"><span>埸</span><span>yì</span></button><button type="button" class="term" data-term="餱粮" data-pinyin="hóu liáng" data-difficulty="4" data-domain="general"><span>餱粮</span><span>hóu liáng</span></button><button type="button" class="term" data-term="橐" data-pinyin="tuó" data-difficulty="4" data-domain="general"><span>橐</span><span>tuó</span></button><button type="button" class="term" data-term="戚扬" data-pinyin="qī yáng" data-difficulty="4" data-domain="general"><span>戚扬</span><span>qī yáng</span></button><button type="button" class="term" data-term="胥" data-pinyin="xū" data-difficulty="4" data-domain="general"><span>胥</span><span>xū</span></button><button type="button" class="term" data-term="巘" data-pinyin="yǎn" data-difficulty="4" data-domain="general"><span>巘</span><span>yǎn</span></button><button type="button" class="term" data-term="舟之" data-pinyin="zhōu zhī" data-difficulty="4" data-domain="general"><span>舟之</span><span>zhōu zhī</span></button><button type="button" class="term" data-term="鞞琫" data-pinyin="bǐng běng" data-difficulty="4" data-domain="general"><span>鞞琫</span><span>bǐng běng</span></button><button type="button" class="term" data-term="觏" data-pinyin="gòu" data-difficulty="4" data-domain="general"><span>觏</span><span>gòu</span></button><button type="button" class="term" data-term="跄跄济济" data-pinyin="qiāng qiāng jǐ jǐ" data-difficulty="4" data-domain="general"><span>跄跄济济</span><span>qiāng qiāng jǐ jǐ</span></button><button type="button" class="term" data-term="筵" data-pinyin="yán" data-difficulty="4" data-domain="general"><span>筵</span><span>yán</span></button><button type="button" class="term" data-term="曹" data-pinyin="cáo" data-difficulty="4" data-domain="general"><span>曹</span><span>cáo</span></button><button type="button" class="term" data-term="豕" data-pinyin="shǐ" data-difficulty="4" data-domain="general"><span>豕</span><span>shǐ</span></button><button type="button" class="term" data-term="匏" data-pinyin="páo" data-difficulty="4" data-domain="general"><span>匏</span><span>páo</span></button><button type="button" class="term" data-term="三单" data-pinyin="sān dān" data-difficulty="4" data-domain="general"><span>三单</span><span>sān dān</span></button><button type="button" class="term" data-term="隰原" data-pinyin="xí yuán" data-difficulty="4" data-domain="general"><span>隰原</span><span>xí yuán</span></button><button type="button" class="term" data-term="彻田" data-pinyin="chè tián" data-difficulty="4" data-domain="general"><span>彻田</span><span>chè tián</span></button><button type="button" class="term" data-term="允荒" data-pinyin="yǔn huāng" data-difficulty="4" data-domain="general"><span>允荒</span><span>yǔn huāng</span></button><button type="button" class="term" data-term="芮鞫" data-pinyin="ruì jū" data-difficulty="4" data-domain="general"><span>芮鞫</span><span>ruì jū</span></button><button type="button" class="term" data-term="盘庚" data-pinyin="pán gēng" data-difficulty="3" data-domain="proper_name"><span>盘庚</span><span>pán gēng</span></button><button type="button" class="term" data-term="喾" data-pinyin="kù" data-difficulty="3" data-domain="proper_name"><span>喾</span><span>kù</span></button><button type="button" class="term" data-term="皇涧" data-pinyin="huáng jiàn" data-difficulty="3" data-domain="proper_name"><span>皇涧</span><span>huáng jiàn</span></button><button type="button" class="term" data-term="过涧" data-pinyin="guō jiàn" data-difficulty="3" data-domain="proper_name"><span>过涧</span><span>guō jiàn</span></button><button type="button" class="term" data-term="北土" data-pinyin="běi tǔ" data-difficulty="3" data-domain="proper_name"><span>北土</span><span>běi tǔ</span></button><button type="button" class="term" data-term="铜瓿" data-pinyin="tóng bù" data-difficulty="5" data-domain="bronze_vessel"><span>铜瓿</span><span>tóng bù</span></button><button type="button" class="term" data-term="陶鬲" data-pinyin="táo lì" data-difficulty="5" data-domain="archaeology"><span>陶鬲</span><span>táo lì</span></button><button type="button" class="term" data-term="夯筑" data-pinyin="hāng zhù" data-difficulty="3" data-domain="general"><span>夯筑</span><span>hāng zhù</span></button><button type="button" class="term" data-term="腰坑殉狗" data-pinyin="yāo kēng xùn gǒu" data-difficulty="3" data-domain="general"><span>腰坑殉狗</span><span>yāo kēng xùn gǒu</span></button><button type="button" class="term" data-term="人殉" data-pinyin="rén xùn" data-difficulty="3" data-domain="general"><span>人殉</span><span>rén xùn</span></button><button type="button" class="term" data-term="碾子坡遗址" data-pinyin="niǎn zi pō yí zhǐ" data-difficulty="5" data-domain="archaeology"><span>碾子坡遗址</span><span>niǎn zi pō yí zhǐ</span></button><button type="button" class="term" data-term="口耳相传" data-pinyin="kǒu ěr xiāng chuán" data-difficulty="2" data-domain="phrase"><span>口耳相传</span><span>kǒu ěr xiāng chuán</span></button><button type="button" class="term" data-term="宗教改革" data-pinyin="zōng jiào gǎi gé" data-difficulty="3" data-domain="general"><span>宗教改革</span><span>zōng jiào gǎi gé</span></button><button type="button" class="term" data-term="生息之地" data-pinyin="shēng xī zhī dì" data-difficulty="3" data-domain="general"><span>生息之地</span><span>shēng xī zhī dì</span></button><button type="button" class="term" data-term="甲骨卜辞" data-pinyin="jiǎ gǔ bǔ cí" data-difficulty="4" data-domain="general"><span>甲骨卜辞</span><span>jiǎ gǔ bǔ cí</span></button><button type="button" class="term" data-term="郑州商城" data-pinyin="zhèng zhōu shāng chéng" data-difficulty="5" data-domain="archaeology"><span>郑州商城</span><span>zhèng zhōu shāng chéng</span></button><button type="button" class="term" data-term="长江流域" data-pinyin="cháng jiāng liú yù" data-difficulty="3" data-domain="proper_name"><span>长江流域</span><span>cháng jiāng liú yù</span></button><button type="button" class="term" data-term="周文王" data-pinyin="zhōu wén wáng" data-difficulty="3" data-domain="proper_name"><span>周文王</span><span>zhōu wén wáng</span></button><button type="button" class="term" data-term="姜太公" data-pinyin="jiāng tài gōng" data-difficulty="3" data-domain="proper_name"><span>姜太公</span><span>jiāng tài gōng</span></button><button type="button" class="term" data-term="孔颖达" data-pinyin="kǒng yǐng dá" data-difficulty="3" data-domain="proper_name"><span>孔颖达</span><span>kǒng yǐng dá</span></button><button type="button" class="term" data-term="浮选法" data-pinyin="fú xuǎn fǎ" data-difficulty="4" data-domain="general"><span>浮选法</span><span>fú xuǎn fǎ</span></button><button type="button" class="term" data-term="盘龙城" data-pinyin="pán lóng chéng" data-difficulty="5" data-domain="archaeology"><span>盘龙城</span><span>pán lóng chéng</span></button><button type="button" class="term" data-term="碳十四" data-pinyin="tàn shí sì" data-difficulty="3" data-domain="general"><span>碳十四</span><span>tàn shí sì</span></button><button type="button" class="term" data-term="老牛坡" data-pinyin="lǎo niú pō" data-difficulty="5" data-domain="archaeology"><span>老牛坡</span><span>lǎo niú pō</span></button><button type="button" class="term" data-term="顾颉刚" data-pinyin="gù jié gāng" data-difficulty="3" data-domain="proper_name"><span>顾颉刚</span><span>gù jié gāng</span></button><button type="button" class="term" data-term="上帝" data-pinyin="shàng dì" data-difficulty="3" data-domain="general"><span>上帝</span><span>shàng dì</span></button><button type="button" class="term" data-term="亶父" data-pinyin="dǎn fǔ" data-difficulty="3" data-domain="proper_name"><span>亶父</span><span>dǎn fǔ</span></button><button type="button" class="term" data-term="从容" data-pinyin="cóng róng" data-difficulty="4" data-domain="general"><span>从容</span><span>cóng róng</span></button><button type="button" class="term" data-term="俯身" data-pinyin="fǔ shēn" data-difficulty="3" data-domain="general"><span>俯身</span><span>fǔ shēn</span></button><button type="button" class="term" data-term="先后" data-pinyin="xiān hòu" data-difficulty="4" data-domain="general"><span>先后</span><span>xiān hòu</span></button><button type="button" class="term" data-term="分封" data-pinyin="fēn fēng" data-difficulty="3" data-domain="general"><span>分封</span><span>fēn fēng</span></button><button type="button" class="term" data-term="卜辞" data-pinyin="bǔ cí" data-difficulty="4" data-domain="general"><span>卜辞</span><span>bǔ cí</span></button><button type="button" class="term" data-term="后稷" data-pinyin="hòu jì" data-difficulty="3" data-domain="proper_name"><span>后稷</span><span>hòu jì</span></button><button type="button" class="term" data-term="周原" data-pinyin="zhōu yuán" data-difficulty="5" data-domain="archaeology"><span>周原</span><span>zhōu yuán</span></button><button type="button" class="term" data-term="商族" data-pinyin="shāng zú" data-difficulty="3" data-domain="general"><span>商族</span><span>shāng zú</span></button><button type="button" class="term" data-term="商王" data-pinyin="shāng wáng" data-difficulty="3" data-domain="proper_name"><span>商王</span><span>shāng wáng</span></button><button type="button" class="term" data-term="土著" data-pinyin="tǔ zhù" data-difficulty="3" data-domain="general"><span>土著</span><span>tǔ zhù</span></button><button type="button" class="term" data-term="地层" data-pinyin="dì céng" data-difficulty="3" data-domain="general"><span>地层</span><span>dì céng</span></button><button type="button" class="term" data-term="坑底" data-pinyin="kēng dǐ" data-difficulty="3" data-domain="general"><span>坑底</span><span>kēng dǐ</span></button><button type="button" class="term" data-term="埋祭" data-pinyin="mái jì" data-difficulty="3" data-domain="general"><span>埋祭</span><span>mái jì</span></button><button type="button" class="term" data-term="城邑" data-pinyin="chéng yì" data-difficulty="3" data-domain="general"><span>城邑</span><span>chéng yì</span></button><button type="button" class="term" data-term="填土" data-pinyin="tián tǔ" data-difficulty="3" data-domain="general"><span>填土</span><span>tián tǔ</span></button><button type="button" class="term" data-term="壁龛" data-pinyin="bì kān" data-difficulty="2" data-domain="general"><span>壁龛</span><span>bì kān</span></button><button type="button" class="term" data-term="太公" data-pinyin="tài gōng" data-difficulty="3" data-domain="proper_name"><span>太公</span><span>tài gōng</span></button><button type="button" class="term" data-term="夯土" data-pinyin="hāng tǔ" data-difficulty="3" data-domain="general"><span>夯土</span><span>hāng tǔ</span></button><button type="button" class="term" data-term="始祖" data-pinyin="shǐ zǔ" data-difficulty="3" data-domain="general"><span>始祖</span><span>shǐ zǔ</span></button><button type="button" class="term" data-term="孔子" data-pinyin="kǒng zǐ" data-difficulty="3" data-domain="proper_name"><span>孔子</span><span>kǒng zǐ</span></button><button type="button" class="term" data-term="尚书" data-pinyin="shàng shū" data-difficulty="4" data-domain="general"><span>尚书</span><span>shàng shū</span></button><button type="button" class="term" data-term="左传" data-pinyin="zuǒ zhuàn" data-difficulty="4" data-domain="general"><span>左传</span><span>zuǒ zhuàn</span></button><button type="button" class="term" data-term="捆绑" data-pinyin="kǔn bǎng" data-difficulty="3" data-domain="general"><span>捆绑</span><span>kǔn bǎng</span></button><button type="button" class="term" data-term="族徽" data-pinyin="zú huī" data-difficulty="4" data-domain="general"><span>族徽</span><span>zú huī</span></button><button type="button" class="term" data-term="春秋" data-pinyin="chūn qiū" data-difficulty="4" data-domain="general"><span>春秋</span><span>chūn qiū</span></button><button type="button" class="term" data-term="杂糅" data-pinyin="zá róu" data-difficulty="4" data-domain="general"><span>杂糅</span><span>zá róu</span></button><button type="button" class="term" data-term="殉葬" data-pinyin="xùn zàng" data-difficulty="3" data-domain="general"><span>殉葬</span><span>xùn zàng</span></button><button type="button" class="term" data-term="殷都" data-pinyin="yīn dū" data-difficulty="5" data-domain="general"><span>殷都</span><span>yīn dū</span></button><button type="button" class="term" data-term="浮选" data-pinyin="fú xuǎn" data-difficulty="3" data-domain="general"><span>浮选</span><span>fú xuǎn</span></button><button type="button" class="term" data-term="版筑" data-pinyin="bǎn zhù" data-difficulty="3" data-domain="general"><span>版筑</span><span>bǎn zhù</span></button><button type="button" class="term" data-term="献祭" data-pinyin="xiàn jì" data-difficulty="3" data-domain="general"><span>献祭</span><span>xiàn jì</span></button><button type="button" class="term" data-term="祭品" data-pinyin="jì pǐn" data-difficulty="3" data-domain="general"><span>祭品</span><span>jì pǐn</span></button><button type="button" class="term" data-term="禁忌" data-pinyin="jìn jì" data-difficulty="3" data-domain="general"><span>禁忌</span><span>jìn jì</span></button><button type="button" class="term" data-term="穿孔" data-pinyin="chuān kǒng" data-difficulty="3" data-domain="general"><span>穿孔</span><span>chuān kǒng</span></button><button type="button" class="term" data-term="窖藏" data-pinyin="jiào cáng" data-difficulty="4" data-domain="general"><span>窖藏</span><span>jiào cáng</span></button><button type="button" class="term" data-term="简狄" data-pinyin="jiǎn dí" data-difficulty="3" data-domain="proper_name"><span>简狄</span><span>jiǎn dí</span></button><button type="button" class="term" data-term="粟米" data-pinyin="sù mǐ" data-difficulty="4" data-domain="general"><span>粟米</span><span>sù mǐ</span></button><button type="button" class="term" data-term="繁衍" data-pinyin="fán yǎn" data-difficulty="4" data-domain="general"><span>繁衍</span><span>fán yǎn</span></button><button type="button" class="term" data-term="羌人" data-pinyin="qiāng rén" data-difficulty="3" data-domain="general"><span>羌人</span><span>qiāng rén</span></button><button type="button" class="term" data-term="葬俗" data-pinyin="zàng sú" data-difficulty="3" data-domain="general"><span>葬俗</span><span>zàng sú</span></button><button type="button" class="term" data-term="蛮荒" data-pinyin="mán huāng" data-difficulty="4" data-domain="general"><span>蛮荒</span><span>mán huāng</span></button><button type="button" class="term" data-term="西土" data-pinyin="xī tǔ" data-difficulty="3" data-domain="proper_name"><span>西土</span><span>xī tǔ</span></button><button type="button" class="term" data-term="诗经" data-pinyin="shī jīng" data-difficulty="4" data-domain="general"><span>诗经</span><span>shī jīng</span></button><button type="button" class="term" data-term="迁徙" data-pinyin="qiān xǐ" data-difficulty="3" data-domain="general"><span>迁徙</span><span>qiān xǐ</span></button><button type="button" class="term" data-term="遗存" data-pinyin="yí cún" data-difficulty="3" data-domain="general"><span>遗存</span><span>yí cún</span></button><button type="button" class="term" data-term="铜鼎" data-pinyin="tóng dǐng" data-difficulty="5" data-domain="bronze_vessel"><span>铜鼎</span><span>tóng dǐng</span></button><button type="button" class="term" data-term="铭文" data-pinyin="míng wén" data-difficulty="4" data-domain="general"><span>铭文</span><span>míng wén</span></button><button type="button" class="term" data-term="陶寺" data-pinyin="táo sì" data-difficulty="5" data-domain="archaeology"><span>陶寺</span><span>táo sì</span></button><button type="button" class="term" data-term="骨匕" data-pinyin="gǔ bǐ" data-difficulty="5" data-domain="archaeology"><span>骨匕</span><span>gǔ bǐ</span></button><button type="button" class="term" data-term="骨笄" data-pinyin="gǔ jī" data-difficulty="5" data-domain="archaeology"><span>骨笄</span><span>gǔ jī</span></button><button type="button" class="term" data-term="瓿" data-pinyin="bù" data-difficulty="5" data-domain="bronze_vessel"><span>瓿</span><span>bù</span></button><button type="button" class="term" data-term="镞" data-pinyin="zú" data-difficulty="5" data-domain="bronze_vessel"><span>镞</span><span>zú</span></button><button type="button" class="term" data-term="戈" data-pinyin="gē" data-difficulty="5" data-domain="bronze_vessel"><span>戈</span><span>gē</span></button><button type="button" class="term" data-term="匕" data-pinyin="bǐ" data-difficulty="5" data-domain="bronze_vessel"><span>匕</span><span>bǐ</span></button><button type="button" class="term" data-term="甗" data-pinyin="yǎn" data-difficulty="5" data-domain="bronze_vessel"><span>甗</span><span>yǎn</span></button><button type="button" class="term" data-term="戚" data-pinyin="qī" data-difficulty="5" data-domain="bronze_vessel"><span>戚</span><span>qī</span></button><button type="button" class="term" data-term="鬲" data-pinyin="lì" data-difficulty="5" data-domain="bronze_vessel"><span>鬲</span><span>lì</span></button></div></section>
-      </aside>
-      <section>
         <jianshang-editor-toc current-chapter="chapter_15">
           <noscript>目录需要启用 JavaScript。</noscript>
         </jianshang-editor-toc>
@@ -201,694 +873,9 @@
             </table>
           </div>
         </section></div>
-        <div class="pages">
-        <section class="page" id="page-301">
-          <div class="page-head">
-            <div class="page-title">原书阅读器页 301<span>原书物理 PDF 页 299</span><span>印刷页 287</span></div>
-            <div class="page-tools">
-              <button type="button" data-copy-page="301">复制本页</button>
-              <button type="button" data-export-page="301">导出本页</button>
-            </div>
-          </div>
-          <div class="workbench">
-            <div class="editor-wrap">
-              <div class="rich-editor" data-page="301" contenteditable="true" role="textbox" aria-multiline="true" spellcheck="false">第十五章周族的起源史诗与考古
-
-周，是一个兴起于西土的部族。
-
-和商人的传说类似，周人的始祖也是未婚女子遇到神迹而生下伟大的儿子，但比起夏商两代的族源，周人史诗包含的信息量要多得多。可以说，从一开始，周族的来源就相对清晰可靠，不仅后世考古有发现周族开国三百年前的聚落，亦和文献中的很多记载有呼应。
-
-但是，讲述周族的起源也有很大的困难。周族本来没有文字，只有口头的传说，是灭商之后才开始用商人发明的文字记录自己的历史，难免会渗入一些商文化元素。而且，西周之后，人们还创造了那些更古老的半神帝王的“创世记”，比如黄帝和炎帝，嫁接和混淆了很多周族早期传说，造成了很多混乱。
-
-所以，我们需要剔除那些西周以后附会的故事，“正本清源”地讲述周族的起源。
-
-周族出自羌人
-
-《诗经•大雅》中《生民》，记载了周族的创始传说。
-
-厥初生民，时维姜嫄。生民如何？克禋克祀，以弗无子。履帝武敏、歆，攸介攸止，载震载夙。载生载育，时维后稷。
-
-诞弥厥月，先生如达。不坼不副，无菑无害，以赫厥灵。上帝不宁，不康禋祀，居然生子。
-
-诞寘之隘巷，牛羊腓字之。诞寘之平林，会伐平林。诞寘之寒冰，鸟覆翼之。鸟乃去矣，后稷呱矣。实覃实訏，厥声载路。
-
-诞实匍匐，克岐克嶷，以就口食。蓺之荏菽，荏菽旆旆。禾役穟穟，麻麦幪幪，瓜瓞唪唪。
-
-诞后稷之穑，有相之道。茀厥丰草，种之黄茂。实方实苞，实种实褎。实发实秀，实坚实好。实颖实栗，即有邰家室。
-
-诞降嘉种：维秬维秠，维穈维芑。恒之秬秠，是获是亩。恒之穈芑，是任是负，以归肇祀。</div>
-            </div>
-            <div class="scan"><img src="pdf_pages/page-299.jpg" alt="PDF page 301"></div>
-          </div>
-        </section>
-        <section class="page" id="page-302">
-          <div class="page-head">
-            <div class="page-title">原书阅读器页 302<span>原书物理 PDF 页 300</span><span>印刷页 288</span></div>
-            <div class="page-tools">
-              <button type="button" data-copy-page="302">复制本页</button>
-              <button type="button" data-export-page="302">导出本页</button>
-            </div>
-          </div>
-          <div class="workbench">
-            <div class="editor-wrap">
-              <div class="rich-editor" data-page="302" contenteditable="true" role="textbox" aria-multiline="true" spellcheck="false">诞我祀如何，或舂或揄，或簸或蹂。释之叟叟，烝之浮浮。载谋载惟，取萧祭脂。取羝以軷，载燔载烈，以兴嗣岁。
-
-卬盛于豆，于豆于登，其香始升。上帝居歆，胡臭亶时。后稷肇祀，庶无罪悔，以迄于今。
-
-[[editor-fn:1]]
-
-这篇史诗说，周族的始祖是一位叫“姜嫄”的女子，她生活在一个定居村落里，有房屋院落和小巷，有放牧的牛羊，村外平地上生长着树林，村民在林中伐木建屋。看来，这是一座位于平原，至少不是崎岖山地的小村落。
-
-姜嫄曾经向神明献祭，祈求自己婚后能生育儿子。然后，她便踩到了上帝留下的巨大脚印（郑玄注疏说，是大脚印上的拇指部分），从而怀孕，最终顺利生下了一个儿子。姜嫄非常紧张：“还未结婚就生下孩子，难道是我的祭品没能让上帝满意才导致这结果吗？ ”
-
-她试图扔掉这个婴儿，结果一系列神迹保护着婴儿活了下来：被扔在小巷里，有牛羊来给他喂奶；被扔在平旷的树林里，结果遇到村民们来伐木；被扔在寒冰上，鸟群飞来用翅膀给他取暖。婴儿的哭声响亮，一直传到大路上，所以总会有人发现和照顾他。等到他能够爬行，就可以自己找食物吃了……
-
-姜嫄最终是否“收回”了儿子，史诗里一直没有提及。等这个儿子长大之后，他开始从事农业种植工作，播种大豆、粟米、麻、麦、瓜，还掌握了一系列管理庄稼的技术，比如除去杂草以让各种作物长得茂盛，培育出各种庄稼的优良品种。
-
-这个儿子，名为“后稷”，字面的意思是“谷物首领”。在上古，“后”的意思是首领，“稷”是谷物。《史记•周本纪》说，因为儿时被母亲遗弃，所以他的名字是“弃”。这应该是较早的本名；[[fn:1]] 等他壮年事业有成后，才有可能被尊称为“后稷”。
-
-〔编者注1〕https://www.guwendao.net/mingju/juv_a850a5307ff0.aspx</div>
-            </div>
-            <div class="scan"><img src="pdf_pages/page-300.jpg" alt="PDF page 302"></div>
-          </div>
-        </section>
-        <section class="page" id="page-303">
-          <div class="page-head">
-            <div class="page-title">原书阅读器页 303<span>原书物理 PDF 页 301</span><span>印刷页 289</span></div>
-            <div class="page-tools">
-              <button type="button" data-copy-page="303">复制本页</button>
-              <button type="button" data-export-page="303">导出本页</button>
-            </div>
-          </div>
-          <div class="workbench">
-            <div class="editor-wrap">
-              <div class="rich-editor" data-page="303" contenteditable="true" role="textbox" aria-multiline="true" spellcheck="false">在史诗的最后，是弃-后稷用自己的收获向上帝献祭。他舂粮食去皮，簸扬淘洗干净，蒸出香气（用的应该是新石器晚期常见的陶甗）；还屠宰公羊，在香蒿上涂抹羊脂，放在柴堆中焚烧；所有的饭食都盛在高足陶盘（豆）里。上帝正在天上安居，闻到了祭品的香气，感叹：“哪里来的香味这么及时！”
-
-后稷靠祭祀得到上帝的保佑，一直没发生灾祸。周人的祭祀从此一直持续下来。
-
-同样是未婚生子，简狄繁衍出商族，姜嫄繁衍出周族。有学者认为，这是人类早期母系家族的表现：女子不出嫁，男子到外部落约会临时性伴侣，所谓生子“知其母，不知其父”。不过要注意，在《生民》里，姜嫄发现自己未婚先孕后，还是会感到恐惧。而这是父系家族时代的观念。所以，《生民》反映的应该是母系家族和父系家族正交替的时代，在当时，两种家族观念还杂糅并存。这也正是男性始祖领袖产生的背景：从母系家族诞生，然后建立起自己的父系家族与国族。
-
-在《生民》里，“上帝”频繁地出现。通过殷墟甲骨卜辞可知，“帝”或“上帝”本来是商人的说法和宗教概念，也就是说，这是后来的周人从商人那里学来的，并非周人自有。在《生民》史诗的最初版本里，这位周族之神应当有另外的名分，比如当地的某个山神或天神。
-
-《生民》还说，在经营农业获得成功之后，弃-后稷在母亲的有邰氏部族建立了家庭。古代注家说，邰在陕西的武功县，属于关中盆地内的平坦地区，地貌接近《生民》中的描写。而且，武功县距离周原地区很近，也可以说是广义周原的一部分，所以后稷的后人有了“周”族之名。[[fn:2]] 但古代史家忽略了一点，姜嫄的姓是“姜”，其本意是女性的羌人。这意味着，姜嫄是羌人，周族是从羌人繁衍出来的。当然，这不是说我们比古人聪明，只是因为我们今天可以借助殷墟甲骨卜辞知道，关中地区的居民主要是羌人。</div>
-            </div>
-            <div class="scan"><img src="pdf_pages/page-301.jpg" alt="PDF page 303"></div>
-          </div>
-        </section>
-        <section class="page" id="page-304">
-          <div class="page-head">
-            <div class="page-title">原书阅读器页 304<span>原书物理 PDF 页 302</span><span>印刷页 290</span></div>
-            <div class="page-tools">
-              <button type="button" data-copy-page="304">复制本页</button>
-              <button type="button" data-export-page="304">导出本页</button>
-            </div>
-          </div>
-          <div class="workbench">
-            <div class="editor-wrap">
-              <div class="rich-editor" data-page="304" contenteditable="true" role="textbox" aria-multiline="true" spellcheck="false">后稷成年之后，需要按照父系家族的规则娶妻。他的妻子是个姞（jí）姓女子，后世的周人也因此形成了一种观念：“姬姞耦，其子孙必蕃（fán；繁衍）。”意思是说，姬姓和姞姓通婚能生育很多后代。[[fn:3]] 但这背后还隐藏着一个问题，就是西部族群的“同姓不婚”禁忌（商族人很可能没有）。后稷此时还身在姜姓有邰氏部族，属于姜姓成员，不适合在母亲的姜姓部族里找配偶，而附近有一些姞姓族群，可以和姜姓婚配。
-
-农牧兼营与迁徙
-
-《生民》里还藏着一个大问题：后稷之前有没有农业？如果有，后稷就只是农业的改良者；如果没有，他就是农业的创始人，地位更加重要。
-
-从《生民》的预设环境来看，并没有渲染后稷生活在过于远古、蛮荒的世界。《史记•周本纪游己载的周族历代首领，从始祖后稷到文王，一共有十五位。这个数字也许不是全部，但至少说明后稷时代并非过于久远和洪荒，换句话说，《生民》并未预设是后稷发明了农业。
-
-再从考古来看。周族起源的关中地区，在后稷之前的三四千年里，大地湾和仰韶文化遗址已经星罗棋布，新石器农业发展兴盛。在如此悠久的农业文化圈中，周人也不大可能想象是自己的先祖发明了农业。
-
-《生民》说，后稷被丢弃时，有成群的牛羊保护和哺育了他。本书认为，当时畜牧业的繁荣更值得关注。
-
-从距今四千年开始，全新世[[editor-fn:2]]大暖期逐渐结束，中国西北部海拔较高的地区首先受到影响，气候呈现从暖湿转向干凉的趋势。这种变化更适合畜牧，所以高地居民的粮食种植逐渐减少，牛羊畜牧业比重则缓慢上升。
-
-到商代，山西和陕西的很多土著被商人称为“羌丁羌的甲骨文写作（甲骨文，近似7），羊头人身，说明畜牧业在其生活里占重要地位。但这些人仍然有农业经济，并未变成完全依靠牲畜的游牧人。商朝灭亡后，周人和羌人学习商的文字，把羌人的族姓写作为“姜”——女性的羌人。
-
-〔按语：姜太公〕
-
-〔编者注2〕全新世是地球上最近的一个地质年代，始于大约11,700年前，持续至今。它的名字来自希腊语，意思是“完全新近的”。人类的全部文明、农业发展和历史记录，都发生在全新世。</div>
-            </div>
-            <div class="scan"><img src="pdf_pages/page-302.jpg" alt="PDF page 304"></div>
-          </div>
-        </section>
-        <section class="page" id="page-305">
-          <div class="page-head">
-            <div class="page-title">原书阅读器页 305<span>原书物理 PDF 页 303</span><span>印刷页 291</span></div>
-            <div class="page-tools">
-              <button type="button" data-copy-page="305">复制本页</button>
-              <button type="button" data-export-page="305">导出本页</button>
-            </div>
-          </div>
-          <div class="workbench">
-            <div class="editor-wrap">
-              <div class="rich-editor" data-page="305" contenteditable="true" role="textbox" aria-multiline="true" spellcheck="false">周人之所以强调后稷精于农业的形象，应该是为了强调自己和羌人旧邻的区别 ,让自己显得更为“进步”和“开化”。在畜牧和农业之间，后稷选择了优先发展农业。那么，这两者到底有何区别？
-
-动植物的自然繁殖周期告诉我们，相比畜牧业，农业的收获周期短，投入产出比高，“周转”增殖更快。牛、马以及未经现代改良的羊，一年只能生一胎，每胎生一只，不仅如此，牛羊还需要数年的生长期才可以繁殖。这些都决定了畜牧业的增殖速度较慢，即使有无限充裕的草场和人力，也无法加速循环。在家畜当中，相比牛羊，猪每胎产仔数量多一些，增殖更快，但猪的食物主要依赖农业，单靠养猪无法形成畜牧业。
-
-跟牛羊相比，哪怕是传统低效的粮食品种，收获和播种的比率也很容易超过十倍（一颗粟米种子能收获上千颗粟米），而且，粮食每年至少可以收获一季。这意味着，在土地和人力足够的情况下，农业的规模和提供的食物数量可以高速递增。因此，少年时代的后稷勤于农作，很快便发家致富。当然，在史诗里，他被赋予了无穷的精力和丰富的经验值。
-
-关中盆地的面积不太大，四周被山地环绕，宜农的平地和宜牧的山地相距很近，所以后稷（及早期周族人）有机会深入了解这两种经济形态，并作出自己的选择。
-
-到“野蛮人”中去
-
-《史记》说，后稷曾经在尧帝的朝廷担任“农师”，负责农业指导工作，一直供职到夏朝。后稷的儿子叫不窜，后遭遇夏朝的动荡，丢掉了农师的职位，只好带着一批族人离开周原（以及关中盆地），迁徙到戎狄野蛮人中谋生，继续繁衍。从此，周人在陕北山地生活了十一代，直到文王的祖父亶父一代才迁回周原。</div>
-            </div>
-            <div class="scan"><img src="pdf_pages/page-303.jpg" alt="PDF page 305"></div>
-          </div>
-        </section>
-        <section class="page" id="page-306">
-          <div class="page-head">
-            <div class="page-title">原书阅读器页 306<span>原书物理 PDF 页 304</span><span>印刷页 292</span></div>
-            <div class="page-tools">
-              <button type="button" data-copy-page="306">复制本页</button>
-              <button type="button" data-export-page="306">导出本页</button>
-            </div>
-          </div>
-          <div class="workbench">
-            <div class="editor-wrap">
-              <div class="rich-editor" data-page="306" contenteditable="true" role="textbox" aria-multiline="true" spellcheck="false">后稷卒，子不窋（zhú）立。不窋末年，夏后氏政衰，去稷不务，不窋以失其官而奔戎狄之间。
-
-古公亶父复修后稷、公刘之业，积德行义，国人皆戴之。 ……乃与私属遂去豳（bīn），度漆、沮，逾梁山，止于岐下。豳人举国扶老携弱，尽复归古公于岐下。
-
-[[editor-fn:3]]
-
-上述传说中关于尧帝和夏朝的内容已经无法验证，二里头文化并没有延伸到周原地区，很难证明早期周人和夏朝-二里头古国有什么联系。
-
-至于不窋向北方迁徙的时代，很可能是在商朝前期，正值商人征服者侵入关中。不窋家族虽然还未必全面了解扩张中的商朝，但很显然，那些使用青铜兵器、到处抓捕俘虏的人让他们感到非常可怕。而且周原地区过于平坦，完全暴露在入侵者的视野中，所以为了安全起见，他们只好选择躲到北方山地。
-
-后来，周人称这段流亡为“窜于戎狄”。现代史家经常误以为戎狄就是游牧族，其实不然。这需要解释戎和狄在周人眼里的含义。
-
-在商人的甲骨卜辞里，没有戎和狄。周人说的戎，是地域和文化与周族比较接近，但略微“野蛮落后”一点的族群。最明显的是，戎人也有族姓，比如姬姓和姜姓，从这里也能看出来，他们和周人有渊源。实际上，在商人看来，周与戎区别不大，都属于广义的羌人。
-
-而在周人眼里，狄则是个更野蛮的族群。春秋之前的文献，几乎没有关于狄人的记录。春秋的狄人，族姓是“隗二而商代甲骨卜辞中有“鬼方”，也许他们之间有些关系。
-
-故而，不窋“窜于戎狄”，并非投奔游牧族，因为当时还没有纯粹的游牧族；不窋去的，实是关中盆地以北的山地，在那里生活的是姜姓戎人（羌人），他们的畜牧业经济虽多一些，但也有农业，过的是定居生活。
-
-〔编者注3〕史记 周本纪 https://ctext.org/shiji/zhou-ben-ji/zh</div>
-            </div>
-            <div class="scan"><img src="pdf_pages/page-304.jpg" alt="PDF page 306"></div>
-          </div>
-        </section>
-        <section class="page" id="page-307">
-          <div class="page-head">
-            <div class="page-title">原书阅读器页 307<span>原书物理 PDF 页 305</span><span>印刷页 293</span></div>
-            <div class="page-tools">
-              <button type="button" data-copy-page="307">复制本页</button>
-              <button type="button" data-export-page="307">导出本页</button>
-            </div>
-          </div>
-          <div class="workbench">
-            <div class="editor-wrap">
-              <div class="rich-editor" data-page="307" contenteditable="true" role="textbox" aria-multiline="true" spellcheck="false">不过，不窋和他的儿子鞠具体生活在哪里，史书中没有记载。这个空白期，也可能不止两代人，毕竟对于遥远的古代，口耳相传的先民传说难免会有脱漏。脱离姜姓有邰氏部族的生活圈后，后稷的后人为自己选择了一个新的族姓——姬，以表示他们和姜姓群体的血缘关系已经足够遥远，可以通婚了。这就是后来建立周王朝的姬周族。
-
-《诗经》中，有一首鞠的儿子公刘带领族人再次迁徙的史诗—— 《公刘》。
-
-先周部族迁徙图示（图）
-
-笃公刘，匪居匪康。乃埸乃疆，乃积乃仓；乃裹餱粮，于橐于囊。思辑用光，弓矢斯张；干戈戚扬，爰方启行。
-
-笃公刘，于胥斯原。既庶既繁，既顺乃宣，而无永叹。陟则在巘，复降在原。何以舟之？维玉及瑶，鞞琫容刀。
-
-笃公刘，逝彼百泉。瞻彼溥原，乃陟南冈。乃觏于京，京师之野。于时处处，于时庐旅，于时言言，于时语语。
-
-笃公刘，于京斯依。跄跄济济，俾筵俾几。既登乃依，乃造其曹。执豕于牢，酌之用匏。食之饮之，君之宗之。
-
-笃公刘，既溥既长。既景乃冈，相其阴阳，观其流泉。其军三单，度其隰原。彻田为粮，度其夕阳。豳居允荒。
-
-笃公刘，于豳斯馆。涉渭为乱，取厉取锻，止基乃理。爰众爰有，夹其皇涧。溯其过涧。止旅乃密，芮鞫之即。
-
-[[editor-fn:4]]
-这次迁徙的目的地是豳地，过程隆重而欢快。他们已经提前做好了准备，把收获的粮食装进口袋和筐里，族人拿着弓箭、戈和盾戒备而行。一路时而翻过山梁，时而下降到低洼的平地，涉渡众多泉水，终于看到一片平坦的山间谷地。然后，他们在高地上安家，搭起草棚，在临水的平地上开荒，还杀猪备酒举行宴会。作为部族首领，公刘受到众人景仰。
-
-〔编者注4〕https://www.guwendao.net/mingju/juv_c4e8593f552e.aspx</div>
-            </div>
-            <div class="scan"><img src="pdf_pages/page-305.jpg" alt="PDF page 307"></div>
-          </div>
-        </section>
-        <section class="page" id="page-308">
-          <div class="page-head">
-            <div class="page-title">原书阅读器页 308<span>原书物理 PDF 页 306</span><span>印刷页 294</span></div>
-            <div class="page-tools">
-              <button type="button" data-copy-page="308">复制本页</button>
-              <button type="button" data-export-page="308">导出本页</button>
-            </div>
-          </div>
-          <div class="workbench">
-            <div class="editor-wrap">
-              <div class="rich-editor" data-page="308" contenteditable="true" role="textbox" aria-multiline="true" spellcheck="false">那么，豳地在哪？《汉书•地理志》认为，在旬邑县。据后世考古，位于今陕西咸阳城西148公里处的长武县碾子坡村，有一处先周文化遗址，应当属于公刘开始定居的豳地时期。在后世周人的回忆里，那还属于“窜于戎狄”的岁月；而从考古看，则属于半农半牧的经济形态。
-
-窑洞与高粱
-
-今陕西省长武县，属于关中盆地北缘的黄土高原沟壑区。1959年，中国社科院考古所在这里发现了先周碾子坡遗址，1980—1986年，考古所泾渭考古队对遗址进行了十多次发掘。[[fn:4]]
-
-这是泾河支流冲刷出的一条大型沟谷，碾子坡遗址就位于向阳的山坡上，而且有多个不同时期的文化地层。
-
-最早的遗迹距今6000年左右，生活着仰韶半坡文化晚期的居民。半坡文化遗址已经发掘过很多，而碾子坡的特殊之处是，这里的居民留下了用马骨制作的器物：两件骨锥和一件骨笄。而同时期的华北新石器遗址还很少出土有马骨，小小的碾子坡却能发现三件，且还出自不同的灰坑。这说明，这里的人经常捕猎和食用野马，用马骨制作器具。
-
-这些半坡文化和后来的姬周族可能没有关系，但它展示了公刘和周族人到来时的环境：这里比关中更有北方特征。
-
-从地理上看，碾子坡虽距离农业繁荣的关中盆地不远，只有100公里左右，但它已属于陕北黄土高原地貌，从此向北到鄂尔多斯、蒙古草原，地形开阔，属于后来的内亚游牧地带边缘。碾子坡的海拔接近1000米，比关中盆地气候干爽，更适合野马生存。
-
-半坡时代之后，碾子坡有一段长达2500年的空白期。到商代，这里出现了繁荣的村落，碳十四测年距今3500—3100年，发掘者称之为“先周”文化，并把它划分为早期和晚期两段。这里的“先周”指的可能就是迁到豳地的公刘部族时期。</div>
-            </div>
-            <div class="scan"><img src="pdf_pages/page-306.jpg" alt="PDF page 308"></div>
-          </div>
-        </section>
-        <section class="page" id="page-309">
-          <div class="page-head">
-            <div class="page-title">原书阅读器页 309<span>原书物理 PDF 页 307</span><span>印刷页 295</span></div>
-            <div class="page-tools">
-              <button type="button" data-copy-page="309">复制本页</button>
-              <button type="button" data-export-page="309">导出本页</button>
-            </div>
-          </div>
-          <div class="workbench">
-            <div class="editor-wrap">
-              <div class="rich-editor" data-page="309" contenteditable="true" role="textbox" aria-multiline="true" spellcheck="false">先周阶段的碾子坡出土了很多农具，有用石头或骨头做的铲、镰，收割用的穿孔石刀，以及石臼，等等。农作物应该有粟和黍，但碾子坡遗址发掘得比较早，当时还没有使用“浮选法”收集细小的植物种子。
-
-先周碾子坡人有好几种房屋，最常见的是黄土坡上的“窑洞建筑”。当时的上古人应该还没有能力把土坡削成垂直面，他们会先向土坡里面挖一条1米多高的巷道，深入内部之后再向周围掏挖以扩大居住面积，从而形成一间穹顶的窑洞居室。巷道就是进出的门道。窑洞墙壁上还挖掘出壁龛，作为储藏收纳的空间。
-
-后来，周人的史诗《诗经•绵》回顾了这段住窑洞的生活：“陶复陶穴，未有家室。” 这是新石器晚期黄土地带的常见民居，再早一千年，山西陶寺古国的普通居民也是住这种窑洞。
-
-比窑洞数量少一些的是半地穴式房屋，先挖约1米深的坑做居室，再用树枝搭起墙体和屋顶，最后抹黄泥覆盖。在华北新石器时代，这种半地穴式房屋很常见。
-
-碾子坡还有一座夯土版筑的地面房屋F1。它坐西朝东，房基为整体夯筑，土墙厚约1米，室内空间不大：长5.4米，宽约3米。门外地面铺垫着多块石板，还有呈品字形的三个灶坑。普通民居不大可能同时使用三个灶坑，它应当是村落集中活动的场地——可能是敬神的祠庙。
-
-F1后面有一座坑（H189），坑底是一处高粱作物的堆积：东西长1.8米，南北宽1.2米，面积和形状近似一口棺材；厚度5—20厘米，这是被土层压实之后，估计掩埋之前厚度在半米左右。
-
-碾子坡的先周半地穴房屋和窑洞复原剖面图（图）
-
-碾子坡夯土房屋F1复原图（图）
-
-这些高粱不是单纯的种子，而是整个穗子连带二三十厘米长的茎秆，还带着少量叶子。它和F1前后相邻，而且都指向东方。这恐怕不是巧合，很可能是一处祭祀遗存。</div>
-            </div>
-            <div class="scan"><img src="pdf_pages/page-307.jpg" alt="PDF page 309"></div>
-          </div>
-        </section>
-        <section class="page" id="page-310">
-          <div class="page-head">
-            <div class="page-title">原书阅读器页 310<span>原书物理 PDF 页 308</span><span>印刷页 296</span></div>
-            <div class="page-tools">
-              <button type="button" data-copy-page="310">复制本页</button>
-              <button type="button" data-export-page="310">导出本页</button>
-            </div>
-          </div>
-          <div class="workbench">
-            <div class="editor-wrap">
-              <div class="rich-editor" data-page="310" contenteditable="true" role="textbox" aria-multiline="true" spellcheck="false">在中国上古时代遗址中，极少有高粱出土。距今约5000年前，郑州大河村遗址仰韶文化晚期房址中曾发现一只装满粮食的陶罐，经鉴定是高粱种子。但此结论仍有争议。碾子坡的这处高粱遗存距今约3300年，则完全没有争议，因为它有完整的高粱穗、秆和叶子。另外，在一所窑洞式房屋（H823）的壁龛里也发现了一小堆尚未去皮的高粱种子。
-
-周人始祖名后稷，在古代，稷泛指谷物，但也有狭义的高粱之意。[[fn:5]] 碾子坡遗址有掩埋高粱祭祀的遗存，说明在早期周人的观念里，高粱与周始祖有着密切联系。
-
-碾子坡的房屋（窑洞）和粮食作物显示的是一种定居农业生活；而它的垃圾坑，则又显示了畜牧业的发达：
-
-我们在发掘中收集到大量的兽骨，主要是牛、马、羊和猪等牲畜的骨头，其中又以牛骨为最多，它们显然是这个遗址中的先周居民的食后残余。该现象充分表明，以放养牛群为主的畜牧业生产在当时是艮发达的……
-
-除了大量牲畜骨头，还发掘出土了很多屠宰和剥皮的工具。各种骨制工具里面，用马骨制作的占了很大比重；除了常见的骨锥和骨匕，还有一种用马的下颚骨磨制的铲形骨刀，多达27件，发掘报告认为，它是一种加工肉类的工具。看来碾子坡先周居民不缺乏肉食。
-
-用石头和骨头制作的箭微数量也很多，但很少有食余的野兽骨骸。从地理环境看，古碾子坡周边应该有各种野兽，但他们的捕猎行为应该不多，这可能是因为饲养的家畜已经足够肉食之需求。
-
-在其中的一座灰坑（H2018）发掘出一具完整的马骨架，发掘报告称，没有发现捆绑的痕迹，应是死后埋进去的。灰坑纵轴和马头都朝东，联系前述宗教性建筑F1和高粱祭祀坑H189也都是朝东，这很可能也是座祭祀坑，背后应该有先周居民的宗教信仰因素。</div>
-            </div>
-            <div class="scan"><img src="pdf_pages/page-308.jpg" alt="PDF page 310"></div>
-          </div>
-        </section>
-        <section class="page" id="page-311">
-          <div class="page-head">
-            <div class="page-title">原书阅读器页 311<span>原书物理 PDF 页 309</span><span>印刷页 297</span></div>
-            <div class="page-tools">
-              <button type="button" data-copy-page="311">复制本页</button>
-              <button type="button" data-export-page="311">导出本页</button>
-            </div>
-          </div>
-          <div class="workbench">
-            <div class="editor-wrap">
-              <div class="rich-editor" data-page="311" contenteditable="true" role="textbox" aria-multiline="true" spellcheck="false">除单独的葬马坑，还有用马殉葬的做法。在先周晚期墓葬中，有一座女性二次葬墓（M195），墓主四十岁左右，墓穴深近3米，在墓穴上层有一匹献祭的小马。在碾子坡两百多座先周墓葬中，殉马墓目前只发现这一座。
-
-在碾子坡，在食用和利用皮、骨之外，马还有没有其他用途？此时的碾子坡还没有掌握马拉战车技术，因为制造马车需要发达的青铜工具，而且这里属于黄土高原丘壑环境，垂直高差大，沟谷纵横，并不适合马车行驶。
-
-碾子坡人饲养的马、牛、羊很多，这些牲畜需要较大的草场，仅靠农作物秸秆和村落附近的草地应该很难维持。为了放牧，他们需要在一二十公里的半径范围内移动放牧。而牛羊容易走失，还要防范野兽和异族人的袭击，所以最合适骑马放牧。碾子坡人很可能已经学会了骑马。
-
-商人难民带来铜器？
-
-在先周碾子坡，没有发现炼铜和铸铜的遗迹，但有少量铜器。这显示了碾子坡和外界（很可能是商王朝）的联系。
-
-最大的铜器来自一座先周前期的窖藏坑，共有三件，一瓿、两鼎。窖藏坑呈椭圆形，长径超过2米，深约1.1米，坑挖好之后，先在坑底铺了一层30厘米厚的土层，然后呈品字形紧贴着放置三件铜器，都是口部朝下倒放，最后，填土掩埋。
-
-埋葬过程比较从容，仪式感很强，因躲避战乱而藏宝的可能性不大。发掘报告推测，这处铜器埋藏可能具有祭祀性质。
-
-在关中和陕北地区，较少发现埋葬器物的祭祀。这不属于本地宗教仪式，容易让人联想到郑州商城晚期的三座青铜器窖藏祭祀坑。也许，郑州商城的“宗教改革”曾经波及这座遥远的山村聚落？</div>
-            </div>
-            <div class="scan"><img src="pdf_pages/page-309.jpg" alt="PDF page 311"></div>
-          </div>
-        </section>
-        <section class="page" id="page-312">
-          <div class="page-head">
-            <div class="page-title">原书阅读器页 312<span>原书物理 PDF 页 310</span><span>印刷页 298</span></div>
-            <div class="page-tools">
-              <button type="button" data-copy-page="312">复制本页</button>
-              <button type="button" data-export-page="312">导出本页</button>
-            </div>
-          </div>
-          <div class="workbench">
-            <div class="editor-wrap">
-              <div class="rich-editor" data-page="312" contenteditable="true" role="textbox" aria-multiline="true" spellcheck="false">从时间上看，碾子坡埋祭坑只略晚于郑州商城的那场“宗教改革”，而且其墓葬也显示有商文化移民的存在，这就是先周晚期的M163墓。墓主是一名五十岁左右的男子，墓穴中央挖有一脸盆大小的坑，里面有兽骨，发掘者推测是狗骨，其上先是被一块石板盖好，再安放棺木。这是典型的商人“腰坑殉狗”葬俗。
-
-在碾子坡墓区，目前只发现了这一座商式墓。但这名商族男子肯定不是孤身一人，至少得是一家人，因为给他构筑墓穴的人显然也懂得商人的墓葬习俗。
-
-故而，上述青铜器埋祭遗存和商人葬俗显示了这样一种可能性：在郑州商城的宗教改革引发内战后，可能有少量失败的“革新派”商人逃亡到了遥远的碾子坡，并把郑州商城新生的（从长江流域盘龙城引进的）埋祭宗教理念带到了这里。西土没有杀人献祭的宗教，这些流亡商人容易得到土著的接纳。
-
-再来看这三件铜器。其中，瓿是青铜铸造，没有铭文和族徽，做工较精细，显然是从商朝境内输入的高端商品。两件铜鼎则不同，都是红铜铸造，没有纹饰，不含铅和锡，所以铜液流动性差，致使器物表面有很多沙眼和褶皱。此外，足跟不平整，其中一只的足底呈疙瘩粘连状，发掘报告推测，这应该是第一次铸造失败再次补铸所致。
-
-虽然技术不佳，但这两件鼎的分量不小，都重约10公斤，口径约30厘米。看来主人并不缺铜料，但缺相关技术。主人应该还长期用它们炊煮食物，因为在鼎足及鼎的下部有约2毫米厚的烟灰层。青铜瓿是盛食器而非炊器，所以没有烟灰。
-
-M163出土铜鼎（图）
-
-两只红铜鼎有可能代表的是流亡商人的铸造技术。铸造铜鼎需要制作好几块外范、内范和芯范，这不是揣摩成品实物就能获得的知识，必须曾经参与过铸造才能仿制。这些操作者很可能只知道铸铜工艺，但缺乏关于青铜的配方知识，或者是因为西部山地难以获得铅和锡。</div>
-            </div>
-            <div class="scan"><img src="pdf_pages/page-310.jpg" alt="PDF page 312"></div>
-          </div>
-        </section>
-        <section class="page" id="page-313">
-          <div class="page-head">
-            <div class="page-title">原书阅读器页 313<span>原书物理 PDF 页 311</span><span>印刷页 299</span></div>
-            <div class="page-tools">
-              <button type="button" data-copy-page="313">复制本页</button>
-              <button type="button" data-export-page="313">导出本页</button>
-            </div>
-          </div>
-          <div class="workbench">
-            <div class="editor-wrap">
-              <div class="rich-editor" data-page="313" contenteditable="true" role="textbox" aria-multiline="true" spellcheck="false">总之，外来者未能使陕北土著成功生产青铜制品（至少是大件青铜器）。碾子坡发现的其他铜器都是小件工具，如铜制的小刀、匕首、锥和铜泡，且都出自垃圾坑。先周墓葬中，随葬铜器的极少，只有晚期墓出土有铜镞两枚和铜铃一枚，还分别出于三座墓葬。其中，有一位墓主是中箭身亡的，一枚铜镞射入了他的右大腿骨（M169），显然，铜镞的真正主人属于敌对部落。
-
-安宁部族
-
-目前，已发掘分属先周碾子坡早期和晚期的两片墓地，都没有发现人殉和人祭的现象。
-
-这些墓葬很简单，多数死者有木棺材，几乎看不出贫富差异：前期墓葬几乎没有随葬品；后期平均每座墓有一件，基本都是煮饭的陶鬲。可见，碾子坡-周族几乎没有产生贫富分化。均等并不意味着贫穷，从遗址的家畜骨头看，碾子坡人的肉食摄入量远超任何已发现的古代农业聚落，他们甚至都懒得去射猎和捕鱼。
-
-此外，先周墓葬还有两个特点：一，男人和女人下葬的姿势不同，男人俯身直肢，女人仰身直肢。二，有很多“斩肢葬”，死者的部分手或脚被砍掉，有些砍下的肢体放在了墓穴里。斩肢葬在仰韶半坡文化中曾颇为流行，从半坡到先周长达三四千年，中间经历过好几轮新石器文化更替，但斩肢葬却一直保留了下来。考古学者迄今还未能读解其背后的原因。
-
-再来看部落生活中的暴力因素。墓穴中的尸体基本完整，没有发现被砍头或分尸后埋葬的现象。有极少数是用灰坑或废弃的水井和窑洞埋人的，死者直身，两手交叉，身边放有一件随葬品。很明显，这不是被杀死后的抛尸，而是由家人正常殡葬，只是可能因为某些原因而不宜埋入部落公墓。</div>
-            </div>
-            <div class="scan"><img src="pdf_pages/page-311.jpg" alt="PDF page 313"></div>
-          </div>
-        </section>
-        <section class="page" id="page-314">
-          <div class="page-head">
-            <div class="page-title">原书阅读器页 314<span>原书物理 PDF 页 312</span><span>印刷页 300</span></div>
-            <div class="page-tools">
-              <button type="button" data-copy-page="314">复制本页</button>
-              <button type="button" data-export-page="314">导出本页</button>
-            </div>
-          </div>
-          <div class="workbench">
-            <div class="editor-wrap">
-              <div class="rich-editor" data-page="314" contenteditable="true" role="textbox" aria-multiline="true" spellcheck="false">碾子坡的灰坑中没有发现散碎的人骨，但有一件经过切割的人骨，像是肢骨一端。发掘报告说，它不是用刀具切割的，而是采用了一种类似加工玉器的线切割工艺。
-
-比较特殊的是利用废弃灰坑埋人的M501。这座灰坑比较大，在快被填满时，埋进了两具成年人尸骨：一具相对完整，是一名二十五岁左右的男子；另一具则性别不明，只残留部分四肢骨，且摆放凌乱。在两具尸骨旁边，还各摆放了一件随葬的陶豆。看上去，这两具尸骨像是在野外被野兽咬死后吃剩的。
-
-H318是一口废弃的水井，后被当作灰坑，在较深处埋有一枚人头骨，中间段有一具俯身直肢且缺手的十八岁女性尸骨。在碾子坡先周时期发现的所有尸骨中，这具看上去最接近非正常死亡。
-
-总体上，碾子坡遗址的非正常死亡和被随意或恶意抛掷的尸骨极少，占比非常低，甚至远低于仰韶半坡文化时期的典型遗址。可以说，这里的生活非常和平。后来周族之所以能够消灭商朝的人祭文化，建立起全新的周文明，很可能有些文化基因在碾子坡时期就已经决定了。当然，碾子坡先周遗址只是一座小村落，充其量有数百居民，并不能代表豳地时期的整个姬周族（部落）。当时的姬周应当有几座甚至十几座这种规模的村落。
-
-《公刘》中说，姬周族人在豳地定居后，还会南下关中盆地，渡过渭河，以获取一些小件铜制品：“笃公刘，于豳斯馆。涉渭为乱，取厉取锻。”这其中就应该包含着姬周族对商朝据点的最初印象。看来，商人在渭河南岸的城邑（如老牛坡）生产的铜器对远在山地的姬周人有很强的吸引力。而“取厉取锻”，说明这些铜器还需要磨砺和锻打，显然，这不是大件容器，而是小件的刀、锥等工具。这也正是蛮荒的姬周人最需要且能交换得起的铜器。</div>
-            </div>
-            <div class="scan"><img src="pdf_pages/page-312.jpg" alt="PDF page 314"></div>
-          </div>
-        </section>
-        <section class="page" id="page-315">
-          <div class="page-head">
-            <div class="page-title">原书阅读器页 315<span>原书物理 PDF 页 313</span><span>印刷页 301</span></div>
-            <div class="page-tools">
-              <button type="button" data-copy-page="315">复制本页</button>
-              <button type="button" data-export-page="315">导出本页</button>
-            </div>
-          </div>
-          <div class="workbench">
-            <div class="editor-wrap">
-              <div class="rich-editor" data-page="315" contenteditable="true" role="textbox" aria-multiline="true" spellcheck="false">那姬周族人拿什么交换呢？商人城邑统治着周边土著居民，应该不太会缺粮食，所以姬周最适合用来贸易的商品是牲畜，尤其是马和牛。史诗里之所以没有提及这些，有可能是因为在他们看来，牲畜容易和受歧视的野蛮人身份联系在一起。
-
-自始祖后稷以来，周族一直有谨小慎微的自我保护意识。周是小族群，生长在羌人为主的大环境里；自命姬姓，以显示自己和羌人不同；未参与西土族群抵制商朝的战争，而是躲进山地，远离冲突。他们知道，和强者保持距离才是最好的生存之道。
-
-在陕北山地，周人宁静地生活了三百多年，历经十几代人。直到周文王的祖父“古公亶父”一代，周族才和强大的商王朝建立了联系。从此，周族人的命运发生了剧变。
-
-而关于周族和姬姓的起源，以及与黄帝传说的关系，因为还有许多学术争论尚未厘清，所以本书暂把相关讨论作为本章附录。
-
-附录：华夏起源故事的来历
-
-炎、黄来自羌和周
-
-在《诗经•生民》里，弃-后稷的结局只是家业兴旺，受上帝福佑，成为家乡颇有威信的长老。但到春秋，后人又创造出了更古老的、《诗经》里没有的尧和舜，于是，后稷的经历再被翻新，增添了更显赫的内容：尧帝闻知弃的才能后，举荐他担任“农师”，教导天下百姓农业；到了舜帝，则更受重用，还获得“后稷”的称号。
-
-但让后稷给尧舜效力，时间上很难对应。尧舜被安排在夏朝之前，而夏朝和商朝加起来有一千年左右，在这期间，周族首领却只传了十五代人。这样算起来，平均每代首领要在位七十年。这不符合常识。[[fn:6]]
-
-不仅是后稷，商族的始祖契也被拉进了这个半神伟人们的职场，成为大禹治水的助手。其实，周族和商族刚诞生时距离遥远，不太可能知道彼此的存在，其始祖更不会发生联系。只有到了西周，商周各自的始祖传说才被改编整理到一起，分享身份认同。某种意义上，这也是一种对失去王朝的商人的安抚。</div>
-            </div>
-            <div class="scan"><img src="pdf_pages/page-313.jpg" alt="PDF page 315"></div>
-          </div>
-        </section>
-        <section class="page" id="page-316">
-          <div class="page-head">
-            <div class="page-title">原书阅读器页 316<span>原书物理 PDF 页 314</span><span>印刷页 302</span></div>
-            <div class="page-tools">
-              <button type="button" data-copy-page="316">复制本页</button>
-              <button type="button" data-export-page="316">导出本页</button>
-            </div>
-          </div>
-          <div class="workbench">
-            <div class="editor-wrap">
-              <div class="rich-editor" data-page="316" contenteditable="true" role="textbox" aria-multiline="true" spellcheck="false">春秋末年，孔子编辑《尚书》，他认为，那些最古老且可靠的半神帝王是尧、舜和禹，后稷和弃则是他们的部下，这构成《尚书》叙事的起点。以现代学术标准看，《尚书》中那些最古老的篇章，如尧、舜、禹及夏朝，都是不可靠的，只有到了商朝才开始有一些可信的内容，如《盘庚》。
-
-关于周人更古老的始祖，或者说商、周等各民族的始祖，春秋时还出现了黄帝和炎帝的说法。有一种说法是：“黄帝以姬水成，炎帝以姜水成。”意思是说，黄帝住在“姬水”旁边，所以用“姬”姓；炎帝住在“姜水”旁边，所以用“姜”姓。[[fn:7]] 这其实是把羌人和周人曾经的共生关系推到了更古老的时代：炎帝成了羌人的始祖，黄帝则成了周人、商人以及其他各族群的始祖。
-
-史学大家顾颉刚称这种现象为“层累地造成的中国古史”，意思是说，越晚产生的传说，反倒在神谱里面越古老，就像人们堆柴堆，“后来者居上”。因为时代越晚，各族群的祖先传说就越是逐渐汇总到一起，这时，各自的先祖孰先孰后以及谁比谁厉害就成了问题。因此，为了制造更大范围的身份认同，就只能创作更古老的先祖，给各族群增添一位共同的始祖。先祖诸神的关系和谐了，世间各族群的关系才能和谐。
-
-这种创造各族共同祖先“黄帝”的工作，从春秋就已经开始。孔子编辑《尚书》时，比较谨慎，没有采用。但到西汉时，黄帝的故事已经有了各种版本。司马迁认为，这些都不太可靠，有学问的人不应该轻信它们：“然《尚书》独载尧以来。而百家言黄帝，其文不雅驯，荐绅先生难言之。”（《史记•五帝本纪》）</div>
-            </div>
-            <div class="scan"><img src="pdf_pages/page-314.jpg" alt="PDF page 316"></div>
-          </div>
-        </section>
-        <section class="page" id="page-317">
-          <div class="page-head">
-            <div class="page-title">原书阅读器页 317<span>原书物理 PDF 页 315</span><span>印刷页 303</span></div>
-            <div class="page-tools">
-              <button type="button" data-copy-page="317">复制本页</button>
-              <button type="button" data-export-page="317">导出本页</button>
-            </div>
-          </div>
-          <div class="workbench">
-            <div class="editor-wrap">
-              <div class="rich-editor" data-page="317" contenteditable="true" role="textbox" aria-multiline="true" spellcheck="false">但司马迁还不可能有顾颉刚所说的那种科学认知方法，也没有孔子的自信心，他只能选择把相对显得不那么荒诞的黄帝及其他四位古帝的传说编排起来，写成《史记》第一卷《五帝本纪》。
-
-〔按语：层累地造史〕
-
-再来看周人“姬”姓的来历。它应当和后来被创造的黄帝没关系。有古代经学家解释，姬字是女字旁加一个脚印的造型，象征姜嫄踩到的上帝足迹。东汉许慎的《说文解字》则认为，姬是形声字，右边是它的音旁。确实，它和“巨”字造型很像，但问题是，姬字来自商人的甲骨文，而商人是不太可能关注一个遥远的小部族的族源神话的，所以脚印的说法应该不实。
-
-那么，周人的这个姬姓到底是怎么来的？应该是来自居住的地名。剔除后起的黄帝传说，可以推测，后稷的某一代后人应该曾经居住在一条姬水附近，故而给自己的部族冠以了姬姓。从这以后，他们就可以和姜姓部族通婚了。
-
-长期以来，周人都是只有口头语言而没有文字，直到商朝末年与商朝接触后，周族上层族长才开始学习商人文字，并从中选了音近且带女字旁的“姬”字，从此一直沿用下来。商人姬字的本意，可能是女子梳头用的篦子，其实也是一种人祭方式。上古的族姓多用女字旁的字，如姜、姞、姒等，这可能和他们的女性始祖传说有关。
-
-三个“周”的纠缠
-
-武丁时期的殷墟卜辞里有“周”，但卜辞里关于“周”的事件，从未出现在周文王族人的记忆里，也没有进入《诗经》等文献。这有点难以解释，因为商末的周族很热衷攀附商朝，不应当遗漏掉武丁王时期的荣耀。
-
-其实，这背后的问题是，“周”本来只是一个地名，生活在这里的族群曾经发生过更迭变换，先后有三个人群生活在周原地区，彼此区别很大，不能混淆。</div>
-            </div>
-            <div class="scan"><img src="pdf_pages/page-315.jpg" alt="PDF page 317"></div>
-          </div>
-        </section>
-        <section class="page" id="page-318">
-          <div class="page-head">
-            <div class="page-title">原书阅读器页 318<span>原书物理 PDF 页 316</span><span>印刷页 304</span></div>
-            <div class="page-tools">
-              <button type="button" data-copy-page="318">复制本页</button>
-              <button type="button" data-export-page="318">导出本页</button>
-            </div>
-          </div>
-          <div class="workbench">
-            <div class="editor-wrap">
-              <div class="rich-editor" data-page="318" contenteditable="true" role="textbox" aria-multiline="true" spellcheck="false">先来看最早的。后稷的儿子离开故乡周原和有邰氏部落后，那块土地上还有居民吗？当然，有邰氏的多数人还是会在故乡继续生活，不仅如此，他们在周原还形成了以“周”为名的部落。
-
-《山海经•大荒西经》记载说，是后稷之弟台玺（xi3）的儿子叔均继承了后稷的农耕事业，建立了一个“西周之国”：
-
-有西周之国，姬姓，食谷。有人方耕，名日叔均。帝俊生后稷，稷降以百谷。稷之弟曰台玺，生叔均。叔均是代其父及稷播百谷，始作耕。有赤国妻氏。有双山。
-
-这里说的“帝俊（喾（kù））生后稷”，不再是姜嫄未婚生子，显然属于后人加上去的附会之辞。根据《诗经•生民》，姜嫄生后稷之后，应该还会继续生育，所以后稷会有同母弟弟台玺。台玺的台就是邰，说明他属于姜嫄的有邰氏部族，而台玺的儿子叔均自然生息在周原，并将其发展为“西周之国”。这个“西”周容易和后来的西周王朝混淆，实际上，《山海经》之所以称其为“西周之国”，可能是为了和后稷、不窜后人那一支远行的周族相区别：后稷和不窜的后人（姬周）迁入了戎狄山林；台玺和叔均的后人则开发故乡周原，沿袭后稷的农耕事业。
-
-另外，《山海经》可能还混淆了一点：叔均这支周族未必是姬姓，很可能沿袭的是姜嫄旧有的姜姓。只是后稷那一支姬姓周族后来建立了周王朝，名气太大，使得后人误以为周人必然大都是姬姓。
-
-在不窋“远窜于戎狄”期间，周原的姜姓周族应该一度比较繁荣。如前所述，武丁时代的甲骨曾多次记载对“周”的讨伐（“寇周”），光卜辞就有近十条，说明商人对其印象深刻。当然，结局是姜周被商人征服，大多数人可能被押送殷都成了武丁卜辞中的祭品。从此，这一支姜姓周族就在历史上永远地消失了。</div>
-            </div>
-            <div class="scan"><img src="pdf_pages/page-316.jpg" alt="PDF page 318"></div>
-          </div>
-        </section>
-        <section class="page" id="page-319">
-          <div class="page-head">
-            <div class="page-title">原书阅读器页 319<span>原书物理 PDF 页 317</span><span>印刷页 305</span></div>
-            <div class="page-tools">
-              <button type="button" data-copy-page="319">复制本页</button>
-              <button type="button" data-export-page="319">导出本页</button>
-            </div>
-          </div>
-          <div class="workbench">
-            <div class="editor-wrap">
-              <div class="rich-editor" data-page="319" contenteditable="true" role="textbox" aria-multiline="true" spellcheck="false">这之后，武丁王应该是把周地分封给了一位商人贵族，建立了一个商人的“周侯之国”。甲骨卜辞里也有关于它的记录，都是一些和王室关系亲密的内容。武丁朝后，商人势力退潮，这个商人的周国也随之消失，周原遂成为荒芜之地，只有少数族属不详的人群在这里活动。
-
-总结一下，“周地”只有一个，就是周原地区；但名为“周”的人群，则有三个：
-
-一，姜姓的周族。这是台玺和叔均的后人形成的族群，可能从夏代起就一直住在周原，到商王武丁时被剿灭。这里说的夏只是时间概念，夏朝并不能统治关中。
-
-二，武丁王分封的商人周侯之国，存在时间很短。
-
-三，后稷和不宙的后人形成的族群。他们从夏代就离开周原，迁入山林过戎狄的生活去了，但到商朝末期，又迁回周原（叔均后人曾经的生息之地），成为后世熟知的姬周族，并且灭商建立了周朝。
-
-长期以来，人们都没有意识到前面两个周族（国）的存在，只知道后稷后人这支姬姓周族，所以容易产生这样的疑问：在武丁时期，后稷和不留的后人形成的这支姬姓周族还是深山戎狄，不但根本没有和商朝作战的能力，更主要是也没这种机会，为什么当时的甲骨卜辞里还经常出现“周”？再有，倘若姬姓周族在武丁王时期就和商朝频繁地发生战争，那灭商后的周人为什么没有大肆宣扬，把这些事迹写到史诗和史书里去？
-
-最先意识到这个矛盾的是徐中舒，他推论说，在姬姓周族来到之前，在周原生息的是“姜族女国”，也就是姜嫄部族的后人，曾和姬姓的周族长期保持通婚关系。[[fn:8]] 这个推论非常重要，本章就是对徐中舒观点的深化。</div>
-            </div>
-            <div class="scan"><img src="pdf_pages/page-317.jpg" alt="PDF page 319"></div>
-          </div>
-        </section>
-        <section class="page" id="page-320">
-          <div class="page-head">
-            <div class="page-title">原书阅读器页 320<span>原书物理 PDF 页 318</span><span>印刷页 306</span></div>
-            <div class="page-tools">
-              <button type="button" data-copy-page="320">复制本页</button>
-              <button type="button" data-export-page="320">导出本页</button>
-            </div>
-          </div>
-          <div class="workbench">
-            <div class="editor-wrap">
-              <div class="rich-editor" data-page="320" contenteditable="true" role="textbox" aria-multiline="true" spellcheck="false">“周”字的甲骨文写作图或用，古文字学家认为，这是耕作的农田的形状，因后稷以来的周人擅长耕作，所以便用农田的造型来表示周。但这个说法其实是有问题的。甲骨文是商人创造的，在商人眼里，西土的羌人是野蛮人，所谓周人的农业水平高也只是就西土的环境而言，和商王朝相比，他们的农业技术不值一提，商人不可能为远方蛮族专门造一个表示农业的字。
-
-所以，甲骨文里的“周”可能就是周围、周边之意，属于生活中常用的会意字。而周人自称的“周”，可能只是个地名发音，没有文字，也没有明确的含义，也或者我们迄今还不知道。
-
-神农是炎帝，也是羌人
-
-不窋为什么离开周原？很可能是因为和自己的堂兄弟叔均不睦，只好远走他乡，重新立足。[[fn:9]]
-
-姬和姜这两支周族，虽然很早就分家了，但姬姓周族应该仍保留着对台玺和叔均这支亲族的记忆。特别是，当他们迁回周原定居时，叔均一支虽早已绝迹，但姬姓周族知道，周原这块土地本是叔均的族人耕种的，于是叔均被抬升为“田祖”之神：姬姓周人以弹琴和敲鼓的方式来祭祀田祖，祈求降雨；当庄稼发生虫害，会捕捉害虫投到火堆里，以此祈求田祖帮忙除虫，所谓“田祖有神，秉畀炎火”。[[fn:10]]
-
-大约是春秋以后，因为人们要创造更古老的帝王传说，叔均的地位又有了上升，成了神农。[[fn:11]] 而在传说里，神农和炎帝经常被纠结为一个人，这就出现了一个有趣的现象：从春秋始，人们创造的更古老的帝王传说（黄帝和炎帝）的素材主要来自后稷和叔均这伯侄二人，结果，后稷化身成了黄帝，叔均化身成了炎帝（神农）。甚至在有些版本里，黄帝和炎帝还成了兄弟，这又是后稷和叔均之父台玺关系的翻版。</div>
-            </div>
-            <div class="scan"><img src="pdf_pages/page-318.jpg" alt="PDF page 320"></div>
-          </div>
-        </section>
-        <section class="page" id="page-321">
-          <div class="page-head">
-            <div class="page-title">原书阅读器页 321<span>原书物理 PDF 页 319</span><span>印刷页 307</span></div>
-            <div class="page-tools">
-              <button type="button" data-copy-page="321">复制本页</button>
-              <button type="button" data-export-page="321">导出本页</button>
-            </div>
-          </div>
-          <div class="workbench">
-            <div class="editor-wrap">
-              <div class="rich-editor" data-page="321" contenteditable="true" role="textbox" aria-multiline="true" spellcheck="false">姜嫄生的这一对儿子，不仅分化成为两支周族，也被后世创造为黄帝和炎帝，成为整个华夏世界的共同祖先。这背后的原理是，自西周以来，姬周文化成为正统，他们的族源故事自然成为重新创作古史的首选素材。当然，其他东方部族的族源传说也会是素材，但地位远不如周族始祖化身那样处于核心地位。
-
-了解了叔均这一支姜姓周人，不仅可以解释武丁卜辞中的“周”，还有助于理解《诗经・大雅•文王》中那句著名的“周虽旧邦，其命维新”。对于姬姓周族来说，称为“旧邦”不太确切，他们并没什么太显赫的历史，但姜姓周族不一样，至少武丁王的卜辞能证明，他们曾经是商朝比较重视的对手。所以，这个旧邦应主要是指早已灭亡的姜姓周族。
-
-〔按语：姜姓周族亡〕
-
-注释
-
-1《国语•郑语》中，郑桓公和史伯对话，史伯说“周弃能播殖百谷蔬”。郑国出自周王室，是后稷-弃的直系后人，可见周人都知道自己的始祖名弃。
-
-2汉魏以来，学者理解的“周原”多在岐山县和扶风县之间，但这只是狭义的周原。史地学家史念海认为，上古周原的范围更大：“当时的周原包括现在陕西省凤翔、岐山、扶风、武功四个县的大部分，兼有宝鸡、梅县、乾县、永寿四个县的小部分。”史念海：《周原的历史地理与周原考古》，《陕西师范大学学报》（哲学社会科学版）1978年第2期；尹盛平：《周原文化与西周文明》，江苏教育出版社，2005年，第107页。
-
-3《左传•宣公三年》。这是一位郑国大臣的发言，郑国出自周王室，此语应有依据。
-
-4中国社科院考古所：《南邠州・碾子坡》，世界图书出版公司，2007年。以下有关该遗址考古的基本信息、数据及图片未注明出处的，皆出自该书，不再详注。</div>
-            </div>
-            <div class="scan"><img src="pdf_pages/page-319.jpg" alt="PDF page 321"></div>
-          </div>
-        </section>
-        <section class="page" id="page-322">
-          <div class="page-head">
-            <div class="page-title">原书阅读器页 322<span>原书物理 PDF 页 320</span><span>印刷页 308</span></div>
-            <div class="page-tools">
-              <button type="button" data-copy-page="322">复制本页</button>
-              <button type="button" data-export-page="322">导出本页</button>
-            </div>
-          </div>
-          <div class="workbench">
-            <div class="editor-wrap">
-              <div class="rich-editor" data-page="322" contenteditable="true" role="textbox" aria-multiline="true" spellcheck="false">5“稷”到底代表什么粮食，古人有不同说法，有的认为是某种粟，也有的认为是高粱。这是学术史上的一桩公案，清代学者程瑶田、王念孙都属于高粱派。
-
-6唐代经学家孔颖达在给《诗经•大雅•公刘》做注解时，已经提出了这个疑问。
-
-7见《国语•晋语》。晋国出自周王室，这个说法虽然未必真实，但属于周人给自己创造的更显赫的始祖。
-
-8徐中舒：《周原甲骨初论》，载《徐中舒历史论文选辑》（下册），中华书局，1998年，第1423页。
-
-9后来姬姓周族又发生过类似的一幕，亶父的长子泰伯和次子仲雍“窜入荆蛮”，留下的幼子季历则继承了族长。
-
-10《山海经》：“叔均乃为田祖。”《诗经•小雅•甫田》：“琴瑟击鼓，以御田祖，以祈甘雨。”《诗经•小雅•大田》：“去其螟螣，及其蟊贼，无害我田稚！田祖有神，秉畀炎火！”《周礼•春官宗伯》：“凡国祈年于田祖，龡豳雅，击土鼓。”
-
-11《山海经》：“稷之孙曰叔均，是始作牛耕。”《周礼•春官宗伯》郑玄注：“田祖，始耕田者，谓神农。”《诗经•小雅•甫田》郑玄注：“田祖，先啬也。”《礼记•郊特牲》郑玄注：“先啬，若神农。”</div>
-            </div>
-            <div class="scan"><img src="pdf_pages/page-320.jpg" alt="PDF page 322"></div>
-          </div>
-        </section>
-        <section class="page" id="page-323">
-          <div class="page-head">
-            <div class="page-title">原书阅读器页 323<span>原书物理 PDF 页 321</span><span>印刷页 309</span></div>
-            <div class="page-tools">
-              <button type="button" data-copy-page="323">复制本页</button>
-              <button type="button" data-export-page="323">导出本页</button>
-            </div>
-          </div>
-          <div class="workbench">
-            <div class="editor-wrap">
-              <div class="rich-editor" data-page="323" contenteditable="true" role="textbox" aria-multiline="true" spellcheck="false"></div>
-            </div>
-            <div class="scan"><img src="pdf_pages/page-321.jpg" alt="PDF page 323"></div>
-          </div>
-        </section>
-        <section class="page" id="page-324">
-          <div class="page-head">
-            <div class="page-title">原书阅读器页 324<span>原书物理 PDF 页 322</span><span>印刷页 310</span></div>
-            <div class="page-tools">
-              <button type="button" data-copy-page="324">复制本页</button>
-              <button type="button" data-export-page="324">导出本页</button>
-            </div>
-          </div>
-          <div class="workbench">
-            <div class="editor-wrap">
-              <div class="rich-editor" data-page="324" contenteditable="true" role="textbox" aria-multiline="true" spellcheck="false"></div>
-            </div>
-            <div class="scan"><img src="pdf_pages/page-322.jpg" alt="PDF page 324"></div>
-          </div>
-        </section></div>
-        <section class="notes-dock" id="notes">
-          <h2>编辑札记</h2>
-          <div class="note-grid">
-            <div class="note-controls">
-              <label>页<select id="notePage"></select></label>
-              <div class="marker-composer" id="markerComposer">
-                <h3>标记</h3>
-                <label>类型<select id="markerType">
-                  <option value="pinyin">注音</option>
-                  <option value="editor-note">编者注／脚注</option>
-                  <option value="inline-note">按语</option>
-                  <option value="pending">待核</option>
-                  <option value="user-note">用户札记</option>
-                </select></label>
-                <label>内容<input id="markerText" type="text" autocomplete="off" placeholder="输入拼音或笔记内容"></label>
-                <p class="marker-help" id="markerHelp">先在正文中选择文字，再输入拼音；可用“拼音；简注”。</p>
-                <div class="note-actions"><button id="applyMarkerBtn" type="button">应用标记</button></div>
-              </div>
-              <label>工作日志标签<input id="noteTag" type="text" value="校订" autocomplete="off"></label>
-              <textarea id="noteText" spellcheck="false"></textarea>
-              <div class="note-actions">
-                <button id="addNoteBtn" type="button">记录到编辑日志</button>
-                <button id="exportLogBtn" type="button">导出日志</button>
-                <button id="downloadLogBtn" type="button">下载日志</button>
-                <button id="clearLogBtn" type="button">清空日志</button>
-              </div>
-            </div>
-            <div><div id="logList" class="log-list"></div></div>
-          </div>
-        </section>
-        <section class="export-dock"><h2>导出文本</h2><textarea id="exportText" spellcheck="false"></textarea></section>
-      </section>
+        <section class="panel"><h2>参考表</h2><div class="nav-list"><button type="button" class="nav-button" data-target="yueducibiao"><span>阅读词表</span><span>表</span></button><button type="button" class="nav-button" data-target="qingtongqicibiao"><span>青铜器词表</span><span>表</span></button><button type="button" class="nav-button" data-target="dushuzhaji"><span>章节导读札记</span><span>表</span></button><button type="button" class="nav-button" data-target="user-notes"><span>用户札记</span><span>注</span></button><a class="nav-button action-link" href="shengmin_annotated.md" target="_blank" rel="noopener"><span>《生民》注音注释</span><span>MD ↗</span></a><a class="nav-button action-link" href="gongliu_annotated.md" target="_blank" rel="noopener"><span>《公刘》注音注释</span><span>MD ↗</span></a></div></section>
+        <section class="panel"><h2>术语</h2><div class="term-list"><button type="button" class="term" data-term="稷" data-pinyin="jì" data-difficulty="4" data-domain="general"><span>稷</span><span>jì</span></button><button type="button" class="term" data-term="字" data-pinyin="zì" data-difficulty="4" data-domain="general"><span>字</span><span>zì</span></button><button type="button" class="term" data-term="姜嫄" data-pinyin="jiāng yuán" data-difficulty="4" data-domain="general"><span>姜嫄</span><span>jiāng yuán</span></button><button type="button" class="term" data-term="嫄" data-pinyin="yuán" data-difficulty="4" data-domain="general"><span>嫄</span><span>yuán</span></button><button type="button" class="term" data-term="公刘" data-pinyin="gōng liú" data-difficulty="3" data-domain="proper_name"><span>公刘</span><span>gōng liú</span></button><button type="button" class="term" data-term="相" data-pinyin="xiàng" data-difficulty="4" data-domain="general"><span>相</span><span>xiàng</span></button><button type="button" class="term" data-term="豳" data-pinyin="bīn" data-difficulty="3" data-domain="proper_name"><span>豳</span><span>bīn</span></button><button type="button" class="term" data-term="诞" data-pinyin="dàn" data-difficulty="4" data-domain="general"><span>诞</span><span>dàn</span></button><button type="button" class="term" data-term="不窋" data-pinyin="bù zhú" data-difficulty="3" data-domain="proper_name"><span>不窋</span><span>bù zhú</span></button><button type="button" class="term" data-term="邰" data-pinyin="tái" data-difficulty="4" data-domain="general"><span>邰</span><span>tái</span></button><button type="button" class="term" data-term="台玺" data-pinyin="tái xǐ" data-difficulty="3" data-domain="proper_name"><span>台玺</span><span>tái xǐ</span></button><button type="button" class="term" data-term="达" data-pinyin="dá" data-difficulty="4" data-domain="general"><span>达</span><span>dá</span></button><button type="button" class="term" data-term="灰坑" data-pinyin="huī kēng" data-difficulty="3" data-domain="general"><span>灰坑</span><span>huī kēng</span></button><button type="button" class="term" data-term="笃" data-pinyin="dǔ" data-difficulty="4" data-domain="general"><span>笃</span><span>dǔ</span></button><button type="button" class="term" data-term="乱" data-pinyin="luàn" data-difficulty="4" data-domain="general"><span>乱</span><span>luàn</span></button><button type="button" class="term" data-term="厥" data-pinyin="jué" data-difficulty="4" data-domain="general"><span>厥</span><span>jué</span></button><button type="button" class="term" data-term="豆" data-pinyin="dòu" data-difficulty="4" data-domain="general"><span>豆</span><span>dòu</span></button><button type="button" class="term" data-term="亶" data-pinyin="dǎn" data-difficulty="4" data-domain="general"><span>亶</span><span>dǎn</span></button><button type="button" class="term" data-term="姞" data-pinyin="jí" data-difficulty="4" data-domain="general"><span>姞</span><span>jí</span></button><button type="button" class="term" data-term="赫" data-pinyin="hè" data-difficulty="4" data-domain="general"><span>赫</span><span>hè</span></button><button type="button" class="term" data-term="辑" data-pinyin="jí" data-difficulty="4" data-domain="general"><span>辑</span><span>jí</span></button><button type="button" class="term" data-term="厉" data-pinyin="lì" data-difficulty="4" data-domain="general"><span>厉</span><span>lì</span></button><button type="button" class="term" data-term="寘" data-pinyin="zhì" data-difficulty="4" data-domain="general"><span>寘</span><span>zhì</span></button><button type="button" class="term" data-term="即" data-pinyin="jí" data-difficulty="4" data-domain="general"><span>即</span><span>jí</span></button><button type="button" class="term" data-term="迄" data-pinyin="qì" data-difficulty="4" data-domain="general"><span>迄</span><span>qì</span></button><button type="button" class="term" data-term="景" data-pinyin="yǐng" data-difficulty="4" data-domain="general"><span>景</span><span>yǐng</span></button><button type="button" class="term" data-term="爰" data-pinyin="yuán" data-difficulty="4" data-domain="general"><span>爰</span><span>yuán</span></button><button type="button" class="term" data-term="殷墟" data-pinyin="yīn xū" data-difficulty="5" data-domain="archaeology"><span>殷墟</span><span>yīn xū</span></button><button type="button" class="term" data-term="铜镞" data-pinyin="tóng zú" data-difficulty="5" data-domain="bronze_vessel"><span>铜镞</span><span>tóng zú</span></button><button type="button" class="term" data-term="祭祀坑" data-pinyin="jì sì kēng" data-difficulty="3" data-domain="general"><span>祭祀坑</span><span>jì sì kēng</span></button><button type="button" class="term" data-term="人祭" data-pinyin="rén jì" data-difficulty="3" data-domain="general"><span>人祭</span><span>rén jì</span></button><button type="button" class="term" data-term="禋" data-pinyin="yīn" data-difficulty="4" data-domain="general"><span>禋</span><span>yīn</span></button><button type="button" class="term" data-term="歆" data-pinyin="xīn" data-difficulty="4" data-domain="general"><span>歆</span><span>xīn</span></button><button type="button" class="term" data-term="攸" data-pinyin="yōu" data-difficulty="4" data-domain="general"><span>攸</span><span>yōu</span></button><button type="button" class="term" data-term="荏菽" data-pinyin="rěn shū" data-difficulty="4" data-domain="general"><span>荏菽</span><span>rěn shū</span></button><button type="button" class="term" data-term="颖" data-pinyin="yǐng" data-difficulty="4" data-domain="general"><span>颖</span><span>yǐng</span></button><button type="button" class="term" data-term="恒" data-pinyin="héng" data-difficulty="4" data-domain="general"><span>恒</span><span>héng</span></button><button type="button" class="term" data-term="肇" data-pinyin="zhào" data-difficulty="4" data-domain="general"><span>肇</span><span>zhào</span></button><button type="button" class="term" data-term="舂" data-pinyin="chōng" data-difficulty="4" data-domain="general"><span>舂</span><span>chōng</span></button><button type="button" class="term" data-term="簸" data-pinyin="bǒ" data-difficulty="4" data-domain="general"><span>簸</span><span>bǒ</span></button><button type="button" class="term" data-term="登" data-pinyin="dēng" data-difficulty="4" data-domain="general"><span>登</span><span>dēng</span></button><button type="button" class="term" data-term="庶" data-pinyin="shù" data-difficulty="4" data-domain="general"><span>庶</span><span>shù</span></button><button type="button" class="term" data-term="陟" data-pinyin="zhì" data-difficulty="4" data-domain="general"><span>陟</span><span>zhì</span></button><button type="button" class="term" data-term="溥" data-pinyin="pǔ" data-difficulty="4" data-domain="general"><span>溥</span><span>pǔ</span></button><button type="button" class="term" data-term="俾" data-pinyin="bǐ" data-difficulty="4" data-domain="general"><span>俾</span><span>bǐ</span></button><button type="button" class="term" data-term="骨锥" data-pinyin="gǔ zhuī" data-difficulty="5" data-domain="archaeology"><span>骨锥</span><span>gǔ zhuī</span></button><button type="button" class="term" data-term="半地穴式" data-pinyin="bàn dì xué shì" data-difficulty="3" data-domain="general"><span>半地穴式</span><span>bàn dì xué shì</span></button><button type="button" class="term" data-term="武敏" data-pinyin="wǔ mǐn" data-difficulty="4" data-domain="general"><span>武敏</span><span>wǔ mǐn</span></button><button type="button" class="term" data-term="攸介攸止" data-pinyin="yōu jiè yōu zhǐ" data-difficulty="4" data-domain="general"><span>攸介攸止</span><span>yōu jiè yōu zhǐ</span></button><button type="button" class="term" data-term="介" data-pinyin="jiè" data-difficulty="4" data-domain="general"><span>介</span><span>jiè</span></button><button type="button" class="term" data-term="载震载夙" data-pinyin="zài zhèn zài sù" data-difficulty="4" data-domain="general"><span>载震载夙</span><span>zài zhèn zài sù</span></button><button type="button" class="term" data-term="震" data-pinyin="zhèn" data-difficulty="4" data-domain="general"><span>震</span><span>zhèn</span></button><button type="button" class="term" data-term="夙" data-pinyin="sù" data-difficulty="4" data-domain="general"><span>夙</span><span>sù</span></button><button type="button" class="term" data-term="弥" data-pinyin="mí" data-difficulty="4" data-domain="general"><span>弥</span><span>mí</span></button><button type="button" class="term" data-term="坼" data-pinyin="chè" data-difficulty="4" data-domain="general"><span>坼</span><span>chè</span></button><button type="button" class="term" data-term="副" data-pinyin="pì" data-difficulty="4" data-domain="general"><span>副</span><span>pì</span></button><button type="button" class="term" data-term="菑" data-pinyin="zāi" data-difficulty="4" data-domain="general"><span>菑</span><span>zāi</span></button><button type="button" class="term" data-term="腓" data-pinyin="féi" data-difficulty="4" data-domain="general"><span>腓</span><span>féi</span></button><button type="button" class="term" data-term="呱" data-pinyin="gū" data-difficulty="4" data-domain="general"><span>呱</span><span>gū</span></button><button type="button" class="term" data-term="覃" data-pinyin="tán" data-difficulty="4" data-domain="general"><span>覃</span><span>tán</span></button><button type="button" class="term" data-term="訏" data-pinyin="xū" data-difficulty="4" data-domain="general"><span>訏</span><span>xū</span></button><button type="button" class="term" data-term="蓺" data-pinyin="yì" data-difficulty="4" data-domain="general"><span>蓺</span><span>yì</span></button><button type="button" class="term" data-term="旆旆" data-pinyin="pèi pèi" data-difficulty="4" data-domain="general"><span>旆旆</span><span>pèi pèi</span></button><button type="button" class="term" data-term="穟穟" data-pinyin="suì suì" data-difficulty="4" data-domain="general"><span>穟穟</span><span>suì suì</span></button><button type="button" class="term" data-term="幪幪" data-pinyin="méng méng" data-difficulty="4" data-domain="general"><span>幪幪</span><span>méng méng</span></button><button type="button" class="term" data-term="瓜瓞" data-pinyin="guā dié" data-difficulty="4" data-domain="general"><span>瓜瓞</span><span>guā dié</span></button><button type="button" class="term" data-term="唪唪" data-pinyin="běng běng" data-difficulty="4" data-domain="general"><span>唪唪</span><span>běng běng</span></button><button type="button" class="term" data-term="穑" data-pinyin="sè" data-difficulty="4" data-domain="general"><span>穑</span><span>sè</span></button><button type="button" class="term" data-term="茀" data-pinyin="fú" data-difficulty="4" data-domain="general"><span>茀</span><span>fú</span></button><button type="button" class="term" data-term="苞" data-pinyin="bāo" data-difficulty="4" data-domain="general"><span>苞</span><span>bāo</span></button><button type="button" class="term" data-term="褎" data-pinyin="yòu" data-difficulty="4" data-domain="general"><span>褎</span><span>yòu</span></button><button type="button" class="term" data-term="栗" data-pinyin="lì" data-difficulty="4" data-domain="general"><span>栗</span><span>lì</span></button><button type="button" class="term" data-term="秬秠" data-pinyin="jù pī" data-difficulty="4" data-domain="general"><span>秬秠</span><span>jù pī</span></button><button type="button" class="term" data-term="穈芑" data-pinyin="mén qǐ" data-difficulty="4" data-domain="general"><span>穈芑</span><span>mén qǐ</span></button><button type="button" class="term" data-term="揄" data-pinyin="yóu" data-difficulty="4" data-domain="general"><span>揄</span><span>yóu</span></button><button type="button" class="term" data-term="蹂" data-pinyin="róu" data-difficulty="4" data-domain="general"><span>蹂</span><span>róu</span></button><button type="button" class="term" data-term="叟叟" data-pinyin="sǒu sǒu" data-difficulty="4" data-domain="general"><span>叟叟</span><span>sǒu sǒu</span></button><button type="button" class="term" data-term="烝" data-pinyin="zhēng" data-difficulty="4" data-domain="general"><span>烝</span><span>zhēng</span></button><button type="button" class="term" data-term="浮浮" data-pinyin="fú fú" data-difficulty="4" data-domain="general"><span>浮浮</span><span>fú fú</span></button><button type="button" class="term" data-term="萧" data-pinyin="xiāo" data-difficulty="4" data-domain="general"><span>萧</span><span>xiāo</span></button><button type="button" class="term" data-term="羝" data-pinyin="dī" data-difficulty="4" data-domain="general"><span>羝</span><span>dī</span></button><button type="button" class="term" data-term="軷" data-pinyin="bá" data-difficulty="4" data-domain="general"><span>軷</span><span>bá</span></button><button type="button" class="term" data-term="燔" data-pinyin="fán" data-difficulty="4" data-domain="general"><span>燔</span><span>fán</span></button><button type="button" class="term" data-term="嗣岁" data-pinyin="sì suì" data-difficulty="4" data-domain="general"><span>嗣岁</span><span>sì suì</span></button><button type="button" class="term" data-term="卬" data-pinyin="áng" data-difficulty="4" data-domain="general"><span>卬</span><span>áng</span></button><button type="button" class="term" data-term="臭" data-pinyin="xiù" data-difficulty="4" data-domain="general"><span>臭</span><span>xiù</span></button><button type="button" class="term" data-term="蕃" data-pinyin="fán" data-difficulty="4" data-domain="general"><span>蕃</span><span>fán</span></button><button type="button" class="term" data-term="埸" data-pinyin="yì" data-difficulty="4" data-domain="general"><span>埸</span><span>yì</span></button><button type="button" class="term" data-term="餱粮" data-pinyin="hóu liáng" data-difficulty="4" data-domain="general"><span>餱粮</span><span>hóu liáng</span></button><button type="button" class="term" data-term="橐" data-pinyin="tuó" data-difficulty="4" data-domain="general"><span>橐</span><span>tuó</span></button><button type="button" class="term" data-term="戚扬" data-pinyin="qī yáng" data-difficulty="4" data-domain="general"><span>戚扬</span><span>qī yáng</span></button><button type="button" class="term" data-term="胥" data-pinyin="xū" data-difficulty="4" data-domain="general"><span>胥</span><span>xū</span></button><button type="button" class="term" data-term="巘" data-pinyin="yǎn" data-difficulty="4" data-domain="general"><span>巘</span><span>yǎn</span></button><button type="button" class="term" data-term="舟之" data-pinyin="zhōu zhī" data-difficulty="4" data-domain="general"><span>舟之</span><span>zhōu zhī</span></button><button type="button" class="term" data-term="鞞琫" data-pinyin="bǐng běng" data-difficulty="4" data-domain="general"><span>鞞琫</span><span>bǐng běng</span></button><button type="button" class="term" data-term="觏" data-pinyin="gòu" data-difficulty="4" data-domain="general"><span>觏</span><span>gòu</span></button><button type="button" class="term" data-term="跄跄济济" data-pinyin="qiāng qiāng jǐ jǐ" data-difficulty="4" data-domain="general"><span>跄跄济济</span><span>qiāng qiāng jǐ jǐ</span></button><button type="button" class="term" data-term="筵" data-pinyin="yán" data-difficulty="4" data-domain="general"><span>筵</span><span>yán</span></button><button type="button" class="term" data-term="曹" data-pinyin="cáo" data-difficulty="4" data-domain="general"><span>曹</span><span>cáo</span></button><button type="button" class="term" data-term="豕" data-pinyin="shǐ" data-difficulty="4" data-domain="general"><span>豕</span><span>shǐ</span></button><button type="button" class="term" data-term="匏" data-pinyin="páo" data-difficulty="4" data-domain="general"><span>匏</span><span>páo</span></button><button type="button" class="term" data-term="三单" data-pinyin="sān dān" data-difficulty="4" data-domain="general"><span>三单</span><span>sān dān</span></button><button type="button" class="term" data-term="隰原" data-pinyin="xí yuán" data-difficulty="4" data-domain="general"><span>隰原</span><span>xí yuán</span></button><button type="button" class="term" data-term="彻田" data-pinyin="chè tián" data-difficulty="4" data-domain="general"><span>彻田</span><span>chè tián</span></button><button type="button" class="term" data-term="允荒" data-pinyin="yǔn huāng" data-difficulty="4" data-domain="general"><span>允荒</span><span>yǔn huāng</span></button><button type="button" class="term" data-term="芮鞫" data-pinyin="ruì jū" data-difficulty="4" data-domain="general"><span>芮鞫</span><span>ruì jū</span></button><button type="button" class="term" data-term="盘庚" data-pinyin="pán gēng" data-difficulty="3" data-domain="proper_name"><span>盘庚</span><span>pán gēng</span></button><button type="button" class="term" data-term="喾" data-pinyin="kù" data-difficulty="3" data-domain="proper_name"><span>喾</span><span>kù</span></button><button type="button" class="term" data-term="皇涧" data-pinyin="huáng jiàn" data-difficulty="3" data-domain="proper_name"><span>皇涧</span><span>huáng jiàn</span></button><button type="button" class="term" data-term="过涧" data-pinyin="guō jiàn" data-difficulty="3" data-domain="proper_name"><span>过涧</span><span>guō jiàn</span></button><button type="button" class="term" data-term="北土" data-pinyin="běi tǔ" data-difficulty="3" data-domain="proper_name"><span>北土</span><span>běi tǔ</span></button><button type="button" class="term" data-term="铜瓿" data-pinyin="tóng bù" data-difficulty="5" data-domain="bronze_vessel"><span>铜瓿</span><span>tóng bù</span></button><button type="button" class="term" data-term="陶鬲" data-pinyin="táo lì" data-difficulty="5" data-domain="archaeology"><span>陶鬲</span><span>táo lì</span></button><button type="button" class="term" data-term="夯筑" data-pinyin="hāng zhù" data-difficulty="3" data-domain="general"><span>夯筑</span><span>hāng zhù</span></button><button type="button" class="term" data-term="腰坑殉狗" data-pinyin="yāo kēng xùn gǒu" data-difficulty="3" data-domain="general"><span>腰坑殉狗</span><span>yāo kēng xùn gǒu</span></button><button type="button" class="term" data-term="人殉" data-pinyin="rén xùn" data-difficulty="3" data-domain="general"><span>人殉</span><span>rén xùn</span></button><button type="button" class="term" data-term="碾子坡遗址" data-pinyin="niǎn zi pō yí zhǐ" data-difficulty="5" data-domain="archaeology"><span>碾子坡遗址</span><span>niǎn zi pō yí zhǐ</span></button><button type="button" class="term" data-term="口耳相传" data-pinyin="kǒu ěr xiāng chuán" data-difficulty="2" data-domain="phrase"><span>口耳相传</span><span>kǒu ěr xiāng chuán</span></button><button type="button" class="term" data-term="宗教改革" data-pinyin="zōng jiào gǎi gé" data-difficulty="3" data-domain="general"><span>宗教改革</span><span>zōng jiào gǎi gé</span></button><button type="button" class="term" data-term="生息之地" data-pinyin="shēng xī zhī dì" data-difficulty="3" data-domain="general"><span>生息之地</span><span>shēng xī zhī dì</span></button><button type="button" class="term" data-term="甲骨卜辞" data-pinyin="jiǎ gǔ bǔ cí" data-difficulty="4" data-domain="general"><span>甲骨卜辞</span><span>jiǎ gǔ bǔ cí</span></button><button type="button" class="term" data-term="郑州商城" data-pinyin="zhèng zhōu shāng chéng" data-difficulty="5" data-domain="archaeology"><span>郑州商城</span><span>zhèng zhōu shāng chéng</span></button><button type="button" class="term" data-term="长江流域" data-pinyin="cháng jiāng liú yù" data-difficulty="3" data-domain="proper_name"><span>长江流域</span><span>cháng jiāng liú yù</span></button><button type="button" class="term" data-term="周文王" data-pinyin="zhōu wén wáng" data-difficulty="3" data-domain="proper_name"><span>周文王</span><span>zhōu wén wáng</span></button><button type="button" class="term" data-term="姜太公" data-pinyin="jiāng tài gōng" data-difficulty="3" data-domain="proper_name"><span>姜太公</span><span>jiāng tài gōng</span></button><button type="button" class="term" data-term="孔颖达" data-pinyin="kǒng yǐng dá" data-difficulty="3" data-domain="proper_name"><span>孔颖达</span><span>kǒng yǐng dá</span></button><button type="button" class="term" data-term="浮选法" data-pinyin="fú xuǎn fǎ" data-difficulty="4" data-domain="general"><span>浮选法</span><span>fú xuǎn fǎ</span></button><button type="button" class="term" data-term="盘龙城" data-pinyin="pán lóng chéng" data-difficulty="5" data-domain="archaeology"><span>盘龙城</span><span>pán lóng chéng</span></button><button type="button" class="term" data-term="碳十四" data-pinyin="tàn shí sì" data-difficulty="3" data-domain="general"><span>碳十四</span><span>tàn shí sì</span></button><button type="button" class="term" data-term="老牛坡" data-pinyin="lǎo niú pō" data-difficulty="5" data-domain="archaeology"><span>老牛坡</span><span>lǎo niú pō</span></button><button type="button" class="term" data-term="顾颉刚" data-pinyin="gù jié gāng" data-difficulty="3" data-domain="proper_name"><span>顾颉刚</span><span>gù jié gāng</span></button><button type="button" class="term" data-term="上帝" data-pinyin="shàng dì" data-difficulty="3" data-domain="general"><span>上帝</span><span>shàng dì</span></button><button type="button" class="term" data-term="亶父" data-pinyin="dǎn fǔ" data-difficulty="3" data-domain="proper_name"><span>亶父</span><span>dǎn fǔ</span></button><button type="button" class="term" data-term="从容" data-pinyin="cóng róng" data-difficulty="4" data-domain="general"><span>从容</span><span>cóng róng</span></button><button type="button" class="term" data-term="俯身" data-pinyin="fǔ shēn" data-difficulty="3" data-domain="general"><span>俯身</span><span>fǔ shēn</span></button><button type="button" class="term" data-term="先后" data-pinyin="xiān hòu" data-difficulty="4" data-domain="general"><span>先后</span><span>xiān hòu</span></button><button type="button" class="term" data-term="分封" data-pinyin="fēn fēng" data-difficulty="3" data-domain="general"><span>分封</span><span>fēn fēng</span></button><button type="button" class="term" data-term="卜辞" data-pinyin="bǔ cí" data-difficulty="4" data-domain="general"><span>卜辞</span><span>bǔ cí</span></button><button type="button" class="term" data-term="后稷" data-pinyin="hòu jì" data-difficulty="3" data-domain="proper_name"><span>后稷</span><span>hòu jì</span></button><button type="button" class="term" data-term="周原" data-pinyin="zhōu yuán" data-difficulty="5" data-domain="archaeology"><span>周原</span><span>zhōu yuán</span></button><button type="button" class="term" data-term="商族" data-pinyin="shāng zú" data-difficulty="3" data-domain="general"><span>商族</span><span>shāng zú</span></button><button type="button" class="term" data-term="商王" data-pinyin="shāng wáng" data-difficulty="3" data-domain="proper_name"><span>商王</span><span>shāng wáng</span></button><button type="button" class="term" data-term="土著" data-pinyin="tǔ zhù" data-difficulty="3" data-domain="general"><span>土著</span><span>tǔ zhù</span></button><button type="button" class="term" data-term="地层" data-pinyin="dì céng" data-difficulty="3" data-domain="general"><span>地层</span><span>dì céng</span></button><button type="button" class="term" data-term="坑底" data-pinyin="kēng dǐ" data-difficulty="3" data-domain="general"><span>坑底</span><span>kēng dǐ</span></button><button type="button" class="term" data-term="埋祭" data-pinyin="mái jì" data-difficulty="3" data-domain="general"><span>埋祭</span><span>mái jì</span></button><button type="button" class="term" data-term="城邑" data-pinyin="chéng yì" data-difficulty="3" data-domain="general"><span>城邑</span><span>chéng yì</span></button><button type="button" class="term" data-term="填土" data-pinyin="tián tǔ" data-difficulty="3" data-domain="general"><span>填土</span><span>tián tǔ</span></button><button type="button" class="term" data-term="壁龛" data-pinyin="bì kān" data-difficulty="2" data-domain="general"><span>壁龛</span><span>bì kān</span></button><button type="button" class="term" data-term="太公" data-pinyin="tài gōng" data-difficulty="3" data-domain="proper_name"><span>太公</span><span>tài gōng</span></button><button type="button" class="term" data-term="夯土" data-pinyin="hāng tǔ" data-difficulty="3" data-domain="general"><span>夯土</span><span>hāng tǔ</span></button><button type="button" class="term" data-term="始祖" data-pinyin="shǐ zǔ" data-difficulty="3" data-domain="general"><span>始祖</span><span>shǐ zǔ</span></button><button type="button" class="term" data-term="孔子" data-pinyin="kǒng zǐ" data-difficulty="3" data-domain="proper_name"><span>孔子</span><span>kǒng zǐ</span></button><button type="button" class="term" data-term="尚书" data-pinyin="shàng shū" data-difficulty="4" data-domain="general"><span>尚书</span><span>shàng shū</span></button><button type="button" class="term" data-term="左传" data-pinyin="zuǒ zhuàn" data-difficulty="4" data-domain="general"><span>左传</span><span>zuǒ zhuàn</span></button><button type="button" class="term" data-term="捆绑" data-pinyin="kǔn bǎng" data-difficulty="3" data-domain="general"><span>捆绑</span><span>kǔn bǎng</span></button><button type="button" class="term" data-term="族徽" data-pinyin="zú huī" data-difficulty="4" data-domain="general"><span>族徽</span><span>zú huī</span></button><button type="button" class="term" data-term="春秋" data-pinyin="chūn qiū" data-difficulty="4" data-domain="general"><span>春秋</span><span>chūn qiū</span></button><button type="button" class="term" data-term="杂糅" data-pinyin="zá róu" data-difficulty="4" data-domain="general"><span>杂糅</span><span>zá róu</span></button><button type="button" class="term" data-term="殉葬" data-pinyin="xùn zàng" data-difficulty="3" data-domain="general"><span>殉葬</span><span>xùn zàng</span></button><button type="button" class="term" data-term="殷都" data-pinyin="yīn dū" data-difficulty="5" data-domain="general"><span>殷都</span><span>yīn dū</span></button><button type="button" class="term" data-term="浮选" data-pinyin="fú xuǎn" data-difficulty="3" data-domain="general"><span>浮选</span><span>fú xuǎn</span></button><button type="button" class="term" data-term="版筑" data-pinyin="bǎn zhù" data-difficulty="3" data-domain="general"><span>版筑</span><span>bǎn zhù</span></button><button type="button" class="term" data-term="献祭" data-pinyin="xiàn jì" data-difficulty="3" data-domain="general"><span>献祭</span><span>xiàn jì</span></button><button type="button" class="term" data-term="祭品" data-pinyin="jì pǐn" data-difficulty="3" data-domain="general"><span>祭品</span><span>jì pǐn</span></button><button type="button" class="term" data-term="禁忌" data-pinyin="jìn jì" data-difficulty="3" data-domain="general"><span>禁忌</span><span>jìn jì</span></button><button type="button" class="term" data-term="穿孔" data-pinyin="chuān kǒng" data-difficulty="3" data-domain="general"><span>穿孔</span><span>chuān kǒng</span></button><button type="button" class="term" data-term="窖藏" data-pinyin="jiào cáng" data-difficulty="4" data-domain="general"><span>窖藏</span><span>jiào cáng</span></button><button type="button" class="term" data-term="简狄" data-pinyin="jiǎn dí" data-difficulty="3" data-domain="proper_name"><span>简狄</span><span>jiǎn dí</span></button><button type="button" class="term" data-term="粟米" data-pinyin="sù mǐ" data-difficulty="4" data-domain="general"><span>粟米</span><span>sù mǐ</span></button><button type="button" class="term" data-term="繁衍" data-pinyin="fán yǎn" data-difficulty="4" data-domain="general"><span>繁衍</span><span>fán yǎn</span></button><button type="button" class="term" data-term="羌人" data-pinyin="qiāng rén" data-difficulty="3" data-domain="general"><span>羌人</span><span>qiāng rén</span></button><button type="button" class="term" data-term="葬俗" data-pinyin="zàng sú" data-difficulty="3" data-domain="general"><span>葬俗</span><span>zàng sú</span></button><button type="button" class="term" data-term="蛮荒" data-pinyin="mán huāng" data-difficulty="4" data-domain="general"><span>蛮荒</span><span>mán huāng</span></button><button type="button" class="term" data-term="西土" data-pinyin="xī tǔ" data-difficulty="3" data-domain="proper_name"><span>西土</span><span>xī tǔ</span></button><button type="button" class="term" data-term="诗经" data-pinyin="shī jīng" data-difficulty="4" data-domain="general"><span>诗经</span><span>shī jīng</span></button><button type="button" class="term" data-term="迁徙" data-pinyin="qiān xǐ" data-difficulty="3" data-domain="general"><span>迁徙</span><span>qiān xǐ</span></button><button type="button" class="term" data-term="遗存" data-pinyin="yí cún" data-difficulty="3" data-domain="general"><span>遗存</span><span>yí cún</span></button><button type="button" class="term" data-term="铜鼎" data-pinyin="tóng dǐng" data-difficulty="5" data-domain="bronze_vessel"><span>铜鼎</span><span>tóng dǐng</span></button><button type="button" class="term" data-term="铭文" data-pinyin="míng wén" data-difficulty="4" data-domain="general"><span>铭文</span><span>míng wén</span></button><button type="button" class="term" data-term="陶寺" data-pinyin="táo sì" data-difficulty="5" data-domain="archaeology"><span>陶寺</span><span>táo sì</span></button><button type="button" class="term" data-term="骨匕" data-pinyin="gǔ bǐ" data-difficulty="5" data-domain="archaeology"><span>骨匕</span><span>gǔ bǐ</span></button><button type="button" class="term" data-term="骨笄" data-pinyin="gǔ jī" data-difficulty="5" data-domain="archaeology"><span>骨笄</span><span>gǔ jī</span></button><button type="button" class="term" data-term="瓿" data-pinyin="bù" data-difficulty="5" data-domain="bronze_vessel"><span>瓿</span><span>bù</span></button><button type="button" class="term" data-term="镞" data-pinyin="zú" data-difficulty="5" data-domain="bronze_vessel"><span>镞</span><span>zú</span></button><button type="button" class="term" data-term="戈" data-pinyin="gē" data-difficulty="5" data-domain="bronze_vessel"><span>戈</span><span>gē</span></button><button type="button" class="term" data-term="匕" data-pinyin="bǐ" data-difficulty="5" data-domain="bronze_vessel"><span>匕</span><span>bǐ</span></button><button type="button" class="term" data-term="甗" data-pinyin="yǎn" data-difficulty="5" data-domain="bronze_vessel"><span>甗</span><span>yǎn</span></button><button type="button" class="term" data-term="戚" data-pinyin="qī" data-difficulty="5" data-domain="bronze_vessel"><span>戚</span><span>qī</span></button><button type="button" class="term" data-term="鬲" data-pinyin="lì" data-difficulty="5" data-domain="bronze_vessel"><span>鬲</span><span>lì</span></button></div></section>
+      </aside>
     </div>
   </main>
   <button class="quick-note-jump" type="button" data-target="notes">札记</button>
@@ -919,6 +906,11 @@ H318是一口废弃的水井，后被当作灰坑，在较深处埋有一枚人�
     const chapterNotesBodyEl = document.getElementById('chapterNotesBody');
     const chapterNoteTitleEl = document.getElementById('chapterNoteTitle');
     const chapterNoteTextEl = document.getElementById('chapterNoteText');
+    const sourceViewerImageEl = document.getElementById('sourceViewerImage');
+    const sourceViewerMetaEl = document.getElementById('sourceViewerMeta');
+    const sourceViewerEl = document.querySelector('.source-viewer');
+    const sourceViewerHome = document.createComment('source-viewer-home');
+    sourceViewerEl.before(sourceViewerHome);
     let activeArea = null;
     let viewMode = 'clean';
     let cleanViewTexts = {};
@@ -926,8 +918,35 @@ H318是一口废弃的水井，后被当作灰坑，在较深处埋有一枚人�
     let voices = [];
     let allowSave = true;
     let savedFormatRange = null;
+    let sourceNavigationLockUntil = 0;
     function setStatus(text, tone = '') { statusEl.textContent = text; statusEl.style.color = tone === 'ok' ? 'var(--ok)' : tone === 'warn' ? 'var(--warn)' : 'var(--muted)'; }
     function textareas() { return Array.from(document.querySelectorAll('.rich-editor[data-page]')); }
+    function syncSourceViewer(area) {
+      if (!area || !sourceViewerImageEl) return;
+      sourceViewerImageEl.src = area.dataset.sourceImage;
+      sourceViewerImageEl.alt = `原书 PDF 页 ${area.dataset.sourcePage}`;
+      sourceViewerMetaEl.textContent = `原阅 ${area.dataset.page} · 原PDF ${area.dataset.sourcePage} · 印 ${area.dataset.printedPage}`;
+    }
+    function restoreSourceViewer() { sourceViewerHome.after(sourceViewerEl); }
+    function currentSourceLayout() { return SOURCE_LAYOUTS.find(name => document.body.classList.contains(`source-layout-${name}`)) || 'text-primary'; }
+    function showPagePair(target) {
+      const area = target?.matches('.rich-editor') ? target : target?.querySelector('.rich-editor');
+      if (!area) return false;
+      activeArea = area;
+      sourceNavigationLockUntil = Date.now() + 1400;
+      syncSourceViewer(area);
+      if (matchMedia('(max-width:980px)').matches) {
+        const page = area.closest('.page');
+        const pdfFirst = ['pdf-primary','pdf'].includes(currentSourceLayout());
+        pdfFirst ? page.before(sourceViewerEl) : page.after(sourceViewerEl);
+        (pdfFirst ? sourceViewerEl : page).scrollIntoView({ behavior:'smooth', block:'start' });
+      } else {
+        restoreSourceViewer();
+        applySourceLayout('text-primary');
+        target.scrollIntoView({ behavior:'smooth', block:'start' });
+      }
+      return true;
+    }
     function editorText(area) { return area.innerText.replace(/ /g, ' ').replace(/\n$/, ''); }
     function nodeAtOffset(root, wanted) {
       const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT);
@@ -1120,7 +1139,7 @@ H318是一口废弃的水井，后被当作灰坑，在较深处埋有一枚人�
     document.getElementById('insertImageBtn').addEventListener('click',()=>{if(viewMode!=='clean'){setStatus('请先切换回清稿再插入图片','warn');return}if(!activeArea){setStatus('请先在正文中放置光标','warn');return}document.getElementById('editorImageInput').click();});
     document.getElementById('editorImageInput').addEventListener('change',async event=>{const file=event.target.files[0];if(!file)return;try{const caption=prompt('请输入图片说明和来源（可稍后在正文中修改）：',file.name)||file.name;insertEditorialImage(await prepareImage(file),file.name,caption)}catch(error){setStatus(error.message,'warn')}finally{event.target.value=''}});
     document.addEventListener('click',event=>{const size=event.target.closest('[data-image-size]'),remove=event.target.closest('[data-image-remove]'),figure=event.target.closest('.editorial-image');if(size&&figure){figure.dataset.size=size.dataset.imageSize;figure.closest('.rich-editor')?.dispatchEvent(new Event('input',{bubbles:true}))}else if(remove&&figure&&confirm('删除这张插图？')){const area=figure.closest('.rich-editor'),page=area?.dataset.page;figure.remove();area?.dispatchEvent(new Event('input',{bubbles:true}));addLog('删除图片','',page)}});
-    document.querySelectorAll('[data-target]').forEach(button => button.addEventListener('click', () => document.getElementById(button.dataset.target)?.scrollIntoView({ behavior: 'smooth', block: 'start' })));
+    document.querySelectorAll('[data-target]').forEach(button => button.addEventListener('click', () => { const target=document.getElementById(button.dataset.target);if (!showPagePair(target)) target?.scrollIntoView({ behavior:'smooth',block:'start' }); }));
     textareas().forEach(initializeRichEditor);
     textareas().forEach(area => { area.addEventListener('input', () => { queueSave(); renderUserNotes(); }); area.addEventListener('focus', () => { activeArea = area; notePageEl.value = area.dataset.page; }); area.addEventListener('click', () => captureEditorSelection(area)); area.addEventListener('keyup', () => captureEditorSelection(area)); area.addEventListener('mouseup', () => captureEditorSelection(area)); area.addEventListener('keydown',event=>{if(event.key==='Enter'&&viewMode==='clean'){event.preventDefault();captureEditorSelection(area);area.setRangeText('\n');area.dispatchEvent(new Event('input',{bubbles:true}));}}); area.addEventListener('paste',event=>{if(viewMode!=='clean')return;event.preventDefault();captureEditorSelection(area);area.setRangeText(event.clipboardData.getData('text/plain'));area.dispatchEvent(new Event('input',{bubbles:true}));}); });
     document.querySelectorAll('button.term').forEach(button => button.addEventListener('click', () => addNotation(button.dataset.term, button.dataset.pinyin)));
@@ -1175,30 +1194,45 @@ H318是一口废弃的水井，后被当作灰坑，在较深处埋有一枚人�
     document.getElementById('clearLogBtn').addEventListener('click', () => { if (!confirm('清空本浏览器保存的编辑日志？')) return; localStorage.removeItem(LOG_KEY); renderLog(); setStatus('日志已清空', 'ok'); });
     document.getElementById('resetBtn').addEventListener('click', () => { if (!confirm('恢复 chapter clean 原稿会清除本浏览器保存的编辑内容。继续？')) return; clearTimeout(timer); allowSave = false; if (viewMode === 'annotated') setView('clean'); textareas().forEach(area => area.value = ORIGINAL_TEXTS[area.dataset.page] ?? ''); cleanViewTexts = { ...ORIGINAL_TEXTS }; cleanViewHtml = {}; localStorage.removeItem(STORAGE_KEY); sessionStorage.removeItem(`${STORAGE_KEY}:view`); viewMode = 'clean'; textareas().forEach(area => { area.readOnly = false; area.classList.remove('annotated-view'); }); document.getElementById('viewToggleBtn').textContent = '切换为注音稿'; modeBadgeEl.textContent = '当前：清稿'; modeBadgeEl.classList.remove('annotated'); allowSave = true; setStatus('已恢复 chapter clean 原稿', 'ok'); addLog('恢复 clean 原稿', '', currentPage()); });
     window.addEventListener('beforeunload', () => { if (allowSave) saveNow(false); });
-    const sourceLayoutSlider = document.getElementById('sourceLayoutSlider');
-    const sourceLayoutOutput = document.getElementById('sourceLayoutOutput');
-    const SOURCE_LAYOUT_KEY = 'jianshang-text-pdf-layout-v1';
+    const sourceLayoutControl = document.querySelector('.source-layout-control');
+    const sourceLayoutButton = document.getElementById('sourceLayoutButton');
+    const SOURCE_LAYOUT_KEY = 'jianshang-primary-reference-layout-v3';
+    const SOURCE_LAYOUTS = ['text','text-primary','balanced','pdf-primary','pdf'];
+    const SOURCE_LAYOUT_LABELS = { text:'正文', 'text-primary':'正文为主', balanced:'均衡', 'pdf-primary':'PDF为主', pdf:'PDF' };
     function applySourceLayout(raw, persist=true) {
-      const pdf = Math.max(0, Math.min(100, Number(raw)));
-      const text = 100 - pdf;
-      document.documentElement.style.setProperty('--text-share', `${text || 1}fr`);
-      document.documentElement.style.setProperty('--pdf-share', `${pdf || 1}fr`);
-      document.body.classList.toggle('text-only', pdf === 0);
-      document.body.classList.toggle('pdf-only', pdf === 100);
-      document.body.classList.toggle('pdf-priority', pdf > 50 && pdf < 100);
-      sourceLayoutSlider.value = String(pdf);
-      sourceLayoutOutput.textContent = pdf === 0 ? '仅正文' : pdf === 100 ? '仅 PDF' : `正文 ${text}% · PDF ${pdf}%`;
-      if (persist) localStorage.setItem(SOURCE_LAYOUT_KEY, String(pdf));
+      const mode = SOURCE_LAYOUTS.includes(raw) ? raw : 'text-primary';
+      const layout = document.querySelector('.layout');
+      layout.classList.remove('workspace-pane-layout','workspace-pane-primary-only','workspace-pane-secondary-only','workspace-pane-secondary-first','workspace-pane-has-splitter');
+      layout.style.removeProperty('--workspace-primary-share');
+      layout.style.removeProperty('--workspace-secondary-share');
+      layout.querySelectorAll('[data-pane-primary],[data-pane-secondary]').forEach(node => { delete node.dataset.panePrimary; delete node.dataset.paneSecondary; });
+      document.querySelector('.workspace-pane-balance')?.remove();
+      SOURCE_LAYOUTS.forEach(name => document.body.classList.toggle(`source-layout-${name}`, name === mode));
+      document.querySelectorAll('[data-source-layout]').forEach(button => button.classList.toggle('active', button.dataset.sourceLayout === mode));
+      sourceLayoutButton.textContent = '分栏布局';
+      sourceLayoutButton.setAttribute('aria-label', `分栏布局，当前：${SOURCE_LAYOUT_LABELS[mode]}`);
+      if (!matchMedia('(max-width:980px)').matches) restoreSourceViewer();
+      if (persist) localStorage.setItem(SOURCE_LAYOUT_KEY, mode);
     }
-    sourceLayoutSlider.addEventListener('input', event => applySourceLayout(event.target.value));
-    document.querySelectorAll('[data-pdf-share]').forEach(button => button.addEventListener('click', () => applySourceLayout(button.dataset.pdfShare)));
-    applySourceLayout(localStorage.getItem(SOURCE_LAYOUT_KEY) ?? (matchMedia('(max-width:980px)').matches ? 0 : 30), false);
+    sourceLayoutButton.addEventListener('click', event => { event.stopPropagation(); const open = sourceLayoutControl.classList.toggle('open'); sourceLayoutButton.setAttribute('aria-expanded', String(open)); });
+    document.querySelectorAll('[data-source-layout]').forEach(button => button.addEventListener('click', () => { applySourceLayout(button.dataset.sourceLayout); sourceLayoutControl.classList.remove('open'); sourceLayoutButton.setAttribute('aria-expanded','false'); }));
+    document.addEventListener('click', event => { if (!sourceLayoutControl.contains(event.target)) { sourceLayoutControl.classList.remove('open'); sourceLayoutButton.setAttribute('aria-expanded','false'); } });
+    document.addEventListener('keydown', event => { if (event.key === 'Escape') { sourceLayoutControl.classList.remove('open'); sourceLayoutButton.setAttribute('aria-expanded','false'); } });
+    applySourceLayout(localStorage.getItem(SOURCE_LAYOUT_KEY) ?? 'text-primary', false);
     populateNotePages();
     updateMarkerGuidance();
     loadSaved();
     renderUserNotes();
     renderChapterNotes();
     activeArea = textareas()[0] || null;
+    syncSourceViewer(activeArea);
+    textareas().forEach(area => area.addEventListener('focusin', () => syncSourceViewer(area)));
+    const sourcePageObserver = new IntersectionObserver(entries => {
+      if (Date.now() < sourceNavigationLockUntil) return;
+      const visible = entries.filter(entry => entry.isIntersecting).sort((a,b) => b.intersectionRatio - a.intersectionRatio)[0];
+      if (visible) syncSourceViewer(visible.target);
+    }, { rootMargin:'-15% 0px -65% 0px', threshold:[0,.25,.5] });
+    textareas().forEach(area => sourcePageObserver.observe(area));
     applyDictionarySettings();
     loadProjectDictionaryOverrides();
     loadVoices();

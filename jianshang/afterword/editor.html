@@ -35,8 +35,16 @@
     .format-divider { height:1px; margin:5px 4px; background:#ddd7cb; }
     .status { color:var(--muted); font-size:.86rem; min-width:132px; text-align:right; }
     main { width:min(1440px,calc(100% - 28px)); margin:18px auto 48px; }
-    .layout { display:grid; grid-template-columns:280px minmax(0,1fr); gap:18px; align-items:start; }
-    aside { position:sticky; top:calc(var(--editor-header-height, 75px) + 12px); display:grid; gap:14px; max-height:calc(100vh - var(--editor-header-height, 75px) - 24px); overflow:auto; }
+    .layout { display:grid; grid-template-columns:minmax(0,7fr) minmax(320px,3fr); gap:18px; align-items:start; }
+    .editing-pane, .layout > aside { min-width:0; }
+    aside { position:sticky; top:calc(var(--editor-header-height, 75px) + 12px); display:grid; gap:14px; max-height:calc(100vh - var(--editor-header-height, 75px) - 24px); overflow:auto; container-type:inline-size; }
+    body.source-layout-text-primary .layout { grid-template-columns:minmax(0,7fr) minmax(320px,3fr) !important; }
+    body.source-layout-balanced .layout { grid-template-columns:minmax(0,1fr) minmax(320px,1fr) !important; }
+    body.source-layout-pdf-primary .layout { grid-template-columns:minmax(0,2fr) minmax(320px,3fr) !important; }
+    body.source-layout-text .layout, body.source-layout-pdf .layout { grid-template-columns:minmax(0,1fr) !important; }
+    body.source-layout-text .editing-pane { order:1; } body.source-layout-text .layout > aside { order:2; }
+    body.source-layout-pdf .layout > aside { order:1; } body.source-layout-pdf .editing-pane { order:2; }
+    body.source-layout-text .layout > aside, body.source-layout-pdf .layout > aside { position:static; max-height:none; }
     .panel, .page, .toc-page, .reference-panel, .notes-dock, .export-dock { background:var(--paper); border:1px solid var(--line); box-shadow:var(--shadow); }
     .panel h2, .reference-panel h2, .notes-dock h2, .export-dock h2 { margin:0; padding:10px 12px; font-size:.95rem; border-bottom:1px solid var(--line); background:var(--soft); }
     .page-number-legend { padding:8px 11px; font-size:.82rem; color:var(--muted); }
@@ -52,9 +60,12 @@
     .toc-page, .reference-panel, .page { scroll-margin-top:86px; }
     .toc-head { display:flex; justify-content:space-between; gap:14px; align-items:baseline; padding:14px 16px; border-bottom:1px solid var(--line); background:#fff; }
     .toc-head h2 { margin:0; font-size:1.15rem; }
-    .toc-body { display:grid; grid-template-columns:minmax(0,1fr) minmax(280px,.72fr); gap:18px; padding:14px 16px 16px; }
+    .toc-body { display:grid; grid-template-columns:minmax(0,1fr); gap:18px; padding:14px 16px 16px; }
     .toc-body h3 { margin:0 0 8px; font-size:.95rem; }
     .toc-links { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:6px; }
+    .toc-work-notes { padding-top:14px; border-top:1px solid var(--line); }
+    .toc-work-notes p:last-child { margin-bottom:0; }
+    @container (max-width:560px) { .toc-links { grid-template-columns:minmax(0,1fr); } }
     .toc-link { display:flex; justify-content:space-between; gap:10px; border:1px solid var(--line); border-radius:6px; background:#fff; color:var(--ink); text-decoration:none; padding:7px 9px; min-height:34px; align-items:center; }
     .toc-link.available { border-left:4px solid var(--ok); background:#f4fbf6; }
     .toc-link.current { border:2px solid var(--accent); background:#fff0ec; color:var(--accent); font-weight:700; }
@@ -64,7 +75,7 @@
     .legend-current::before { background:var(--accent); } .legend-available::before { background:var(--ok); } .legend-unavailable::before { background:#aaa; }
     .toc-link span:first-child { overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
     .toc-link span:last-child { color:var(--muted); font-size:.86rem; font-variant-numeric:tabular-nums; white-space:nowrap; }
-    .reference-grid { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:14px; margin:18px 0; align-items:start; }
+    .reference-grid { display:grid; grid-template-columns:1fr; gap:14px; align-items:start; }
     #user-notes { grid-column:1 / -1; }
     #user-notes .table-scroll { max-height:440px; }
     #user-notes table { table-layout:fixed; }
@@ -87,14 +98,13 @@
     .page-title { font-weight:700; }
     .page-title span { color:var(--muted); font-weight:500; margin-left:8px; }
     .page-tools { display:flex; gap:8px; flex-wrap:wrap; }
-    .source-layout-control { margin:12px auto; max-width:760px; padding:10px 14px; border:1px solid var(--line); border-radius:10px; background:#fff; display:flex; align-items:center; gap:10px; flex-wrap:wrap; }
-    .source-layout-control strong { margin-right:auto; }
-    .source-layout-control input { width:min(280px,48vw); }
-    .source-layout-control output { min-width:145px; color:var(--muted); font-size:.86rem; }
-    .workbench { display:grid; grid-template-columns:minmax(340px,var(--text-share,70fr)) minmax(300px,var(--pdf-share,30fr)); gap:0; align-items:stretch; }
-    body.text-only .workbench, body.pdf-only .workbench { grid-template-columns:1fr; }
-    body.text-only .scan, body.pdf-only .editor-wrap { display:none; }
-    .editor-wrap { padding:12px; border-right:1px solid var(--line); display:flex; min-height:560px; }
+    .source-layout-control { position:relative; display:inline-flex; }
+    .source-layout-popover { position:absolute; z-index:60; top:calc(100% + 6px); right:0; display:none; min-width:150px; padding:6px; border:1px solid var(--line); border-radius:8px; background:#fff; box-shadow:0 10px 30px #2927202e; }
+    .source-layout-control.open .source-layout-popover { display:grid; gap:4px; }
+    .source-layout-popover button { width:100%; text-align:left; white-space:nowrap; }
+    .source-layout-popover button.active { background:#e6f4ea; color:#137333; font-weight:700; }
+    .workbench { display:block; }
+    .editor-wrap { padding:12px; display:flex; min-height:560px; }
     textarea { width:100%; min-height:0; border:1px solid var(--line); background:#fff; color:var(--ink); padding:14px; border-radius:6px; line-height:1.85; font-size:1.02rem; letter-spacing:0; overflow:auto; }
     .rich-editor { width:100%; min-height:536px; border:1px solid var(--line); background:#fff; color:var(--ink); padding:14px; border-radius:6px; line-height:1.85; font-size:1.02rem; letter-spacing:0; overflow:auto; white-space:pre-wrap; overflow-wrap:anywhere; }
     .rich-editor.annotated-view { background:#fff9e8; color:#5b481f; }
@@ -104,8 +114,13 @@
     .speech-rate { display:flex; align-items:center; gap:4px; color:var(--muted); font-size:.82rem; }
     #speechRate { width:82px; }
     .hidden { display:none !important; }
-    .scan { padding:12px; background:#fbfaf6; display:flex; }
-    .scan img { width:100%; height:auto; display:block; border:1px solid var(--line); background:#fff; align-self:flex-start; }
+    .source-viewer { background:#fbfaf6; }
+    .source-viewer-head { display:flex; justify-content:space-between; gap:8px; padding:9px 11px; border-bottom:1px solid var(--line); align-items:center; }
+    .source-viewer-head strong { font-size:.9rem; }
+    .source-viewer-meta { color:var(--muted); font-size:.78rem; }
+    .source-viewer img { width:100%; height:auto; display:block; background:#fff; }
+    .source-viewer-actions { display:flex; gap:7px; padding:9px; border-top:1px solid var(--line); }
+    .source-viewer-actions a { flex:1; justify-content:center; text-align:center; }
     .notes-dock { margin-top:18px; scroll-margin-top:86px; }
     .note-grid { display:grid; grid-template-columns:minmax(240px,.75fr) minmax(320px,1fr); gap:12px; padding:12px; }
     .note-controls { display:grid; gap:10px; align-content:start; }
@@ -124,7 +139,7 @@
     .export-dock { margin-top:18px; }
     #exportText { min-height:240px; border:0; border-radius:0; }
     .quick-note-jump { position:fixed; right:18px; bottom:18px; z-index:25; background:var(--accent); color:var(--accent-ink); border-color:var(--accent); box-shadow:0 8px 24px rgba(30,24,16,.18); }
-    @media (max-width:980px) { .topbar { grid-template-columns:1fr; } .actions { justify-content:flex-start; } .status { text-align:left; } .layout { grid-template-columns:1fr; } aside { position:static; max-height:none; } .toc-body, .note-grid { grid-template-columns:1fr; } .toc-links { grid-template-columns:1fr; } .reference-grid { grid-template-columns:1fr; } .workbench { grid-template-columns:1fr; } .editor-wrap { border-right:0; border-bottom:1px solid var(--line); } body.pdf-priority .scan { grid-row:1; } body.pdf-priority .editor-wrap { grid-row:2; } .rich-editor { min-height:520px; } .quick-note-jump { right:12px; bottom:12px; } }
+    @media (max-width:980px) { .topbar { grid-template-columns:1fr; } .actions { justify-content:flex-start; } .status { text-align:left; } .layout, body.source-layout-text-primary .layout, body.source-layout-balanced .layout, body.source-layout-pdf-primary .layout { grid-template-columns:minmax(0,1fr) !important; } aside { position:static; max-height:none; } body.source-layout-pdf-primary .layout > aside, body.source-layout-pdf .layout > aside { order:1; } body.source-layout-pdf-primary .editing-pane, body.source-layout-pdf .editing-pane { order:2; } body.source-layout-text .editing-pane, body.source-layout-text-primary .editing-pane, body.source-layout-balanced .editing-pane { order:1; } body.source-layout-text .layout > aside, body.source-layout-text-primary .layout > aside, body.source-layout-balanced .layout > aside { order:2; } .source-layout-popover { position:fixed; top:var(--editor-header-height,75px); right:12px; } .toc-body, .note-grid { grid-template-columns:1fr; } .toc-links { grid-template-columns:1fr; } .reference-grid { grid-template-columns:1fr; } .rich-editor { min-height:520px; } .quick-note-jump { right:12px; bottom:12px; } }
   </style>
 </head>
 <body>
@@ -134,24 +149,165 @@
     reference-href="../reference_tables.html">
     <noscript>此编辑器需要启用 JavaScript。</noscript>
   </jianshang-editor-header>
-  <section class="source-layout-control" aria-label="正文与 PDF 布局">
-    <strong>正文 / PDF</strong>
-    <button type="button" data-pdf-share="0">仅正文</button>
-    <button type="button" data-pdf-share="30">正文优先</button>
-    <button type="button" data-pdf-share="50">均衡</button>
-    <button type="button" data-pdf-share="100">仅 PDF</button>
-    <input id="sourceLayoutSlider" type="range" min="0" max="100" step="5" aria-label="PDF 所占比例">
-    <output id="sourceLayoutOutput"></output>
-  </section>
   <main>
     <div class="layout">
+      <section class="editing-pane">
+        <div class="pages">
+        <section class="page" id="page-589">
+          <div class="page-head">
+            <div class="page-title">原书阅读器页 589<span>原书物理 PDF 页 587</span><span>印刷页 575</span></div>
+            <div class="page-tools">
+              <button type="button" data-copy-page="589">复制本页</button>
+              <button type="button" data-export-page="589">导出本页</button>
+            </div>
+          </div>
+          <div class="workbench">
+            <div class="editor-wrap">
+              <div class="rich-editor" data-page="589" data-source-page="587" data-printed-page="575" data-source-image="pdf_pages/page-587.jpg" contenteditable="true" role="textbox" aria-multiline="true" spellcheck="false">后记
+
+这本书的内容，也许会让人觉得有些陌生，甚至不适。不过，从“学术史”的角度来说，它也有很多年的酝酿过程，以及幸运的环境。
+
+对历史有些了解的人，大都知道商朝存在人祭行为，但关于人祭的消亡，用心探究过的人还不多，可能大都默认它伴随着历史的“进化”历程而自然淡出了吧。这方面我有点幸运，能接触到一些较前沿的专业知识：我本科就读于北京大学的文科实验班，当时和历史系的两位同学交流得比较多，一位是和我同级的韩魏兄，一位是高一级的林鹄兄，他们都是先秦史方向，后来拿的也是考古学的学位。韩巍的硕士论文是关于西周初年殷商遗民的丧葬习俗的，里面提到当时的殷商遗民还保留着“腰坑殉狗”及殉人的传统，跟同时的周人墓葬截然不同。那时我常听韩巍聊起这些，所以就有了一些这样的认知：商文化与周文化很不一样。由此推论下来，商人的人祭习俗，也应当是在周朝的大环境里被禁绝的。林鹄兄的硕士论文则是关于周人的族姓观念的，他认为，商人等东方族群本来没有族姓，周人灭商之后才赋予了他们族姓，这个观点我也用到了本书中。所以，本书的很多缘起可以追溯到本世纪初。
+
+后来，在清华大学历史系读研究生时，我本想进入上古史领域，不过最终毕业论文的题目选的却是中古史，关于魏晋南北朝的南北战争，因此告别了上古史若干年。到2012年夏，毕业论文已经完成，又想起了昔日关注的上古史的很多问题。有一次，和研究生同窗、对摄影和影视造诣较深的曲直兄聊天时，又说起了商代人祭，他便推荐我去看梅尔•吉布森的《启示》（2006），一部关于阿兹特克文明的人祭题材的电影。我看了之后的感觉是，和商朝的考古有许多呼应之处，而且电影还提供了直观的视听效果，让我似乎看到了商纣王、周文王时代那些活生生的画面。这种身临其境的现场感很重要，它让殷墟人祭坑中的累累枯骨再次复活起来，所以我那时便准备动手写一篇文章，这便是后来的《周灭商与华夏新生》。[[editor-fn:1]]
+
+〔编者注1〕启示的剧情简介 · · · · · ·
+　　玛雅文明末期，奢华淫靡之气蔓延，为了祭奠那些刚刚落成的金字塔以及驱散众神的愤怒，玛雅王国派出强悍的军队入侵丛林深处的弱小部落，将战俘作为祭天的牺牲斩杀。
+　　年轻骁勇的战士虎爪（Rudy Youngblood 饰）和族人过着平静的生活，他有可爱的儿子和美丽的妻子，并且不久将迎来新的生命。但玛雅军队打破了这一切，他的部落遭到袭击，虎爪及时将妻儿藏在深坑之中，自己却不慎被俘。
+　　经过一路坎坷，他和其他战俘来到玛雅城。无数头颅被可耻的刽子手斩落，但即便在这个时刻，虎爪也念念不忘丛林深处的妻儿。只要一息尚存，他无论如何也要回到妻儿的身边……</div>
+            </div>
+          </div>
+        </section>
+        <section class="page" id="page-590">
+          <div class="page-head">
+            <div class="page-title">原书阅读器页 590<span>原书物理 PDF 页 588</span><span>印刷页 576</span></div>
+            <div class="page-tools">
+              <button type="button" data-copy-page="590">复制本页</button>
+              <button type="button" data-export-page="590">导出本页</button>
+            </div>
+          </div>
+          <div class="workbench">
+            <div class="editor-wrap">
+              <div class="rich-editor" data-page="590" data-source-page="588" data-printed-page="576" data-source-image="pdf_pages/page-588.jpg" contenteditable="true" role="textbox" aria-multiline="true" spellcheck="false">很巧的是，当时林鹄兄和我住得很近，他那时已拿到芝加哥大学的人类学博士学位（西方的考古学属于人类学），正在清华大学历史系做博士后。所以，那个夏天我们又能常在一起聊了。有一次，我们一起骑车去韩巍在蔚秀园的家，在颐和园路上又聊起了商周变迁，惊奇地发现我们居然想到一起了，都猜测周公在废除人祭的历史转折上有关键作用。当天，林鹄兄便把他的一篇与此相关的会议报告发给了我，其中考古部分的内容被我用到了《周灭商与华夏新生》一文中。这篇文章发在2012年的《读库》第5期。
+
+回想起来，我能进入这个领域，受惠于韩巍和林鹄之处颇多。
+
+博士毕业后，我到新疆大学工作，其间几度想把《周灭商与华夏新生》一文写成专书，因为我想写一系列有关中国古代历史的书，展现中国历史这条巨流之河如何从远古汇聚、奔涌而下，而用新石器到商周之变做开篇最合适——从头写下来，也免去了每次交代历史背景的麻烦。我曾写过孔子，写过刘寄奴刘裕，也都算是这个系列中的部分。
+
+按我最初的计划，写上古，就不能再局限于商周之际，要从新石器开始，把中国早期文明产生的全过程，以及人祭宗教的来龙去脉都写出来。这意味着考古学的内容会占一大半，难度很大，毕竟进入一个新领域需要时间成本，像王国维、郭沫若、陈梦家等先贤“触类旁通”的学科拓荒时代早已过去，现代学术的数量积累已经很大，学者的研究方向也都变得深而窄，学术生涯大都只能在博士论文的基础上生发、拓展，进而成为特定领域的“专家”。换句话说，到中晚年又另起炉灶、做大跨度跳跃的可能性，已经很低了。我曾几度尝试，只感到无暇亦无力再进入新石器与夏商的考古世界。不过，当时也形成了少量文字积累，如本书中关于藁城台西商代遗址的一章。</div>
+            </div>
+          </div>
+        </section>
+        <section class="page" id="page-591">
+          <div class="page-head">
+            <div class="page-title">原书阅读器页 591<span>原书物理 PDF 页 589</span><span>印刷页 577</span></div>
+            <div class="page-tools">
+              <button type="button" data-copy-page="591">复制本页</button>
+              <button type="button" data-export-page="591">导出本页</button>
+            </div>
+          </div>
+          <div class="workbench">
+            <div class="editor-wrap">
+              <div class="rich-editor" data-page="591" data-source-page="589" data-printed-page="577" data-source-image="pdf_pages/page-589.jpg" contenteditable="true" role="textbox" aria-multiline="true" spellcheck="false">到2019年春，韩巍赠了我一系列多年收集的考古报告与上古文献。而在这年，我对《周易》也有了新的发现，原来其中有大量的周文王个人经历的记录，于是便再度萌生了书写上古史的念头。2020年疫情初起时，我辞去教职，获得了自由时间，先在安阳、洛阳小住过一段时间，看过殷墟和二里头遗址后，搬进了成都郊外的一处租住房屋，再次进入了新石器和上古世界。
+
+我喜欢一个人在地广人稀的地方游历，让自己融入未曾见识的风光之中。在进入成堆的考古报告之前，我也曾想象，那会是一趟去往原始时代的新奇旅行，但未曾料到，探究人祭之源会如此令人压抑。我搞过战争史，史书中固然充满战争、死亡，但文字过滤掉了感性直观的认知，很难让人产生“代人感”。而面对惨死尸骨的照片，尝试还原人祭杀戮现场，进入杀人者与被杀者的心理世界，我常感到无力承受。
+
+这是一场无法解脱的恐怖之旅，犹如独自走过撒满尸骨的荒原。
+
+那时也经常问自己，用一辈子里这么长一段时间，搞这种阴沉苦闷的工作，值得吗？无奈中也安慰自己：写史写到这种状态，怕也是一种难得的经历……
+
+仅凭千载之后的残骨照片、发掘线图和文字描述，做一点设身处地的想象，就已经如此不堪重负，那个时代的亲历者又会如何？
+
+所以，最后统稿时，我拿掉了基本成形的关于新石器时代的部分，只用了一章做简短介绍，不然，全书会更漫长和压抑，我可能无法坚持到最后。
+
+如果是讨论上古时代的人的衣食住行，比如住的房子、使用的器物、种植的庄稼，会觉得他们和我们现代人差别不大；但如果是探究人祭问题，我总觉得无法理解他们，看得越多，就越是感觉陌生。因此，关于人祭宗教的起源，以及早商时期人祭规模突然增加的根源，本书尝试做出的解释注定是粗疏而平庸的，这种宗教的信奉者如果有机会发言，应该能提供更高明的说法。</div>
+            </div>
+          </div>
+        </section>
+        <section class="page" id="page-592">
+          <div class="page-head">
+            <div class="page-title">原书阅读器页 592<span>原书物理 PDF 页 590</span><span>印刷页 578</span></div>
+            <div class="page-tools">
+              <button type="button" data-copy-page="592">复制本页</button>
+              <button type="button" data-export-page="592">导出本页</button>
+            </div>
+          </div>
+          <div class="workbench">
+            <div class="editor-wrap">
+              <div class="rich-editor" data-page="592" data-source-page="590" data-printed-page="578" data-source-image="pdf_pages/page-590.jpg" contenteditable="true" role="textbox" aria-multiline="true" spellcheck="false">进入人祭的领域后，我最关注的，其实是哪些古人群没有人祭遗存，或者比较少。我宁愿相信陶寺和二里头古国的人祭都不太多，也认为商朝中期还曾发生过一场反人祭的上层宗教改革。证据也许还不算多，但总应该有那么一点东西，让人维持哪怕微茫的希望。
+
+我曾长期有一个困惑，那就是孔子对商周之变是否知情。之前十余年里，我写过两个版本的孔子传记，都曾重点讨论孔子编辑的“六经”及其反映的上古社会，但彼时尚未找到关于人祭记忆的证据，总有难以言表的遗憾。而这次，经过对《周易》的解读，我逐渐推测到，孔子晚年应当是接触到了商周之际的部分历史真相，儒家“六经”也和后世惯常的认知很不一样。这是我之前很难想象的历史维度。
+
+本书利用了较多考古学领域的发掘成果，应当对考古人的工作致谢。除了本书正文中引用的报告和著作，不能不提及考古学大家严文明先生：他不仅对新石器时代的人祭有深入且独到的观察，如邯郸涧沟遗址的头盖骨剥皮现象、新沂花厅遗址的族群征服与人殉等，而且对中国文明起源的论述尤为深刻一一从“大两河”（长江和黄河两大流域）文化互动的过程来观察中国早期文明的萌生。这要比文明起源的“中原中心论”或“多元论”更为深入。本书虽然未收录新石器时代部分，但关于夏朝一二里头稻作为主的讨论，也有受严文明先生启发之处。稻作农业在华北新石器晚期的作用，及其与中国早期文明的关系，可能会是一个越来越显著的学术问题。
+
+本书的写作过程难免压抑，但回首再看的话，通过大量考古发掘报告，对中国早期文明的起源历程做一次鸟瞰式的巡览，也是颇为难得的经历。如果说有什么宏观的感受，那就是：我觉得中国文明的重要特点是体量太大，这是黄河、长江流域及周边的宜农地理环境决定的；但地理也决定了古中国比较封闭，和其他文明的交流不那么便捷，缺少参照物，独自“摸黑走路”的过程有点漫长。换句话说，要想从那个时代走出来，主要靠文明内部的自我调节的话，付出的代价会格外大。</div>
+            </div>
+          </div>
+        </section>
+        <section class="page" id="page-593">
+          <div class="page-head">
+            <div class="page-title">原书阅读器页 593<span>原书物理 PDF 页 591</span><span>印刷页 579</span></div>
+            <div class="page-tools">
+              <button type="button" data-copy-page="593">复制本页</button>
+              <button type="button" data-export-page="593">导出本页</button>
+            </div>
+          </div>
+          <div class="workbench">
+            <div class="editor-wrap">
+              <div class="rich-editor" data-page="593" data-source-page="591" data-printed-page="579" data-source-image="pdf_pages/page-591.jpg" contenteditable="true" role="textbox" aria-multiline="true" spellcheck="false">在本书写作期间，应该感谢的师友还有很多。大学时代的旧交杜波兄，在我移家成都后提供了很多帮助。昔日老杜入蜀为客，今日老杜蓉城作主，皆令人感喟唏嘘。研究生时的同窗、陕西师范大学的牛敬飞兄，为我查阅图书资料提供了诸多帮助。2020年初，我有缘探访周原遗址，包括深锁在红砖院墙中的“文王大宅”基址，彼时就投宿在牛敬飞兄家中。带我观摩周原遗址的，还有陕师大的王向辉兄。春寒雨雪时节，在牛兄书房纵论商周旧事，切磋上古学问，是写作期间一掬难得的开心，也让我想起钱锺书[[editor-fn:2]]先生的一句话：“大抵学问是荒江野老屋中，二三素心人商量培养之事。”
+
+还有很多曾经帮助我的师友，这里无法一一列举，他们对我最大的支持，其实是心理上的，让我意识到除了祭祀坑里的尸骨，这世界上还有别的东西。
+
+也许，人不应当凝视深渊；虽然深渊就在那里。
+
+〔按语：察见渊鱼者不祥[[editor-fn:3]]〕
+
+〔编者注2〕此处原版勘误
+
+〔编者注3〕该语出自《列子·说符》：“周谚有言：‘察见渊鱼者不祥，智料隐匿者有殃。’” 亦见于《韩非子·说林》与《史记·吴王濞列传》。现代·鲁迅·《两地书·致许广平八》：由此可知见事太明，做事即失其勇，庄子（按当为列子）所谓“察见渊鱼者不祥”，盖不独谓将为众所忌，且与自己的前进亦复大有妨碍也。</div>
+            </div>
+          </div>
+        </section></div>
+        <section class="notes-dock" id="notes">
+          <h2>编辑札记</h2>
+          <div class="note-grid">
+            <div class="note-controls">
+              <label>页<select id="notePage"></select></label>
+              <div class="marker-composer" id="markerComposer">
+                <h3>标记</h3>
+                <label>类型<select id="markerType">
+                  <option value="pinyin">注音</option>
+                  <option value="editor-note">编者注／脚注</option>
+                  <option value="inline-note">按语</option>
+                  <option value="pending">待核</option>
+                  <option value="user-note">用户札记</option>
+                </select></label>
+                <label>内容<input id="markerText" type="text" autocomplete="off" placeholder="输入拼音或笔记内容"></label>
+                <p class="marker-help" id="markerHelp">先在正文中选择文字，再输入拼音；可用“拼音；简注”。</p>
+                <div class="note-actions"><button id="applyMarkerBtn" type="button">应用标记</button></div>
+              </div>
+              <label>工作日志标签<input id="noteTag" type="text" value="校订" autocomplete="off"></label>
+              <textarea id="noteText" spellcheck="false"></textarea>
+              <div class="note-actions">
+                <button id="addNoteBtn" type="button">记录到编辑日志</button>
+                <button id="exportLogBtn" type="button">导出日志</button>
+                <button id="downloadLogBtn" type="button">下载日志</button>
+                <button id="clearLogBtn" type="button">清空日志</button>
+              </div>
+            </div>
+            <div><div id="logList" class="log-list"></div></div>
+          </div>
+        </section>
+        <section class="export-dock"><h2>导出文本</h2><textarea id="exportText" spellcheck="false"></textarea></section>
+      </section>
       <aside>
+        <section class="panel source-viewer" aria-label="当前原书 PDF 页">
+          <div class="source-viewer-head"><strong>当前原书 PDF 页</strong><span class="source-viewer-meta" id="sourceViewerMeta"></span></div>
+          <img id="sourceViewerImage" src="pdf_pages/page-587.jpg" alt="原书 PDF 页 587">
+          <div class="source-viewer-actions"><a class="action-link" href="afterword_annotated.pdf" target="_blank" rel="noopener">打开注音版 PDF</a></div>
+        </section>
         <section class="panel"><h2>页码说明</h2><div class="page-number-legend"><p><strong>原阅</strong> 589-593：原书在阅读器中显示的页码</p><p><strong>原PDF</strong> 587-591：原书文件的物理页码</p><p><strong>印</strong> 575-579：书页印刷页码</p><p><strong>注音PDF</strong> 1-8：独立重排页码，不与原书逐页对应</p></div></section>
         <section class="panel"><h2>页</h2><div class="nav-list"><button type="button" class="nav-button" data-target="toc"><span>目录</span><span>top</span></button><button type="button" class="nav-button" data-target="notes"><span>编辑札记</span><span>log</span></button><button type="button" class="nav-button" data-target="page-589"><span>原阅 589 · 原PDF 587</span><span>印 575</span></button><button type="button" class="nav-button" data-target="page-590"><span>原阅 590 · 原PDF 588</span><span>印 576</span></button><button type="button" class="nav-button" data-target="page-591"><span>原阅 591 · 原PDF 589</span><span>印 577</span></button><button type="button" class="nav-button" data-target="page-592"><span>原阅 592 · 原PDF 590</span><span>印 578</span></button><button type="button" class="nav-button" data-target="page-593"><span>原阅 593 · 原PDF 591</span><span>印 579</span></button></div></section>
-        <section class="panel"><h2>参考表</h2><div class="nav-list"><button type="button" class="nav-button" data-target="yueducibiao"><span>阅读词表</span><span>表</span></button><button type="button" class="nav-button" data-target="qingtongqicibiao"><span>青铜器词表</span><span>表</span></button><button type="button" class="nav-button" data-target="dushuzhaji"><span>章节导读札记</span><span>表</span></button><button type="button" class="nav-button" data-target="user-notes"><span>用户札记</span><span>注</span></button></div></section>
-        <section class="panel"><h2>术语</h2><div class="term-list"><button type="button" class="term" data-term="人祭" data-pinyin="rén jì" data-difficulty="3" data-domain="general"><span>人祭</span><span>rén jì</span></button><button type="button" class="term" data-term="林鹄" data-pinyin="lín hú" data-difficulty="3" data-domain="proper_name"><span>林鹄</span><span>lín hú</span></button><button type="button" class="term" data-term="韩巍" data-pinyin="hán wēi" data-difficulty="3" data-domain="proper_name"><span>韩巍</span><span>hán wēi</span></button><button type="button" class="term" data-term="严文明" data-pinyin="yán wén míng" data-difficulty="3" data-domain="proper_name"><span>严文明</span><span>yán wén míng</span></button><button type="button" class="term" data-term="周原" data-pinyin="zhōu yuán" data-difficulty="5" data-domain="archaeology"><span>周原</span><span>zhōu yuán</span></button><button type="button" class="term" data-term="考古报告" data-pinyin="kǎo gǔ bào gào" data-difficulty="4" data-domain="general"><span>考古报告</span><span>kǎo gǔ bào gào</span></button><button type="button" class="term" data-term="周易" data-pinyin="zhōu yì" data-difficulty="4" data-domain="general"><span>周易</span><span>zhōu yì</span></button><button type="button" class="term" data-term="殷商遗民" data-pinyin="yīn shāng yí mín" data-difficulty="3" data-domain="general"><span>殷商遗民</span><span>yīn shāng yí mín</span></button><button type="button" class="term" data-term="阿兹特克" data-pinyin="ā zī tè kè" data-difficulty="5" data-domain="archaeology"><span>阿兹特克</span><span>ā zī tè kè</span></button><button type="button" class="term" data-term="藁城台西" data-pinyin="gǎo chéng tái xī" data-difficulty="5" data-domain="archaeology"><span>藁城台西</span><span>gǎo chéng tái xī</span></button><button type="button" class="term" data-term="文王大宅" data-pinyin="wén wáng dà zhái" data-difficulty="5" data-domain="archaeology"><span>文王大宅</span><span>wén wáng dà zhái</span></button><button type="button" class="term" data-term="腰坑殉狗" data-pinyin="yāo kēng xùn gǒu" data-difficulty="3" data-domain="general"><span>腰坑殉狗</span><span>yāo kēng xùn gǒu</span></button><button type="button" class="term" data-term="人殉" data-pinyin="rén xùn" data-difficulty="3" data-domain="general"><span>人殉</span><span>rén xùn</span></button><button type="button" class="term" data-term="祭祀坑" data-pinyin="jì sì kēng" data-difficulty="3" data-domain="general"><span>祭祀坑</span><span>jì sì kēng</span></button><button type="button" class="term" data-term="凝视深渊" data-pinyin="níng shì shēn yuān" data-difficulty="3" data-domain="general"><span>凝视深渊</span><span>níng shì shēn yuān</span></button><button type="button" class="term" data-term="宗教改革" data-pinyin="zōng jiào gǎi gé" data-difficulty="3" data-domain="general"><span>宗教改革</span><span>zōng jiào gǎi gé</span></button><button type="button" class="term" data-term="长江流域" data-pinyin="cháng jiāng liú yù" data-difficulty="3" data-domain="proper_name"><span>长江流域</span><span>cháng jiāng liú yù</span></button><button type="button" class="term" data-term="周文王" data-pinyin="zhōu wén wáng" data-difficulty="3" data-domain="proper_name"><span>周文王</span><span>zhōu wén wáng</span></button><button type="button" class="term" data-term="头盖骨" data-pinyin="tóu gài gǔ" data-difficulty="3" data-domain="general"><span>头盖骨</span><span>tóu gài gǔ</span></button><button type="button" class="term" data-term="王国维" data-pinyin="wáng guó wéi" data-difficulty="3" data-domain="proper_name"><span>王国维</span><span>wáng guó wéi</span></button><button type="button" class="term" data-term="郭沫若" data-pinyin="guō mò ruò" data-difficulty="3" data-domain="proper_name"><span>郭沫若</span><span>guō mò ruò</span></button><button type="button" class="term" data-term="儒家" data-pinyin="rú jiā" data-difficulty="3" data-domain="general"><span>儒家</span><span>rú jiā</span></button><button type="button" class="term" data-term="六经" data-pinyin="liù jīng" data-difficulty="4" data-domain="general"><span>六经</span><span>liù jīng</span></button><button type="button" class="term" data-term="台西" data-pinyin="tái xī" data-difficulty="5" data-domain="archaeology"><span>台西</span><span>tái xī</span></button><button type="button" class="term" data-term="周公" data-pinyin="zhōu gōng" data-difficulty="3" data-domain="proper_name"><span>周公</span><span>zhōu gōng</span></button><button type="button" class="term" data-term="基址" data-pinyin="jī zhǐ" data-difficulty="3" data-domain="general"><span>基址</span><span>jī zhǐ</span></button><button type="button" class="term" data-term="孔子" data-pinyin="kǒng zǐ" data-difficulty="3" data-domain="proper_name"><span>孔子</span><span>kǒng zǐ</span></button><button type="button" class="term" data-term="殉人" data-pinyin="xùn rén" data-difficulty="3" data-domain="general"><span>殉人</span><span>xùn rén</span></button><button type="button" class="term" data-term="殷商" data-pinyin="yīn shāng" data-difficulty="5" data-domain="general"><span>殷商</span><span>yīn shāng</span></button><button type="button" class="term" data-term="殷墟" data-pinyin="yīn xū" data-difficulty="5" data-domain="archaeology"><span>殷墟</span><span>yīn xū</span></button><button type="button" class="term" data-term="纣王" data-pinyin="zhòu wáng" data-difficulty="3" data-domain="proper_name"><span>纣王</span><span>zhòu wáng</span></button><button type="button" class="term" data-term="藁城" data-pinyin="gǎo chéng" data-difficulty="3" data-domain="proper_name"><span>藁城</span><span>gǎo chéng</span></button><button type="button" class="term" data-term="遗存" data-pinyin="yí cún" data-difficulty="3" data-domain="general"><span>遗存</span><span>yí cún</span></button><button type="button" class="term" data-term="陶寺" data-pinyin="táo sì" data-difficulty="5" data-domain="archaeology"><span>陶寺</span><span>táo sì</span></button></div></section>
-      </aside>
-      <section>
         <jianshang-editor-toc current-chapter="afterword">
           <noscript>目录需要启用 JavaScript。</noscript>
         </jianshang-editor-toc>
@@ -201,159 +357,9 @@
             </table>
           </div>
         </section></div>
-        <div class="pages">
-        <section class="page" id="page-589">
-          <div class="page-head">
-            <div class="page-title">原书阅读器页 589<span>原书物理 PDF 页 587</span><span>印刷页 575</span></div>
-            <div class="page-tools">
-              <button type="button" data-copy-page="589">复制本页</button>
-              <button type="button" data-export-page="589">导出本页</button>
-            </div>
-          </div>
-          <div class="workbench">
-            <div class="editor-wrap">
-              <div class="rich-editor" data-page="589" contenteditable="true" role="textbox" aria-multiline="true" spellcheck="false">后记
-
-这本书的内容，也许会让人觉得有些陌生，甚至不适。不过，从“学术史”的角度来说，它也有很多年的酝酿过程，以及幸运的环境。
-
-对历史有些了解的人，大都知道商朝存在人祭行为，但关于人祭的消亡，用心探究过的人还不多，可能大都默认它伴随着历史的“进化”历程而自然淡出了吧。这方面我有点幸运，能接触到一些较前沿的专业知识：我本科就读于北京大学的文科实验班，当时和历史系的两位同学交流得比较多，一位是和我同级的韩魏兄，一位是高一级的林鹄兄，他们都是先秦史方向，后来拿的也是考古学的学位。韩巍的硕士论文是关于西周初年殷商遗民的丧葬习俗的，里面提到当时的殷商遗民还保留着“腰坑殉狗”及殉人的传统，跟同时的周人墓葬截然不同。那时我常听韩巍聊起这些，所以就有了一些这样的认知：商文化与周文化很不一样。由此推论下来，商人的人祭习俗，也应当是在周朝的大环境里被禁绝的。林鹄兄的硕士论文则是关于周人的族姓观念的，他认为，商人等东方族群本来没有族姓，周人灭商之后才赋予了他们族姓，这个观点我也用到了本书中。所以，本书的很多缘起可以追溯到本世纪初。
-
-后来，在清华大学历史系读研究生时，我本想进入上古史领域，不过最终毕业论文的题目选的却是中古史，关于魏晋南北朝的南北战争，因此告别了上古史若干年。到2012年夏，毕业论文已经完成，又想起了昔日关注的上古史的很多问题。有一次，和研究生同窗、对摄影和影视造诣较深的曲直兄聊天时，又说起了商代人祭，他便推荐我去看梅尔•吉布森的《启示》（2006），一部关于阿兹特克文明的人祭题材的电影。我看了之后的感觉是，和商朝的考古有许多呼应之处，而且电影还提供了直观的视听效果，让我似乎看到了商纣王、周文王时代那些活生生的画面。这种身临其境的现场感很重要，它让殷墟人祭坑中的累累枯骨再次复活起来，所以我那时便准备动手写一篇文章，这便是后来的《周灭商与华夏新生》。[[editor-fn:1]]
-
-〔编者注1〕启示的剧情简介 · · · · · ·
-　　玛雅文明末期，奢华淫靡之气蔓延，为了祭奠那些刚刚落成的金字塔以及驱散众神的愤怒，玛雅王国派出强悍的军队入侵丛林深处的弱小部落，将战俘作为祭天的牺牲斩杀。
-　　年轻骁勇的战士虎爪（Rudy Youngblood 饰）和族人过着平静的生活，他有可爱的儿子和美丽的妻子，并且不久将迎来新的生命。但玛雅军队打破了这一切，他的部落遭到袭击，虎爪及时将妻儿藏在深坑之中，自己却不慎被俘。
-　　经过一路坎坷，他和其他战俘来到玛雅城。无数头颅被可耻的刽子手斩落，但即便在这个时刻，虎爪也念念不忘丛林深处的妻儿。只要一息尚存，他无论如何也要回到妻儿的身边……</div>
-            </div>
-            <div class="scan"><img src="pdf_pages/page-587.jpg" alt="PDF page 589"></div>
-          </div>
-        </section>
-        <section class="page" id="page-590">
-          <div class="page-head">
-            <div class="page-title">原书阅读器页 590<span>原书物理 PDF 页 588</span><span>印刷页 576</span></div>
-            <div class="page-tools">
-              <button type="button" data-copy-page="590">复制本页</button>
-              <button type="button" data-export-page="590">导出本页</button>
-            </div>
-          </div>
-          <div class="workbench">
-            <div class="editor-wrap">
-              <div class="rich-editor" data-page="590" contenteditable="true" role="textbox" aria-multiline="true" spellcheck="false">很巧的是，当时林鹄兄和我住得很近，他那时已拿到芝加哥大学的人类学博士学位（西方的考古学属于人类学），正在清华大学历史系做博士后。所以，那个夏天我们又能常在一起聊了。有一次，我们一起骑车去韩巍在蔚秀园的家，在颐和园路上又聊起了商周变迁，惊奇地发现我们居然想到一起了，都猜测周公在废除人祭的历史转折上有关键作用。当天，林鹄兄便把他的一篇与此相关的会议报告发给了我，其中考古部分的内容被我用到了《周灭商与华夏新生》一文中。这篇文章发在2012年的《读库》第5期。
-
-回想起来，我能进入这个领域，受惠于韩巍和林鹄之处颇多。
-
-博士毕业后，我到新疆大学工作，其间几度想把《周灭商与华夏新生》一文写成专书，因为我想写一系列有关中国古代历史的书，展现中国历史这条巨流之河如何从远古汇聚、奔涌而下，而用新石器到商周之变做开篇最合适——从头写下来，也免去了每次交代历史背景的麻烦。我曾写过孔子，写过刘寄奴刘裕，也都算是这个系列中的部分。
-
-按我最初的计划，写上古，就不能再局限于商周之际，要从新石器开始，把中国早期文明产生的全过程，以及人祭宗教的来龙去脉都写出来。这意味着考古学的内容会占一大半，难度很大，毕竟进入一个新领域需要时间成本，像王国维、郭沫若、陈梦家等先贤“触类旁通”的学科拓荒时代早已过去，现代学术的数量积累已经很大，学者的研究方向也都变得深而窄，学术生涯大都只能在博士论文的基础上生发、拓展，进而成为特定领域的“专家”。换句话说，到中晚年又另起炉灶、做大跨度跳跃的可能性，已经很低了。我曾几度尝试，只感到无暇亦无力再进入新石器与夏商的考古世界。不过，当时也形成了少量文字积累，如本书中关于藁城台西商代遗址的一章。</div>
-            </div>
-            <div class="scan"><img src="pdf_pages/page-588.jpg" alt="PDF page 590"></div>
-          </div>
-        </section>
-        <section class="page" id="page-591">
-          <div class="page-head">
-            <div class="page-title">原书阅读器页 591<span>原书物理 PDF 页 589</span><span>印刷页 577</span></div>
-            <div class="page-tools">
-              <button type="button" data-copy-page="591">复制本页</button>
-              <button type="button" data-export-page="591">导出本页</button>
-            </div>
-          </div>
-          <div class="workbench">
-            <div class="editor-wrap">
-              <div class="rich-editor" data-page="591" contenteditable="true" role="textbox" aria-multiline="true" spellcheck="false">到2019年春，韩巍赠了我一系列多年收集的考古报告与上古文献。而在这年，我对《周易》也有了新的发现，原来其中有大量的周文王个人经历的记录，于是便再度萌生了书写上古史的念头。2020年疫情初起时，我辞去教职，获得了自由时间，先在安阳、洛阳小住过一段时间，看过殷墟和二里头遗址后，搬进了成都郊外的一处租住房屋，再次进入了新石器和上古世界。
-
-我喜欢一个人在地广人稀的地方游历，让自己融入未曾见识的风光之中。在进入成堆的考古报告之前，我也曾想象，那会是一趟去往原始时代的新奇旅行，但未曾料到，探究人祭之源会如此令人压抑。我搞过战争史，史书中固然充满战争、死亡，但文字过滤掉了感性直观的认知，很难让人产生“代人感”。而面对惨死尸骨的照片，尝试还原人祭杀戮现场，进入杀人者与被杀者的心理世界，我常感到无力承受。
-
-这是一场无法解脱的恐怖之旅，犹如独自走过撒满尸骨的荒原。
-
-那时也经常问自己，用一辈子里这么长一段时间，搞这种阴沉苦闷的工作，值得吗？无奈中也安慰自己：写史写到这种状态，怕也是一种难得的经历……
-
-仅凭千载之后的残骨照片、发掘线图和文字描述，做一点设身处地的想象，就已经如此不堪重负，那个时代的亲历者又会如何？
-
-所以，最后统稿时，我拿掉了基本成形的关于新石器时代的部分，只用了一章做简短介绍，不然，全书会更漫长和压抑，我可能无法坚持到最后。
-
-如果是讨论上古时代的人的衣食住行，比如住的房子、使用的器物、种植的庄稼，会觉得他们和我们现代人差别不大；但如果是探究人祭问题，我总觉得无法理解他们，看得越多，就越是感觉陌生。因此，关于人祭宗教的起源，以及早商时期人祭规模突然增加的根源，本书尝试做出的解释注定是粗疏而平庸的，这种宗教的信奉者如果有机会发言，应该能提供更高明的说法。</div>
-            </div>
-            <div class="scan"><img src="pdf_pages/page-589.jpg" alt="PDF page 591"></div>
-          </div>
-        </section>
-        <section class="page" id="page-592">
-          <div class="page-head">
-            <div class="page-title">原书阅读器页 592<span>原书物理 PDF 页 590</span><span>印刷页 578</span></div>
-            <div class="page-tools">
-              <button type="button" data-copy-page="592">复制本页</button>
-              <button type="button" data-export-page="592">导出本页</button>
-            </div>
-          </div>
-          <div class="workbench">
-            <div class="editor-wrap">
-              <div class="rich-editor" data-page="592" contenteditable="true" role="textbox" aria-multiline="true" spellcheck="false">进入人祭的领域后，我最关注的，其实是哪些古人群没有人祭遗存，或者比较少。我宁愿相信陶寺和二里头古国的人祭都不太多，也认为商朝中期还曾发生过一场反人祭的上层宗教改革。证据也许还不算多，但总应该有那么一点东西，让人维持哪怕微茫的希望。
-
-我曾长期有一个困惑，那就是孔子对商周之变是否知情。之前十余年里，我写过两个版本的孔子传记，都曾重点讨论孔子编辑的“六经”及其反映的上古社会，但彼时尚未找到关于人祭记忆的证据，总有难以言表的遗憾。而这次，经过对《周易》的解读，我逐渐推测到，孔子晚年应当是接触到了商周之际的部分历史真相，儒家“六经”也和后世惯常的认知很不一样。这是我之前很难想象的历史维度。
-
-本书利用了较多考古学领域的发掘成果，应当对考古人的工作致谢。除了本书正文中引用的报告和著作，不能不提及考古学大家严文明先生：他不仅对新石器时代的人祭有深入且独到的观察，如邯郸涧沟遗址的头盖骨剥皮现象、新沂花厅遗址的族群征服与人殉等，而且对中国文明起源的论述尤为深刻一一从“大两河”（长江和黄河两大流域）文化互动的过程来观察中国早期文明的萌生。这要比文明起源的“中原中心论”或“多元论”更为深入。本书虽然未收录新石器时代部分，但关于夏朝一二里头稻作为主的讨论，也有受严文明先生启发之处。稻作农业在华北新石器晚期的作用，及其与中国早期文明的关系，可能会是一个越来越显著的学术问题。
-
-本书的写作过程难免压抑，但回首再看的话，通过大量考古发掘报告，对中国早期文明的起源历程做一次鸟瞰式的巡览，也是颇为难得的经历。如果说有什么宏观的感受，那就是：我觉得中国文明的重要特点是体量太大，这是黄河、长江流域及周边的宜农地理环境决定的；但地理也决定了古中国比较封闭，和其他文明的交流不那么便捷，缺少参照物，独自“摸黑走路”的过程有点漫长。换句话说，要想从那个时代走出来，主要靠文明内部的自我调节的话，付出的代价会格外大。</div>
-            </div>
-            <div class="scan"><img src="pdf_pages/page-590.jpg" alt="PDF page 592"></div>
-          </div>
-        </section>
-        <section class="page" id="page-593">
-          <div class="page-head">
-            <div class="page-title">原书阅读器页 593<span>原书物理 PDF 页 591</span><span>印刷页 579</span></div>
-            <div class="page-tools">
-              <button type="button" data-copy-page="593">复制本页</button>
-              <button type="button" data-export-page="593">导出本页</button>
-            </div>
-          </div>
-          <div class="workbench">
-            <div class="editor-wrap">
-              <div class="rich-editor" data-page="593" contenteditable="true" role="textbox" aria-multiline="true" spellcheck="false">在本书写作期间，应该感谢的师友还有很多。大学时代的旧交杜波兄，在我移家成都后提供了很多帮助。昔日老杜入蜀为客，今日老杜蓉城作主，皆令人感喟唏嘘。研究生时的同窗、陕西师范大学的牛敬飞兄，为我查阅图书资料提供了诸多帮助。2020年初，我有缘探访周原遗址，包括深锁在红砖院墙中的“文王大宅”基址，彼时就投宿在牛敬飞兄家中。带我观摩周原遗址的，还有陕师大的王向辉兄。春寒雨雪时节，在牛兄书房纵论商周旧事，切磋上古学问，是写作期间一掬难得的开心，也让我想起钱锺书[[editor-fn:2]]先生的一句话：“大抵学问是荒江野老屋中，二三素心人商量培养之事。”
-
-还有很多曾经帮助我的师友，这里无法一一列举，他们对我最大的支持，其实是心理上的，让我意识到除了祭祀坑里的尸骨，这世界上还有别的东西。
-
-也许，人不应当凝视深渊；虽然深渊就在那里。
-
-〔按语：察见渊鱼者不祥[[editor-fn:3]]〕
-
-〔编者注2〕此处原版勘误
-
-〔编者注3〕该语出自《列子·说符》：“周谚有言：‘察见渊鱼者不祥，智料隐匿者有殃。’” 亦见于《韩非子·说林》与《史记·吴王濞列传》。现代·鲁迅·《两地书·致许广平八》：由此可知见事太明，做事即失其勇，庄子（按当为列子）所谓“察见渊鱼者不祥”，盖不独谓将为众所忌，且与自己的前进亦复大有妨碍也。</div>
-            </div>
-            <div class="scan"><img src="pdf_pages/page-591.jpg" alt="PDF page 593"></div>
-          </div>
-        </section></div>
-        <section class="notes-dock" id="notes">
-          <h2>编辑札记</h2>
-          <div class="note-grid">
-            <div class="note-controls">
-              <label>页<select id="notePage"></select></label>
-              <div class="marker-composer" id="markerComposer">
-                <h3>标记</h3>
-                <label>类型<select id="markerType">
-                  <option value="pinyin">注音</option>
-                  <option value="editor-note">编者注／脚注</option>
-                  <option value="inline-note">按语</option>
-                  <option value="pending">待核</option>
-                  <option value="user-note">用户札记</option>
-                </select></label>
-                <label>内容<input id="markerText" type="text" autocomplete="off" placeholder="输入拼音或笔记内容"></label>
-                <p class="marker-help" id="markerHelp">先在正文中选择文字，再输入拼音；可用“拼音；简注”。</p>
-                <div class="note-actions"><button id="applyMarkerBtn" type="button">应用标记</button></div>
-              </div>
-              <label>工作日志标签<input id="noteTag" type="text" value="校订" autocomplete="off"></label>
-              <textarea id="noteText" spellcheck="false"></textarea>
-              <div class="note-actions">
-                <button id="addNoteBtn" type="button">记录到编辑日志</button>
-                <button id="exportLogBtn" type="button">导出日志</button>
-                <button id="downloadLogBtn" type="button">下载日志</button>
-                <button id="clearLogBtn" type="button">清空日志</button>
-              </div>
-            </div>
-            <div><div id="logList" class="log-list"></div></div>
-          </div>
-        </section>
-        <section class="export-dock"><h2>导出文本</h2><textarea id="exportText" spellcheck="false"></textarea></section>
-      </section>
+        <section class="panel"><h2>参考表</h2><div class="nav-list"><button type="button" class="nav-button" data-target="yueducibiao"><span>阅读词表</span><span>表</span></button><button type="button" class="nav-button" data-target="qingtongqicibiao"><span>青铜器词表</span><span>表</span></button><button type="button" class="nav-button" data-target="dushuzhaji"><span>章节导读札记</span><span>表</span></button><button type="button" class="nav-button" data-target="user-notes"><span>用户札记</span><span>注</span></button></div></section>
+        <section class="panel"><h2>术语</h2><div class="term-list"><button type="button" class="term" data-term="人祭" data-pinyin="rén jì" data-difficulty="3" data-domain="general"><span>人祭</span><span>rén jì</span></button><button type="button" class="term" data-term="林鹄" data-pinyin="lín hú" data-difficulty="3" data-domain="proper_name"><span>林鹄</span><span>lín hú</span></button><button type="button" class="term" data-term="韩巍" data-pinyin="hán wēi" data-difficulty="3" data-domain="proper_name"><span>韩巍</span><span>hán wēi</span></button><button type="button" class="term" data-term="严文明" data-pinyin="yán wén míng" data-difficulty="3" data-domain="proper_name"><span>严文明</span><span>yán wén míng</span></button><button type="button" class="term" data-term="周原" data-pinyin="zhōu yuán" data-difficulty="5" data-domain="archaeology"><span>周原</span><span>zhōu yuán</span></button><button type="button" class="term" data-term="考古报告" data-pinyin="kǎo gǔ bào gào" data-difficulty="4" data-domain="general"><span>考古报告</span><span>kǎo gǔ bào gào</span></button><button type="button" class="term" data-term="周易" data-pinyin="zhōu yì" data-difficulty="4" data-domain="general"><span>周易</span><span>zhōu yì</span></button><button type="button" class="term" data-term="殷商遗民" data-pinyin="yīn shāng yí mín" data-difficulty="3" data-domain="general"><span>殷商遗民</span><span>yīn shāng yí mín</span></button><button type="button" class="term" data-term="阿兹特克" data-pinyin="ā zī tè kè" data-difficulty="5" data-domain="archaeology"><span>阿兹特克</span><span>ā zī tè kè</span></button><button type="button" class="term" data-term="藁城台西" data-pinyin="gǎo chéng tái xī" data-difficulty="5" data-domain="archaeology"><span>藁城台西</span><span>gǎo chéng tái xī</span></button><button type="button" class="term" data-term="文王大宅" data-pinyin="wén wáng dà zhái" data-difficulty="5" data-domain="archaeology"><span>文王大宅</span><span>wén wáng dà zhái</span></button><button type="button" class="term" data-term="腰坑殉狗" data-pinyin="yāo kēng xùn gǒu" data-difficulty="3" data-domain="general"><span>腰坑殉狗</span><span>yāo kēng xùn gǒu</span></button><button type="button" class="term" data-term="人殉" data-pinyin="rén xùn" data-difficulty="3" data-domain="general"><span>人殉</span><span>rén xùn</span></button><button type="button" class="term" data-term="祭祀坑" data-pinyin="jì sì kēng" data-difficulty="3" data-domain="general"><span>祭祀坑</span><span>jì sì kēng</span></button><button type="button" class="term" data-term="凝视深渊" data-pinyin="níng shì shēn yuān" data-difficulty="3" data-domain="general"><span>凝视深渊</span><span>níng shì shēn yuān</span></button><button type="button" class="term" data-term="宗教改革" data-pinyin="zōng jiào gǎi gé" data-difficulty="3" data-domain="general"><span>宗教改革</span><span>zōng jiào gǎi gé</span></button><button type="button" class="term" data-term="长江流域" data-pinyin="cháng jiāng liú yù" data-difficulty="3" data-domain="proper_name"><span>长江流域</span><span>cháng jiāng liú yù</span></button><button type="button" class="term" data-term="周文王" data-pinyin="zhōu wén wáng" data-difficulty="3" data-domain="proper_name"><span>周文王</span><span>zhōu wén wáng</span></button><button type="button" class="term" data-term="头盖骨" data-pinyin="tóu gài gǔ" data-difficulty="3" data-domain="general"><span>头盖骨</span><span>tóu gài gǔ</span></button><button type="button" class="term" data-term="王国维" data-pinyin="wáng guó wéi" data-difficulty="3" data-domain="proper_name"><span>王国维</span><span>wáng guó wéi</span></button><button type="button" class="term" data-term="郭沫若" data-pinyin="guō mò ruò" data-difficulty="3" data-domain="proper_name"><span>郭沫若</span><span>guō mò ruò</span></button><button type="button" class="term" data-term="儒家" data-pinyin="rú jiā" data-difficulty="3" data-domain="general"><span>儒家</span><span>rú jiā</span></button><button type="button" class="term" data-term="六经" data-pinyin="liù jīng" data-difficulty="4" data-domain="general"><span>六经</span><span>liù jīng</span></button><button type="button" class="term" data-term="台西" data-pinyin="tái xī" data-difficulty="5" data-domain="archaeology"><span>台西</span><span>tái xī</span></button><button type="button" class="term" data-term="周公" data-pinyin="zhōu gōng" data-difficulty="3" data-domain="proper_name"><span>周公</span><span>zhōu gōng</span></button><button type="button" class="term" data-term="基址" data-pinyin="jī zhǐ" data-difficulty="3" data-domain="general"><span>基址</span><span>jī zhǐ</span></button><button type="button" class="term" data-term="孔子" data-pinyin="kǒng zǐ" data-difficulty="3" data-domain="proper_name"><span>孔子</span><span>kǒng zǐ</span></button><button type="button" class="term" data-term="殉人" data-pinyin="xùn rén" data-difficulty="3" data-domain="general"><span>殉人</span><span>xùn rén</span></button><button type="button" class="term" data-term="殷商" data-pinyin="yīn shāng" data-difficulty="5" data-domain="general"><span>殷商</span><span>yīn shāng</span></button><button type="button" class="term" data-term="殷墟" data-pinyin="yīn xū" data-difficulty="5" data-domain="archaeology"><span>殷墟</span><span>yīn xū</span></button><button type="button" class="term" data-term="纣王" data-pinyin="zhòu wáng" data-difficulty="3" data-domain="proper_name"><span>纣王</span><span>zhòu wáng</span></button><button type="button" class="term" data-term="藁城" data-pinyin="gǎo chéng" data-difficulty="3" data-domain="proper_name"><span>藁城</span><span>gǎo chéng</span></button><button type="button" class="term" data-term="遗存" data-pinyin="yí cún" data-difficulty="3" data-domain="general"><span>遗存</span><span>yí cún</span></button><button type="button" class="term" data-term="陶寺" data-pinyin="táo sì" data-difficulty="5" data-domain="archaeology"><span>陶寺</span><span>táo sì</span></button></div></section>
+      </aside>
     </div>
   </main>
   <button class="quick-note-jump" type="button" data-target="notes">札记</button>
@@ -384,6 +390,11 @@
     const chapterNotesBodyEl = document.getElementById('chapterNotesBody');
     const chapterNoteTitleEl = document.getElementById('chapterNoteTitle');
     const chapterNoteTextEl = document.getElementById('chapterNoteText');
+    const sourceViewerImageEl = document.getElementById('sourceViewerImage');
+    const sourceViewerMetaEl = document.getElementById('sourceViewerMeta');
+    const sourceViewerEl = document.querySelector('.source-viewer');
+    const sourceViewerHome = document.createComment('source-viewer-home');
+    sourceViewerEl.before(sourceViewerHome);
     let activeArea = null;
     let viewMode = 'clean';
     let cleanViewTexts = {};
@@ -391,8 +402,35 @@
     let voices = [];
     let allowSave = true;
     let savedFormatRange = null;
+    let sourceNavigationLockUntil = 0;
     function setStatus(text, tone = '') { statusEl.textContent = text; statusEl.style.color = tone === 'ok' ? 'var(--ok)' : tone === 'warn' ? 'var(--warn)' : 'var(--muted)'; }
     function textareas() { return Array.from(document.querySelectorAll('.rich-editor[data-page]')); }
+    function syncSourceViewer(area) {
+      if (!area || !sourceViewerImageEl) return;
+      sourceViewerImageEl.src = area.dataset.sourceImage;
+      sourceViewerImageEl.alt = `原书 PDF 页 ${area.dataset.sourcePage}`;
+      sourceViewerMetaEl.textContent = `原阅 ${area.dataset.page} · 原PDF ${area.dataset.sourcePage} · 印 ${area.dataset.printedPage}`;
+    }
+    function restoreSourceViewer() { sourceViewerHome.after(sourceViewerEl); }
+    function currentSourceLayout() { return SOURCE_LAYOUTS.find(name => document.body.classList.contains(`source-layout-${name}`)) || 'text-primary'; }
+    function showPagePair(target) {
+      const area = target?.matches('.rich-editor') ? target : target?.querySelector('.rich-editor');
+      if (!area) return false;
+      activeArea = area;
+      sourceNavigationLockUntil = Date.now() + 1400;
+      syncSourceViewer(area);
+      if (matchMedia('(max-width:980px)').matches) {
+        const page = area.closest('.page');
+        const pdfFirst = ['pdf-primary','pdf'].includes(currentSourceLayout());
+        pdfFirst ? page.before(sourceViewerEl) : page.after(sourceViewerEl);
+        (pdfFirst ? sourceViewerEl : page).scrollIntoView({ behavior:'smooth', block:'start' });
+      } else {
+        restoreSourceViewer();
+        applySourceLayout('text-primary');
+        target.scrollIntoView({ behavior:'smooth', block:'start' });
+      }
+      return true;
+    }
     function editorText(area) { return area.innerText.replace(/ /g, ' ').replace(/\n$/, ''); }
     function nodeAtOffset(root, wanted) {
       const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT);
@@ -585,7 +623,7 @@
     document.getElementById('insertImageBtn').addEventListener('click',()=>{if(viewMode!=='clean'){setStatus('请先切换回清稿再插入图片','warn');return}if(!activeArea){setStatus('请先在正文中放置光标','warn');return}document.getElementById('editorImageInput').click();});
     document.getElementById('editorImageInput').addEventListener('change',async event=>{const file=event.target.files[0];if(!file)return;try{const caption=prompt('请输入图片说明和来源（可稍后在正文中修改）：',file.name)||file.name;insertEditorialImage(await prepareImage(file),file.name,caption)}catch(error){setStatus(error.message,'warn')}finally{event.target.value=''}});
     document.addEventListener('click',event=>{const size=event.target.closest('[data-image-size]'),remove=event.target.closest('[data-image-remove]'),figure=event.target.closest('.editorial-image');if(size&&figure){figure.dataset.size=size.dataset.imageSize;figure.closest('.rich-editor')?.dispatchEvent(new Event('input',{bubbles:true}))}else if(remove&&figure&&confirm('删除这张插图？')){const area=figure.closest('.rich-editor'),page=area?.dataset.page;figure.remove();area?.dispatchEvent(new Event('input',{bubbles:true}));addLog('删除图片','',page)}});
-    document.querySelectorAll('[data-target]').forEach(button => button.addEventListener('click', () => document.getElementById(button.dataset.target)?.scrollIntoView({ behavior: 'smooth', block: 'start' })));
+    document.querySelectorAll('[data-target]').forEach(button => button.addEventListener('click', () => { const target=document.getElementById(button.dataset.target);if (!showPagePair(target)) target?.scrollIntoView({ behavior:'smooth',block:'start' }); }));
     textareas().forEach(initializeRichEditor);
     textareas().forEach(area => { area.addEventListener('input', () => { queueSave(); renderUserNotes(); }); area.addEventListener('focus', () => { activeArea = area; notePageEl.value = area.dataset.page; }); area.addEventListener('click', () => captureEditorSelection(area)); area.addEventListener('keyup', () => captureEditorSelection(area)); area.addEventListener('mouseup', () => captureEditorSelection(area)); area.addEventListener('keydown',event=>{if(event.key==='Enter'&&viewMode==='clean'){event.preventDefault();captureEditorSelection(area);area.setRangeText('\n');area.dispatchEvent(new Event('input',{bubbles:true}));}}); area.addEventListener('paste',event=>{if(viewMode!=='clean')return;event.preventDefault();captureEditorSelection(area);area.setRangeText(event.clipboardData.getData('text/plain'));area.dispatchEvent(new Event('input',{bubbles:true}));}); });
     document.querySelectorAll('button.term').forEach(button => button.addEventListener('click', () => addNotation(button.dataset.term, button.dataset.pinyin)));
@@ -640,30 +678,45 @@
     document.getElementById('clearLogBtn').addEventListener('click', () => { if (!confirm('清空本浏览器保存的编辑日志？')) return; localStorage.removeItem(LOG_KEY); renderLog(); setStatus('日志已清空', 'ok'); });
     document.getElementById('resetBtn').addEventListener('click', () => { if (!confirm('恢复 chapter clean 原稿会清除本浏览器保存的编辑内容。继续？')) return; clearTimeout(timer); allowSave = false; if (viewMode === 'annotated') setView('clean'); textareas().forEach(area => area.value = ORIGINAL_TEXTS[area.dataset.page] ?? ''); cleanViewTexts = { ...ORIGINAL_TEXTS }; cleanViewHtml = {}; localStorage.removeItem(STORAGE_KEY); sessionStorage.removeItem(`${STORAGE_KEY}:view`); viewMode = 'clean'; textareas().forEach(area => { area.readOnly = false; area.classList.remove('annotated-view'); }); document.getElementById('viewToggleBtn').textContent = '切换为注音稿'; modeBadgeEl.textContent = '当前：清稿'; modeBadgeEl.classList.remove('annotated'); allowSave = true; setStatus('已恢复 chapter clean 原稿', 'ok'); addLog('恢复 clean 原稿', '', currentPage()); });
     window.addEventListener('beforeunload', () => { if (allowSave) saveNow(false); });
-    const sourceLayoutSlider = document.getElementById('sourceLayoutSlider');
-    const sourceLayoutOutput = document.getElementById('sourceLayoutOutput');
-    const SOURCE_LAYOUT_KEY = 'jianshang-text-pdf-layout-v1';
+    const sourceLayoutControl = document.querySelector('.source-layout-control');
+    const sourceLayoutButton = document.getElementById('sourceLayoutButton');
+    const SOURCE_LAYOUT_KEY = 'jianshang-primary-reference-layout-v3';
+    const SOURCE_LAYOUTS = ['text','text-primary','balanced','pdf-primary','pdf'];
+    const SOURCE_LAYOUT_LABELS = { text:'正文', 'text-primary':'正文为主', balanced:'均衡', 'pdf-primary':'PDF为主', pdf:'PDF' };
     function applySourceLayout(raw, persist=true) {
-      const pdf = Math.max(0, Math.min(100, Number(raw)));
-      const text = 100 - pdf;
-      document.documentElement.style.setProperty('--text-share', `${text || 1}fr`);
-      document.documentElement.style.setProperty('--pdf-share', `${pdf || 1}fr`);
-      document.body.classList.toggle('text-only', pdf === 0);
-      document.body.classList.toggle('pdf-only', pdf === 100);
-      document.body.classList.toggle('pdf-priority', pdf > 50 && pdf < 100);
-      sourceLayoutSlider.value = String(pdf);
-      sourceLayoutOutput.textContent = pdf === 0 ? '仅正文' : pdf === 100 ? '仅 PDF' : `正文 ${text}% · PDF ${pdf}%`;
-      if (persist) localStorage.setItem(SOURCE_LAYOUT_KEY, String(pdf));
+      const mode = SOURCE_LAYOUTS.includes(raw) ? raw : 'text-primary';
+      const layout = document.querySelector('.layout');
+      layout.classList.remove('workspace-pane-layout','workspace-pane-primary-only','workspace-pane-secondary-only','workspace-pane-secondary-first','workspace-pane-has-splitter');
+      layout.style.removeProperty('--workspace-primary-share');
+      layout.style.removeProperty('--workspace-secondary-share');
+      layout.querySelectorAll('[data-pane-primary],[data-pane-secondary]').forEach(node => { delete node.dataset.panePrimary; delete node.dataset.paneSecondary; });
+      document.querySelector('.workspace-pane-balance')?.remove();
+      SOURCE_LAYOUTS.forEach(name => document.body.classList.toggle(`source-layout-${name}`, name === mode));
+      document.querySelectorAll('[data-source-layout]').forEach(button => button.classList.toggle('active', button.dataset.sourceLayout === mode));
+      sourceLayoutButton.textContent = '分栏布局';
+      sourceLayoutButton.setAttribute('aria-label', `分栏布局，当前：${SOURCE_LAYOUT_LABELS[mode]}`);
+      if (!matchMedia('(max-width:980px)').matches) restoreSourceViewer();
+      if (persist) localStorage.setItem(SOURCE_LAYOUT_KEY, mode);
     }
-    sourceLayoutSlider.addEventListener('input', event => applySourceLayout(event.target.value));
-    document.querySelectorAll('[data-pdf-share]').forEach(button => button.addEventListener('click', () => applySourceLayout(button.dataset.pdfShare)));
-    applySourceLayout(localStorage.getItem(SOURCE_LAYOUT_KEY) ?? (matchMedia('(max-width:980px)').matches ? 0 : 30), false);
+    sourceLayoutButton.addEventListener('click', event => { event.stopPropagation(); const open = sourceLayoutControl.classList.toggle('open'); sourceLayoutButton.setAttribute('aria-expanded', String(open)); });
+    document.querySelectorAll('[data-source-layout]').forEach(button => button.addEventListener('click', () => { applySourceLayout(button.dataset.sourceLayout); sourceLayoutControl.classList.remove('open'); sourceLayoutButton.setAttribute('aria-expanded','false'); }));
+    document.addEventListener('click', event => { if (!sourceLayoutControl.contains(event.target)) { sourceLayoutControl.classList.remove('open'); sourceLayoutButton.setAttribute('aria-expanded','false'); } });
+    document.addEventListener('keydown', event => { if (event.key === 'Escape') { sourceLayoutControl.classList.remove('open'); sourceLayoutButton.setAttribute('aria-expanded','false'); } });
+    applySourceLayout(localStorage.getItem(SOURCE_LAYOUT_KEY) ?? 'text-primary', false);
     populateNotePages();
     updateMarkerGuidance();
     loadSaved();
     renderUserNotes();
     renderChapterNotes();
     activeArea = textareas()[0] || null;
+    syncSourceViewer(activeArea);
+    textareas().forEach(area => area.addEventListener('focusin', () => syncSourceViewer(area)));
+    const sourcePageObserver = new IntersectionObserver(entries => {
+      if (Date.now() < sourceNavigationLockUntil) return;
+      const visible = entries.filter(entry => entry.isIntersecting).sort((a,b) => b.intersectionRatio - a.intersectionRatio)[0];
+      if (visible) syncSourceViewer(visible.target);
+    }, { rootMargin:'-15% 0px -65% 0px', threshold:[0,.25,.5] });
+    textareas().forEach(area => sourcePageObserver.observe(area));
     applyDictionarySettings();
     loadProjectDictionaryOverrides();
     loadVoices();

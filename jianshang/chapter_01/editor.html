@@ -35,8 +35,16 @@
     .format-divider { height:1px; margin:5px 4px; background:#ddd7cb; }
     .status { color:var(--muted); font-size:.86rem; min-width:132px; text-align:right; }
     main { width:min(1440px,calc(100% - 28px)); margin:18px auto 48px; }
-    .layout { display:grid; grid-template-columns:280px minmax(0,1fr); gap:18px; align-items:start; }
-    aside { position:sticky; top:calc(var(--editor-header-height, 75px) + 12px); display:grid; gap:14px; max-height:calc(100vh - var(--editor-header-height, 75px) - 24px); overflow:auto; }
+    .layout { display:grid; grid-template-columns:minmax(0,7fr) minmax(320px,3fr); gap:18px; align-items:start; }
+    .editing-pane, .layout > aside { min-width:0; }
+    aside { position:sticky; top:calc(var(--editor-header-height, 75px) + 12px); display:grid; gap:14px; max-height:calc(100vh - var(--editor-header-height, 75px) - 24px); overflow:auto; container-type:inline-size; }
+    body.source-layout-text-primary .layout { grid-template-columns:minmax(0,7fr) minmax(320px,3fr) !important; }
+    body.source-layout-balanced .layout { grid-template-columns:minmax(0,1fr) minmax(320px,1fr) !important; }
+    body.source-layout-pdf-primary .layout { grid-template-columns:minmax(0,2fr) minmax(320px,3fr) !important; }
+    body.source-layout-text .layout, body.source-layout-pdf .layout { grid-template-columns:minmax(0,1fr) !important; }
+    body.source-layout-text .editing-pane { order:1; } body.source-layout-text .layout > aside { order:2; }
+    body.source-layout-pdf .layout > aside { order:1; } body.source-layout-pdf .editing-pane { order:2; }
+    body.source-layout-text .layout > aside, body.source-layout-pdf .layout > aside { position:static; max-height:none; }
     .panel, .page, .toc-page, .reference-panel, .notes-dock, .export-dock { background:var(--paper); border:1px solid var(--line); box-shadow:var(--shadow); }
     .panel h2, .reference-panel h2, .notes-dock h2, .export-dock h2 { margin:0; padding:10px 12px; font-size:.95rem; border-bottom:1px solid var(--line); background:var(--soft); }
     .page-number-legend { padding:8px 11px; font-size:.82rem; color:var(--muted); }
@@ -52,9 +60,12 @@
     .toc-page, .reference-panel, .page { scroll-margin-top:86px; }
     .toc-head { display:flex; justify-content:space-between; gap:14px; align-items:baseline; padding:14px 16px; border-bottom:1px solid var(--line); background:#fff; }
     .toc-head h2 { margin:0; font-size:1.15rem; }
-    .toc-body { display:grid; grid-template-columns:minmax(0,1fr) minmax(280px,.72fr); gap:18px; padding:14px 16px 16px; }
+    .toc-body { display:grid; grid-template-columns:minmax(0,1fr); gap:18px; padding:14px 16px 16px; }
     .toc-body h3 { margin:0 0 8px; font-size:.95rem; }
     .toc-links { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:6px; }
+    .toc-work-notes { padding-top:14px; border-top:1px solid var(--line); }
+    .toc-work-notes p:last-child { margin-bottom:0; }
+    @container (max-width:560px) { .toc-links { grid-template-columns:minmax(0,1fr); } }
     .toc-link { display:flex; justify-content:space-between; gap:10px; border:1px solid var(--line); border-radius:6px; background:#fff; color:var(--ink); text-decoration:none; padding:7px 9px; min-height:34px; align-items:center; }
     .toc-link.available { border-left:4px solid var(--ok); background:#f4fbf6; }
     .toc-link.current { border:2px solid var(--accent); background:#fff0ec; color:var(--accent); font-weight:700; }
@@ -64,7 +75,7 @@
     .legend-current::before { background:var(--accent); } .legend-available::before { background:var(--ok); } .legend-unavailable::before { background:#aaa; }
     .toc-link span:first-child { overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
     .toc-link span:last-child { color:var(--muted); font-size:.86rem; font-variant-numeric:tabular-nums; white-space:nowrap; }
-    .reference-grid { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:14px; margin:18px 0; align-items:start; }
+    .reference-grid { display:grid; grid-template-columns:1fr; gap:14px; align-items:start; }
     #user-notes { grid-column:1 / -1; }
     #user-notes .table-scroll { max-height:440px; }
     #user-notes table { table-layout:fixed; }
@@ -87,14 +98,13 @@
     .page-title { font-weight:700; }
     .page-title span { color:var(--muted); font-weight:500; margin-left:8px; }
     .page-tools { display:flex; gap:8px; flex-wrap:wrap; }
-    .source-layout-control { margin:12px auto; max-width:760px; padding:10px 14px; border:1px solid var(--line); border-radius:10px; background:#fff; display:flex; align-items:center; gap:10px; flex-wrap:wrap; }
-    .source-layout-control strong { margin-right:auto; }
-    .source-layout-control input { width:min(280px,48vw); }
-    .source-layout-control output { min-width:145px; color:var(--muted); font-size:.86rem; }
-    .workbench { display:grid; grid-template-columns:minmax(340px,var(--text-share,70fr)) minmax(300px,var(--pdf-share,30fr)); gap:0; align-items:stretch; }
-    body.text-only .workbench, body.pdf-only .workbench { grid-template-columns:1fr; }
-    body.text-only .scan, body.pdf-only .editor-wrap { display:none; }
-    .editor-wrap { padding:12px; border-right:1px solid var(--line); display:flex; min-height:560px; }
+    .source-layout-control { position:relative; display:inline-flex; }
+    .source-layout-popover { position:absolute; z-index:60; top:calc(100% + 6px); right:0; display:none; min-width:150px; padding:6px; border:1px solid var(--line); border-radius:8px; background:#fff; box-shadow:0 10px 30px #2927202e; }
+    .source-layout-control.open .source-layout-popover { display:grid; gap:4px; }
+    .source-layout-popover button { width:100%; text-align:left; white-space:nowrap; }
+    .source-layout-popover button.active { background:#e6f4ea; color:#137333; font-weight:700; }
+    .workbench { display:block; }
+    .editor-wrap { padding:12px; display:flex; min-height:560px; }
     textarea { width:100%; min-height:0; border:1px solid var(--line); background:#fff; color:var(--ink); padding:14px; border-radius:6px; line-height:1.85; font-size:1.02rem; letter-spacing:0; overflow:auto; }
     .rich-editor { width:100%; min-height:536px; border:1px solid var(--line); background:#fff; color:var(--ink); padding:14px; border-radius:6px; line-height:1.85; font-size:1.02rem; letter-spacing:0; overflow:auto; white-space:pre-wrap; overflow-wrap:anywhere; }
     .rich-editor.annotated-view { background:#fff9e8; color:#5b481f; }
@@ -104,8 +114,13 @@
     .speech-rate { display:flex; align-items:center; gap:4px; color:var(--muted); font-size:.82rem; }
     #speechRate { width:82px; }
     .hidden { display:none !important; }
-    .scan { padding:12px; background:#fbfaf6; display:flex; }
-    .scan img { width:100%; height:auto; display:block; border:1px solid var(--line); background:#fff; align-self:flex-start; }
+    .source-viewer { background:#fbfaf6; }
+    .source-viewer-head { display:flex; justify-content:space-between; gap:8px; padding:9px 11px; border-bottom:1px solid var(--line); align-items:center; }
+    .source-viewer-head strong { font-size:.9rem; }
+    .source-viewer-meta { color:var(--muted); font-size:.78rem; }
+    .source-viewer img { width:100%; height:auto; display:block; background:#fff; }
+    .source-viewer-actions { display:flex; gap:7px; padding:9px; border-top:1px solid var(--line); }
+    .source-viewer-actions a { flex:1; justify-content:center; text-align:center; }
     .notes-dock { margin-top:18px; scroll-margin-top:86px; }
     .note-grid { display:grid; grid-template-columns:minmax(240px,.75fr) minmax(320px,1fr); gap:12px; padding:12px; }
     .note-controls { display:grid; gap:10px; align-content:start; }
@@ -124,7 +139,7 @@
     .export-dock { margin-top:18px; }
     #exportText { min-height:240px; border:0; border-radius:0; }
     .quick-note-jump { position:fixed; right:18px; bottom:18px; z-index:25; background:var(--accent); color:var(--accent-ink); border-color:var(--accent); box-shadow:0 8px 24px rgba(30,24,16,.18); }
-    @media (max-width:980px) { .topbar { grid-template-columns:1fr; } .actions { justify-content:flex-start; } .status { text-align:left; } .layout { grid-template-columns:1fr; } aside { position:static; max-height:none; } .toc-body, .note-grid { grid-template-columns:1fr; } .toc-links { grid-template-columns:1fr; } .reference-grid { grid-template-columns:1fr; } .workbench { grid-template-columns:1fr; } .editor-wrap { border-right:0; border-bottom:1px solid var(--line); } body.pdf-priority .scan { grid-row:1; } body.pdf-priority .editor-wrap { grid-row:2; } .rich-editor { min-height:520px; } .quick-note-jump { right:12px; bottom:12px; } }
+    @media (max-width:980px) { .topbar { grid-template-columns:1fr; } .actions { justify-content:flex-start; } .status { text-align:left; } .layout, body.source-layout-text-primary .layout, body.source-layout-balanced .layout, body.source-layout-pdf-primary .layout { grid-template-columns:minmax(0,1fr) !important; } aside { position:static; max-height:none; } body.source-layout-pdf-primary .layout > aside, body.source-layout-pdf .layout > aside { order:1; } body.source-layout-pdf-primary .editing-pane, body.source-layout-pdf .editing-pane { order:2; } body.source-layout-text .editing-pane, body.source-layout-text-primary .editing-pane, body.source-layout-balanced .editing-pane { order:1; } body.source-layout-text .layout > aside, body.source-layout-text-primary .layout > aside, body.source-layout-balanced .layout > aside { order:2; } .source-layout-popover { position:fixed; top:var(--editor-header-height,75px); right:12px; } .toc-body, .note-grid { grid-template-columns:1fr; } .toc-links { grid-template-columns:1fr; } .reference-grid { grid-template-columns:1fr; } .rich-editor { min-height:520px; } .quick-note-jump { right:12px; bottom:12px; } }
   </style>
 </head>
 <body>
@@ -134,24 +149,336 @@
     reference-href="../reference_tables.html">
     <noscript>此编辑器需要启用 JavaScript。</noscript>
   </jianshang-editor-header>
-  <section class="source-layout-control" aria-label="正文与 PDF 布局">
-    <strong>正文 / PDF</strong>
-    <button type="button" data-pdf-share="0">仅正文</button>
-    <button type="button" data-pdf-share="30">正文优先</button>
-    <button type="button" data-pdf-share="50">均衡</button>
-    <button type="button" data-pdf-share="100">仅 PDF</button>
-    <input id="sourceLayoutSlider" type="range" min="0" max="100" step="5" aria-label="PDF 所占比例">
-    <output id="sourceLayoutOutput"></output>
-  </section>
   <main>
     <div class="layout">
+      <section class="editing-pane">
+        <div class="pages">
+        <section class="page" id="page-037">
+          <div class="page-head">
+            <div class="page-title">原书阅读器页 037<span>原书物理 PDF 页 035</span><span>印刷页 23</span></div>
+            <div class="page-tools">
+              <button type="button" data-copy-page="037">复制本页</button>
+              <button type="button" data-export-page="037">导出本页</button>
+            </div>
+          </div>
+          <div class="workbench">
+            <div class="editor-wrap">
+              <div class="rich-editor" data-page="037" data-source-page="035" data-printed-page="23" data-source-image="pdf_pages/page-035.jpg" contenteditable="true" role="textbox" aria-multiline="true" spellcheck="false">第一章新石器时代的社会升级
+
+进入新石器时代，人类才有了农业和定居生活，不再像野生动物一样四处流动觅食。这是距今约一万年前开始的变化。
+
+在人们的感觉里，新石器时代应当是世外桃源一样，与世无争，或者说是落后、停滞的。不过，和生物的自然进化相比，数千年的新石器时代充满着剧变。下面，我们以千年为时间单位，简要描述一下新石器时代人群的发展历程。
+
+做一个穿越假设。如果一群现代人回到六千多年前的仰韶半坡文化新石器时代，比如陕西临潼的姜寨遗址，他们看到的是，山坡下有一座小村寨，有两三百名村民生息在这里，村子的中央是一片小广场，周围环绕着几十座大大小小的茅草屋，猪、狗、鸡在草屋之间闲逛，村边的陶窑冒出淡淡青烟，身穿粗麻布衣的男女用泥巴捏制陶罐坯，在上面描绘黑色图案。
+
+村落外，是成片的农田，谷穗在风中摇曳，它们产出的粟米（小米）是村民的主粮。几个男人正在给一只马鹿剥皮，用石头小刀分割皮肉，再用木柄石斧把骨头砍开，骨渣飞溅，引来几条狗围观争抢。
+
+姜寨一期聚落复原图，仰韶半坡文化阶段，距今7000—6000年 [[fn:1]]（图）
+
+穿越而来的访客发现，有一条四五米宽的壕沟包围着村寨（考古报告一般称之为“环壕”），沟底有积水和尖木桩防范入侵者，内侧还有一道木头栅栏，只有一座原木搭成的小桥可以进入村落。这群访客已经饿了，想从村里交换一餐午饭——在“原始人”眼里，他们携带的小镜子和打火机等是高价值宝物。</div>
+            </div>
+          </div>
+        </section>
+        <section class="page" id="page-038">
+          <div class="page-head">
+            <div class="page-title">原书阅读器页 038<span>原书物理 PDF 页 036</span><span>印刷页 24</span></div>
+            <div class="page-tools">
+              <button type="button" data-copy-page="038">复制本页</button>
+              <button type="button" data-export-page="038">导出本页</button>
+            </div>
+          </div>
+          <div class="workbench">
+            <div class="editor-wrap">
+              <div class="rich-editor" data-page="038" data-source-page="036" data-printed-page="24" data-source-image="pdf_pages/page-036.jpg" contenteditable="true" role="textbox" aria-multiline="true" spellcheck="false">但还没等来访者走近小桥，狗已经发现了异常，开始狂吠。所有村民都放下了手中的活计，拿起棍棒或弓箭，叫喊着冲向木栅。射向陌生人的是羽箭，箭镞用骨头或石头磨制，插在木箭杆的顶端，用细麻线绑牢。被射中会很痛苦，即使拔出木杆，箭镞也很容易留在体内，被肢解的马鹿就是例子。
+
+第一次尝试失败后，穿越者切换了一种模式，这次是下一个千年，距今6000—5000年之间。
+
+小村落还在原地，只是房屋的布局不再是紧密环绕，而是三五成群，零星分布。村外的壕沟也已经废弃，被生活垃圾填平，人们可以随意进入村落。其他的变化似乎不大。
+
+来访者吸取了上次的教训，他们不再指望和平交易，而是偷偷靠近，然后齐声呐喊，冲进村落——有人还点燃了烟花爆竹。村民被这些奇装异服、掌控着火和雷电的入侵者吓坏了，夺命狂奔而逃。
+
+于是，这群现代人成了征服者，一切粮储和禽畜都是他们的战利品。但好景不长，大半天后，开始有全副武装的“原始人”成群出现在村外。有上千名手持石斧、石矛或弓箭的成年男女，站在最前方的，是头发上装饰着羽毛的巫师，他正在用咒语高声诅咒入侵者。一名男子显然是首领，戴着一串野猪牙项饰，用红石粉涂抹脸颊，手拿一柄玉质光泽的石斧，几名长老簇拥在他身旁，正在合谋进攻方案。
+
+结果是，不论死活，入侵者都将被斩首奉献给本地的守护神祇。
+
+村落、部落到早期国家</div>
+            </div>
+          </div>
+        </section>
+        <section class="page" id="page-039">
+          <div class="page-head">
+            <div class="page-title">原书阅读器页 039<span>原书物理 PDF 页 037</span><span>印刷页 25</span></div>
+            <div class="page-tools">
+              <button type="button" data-copy-page="039">复制本页</button>
+              <button type="button" data-export-page="039">导出本页</button>
+            </div>
+          </div>
+          <div class="workbench">
+            <div class="editor-wrap">
+              <div class="rich-editor" data-page="039" data-source-page="037" data-printed-page="25" data-source-image="pdf_pages/page-037.jpg" contenteditable="true" role="textbox" aria-multiline="true" spellcheck="false">上面描述的这两种区别，是6000年前中国新石器时代发生的变化。
+
+距今6000年前（仰韶文化前期），村落规模不大，是独立的生活单元，房屋建筑或者中心环绕，或者整齐联排，可能和其他村落贸易、通婚，但固守着本村落的集体自治生活；有自己的防御体系，村落之间时而爆发冲突，坟墓里中箭或被斩首的尸骨是己方战死的勇士，而俘获的敌人则会被处死扔到垃圾坑中，还可能有一些零碎尸骨被抛撒在村落内外。
+
+比如，宝鸡北首岭77M17，仰韶文化半坡阶段，距今6000年，墓主是一名成年男子，可能在对外械斗中被砍掉了头颅，族人特意用一个造型奇特、有黑色花纹的陶罐代替，以示哀悼。随葬器物比较多，还有骨镞等兵器。
+
+宝鸡北首岭77M17出土陶尖底罐线图及照片 [[fn:2]]（图）
+
+距今6000年后，村落的集体生活特征逐渐变弱，独立防御体系也逐渐消失，出现了更大范围的政治体——十几个村落形成的“部落”。这些部落往往有上千人，有世袭的头人及各村（氏族）长老组成的议事会，还有自己部落的图腾和英雄传说。村落没必要再维持单独的防御体系，倘若受到威胁，整个部落都将集体应战，就像穿越者第二次到访的情景。
+
+这种由若干个村子组成的部落，面积可能如同今天的一个或几个乡镇。头人居住的村落是中心，会建造一座比较高级的夯土地基的房子，大约100平方米，作为头人和长老议事的场所以及举行集体仪式的会堂。头人的中心村落可能有防御工事，如壕沟、栅栏等。</div>
+            </div>
+          </div>
+        </section>
+        <section class="page" id="page-040">
+          <div class="page-head">
+            <div class="page-title">原书阅读器页 040<span>原书物理 PDF 页 038</span><span>印刷页 26</span></div>
+            <div class="page-tools">
+              <button type="button" data-copy-page="040">复制本页</button>
+              <button type="button" data-export-page="040">导出本页</button>
+            </div>
+          </div>
+          <div class="workbench">
+            <div class="editor-wrap">
+              <div class="rich-editor" data-page="040" data-source-page="038" data-printed-page="26" data-source-image="pdf_pages/page-038.jpg" contenteditable="true" role="textbox" aria-multiline="true" spellcheck="false">比如，秦安大地湾四期F901，距今5000余年，主厅面积131平方米，包括院落在内，则为420平方米。房屋地基使用的是特殊的料礓石三合土，平整光滑，硬度接近现代水泥地面。厅内正中有一座圆形大火塘。F901应当是部落的中心建筑，具有较强的公共性，家庭生活的遗迹很少，可能并非部落头人的家宅，主要充当头人和长老议事的场所。
+
+F901平、剖面图 [[fn:3]]（图）
+
+以上，是距今6000—5000年间（仰韶文化中期）发生的最明显变迁。
+
+在千年的维度上，很多变化都是缓慢的。各种技艺的水平，如农作物种植、家畜养殖、制陶、纺织等，一直在缓慢提高着，人口或村落的总量也在缓慢增长。但这些都是量变，而非质变。
+
+唯一明显的变化，是人群“共同体”规模的扩大，已经从百人级别增长到千人级别。它带来的影响也更直接：村落之间的冲突成为过去，和平的日子更多了，但部落间的战争规模却更大了，伤亡也更多。
+
+再到下一个千年，距今5000—4000年之间（仰韶文化末期与龙山文化期），有些地区的人群共同体则变得更大，几个或十几个部落汇聚成了早期国家，如陕西石峁古城、山西陶寺古城，能统治一两万甚至三五万人口，面积相当于今天的一个或两三个县。其中，统治中心已经形成城市，面积有两三平方公里，周围环绕着数米高的夯土或石砌城墙，城内有数百平方米的大型宫殿，上层贵族开始使用精美器物，死后的墓葬里也堆满了豪华随葬品，而且经常用人殉葬。</div>
+            </div>
+          </div>
+        </section>
+        <section class="page" id="page-041">
+          <div class="page-head">
+            <div class="page-title">原书阅读器页 041<span>原书物理 PDF 页 039</span><span>印刷页 27</span></div>
+            <div class="page-tools">
+              <button type="button" data-copy-page="041">复制本页</button>
+              <button type="button" data-export-page="041">导出本页</button>
+            </div>
+          </div>
+          <div class="workbench">
+            <div class="editor-wrap">
+              <div class="rich-editor" data-page="041" data-source-page="039" data-printed-page="27" data-source-image="pdf_pages/page-039.jpg" contenteditable="true" role="textbox" aria-multiline="true" spellcheck="false">有些较大的都城，居民会过万，多数是农夫，也分化出了手工业者、世袭统治精英，以及巫师等专业知识人群。巫师观察天象，编制早期历法，研究占卜通神之术。甚至可能已经有了记录语言的原始符号，初步的冶铸铜技术也在悄悄流传。
+
+这时，国家、王朝和文明时代已经不远了。
+
+以上两千年历程，是新石器中晚期到文明（青铜）时代前夜的变化大趋势：从村落到部落再到早期国家。通俗一点说，就是从村级到乡级、县级的递增升级。
+
+对于如何称呼不同规模的人群共同体，特别是万人规模的早期国家，中外学者使用过不同的词，如方国、酋邦、古国等。从便于理解的角度考虑，本书采用“早期国家”和“古国”之称。
+
+但需要注意的是，村落一部落一古国只是用最简单的方式描绘的总体趋势，并不意味着距今6000—4000年间的所有新石器时代人群都准时加入了这个进程。在有些交通不便的地区，孤立的村落可能存续到三四千年前，而部落共同体可能存续到一两千年前，甚至一百年前。这首先是地理条件的限制，越是偏僻、交通不便的地方，小型共同体越容易维持，而缺乏天险环境中的人群更容易被裹挟进更大的共同体。另外，也可能会有历史当事人的主动选择，但作为现代人的我们已经无法验证了。
+
+多数早期国家并不能维持长久繁荣。距今4300—4000年间，华北很多地方同步出现了古国兴衰的一幕：陶寺（山西襄汾）、石峁（陕西神木）、清凉寺（山西芮城）和王城岗（河南登封）等都曾出现古国气象，但在繁盛两三百年后，都发生了解体，重归部落共同体的水平。</div>
+            </div>
+          </div>
+        </section>
+        <section class="page" id="page-042">
+          <div class="page-head">
+            <div class="page-title">原书阅读器页 042<span>原书物理 PDF 页 040</span><span>印刷页 28</span></div>
+            <div class="page-tools">
+              <button type="button" data-copy-page="042">复制本页</button>
+              <button type="button" data-export-page="042">导出本页</button>
+            </div>
+          </div>
+          <div class="workbench">
+            <div class="editor-wrap">
+              <div class="rich-editor" data-page="042" data-source-page="040" data-printed-page="28" data-source-image="pdf_pages/page-040.jpg" contenteditable="true" role="textbox" aria-multiline="true" spellcheck="false">为何迈入文明时代的门槛会如此艰难？现在尚未有确定的答案。
+
+水稻带来和平？
+
+20世纪与21世纪之交，长江中游的两湖地区陆续发掘出多座距今5000年左右的“古城”，如湖南澧县的城头山和鸡叫城，湖北天门的石家河……一时间，长江中游似乎要成为中国早期文明的起源地。但后续的发掘并未发现跟早期国家与文明相伴生的更多元素，如巨大的宫殿建筑、社会分层现象、金属冶炼技术等，“长江文明起源说”遂逐渐沉寂。
+
+不过，为何长江流域曾产生众多古老的“城”，却是个有趣的问题。若要一探究竟，先要理解黄河与长江流域以及旱作与稻作农业的关系。
+
+新石器时代是基本农业的时代，在人类驯化的主粮中，中国占了两种：黄河流域的粟米和长江流域的水稻，它们分别需要旱地和水田环境。
+
+这两种作物的人工驯化都发生在一万余年前。水稻的考古证据更多一些，因为稻米颗粒大，古人制陶时常在泥坯中添加稻壳，便于考古发现。在长江以南的湖南、江西和浙江，均发现有上万年前的水稻遗存。
+
+稻田需要灌溉和排水系统，需要平整的水滨田块，这是北方旱作的粟和黍从来不需要考虑的。长江流域的新石器人群一直忙于水利设施和稻田工程，而水利设施达到一定规模后，无论耕作面积，还是收获量，都会有实质性的提升。所以，在距今6000—4500年间，两湖地区出现了众多繁荣的稻作聚落。
+
+至于考古报告宣称发现的那些“城址”，其实是为了防洪目的堆筑的。所谓的“城墙”，大都宽数十米，高数米，非常平缓，人可以从容地踱步而上，没有军事防御作用，其用途是防洪，供人们在上面建房定居，躲避南方常见的水患；而挖土形成的洼地水塘，是灌溉稻田的储水设施，有些甚至直到今天还在使用。这种环形土堤是人们改造湿地的手段，直到近代，湖北还有很多，方言称之为“垸（yuàn）”。</div>
+            </div>
+          </div>
+        </section>
+        <section class="page" id="page-043">
+          <div class="page-head">
+            <div class="page-title">原书阅读器页 043<span>原书物理 PDF 页 041</span><span>印刷页 29</span></div>
+            <div class="page-tools">
+              <button type="button" data-copy-page="043">复制本页</button>
+              <button type="button" data-export-page="043">导出本页</button>
+            </div>
+          </div>
+          <div class="workbench">
+            <div class="editor-wrap">
+              <div class="rich-editor" data-page="043" data-source-page="041" data-printed-page="29" data-source-image="pdf_pages/page-041.jpg" contenteditable="true" role="textbox" aria-multiline="true" spellcheck="false">比如，湖南澧县的城头山“古城”，是一直径300多米的近圆形土围子，其“城墙”非常宽，且平缓，本质是土堤。距今6000—5000年间，经历过多次扩建，取土洼地形成了水塘，有些至今仍在使用。
+
+不过，即使城墙不是军事防御之用，这些水乡古城的意义还是重大，说明当时的人为建造大型水利设施，已经形成超出村落甚至部落规模的较大共同体，统一规划施工，共享水利设施带来的收益。
+
+这是一种基于集体协作的“小流域治理共同体”，不仅人口密度和数量有了实质性的飞跃，而且由于共同体建立的基础是水利协作而非军事征服，所以这些“古城”没有出现明显的社会分层和阶级分化现象，比如，没有特别奢华的墓葬和首领宫殿，战争和屠杀的迹象很少，人祭现象也一直不多。这些都和稻作文化区依赖协作、联合建设水利工程有关。
+
+这种比较和平、均等的稻作社会，还有与之“配套”的原始宗教理念。位于长江中游的5000年前的屈家岭文化，盛行一种埋葬陶器祭祀的风俗，而且是特制的大型陶“筒形器”；后来，又演变成制作巨量的泥塑人偶、动物、小杯子等加以焚烧和掩埋。我们不知道这些行为的具体含义，但它们的社会功能比较清晰，就是群众参与性强，没有财富门槛。这和缺乏战争与人祭的社会环境比较搭配。
+
+比长江中游稍晚一点，距今5000—4900年间，在今浙江杭州市西北郊的余杭区也出现了大型防洪“良渚古城”，以及复杂的灌溉堤防体系。这座古城一度接近了早期国家的门槛，有非常明显的阶级分层，贵族统治者有建在土筑高台之上的豪华殿堂，墓中随葬大量精美玉器，有些高级玉器上还刻着宗教意义明显的“神人兽面纹”和神鸟纹，可见祭司阶层比较活跃。</div>
+            </div>
+          </div>
+        </section>
+        <section class="page" id="page-044">
+          <div class="page-head">
+            <div class="page-title">原书阅读器页 044<span>原书物理 PDF 页 042</span><span>印刷页 30</span></div>
+            <div class="page-tools">
+              <button type="button" data-copy-page="044">复制本页</button>
+              <button type="button" data-export-page="044">导出本页</button>
+            </div>
+          </div>
+          <div class="workbench">
+            <div class="editor-wrap">
+              <div class="rich-editor" data-page="044" data-source-page="042" data-printed-page="30" data-source-image="pdf_pages/page-042.jpg" contenteditable="true" role="textbox" aria-multiline="true" spellcheck="false">在良渚古城的繁荣阶段，并未见到人祭现象，而且它的繁荣只维持了一两百年，然后王者一级别的宫殿和墓葬都消失了，社会又退回到部落林立的状态。[[fn:5]] 后来，在今太湖东岸的良渚文化地区发生了频繁的冲突，伴随着批量杀人献祭和人殉现象（今江苏昆山、上海青浦地区），但这些冲突一直停留在部落间战争的层次，从未发展到古国水平。
+
+结合气候变迁看，在一万多年前，地球的上一轮冰期结束，气温持续上升，开始进入“全新世大暖期”，到距今5000年左右，湿热气候达到顶峰，长江流域人群兴建水利设施的高峰也恰好出现在此时。然而，在距今4500年之后，长江流域曾经繁荣的古城皆陷入萧条。有学者认为，是大洪水导致了南方的低迷，但证据尚不够充足。
+
+再来看人祭宗教现象。
+
+距今6000年前，黄河流域开始有零星的苗头，如西安的仰韶半坡遗址，村落中心一座半地穴式大房屋F1的地基中埋了一颗人头[[fn:6]]：这座房屋是村落的公共活动中心，在地基中埋入人头应当有宗教用途。
+
+距今4500—4000年间，南方稻作区陷入沉寂，黄河流域则开始进入龙山文化阶段，各地出现了很多部落间的冲突或战争迹象，证据是批量处死的尸骨以及夯土或砌石的城防等。比如，河南的王城岗古城，宫殿夯土中有13座人奠基坑，每座坑中都埋有多具尸骨，但由于没有全部发掘，所以无法统计用人总量，唯一完整发掘的一号奠基坑内埋有七具人骨。[[fn:7]] 在河南安阳后冈，发掘出39座不大的房屋，奠基童牲27人，[[fn:8]] 说明这里修建房屋流行用儿童奠基。[[fn:9]] 陕西神木石峁古城东门，至少有五座人头奠基坑，埋有青年女子人头近百颗。山西襄汾陶寺古国的宫殿区也有人头奠基坑，芮城清凉寺墓地中则埋有大量殉葬的人。</div>
+            </div>
+          </div>
+        </section>
+        <section class="page" id="page-045">
+          <div class="page-head">
+            <div class="page-title">原书阅读器页 045<span>原书物理 PDF 页 043</span><span>印刷页 31</span></div>
+            <div class="page-tools">
+              <button type="button" data-copy-page="045">复制本页</button>
+              <button type="button" data-export-page="045">导出本页</button>
+            </div>
+          </div>
+          <div class="workbench">
+            <div class="editor-wrap">
+              <div class="rich-editor" data-page="045" data-source-page="043" data-printed-page="31" data-source-image="pdf_pages/page-043.jpg" contenteditable="true" role="textbox" aria-multiline="true" spellcheck="false">王城岗古城宫殿区的一号奠基坑（二期）照片及平面图：埋两名女性青年、三名儿童、两名男性壮年[[fn:10]]（图）
+
+此外，在一些部落级别的聚落里，也有多人一起被杀的现场，从河北、河南到陕西，都发现了此类尸骨坑，如邯郸涧沟、郑州大河村、洛阳王湾、西安客省庄等，但尸骨码放并不规整，也没有其他的祭祀特征，所以不能确定是否都是宗教目的的杀人献祭，也许有些只是对俘虏的批量屠杀。
+
+在新石器时代，华北地区之所以动辄爆发冲突或战争，人祭兴盛，可能和旱作农业不需要水利设施[[fn:11]]、人群之间没有协作的动因有关。而伴随着征服的，是人群共同体规模的不断扩大，从而催生了众多古城和早期国家。
+
+不过，简单的分类和归纳注定不足以涵盖复杂的社会现象，任何“规律”都会存在例外。稻作的良渚文化内部也曾有过局部冲突和人祭现象；华北各龙山古国中，人祭和屠杀的数量也不相同，陶寺的人祭可能要比石峁少得多。[[fn:12]]
+
+到距今4000年前，华北地区一度星月同辉的各小型古国陷入沉寂，部落间的冲突现象也已减少，长江和黄河流域则了无生气。此时的华北地区虽零星地存在两种技术，一是可能从西北方传来的处于起步阶段的冶铜技术，二是从长江流域传来的非常成熟的水稻种植，但它们似乎并未引起华北新石器人群的太大关注，还只是可有可无的点缀。
+
+然而，在河南的嵩山脚下，却有一个小部落意识到了这两种技术的价值，而且也善于寻找更适合发展这两种技术的新环境，于是，华夏第一王朝的故事开始上演。</div>
+            </div>
+          </div>
+        </section>
+        <section class="page" id="page-046">
+          <div class="page-head">
+            <div class="page-title">原书阅读器页 046<span>原书物理 PDF 页 044</span><span>印刷页 32</span></div>
+            <div class="page-tools">
+              <button type="button" data-copy-page="046">复制本页</button>
+              <button type="button" data-export-page="046">导出本页</button>
+            </div>
+          </div>
+          <div class="workbench">
+            <div class="editor-wrap">
+              <div class="rich-editor" data-page="046" data-source-page="044" data-printed-page="32" data-source-image="pdf_pages/page-044.jpg" contenteditable="true" role="textbox" aria-multiline="true" spellcheck="false">注释
+
+1 巩启明：《姜寨遗址发掘回顾》，《中国文化遗产》2010年第1期。
+
+2 中国社科院考古所宝鸡工作队：《一九七七年宝鸡北首岭遗址发掘简报》，《考古》1979年第2期；中国社科院考古所：《宝鸡北首岭》，文物出版社，1983年。
+
+3 甘肃省文物工作队：《甘肃秦安大地湾901号房址发掘简报》，《文物》1986年第2期；钟晓青：《秦安大地湾建筑遗址略析》，《文物》2000年第5期。
+
+4 石峁古城的发掘还处于起步阶段，古城全貌尚未得到揭露，但已经发现了残忍而且大规模的人祭现象。参见孙周勇、邵晶《瓮城溯源：以石峁遗址外城东门址为中心》，《文物》2016年第2期；陕西省考古研究所《发现石窕古城》，文物出版社，2016年。
+
+5 浙江省文物考古研究所：《良渚古城综合研究报告》，文物出版社，2019年，第354、364、440页。
+
+6 中国社科院考古所：《西安半坡：原始氏族公社聚落遗址》，文物出版社，1963年，第18页。
+
+7 河南省文物研究所、中国历史博物馆考古部：《登封王城岗与阳城》，文物出版社，1992年。
+
+8 中国社科院考古所安阳工作队：《1979年安阳后岗遗址发掘报告》，《考古学报》1985年第1期。
+
+9 到殷商后期，这里又出现了恐怖的H10圆形三层祭祀坑，不过和龙山时代相隔已有一千余年。
+
+10 河南省文物研究所、中国历史博物馆考古部：《登封王城岗遗址的发掘》，《文物》1983年第3期。
+
+11 至少是石器时代还不需要，到铁器时代，随着华北人口密度增加，有些旱作地区也需要灌溉设施来提高产量。
+
+12 石峁遗址有中心宫殿建筑区“皇城台”，有外围石砌围墙，虽然目前只在城墙东门和皇城台分别发现密集的人头祭祀坑以及部分尸骨坑，尚未发布详细的发掘报告，但仅从东城门祭祀坑看，石峁古国的人祭行为已经有很大规模。</div>
+            </div>
+          </div>
+        </section>
+        <section class="page" id="page-047">
+          <div class="page-head">
+            <div class="page-title">原书阅读器页 047<span>原书物理 PDF 页 045</span><span>印刷页 33</span></div>
+            <div class="page-tools">
+              <button type="button" data-copy-page="047">复制本页</button>
+              <button type="button" data-export-page="047">导出本页</button>
+            </div>
+          </div>
+          <div class="workbench">
+            <div class="editor-wrap">
+              <div class="rich-editor" data-page="047" data-source-page="045" data-printed-page="33" data-source-image="pdf_pages/page-045.jpg" contenteditable="true" role="textbox" aria-multiline="true" spellcheck="false"></div>
+            </div>
+          </div>
+        </section>
+        <section class="page" id="page-048">
+          <div class="page-head">
+            <div class="page-title">原书阅读器页 048<span>原书物理 PDF 页 046</span><span>印刷页 34</span></div>
+            <div class="page-tools">
+              <button type="button" data-copy-page="048">复制本页</button>
+              <button type="button" data-export-page="048">导出本页</button>
+            </div>
+          </div>
+          <div class="workbench">
+            <div class="editor-wrap">
+              <div class="rich-editor" data-page="048" data-source-page="046" data-printed-page="34" data-source-image="pdf_pages/page-046.jpg" contenteditable="true" role="textbox" aria-multiline="true" spellcheck="false"></div>
+            </div>
+          </div>
+        </section></div>
+        <section class="notes-dock" id="notes">
+          <h2>编辑札记</h2>
+          <div class="note-grid">
+            <div class="note-controls">
+              <label>页<select id="notePage"></select></label>
+              <div class="marker-composer" id="markerComposer">
+                <h3>标记</h3>
+                <label>类型<select id="markerType">
+                  <option value="pinyin">注音</option>
+                  <option value="editor-note">编者注／脚注</option>
+                  <option value="inline-note">按语</option>
+                  <option value="pending">待核</option>
+                  <option value="user-note">用户札记</option>
+                </select></label>
+                <label>内容<input id="markerText" type="text" autocomplete="off" placeholder="输入拼音或笔记内容"></label>
+                <p class="marker-help" id="markerHelp">先在正文中选择文字，再输入拼音；可用“拼音；简注”。</p>
+                <div class="note-actions"><button id="applyMarkerBtn" type="button">应用标记</button></div>
+              </div>
+              <label>工作日志标签<input id="noteTag" type="text" value="校订" autocomplete="off"></label>
+              <textarea id="noteText" spellcheck="false"></textarea>
+              <div class="note-actions">
+                <button id="addNoteBtn" type="button">记录到编辑日志</button>
+                <button id="exportLogBtn" type="button">导出日志</button>
+                <button id="downloadLogBtn" type="button">下载日志</button>
+                <button id="clearLogBtn" type="button">清空日志</button>
+              </div>
+            </div>
+            <div><div id="logList" class="log-list"></div></div>
+          </div>
+        </section>
+        <section class="export-dock"><h2>导出文本</h2><textarea id="exportText" spellcheck="false"></textarea></section>
+      </section>
       <aside>
+        <section class="panel source-viewer" aria-label="当前原书 PDF 页">
+          <div class="source-viewer-head"><strong>当前原书 PDF 页</strong><span class="source-viewer-meta" id="sourceViewerMeta"></span></div>
+          <img id="sourceViewerImage" src="pdf_pages/page-035.jpg" alt="原书 PDF 页 035">
+          <div class="source-viewer-actions"><a class="action-link" href="chapter_01_annotated.pdf" target="_blank" rel="noopener">打开注音版 PDF</a></div>
+        </section>
         <section class="panel"><h2>页码说明</h2><div class="page-number-legend"><p><strong>原阅</strong> 037-048：原书在阅读器中显示的页码</p><p><strong>原PDF</strong> 035-046：原书文件的物理页码</p><p><strong>印</strong> 23-34：书页印刷页码</p><p><strong>注音PDF</strong> 1-9：独立重排页码，不与原书逐页对应</p></div></section>
         <section class="panel"><h2>页</h2><div class="nav-list"><button type="button" class="nav-button" data-target="toc"><span>目录</span><span>top</span></button><button type="button" class="nav-button" data-target="notes"><span>编辑札记</span><span>log</span></button><button type="button" class="nav-button" data-target="page-037"><span>原阅 037 · 原PDF 035</span><span>印 23</span></button><button type="button" class="nav-button" data-target="page-038"><span>原阅 038 · 原PDF 036</span><span>印 24</span></button><button type="button" class="nav-button" data-target="page-039"><span>原阅 039 · 原PDF 037</span><span>印 25</span></button><button type="button" class="nav-button" data-target="page-040"><span>原阅 040 · 原PDF 038</span><span>印 26</span></button><button type="button" class="nav-button" data-target="page-041"><span>原阅 041 · 原PDF 039</span><span>印 27</span></button><button type="button" class="nav-button" data-target="page-042"><span>原阅 042 · 原PDF 040</span><span>印 28</span></button><button type="button" class="nav-button" data-target="page-043"><span>原阅 043 · 原PDF 041</span><span>印 29</span></button><button type="button" class="nav-button" data-target="page-044"><span>原阅 044 · 原PDF 042</span><span>印 30</span></button><button type="button" class="nav-button" data-target="page-045"><span>原阅 045 · 原PDF 043</span><span>印 31</span></button><button type="button" class="nav-button" data-target="page-046"><span>原阅 046 · 原PDF 044</span><span>印 32</span></button><button type="button" class="nav-button" data-target="page-047"><span>原阅 047 · 原PDF 045</span><span>印 33</span></button><button type="button" class="nav-button" data-target="page-048"><span>原阅 048 · 原PDF 046</span><span>印 34</span></button></div></section>
-        <section class="panel"><h2>参考表</h2><div class="nav-list"><button type="button" class="nav-button" data-target="yueducibiao"><span>阅读词表</span><span>表</span></button><button type="button" class="nav-button" data-target="qingtongqicibiao"><span>青铜器词表</span><span>表</span></button><button type="button" class="nav-button" data-target="dushuzhaji"><span>章节导读札记</span><span>表</span></button><button type="button" class="nav-button" data-target="user-notes"><span>用户札记</span><span>注</span></button></div></section>
-        <section class="panel"><h2>术语</h2><div class="term-list"><button type="button" class="term" data-term="粟米" data-pinyin="sù mǐ" data-difficulty="4" data-domain="general"><span>粟米</span><span>sù mǐ</span></button><button type="button" class="term" data-term="箭镞" data-pinyin="jiàn zú" data-difficulty="4" data-domain="general"><span>箭镞</span><span>jiàn zú</span></button><button type="button" class="term" data-term="觅食" data-pinyin="mì shí" data-difficulty="4" data-domain="general"><span>觅食</span><span>mì shí</span></button><button type="button" class="term" data-term="摇曳" data-pinyin="yáo yè" data-difficulty="4" data-domain="general"><span>摇曳</span><span>yáo yè</span></button><button type="button" class="term" data-term="狂吠" data-pinyin="kuáng fèi" data-difficulty="4" data-domain="general"><span>狂吠</span><span>kuáng fèi</span></button><button type="button" class="term" data-term="神祇" data-pinyin="shén qí" data-difficulty="4" data-domain="general"><span>神祇</span><span>shén qí</span></button><button type="button" class="term" data-term="料礓石" data-pinyin="liào jiāng shí" data-difficulty="4" data-domain="general"><span>料礓石</span><span>liào jiāng shí</span></button><button type="button" class="term" data-term="垸" data-pinyin="yuàn" data-difficulty="4" data-domain="general"><span>垸</span><span>yuàn</span></button><button type="button" class="term" data-term="屈家岭文化" data-pinyin="qū jiā lǐng wén huà" data-difficulty="5" data-domain="archaeology"><span>屈家岭文化</span><span>qū jiā lǐng wén huà</span></button><button type="button" class="term" data-term="神人兽面纹" data-pinyin="shén rén shòu miàn wén" data-difficulty="5" data-domain="archaeology"><span>神人兽面纹</span><span>shén rén shòu miàn wén</span></button><button type="button" class="term" data-term="半地穴式" data-pinyin="bàn dì xué shì" data-difficulty="3" data-domain="general"><span>半地穴式</span><span>bàn dì xué shì</span></button><button type="button" class="term" data-term="夯土地基" data-pinyin="hāng tǔ dì jī" data-difficulty="3" data-domain="general"><span>夯土地基</span><span>hāng tǔ dì jī</span></button><button type="button" class="term" data-term="考古报告" data-pinyin="kǎo gǔ bào gào" data-difficulty="4" data-domain="general"><span>考古报告</span><span>kǎo gǔ bào gào</span></button><button type="button" class="term" data-term="长江流域" data-pinyin="cháng jiāng liú yù" data-difficulty="3" data-domain="proper_name"><span>长江流域</span><span>cháng jiāng liú yù</span></button><button type="button" class="term" data-term="人奠基" data-pinyin="rén diàn jī" data-difficulty="3" data-domain="general"><span>人奠基</span><span>rén diàn jī</span></button><button type="button" class="term" data-term="宫殿区" data-pinyin="gōng diàn qū" data-difficulty="3" data-domain="general"><span>宫殿区</span><span>gōng diàn qū</span></button><button type="button" class="term" data-term="祭祀坑" data-pinyin="jì sì kēng" data-difficulty="3" data-domain="general"><span>祭祀坑</span><span>jì sì kēng</span></button><button type="button" class="term" data-term="筒形器" data-pinyin="tǒng xíng qì" data-difficulty="5" data-domain="archaeology"><span>筒形器</span><span>tǒng xíng qì</span></button><button type="button" class="term" data-term="人殉" data-pinyin="rén xùn" data-difficulty="3" data-domain="general"><span>人殉</span><span>rén xùn</span></button><button type="button" class="term" data-term="人祭" data-pinyin="rén jì" data-difficulty="3" data-domain="general"><span>人祭</span><span>rén jì</span></button><button type="button" class="term" data-term="从容" data-pinyin="cóng róng" data-difficulty="4" data-domain="general"><span>从容</span><span>cóng róng</span></button><button type="button" class="term" data-term="冶炼" data-pinyin="yě liàn" data-difficulty="4" data-domain="general"><span>冶炼</span><span>yě liàn</span></button><button type="button" class="term" data-term="冶铜" data-pinyin="yě tóng" data-difficulty="3" data-domain="general"><span>冶铜</span><span>yě tóng</span></button><button type="button" class="term" data-term="冶铸" data-pinyin="yě zhù" data-difficulty="3" data-domain="general"><span>冶铸</span><span>yě zhù</span></button><button type="button" class="term" data-term="图腾" data-pinyin="tú téng" data-difficulty="3" data-domain="general"><span>图腾</span><span>tú téng</span></button><button type="button" class="term" data-term="夯土" data-pinyin="hāng tǔ" data-difficulty="3" data-domain="general"><span>夯土</span><span>hāng tǔ</span></button><button type="button" class="term" data-term="奠基" data-pinyin="diàn jī" data-difficulty="3" data-domain="general"><span>奠基</span><span>diàn jī</span></button><button type="button" class="term" data-term="殉葬" data-pinyin="xùn zàng" data-difficulty="3" data-domain="general"><span>殉葬</span><span>xùn zàng</span></button><button type="button" class="term" data-term="殷商" data-pinyin="yīn shāng" data-difficulty="5" data-domain="general"><span>殷商</span><span>yīn shāng</span></button><button type="button" class="term" data-term="献祭" data-pinyin="xiàn jì" data-difficulty="3" data-domain="general"><span>献祭</span><span>xiàn jì</span></button><button type="button" class="term" data-term="石峁" data-pinyin="shí mǎo" data-difficulty="5" data-domain="archaeology"><span>石峁</span><span>shí mǎo</span></button><button type="button" class="term" data-term="童牲" data-pinyin="tóng shēng" data-difficulty="3" data-domain="general"><span>童牲</span><span>tóng shēng</span></button><button type="button" class="term" data-term="羽箭" data-pinyin="yǔ jiàn" data-difficulty="5" data-domain="archaeology"><span>羽箭</span><span>yǔ jiàn</span></button><button type="button" class="term" data-term="肢解" data-pinyin="zhī jiě" data-difficulty="3" data-domain="general"><span>肢解</span><span>zhī jiě</span></button><button type="button" class="term" data-term="良渚" data-pinyin="liáng zhǔ" data-difficulty="5" data-domain="archaeology"><span>良渚</span><span>liáng zhǔ</span></button><button type="button" class="term" data-term="诅咒" data-pinyin="zǔ zhòu" data-difficulty="3" data-domain="general"><span>诅咒</span><span>zǔ zhòu</span></button><button type="button" class="term" data-term="遗存" data-pinyin="yí cún" data-difficulty="3" data-domain="general"><span>遗存</span><span>yí cún</span></button><button type="button" class="term" data-term="酋邦" data-pinyin="qiú bāng" data-difficulty="3" data-domain="general"><span>酋邦</span><span>qiú bāng</span></button><button type="button" class="term" data-term="陶寺" data-pinyin="táo sì" data-difficulty="5" data-domain="archaeology"><span>陶寺</span><span>táo sì</span></button><button type="button" class="term" data-term="陶窑" data-pinyin="táo yáo" data-difficulty="5" data-domain="archaeology"><span>陶窑</span><span>táo yáo</span></button><button type="button" class="term" data-term="镞" data-pinyin="zú" data-difficulty="5" data-domain="bronze_vessel"><span>镞</span><span>zú</span></button></div></section>
-      </aside>
-      <section>
         <jianshang-editor-toc current-chapter="chapter_01">
           <noscript>目录需要启用 JavaScript。</noscript>
         </jianshang-editor-toc>
@@ -201,337 +528,9 @@
             </table>
           </div>
         </section></div>
-        <div class="pages">
-        <section class="page" id="page-037">
-          <div class="page-head">
-            <div class="page-title">原书阅读器页 037<span>原书物理 PDF 页 035</span><span>印刷页 23</span></div>
-            <div class="page-tools">
-              <button type="button" data-copy-page="037">复制本页</button>
-              <button type="button" data-export-page="037">导出本页</button>
-            </div>
-          </div>
-          <div class="workbench">
-            <div class="editor-wrap">
-              <div class="rich-editor" data-page="037" contenteditable="true" role="textbox" aria-multiline="true" spellcheck="false">第一章新石器时代的社会升级
-
-进入新石器时代，人类才有了农业和定居生活，不再像野生动物一样四处流动觅食。这是距今约一万年前开始的变化。
-
-在人们的感觉里，新石器时代应当是世外桃源一样，与世无争，或者说是落后、停滞的。不过，和生物的自然进化相比，数千年的新石器时代充满着剧变。下面，我们以千年为时间单位，简要描述一下新石器时代人群的发展历程。
-
-做一个穿越假设。如果一群现代人回到六千多年前的仰韶半坡文化新石器时代，比如陕西临潼的姜寨遗址，他们看到的是，山坡下有一座小村寨，有两三百名村民生息在这里，村子的中央是一片小广场，周围环绕着几十座大大小小的茅草屋，猪、狗、鸡在草屋之间闲逛，村边的陶窑冒出淡淡青烟，身穿粗麻布衣的男女用泥巴捏制陶罐坯，在上面描绘黑色图案。
-
-村落外，是成片的农田，谷穗在风中摇曳，它们产出的粟米（小米）是村民的主粮。几个男人正在给一只马鹿剥皮，用石头小刀分割皮肉，再用木柄石斧把骨头砍开，骨渣飞溅，引来几条狗围观争抢。
-
-姜寨一期聚落复原图，仰韶半坡文化阶段，距今7000—6000年 [[fn:1]]（图）
-
-穿越而来的访客发现，有一条四五米宽的壕沟包围着村寨（考古报告一般称之为“环壕”），沟底有积水和尖木桩防范入侵者，内侧还有一道木头栅栏，只有一座原木搭成的小桥可以进入村落。这群访客已经饿了，想从村里交换一餐午饭——在“原始人”眼里，他们携带的小镜子和打火机等是高价值宝物。</div>
-            </div>
-            <div class="scan"><img src="pdf_pages/page-035.jpg" alt="PDF page 037"></div>
-          </div>
-        </section>
-        <section class="page" id="page-038">
-          <div class="page-head">
-            <div class="page-title">原书阅读器页 038<span>原书物理 PDF 页 036</span><span>印刷页 24</span></div>
-            <div class="page-tools">
-              <button type="button" data-copy-page="038">复制本页</button>
-              <button type="button" data-export-page="038">导出本页</button>
-            </div>
-          </div>
-          <div class="workbench">
-            <div class="editor-wrap">
-              <div class="rich-editor" data-page="038" contenteditable="true" role="textbox" aria-multiline="true" spellcheck="false">但还没等来访者走近小桥，狗已经发现了异常，开始狂吠。所有村民都放下了手中的活计，拿起棍棒或弓箭，叫喊着冲向木栅。射向陌生人的是羽箭，箭镞用骨头或石头磨制，插在木箭杆的顶端，用细麻线绑牢。被射中会很痛苦，即使拔出木杆，箭镞也很容易留在体内，被肢解的马鹿就是例子。
-
-第一次尝试失败后，穿越者切换了一种模式，这次是下一个千年，距今6000—5000年之间。
-
-小村落还在原地，只是房屋的布局不再是紧密环绕，而是三五成群，零星分布。村外的壕沟也已经废弃，被生活垃圾填平，人们可以随意进入村落。其他的变化似乎不大。
-
-来访者吸取了上次的教训，他们不再指望和平交易，而是偷偷靠近，然后齐声呐喊，冲进村落——有人还点燃了烟花爆竹。村民被这些奇装异服、掌控着火和雷电的入侵者吓坏了，夺命狂奔而逃。
-
-于是，这群现代人成了征服者，一切粮储和禽畜都是他们的战利品。但好景不长，大半天后，开始有全副武装的“原始人”成群出现在村外。有上千名手持石斧、石矛或弓箭的成年男女，站在最前方的，是头发上装饰着羽毛的巫师，他正在用咒语高声诅咒入侵者。一名男子显然是首领，戴着一串野猪牙项饰，用红石粉涂抹脸颊，手拿一柄玉质光泽的石斧，几名长老簇拥在他身旁，正在合谋进攻方案。
-
-结果是，不论死活，入侵者都将被斩首奉献给本地的守护神祇。
-
-村落、部落到早期国家</div>
-            </div>
-            <div class="scan"><img src="pdf_pages/page-036.jpg" alt="PDF page 038"></div>
-          </div>
-        </section>
-        <section class="page" id="page-039">
-          <div class="page-head">
-            <div class="page-title">原书阅读器页 039<span>原书物理 PDF 页 037</span><span>印刷页 25</span></div>
-            <div class="page-tools">
-              <button type="button" data-copy-page="039">复制本页</button>
-              <button type="button" data-export-page="039">导出本页</button>
-            </div>
-          </div>
-          <div class="workbench">
-            <div class="editor-wrap">
-              <div class="rich-editor" data-page="039" contenteditable="true" role="textbox" aria-multiline="true" spellcheck="false">上面描述的这两种区别，是6000年前中国新石器时代发生的变化。
-
-距今6000年前（仰韶文化前期），村落规模不大，是独立的生活单元，房屋建筑或者中心环绕，或者整齐联排，可能和其他村落贸易、通婚，但固守着本村落的集体自治生活；有自己的防御体系，村落之间时而爆发冲突，坟墓里中箭或被斩首的尸骨是己方战死的勇士，而俘获的敌人则会被处死扔到垃圾坑中，还可能有一些零碎尸骨被抛撒在村落内外。
-
-比如，宝鸡北首岭77M17，仰韶文化半坡阶段，距今6000年，墓主是一名成年男子，可能在对外械斗中被砍掉了头颅，族人特意用一个造型奇特、有黑色花纹的陶罐代替，以示哀悼。随葬器物比较多，还有骨镞等兵器。
-
-宝鸡北首岭77M17出土陶尖底罐线图及照片 [[fn:2]]（图）
-
-距今6000年后，村落的集体生活特征逐渐变弱，独立防御体系也逐渐消失，出现了更大范围的政治体——十几个村落形成的“部落”。这些部落往往有上千人，有世袭的头人及各村（氏族）长老组成的议事会，还有自己部落的图腾和英雄传说。村落没必要再维持单独的防御体系，倘若受到威胁，整个部落都将集体应战，就像穿越者第二次到访的情景。
-
-这种由若干个村子组成的部落，面积可能如同今天的一个或几个乡镇。头人居住的村落是中心，会建造一座比较高级的夯土地基的房子，大约100平方米，作为头人和长老议事的场所以及举行集体仪式的会堂。头人的中心村落可能有防御工事，如壕沟、栅栏等。</div>
-            </div>
-            <div class="scan"><img src="pdf_pages/page-037.jpg" alt="PDF page 039"></div>
-          </div>
-        </section>
-        <section class="page" id="page-040">
-          <div class="page-head">
-            <div class="page-title">原书阅读器页 040<span>原书物理 PDF 页 038</span><span>印刷页 26</span></div>
-            <div class="page-tools">
-              <button type="button" data-copy-page="040">复制本页</button>
-              <button type="button" data-export-page="040">导出本页</button>
-            </div>
-          </div>
-          <div class="workbench">
-            <div class="editor-wrap">
-              <div class="rich-editor" data-page="040" contenteditable="true" role="textbox" aria-multiline="true" spellcheck="false">比如，秦安大地湾四期F901，距今5000余年，主厅面积131平方米，包括院落在内，则为420平方米。房屋地基使用的是特殊的料礓石三合土，平整光滑，硬度接近现代水泥地面。厅内正中有一座圆形大火塘。F901应当是部落的中心建筑，具有较强的公共性，家庭生活的遗迹很少，可能并非部落头人的家宅，主要充当头人和长老议事的场所。
-
-F901平、剖面图 [[fn:3]]（图）
-
-以上，是距今6000—5000年间（仰韶文化中期）发生的最明显变迁。
-
-在千年的维度上，很多变化都是缓慢的。各种技艺的水平，如农作物种植、家畜养殖、制陶、纺织等，一直在缓慢提高着，人口或村落的总量也在缓慢增长。但这些都是量变，而非质变。
-
-唯一明显的变化，是人群“共同体”规模的扩大，已经从百人级别增长到千人级别。它带来的影响也更直接：村落之间的冲突成为过去，和平的日子更多了，但部落间的战争规模却更大了，伤亡也更多。
-
-再到下一个千年，距今5000—4000年之间（仰韶文化末期与龙山文化期），有些地区的人群共同体则变得更大，几个或十几个部落汇聚成了早期国家，如陕西石峁古城、山西陶寺古城，能统治一两万甚至三五万人口，面积相当于今天的一个或两三个县。其中，统治中心已经形成城市，面积有两三平方公里，周围环绕着数米高的夯土或石砌城墙，城内有数百平方米的大型宫殿，上层贵族开始使用精美器物，死后的墓葬里也堆满了豪华随葬品，而且经常用人殉葬。</div>
-            </div>
-            <div class="scan"><img src="pdf_pages/page-038.jpg" alt="PDF page 040"></div>
-          </div>
-        </section>
-        <section class="page" id="page-041">
-          <div class="page-head">
-            <div class="page-title">原书阅读器页 041<span>原书物理 PDF 页 039</span><span>印刷页 27</span></div>
-            <div class="page-tools">
-              <button type="button" data-copy-page="041">复制本页</button>
-              <button type="button" data-export-page="041">导出本页</button>
-            </div>
-          </div>
-          <div class="workbench">
-            <div class="editor-wrap">
-              <div class="rich-editor" data-page="041" contenteditable="true" role="textbox" aria-multiline="true" spellcheck="false">有些较大的都城，居民会过万，多数是农夫，也分化出了手工业者、世袭统治精英，以及巫师等专业知识人群。巫师观察天象，编制早期历法，研究占卜通神之术。甚至可能已经有了记录语言的原始符号，初步的冶铸铜技术也在悄悄流传。
-
-这时，国家、王朝和文明时代已经不远了。
-
-以上两千年历程，是新石器中晚期到文明（青铜）时代前夜的变化大趋势：从村落到部落再到早期国家。通俗一点说，就是从村级到乡级、县级的递增升级。
-
-对于如何称呼不同规模的人群共同体，特别是万人规模的早期国家，中外学者使用过不同的词，如方国、酋邦、古国等。从便于理解的角度考虑，本书采用“早期国家”和“古国”之称。
-
-但需要注意的是，村落一部落一古国只是用最简单的方式描绘的总体趋势，并不意味着距今6000—4000年间的所有新石器时代人群都准时加入了这个进程。在有些交通不便的地区，孤立的村落可能存续到三四千年前，而部落共同体可能存续到一两千年前，甚至一百年前。这首先是地理条件的限制，越是偏僻、交通不便的地方，小型共同体越容易维持，而缺乏天险环境中的人群更容易被裹挟进更大的共同体。另外，也可能会有历史当事人的主动选择，但作为现代人的我们已经无法验证了。
-
-多数早期国家并不能维持长久繁荣。距今4300—4000年间，华北很多地方同步出现了古国兴衰的一幕：陶寺（山西襄汾）、石峁（陕西神木）、清凉寺（山西芮城）和王城岗（河南登封）等都曾出现古国气象，但在繁盛两三百年后，都发生了解体，重归部落共同体的水平。</div>
-            </div>
-            <div class="scan"><img src="pdf_pages/page-039.jpg" alt="PDF page 041"></div>
-          </div>
-        </section>
-        <section class="page" id="page-042">
-          <div class="page-head">
-            <div class="page-title">原书阅读器页 042<span>原书物理 PDF 页 040</span><span>印刷页 28</span></div>
-            <div class="page-tools">
-              <button type="button" data-copy-page="042">复制本页</button>
-              <button type="button" data-export-page="042">导出本页</button>
-            </div>
-          </div>
-          <div class="workbench">
-            <div class="editor-wrap">
-              <div class="rich-editor" data-page="042" contenteditable="true" role="textbox" aria-multiline="true" spellcheck="false">为何迈入文明时代的门槛会如此艰难？现在尚未有确定的答案。
-
-水稻带来和平？
-
-20世纪与21世纪之交，长江中游的两湖地区陆续发掘出多座距今5000年左右的“古城”，如湖南澧县的城头山和鸡叫城，湖北天门的石家河……一时间，长江中游似乎要成为中国早期文明的起源地。但后续的发掘并未发现跟早期国家与文明相伴生的更多元素，如巨大的宫殿建筑、社会分层现象、金属冶炼技术等，“长江文明起源说”遂逐渐沉寂。
-
-不过，为何长江流域曾产生众多古老的“城”，却是个有趣的问题。若要一探究竟，先要理解黄河与长江流域以及旱作与稻作农业的关系。
-
-新石器时代是基本农业的时代，在人类驯化的主粮中，中国占了两种：黄河流域的粟米和长江流域的水稻，它们分别需要旱地和水田环境。
-
-这两种作物的人工驯化都发生在一万余年前。水稻的考古证据更多一些，因为稻米颗粒大，古人制陶时常在泥坯中添加稻壳，便于考古发现。在长江以南的湖南、江西和浙江，均发现有上万年前的水稻遗存。
-
-稻田需要灌溉和排水系统，需要平整的水滨田块，这是北方旱作的粟和黍从来不需要考虑的。长江流域的新石器人群一直忙于水利设施和稻田工程，而水利设施达到一定规模后，无论耕作面积，还是收获量，都会有实质性的提升。所以，在距今6000—4500年间，两湖地区出现了众多繁荣的稻作聚落。
-
-至于考古报告宣称发现的那些“城址”，其实是为了防洪目的堆筑的。所谓的“城墙”，大都宽数十米，高数米，非常平缓，人可以从容地踱步而上，没有军事防御作用，其用途是防洪，供人们在上面建房定居，躲避南方常见的水患；而挖土形成的洼地水塘，是灌溉稻田的储水设施，有些甚至直到今天还在使用。这种环形土堤是人们改造湿地的手段，直到近代，湖北还有很多，方言称之为“垸（yuàn）”。</div>
-            </div>
-            <div class="scan"><img src="pdf_pages/page-040.jpg" alt="PDF page 042"></div>
-          </div>
-        </section>
-        <section class="page" id="page-043">
-          <div class="page-head">
-            <div class="page-title">原书阅读器页 043<span>原书物理 PDF 页 041</span><span>印刷页 29</span></div>
-            <div class="page-tools">
-              <button type="button" data-copy-page="043">复制本页</button>
-              <button type="button" data-export-page="043">导出本页</button>
-            </div>
-          </div>
-          <div class="workbench">
-            <div class="editor-wrap">
-              <div class="rich-editor" data-page="043" contenteditable="true" role="textbox" aria-multiline="true" spellcheck="false">比如，湖南澧县的城头山“古城”，是一直径300多米的近圆形土围子，其“城墙”非常宽，且平缓，本质是土堤。距今6000—5000年间，经历过多次扩建，取土洼地形成了水塘，有些至今仍在使用。
-
-不过，即使城墙不是军事防御之用，这些水乡古城的意义还是重大，说明当时的人为建造大型水利设施，已经形成超出村落甚至部落规模的较大共同体，统一规划施工，共享水利设施带来的收益。
-
-这是一种基于集体协作的“小流域治理共同体”，不仅人口密度和数量有了实质性的飞跃，而且由于共同体建立的基础是水利协作而非军事征服，所以这些“古城”没有出现明显的社会分层和阶级分化现象，比如，没有特别奢华的墓葬和首领宫殿，战争和屠杀的迹象很少，人祭现象也一直不多。这些都和稻作文化区依赖协作、联合建设水利工程有关。
-
-这种比较和平、均等的稻作社会，还有与之“配套”的原始宗教理念。位于长江中游的5000年前的屈家岭文化，盛行一种埋葬陶器祭祀的风俗，而且是特制的大型陶“筒形器”；后来，又演变成制作巨量的泥塑人偶、动物、小杯子等加以焚烧和掩埋。我们不知道这些行为的具体含义，但它们的社会功能比较清晰，就是群众参与性强，没有财富门槛。这和缺乏战争与人祭的社会环境比较搭配。
-
-比长江中游稍晚一点，距今5000—4900年间，在今浙江杭州市西北郊的余杭区也出现了大型防洪“良渚古城”，以及复杂的灌溉堤防体系。这座古城一度接近了早期国家的门槛，有非常明显的阶级分层，贵族统治者有建在土筑高台之上的豪华殿堂，墓中随葬大量精美玉器，有些高级玉器上还刻着宗教意义明显的“神人兽面纹”和神鸟纹，可见祭司阶层比较活跃。</div>
-            </div>
-            <div class="scan"><img src="pdf_pages/page-041.jpg" alt="PDF page 043"></div>
-          </div>
-        </section>
-        <section class="page" id="page-044">
-          <div class="page-head">
-            <div class="page-title">原书阅读器页 044<span>原书物理 PDF 页 042</span><span>印刷页 30</span></div>
-            <div class="page-tools">
-              <button type="button" data-copy-page="044">复制本页</button>
-              <button type="button" data-export-page="044">导出本页</button>
-            </div>
-          </div>
-          <div class="workbench">
-            <div class="editor-wrap">
-              <div class="rich-editor" data-page="044" contenteditable="true" role="textbox" aria-multiline="true" spellcheck="false">在良渚古城的繁荣阶段，并未见到人祭现象，而且它的繁荣只维持了一两百年，然后王者一级别的宫殿和墓葬都消失了，社会又退回到部落林立的状态。[[fn:5]] 后来，在今太湖东岸的良渚文化地区发生了频繁的冲突，伴随着批量杀人献祭和人殉现象（今江苏昆山、上海青浦地区），但这些冲突一直停留在部落间战争的层次，从未发展到古国水平。
-
-结合气候变迁看，在一万多年前，地球的上一轮冰期结束，气温持续上升，开始进入“全新世大暖期”，到距今5000年左右，湿热气候达到顶峰，长江流域人群兴建水利设施的高峰也恰好出现在此时。然而，在距今4500年之后，长江流域曾经繁荣的古城皆陷入萧条。有学者认为，是大洪水导致了南方的低迷，但证据尚不够充足。
-
-再来看人祭宗教现象。
-
-距今6000年前，黄河流域开始有零星的苗头，如西安的仰韶半坡遗址，村落中心一座半地穴式大房屋F1的地基中埋了一颗人头[[fn:6]]：这座房屋是村落的公共活动中心，在地基中埋入人头应当有宗教用途。
-
-距今4500—4000年间，南方稻作区陷入沉寂，黄河流域则开始进入龙山文化阶段，各地出现了很多部落间的冲突或战争迹象，证据是批量处死的尸骨以及夯土或砌石的城防等。比如，河南的王城岗古城，宫殿夯土中有13座人奠基坑，每座坑中都埋有多具尸骨，但由于没有全部发掘，所以无法统计用人总量，唯一完整发掘的一号奠基坑内埋有七具人骨。[[fn:7]] 在河南安阳后冈，发掘出39座不大的房屋，奠基童牲27人，[[fn:8]] 说明这里修建房屋流行用儿童奠基。[[fn:9]] 陕西神木石峁古城东门，至少有五座人头奠基坑，埋有青年女子人头近百颗。山西襄汾陶寺古国的宫殿区也有人头奠基坑，芮城清凉寺墓地中则埋有大量殉葬的人。</div>
-            </div>
-            <div class="scan"><img src="pdf_pages/page-042.jpg" alt="PDF page 044"></div>
-          </div>
-        </section>
-        <section class="page" id="page-045">
-          <div class="page-head">
-            <div class="page-title">原书阅读器页 045<span>原书物理 PDF 页 043</span><span>印刷页 31</span></div>
-            <div class="page-tools">
-              <button type="button" data-copy-page="045">复制本页</button>
-              <button type="button" data-export-page="045">导出本页</button>
-            </div>
-          </div>
-          <div class="workbench">
-            <div class="editor-wrap">
-              <div class="rich-editor" data-page="045" contenteditable="true" role="textbox" aria-multiline="true" spellcheck="false">王城岗古城宫殿区的一号奠基坑（二期）照片及平面图：埋两名女性青年、三名儿童、两名男性壮年[[fn:10]]（图）
-
-此外，在一些部落级别的聚落里，也有多人一起被杀的现场，从河北、河南到陕西，都发现了此类尸骨坑，如邯郸涧沟、郑州大河村、洛阳王湾、西安客省庄等，但尸骨码放并不规整，也没有其他的祭祀特征，所以不能确定是否都是宗教目的的杀人献祭，也许有些只是对俘虏的批量屠杀。
-
-在新石器时代，华北地区之所以动辄爆发冲突或战争，人祭兴盛，可能和旱作农业不需要水利设施[[fn:11]]、人群之间没有协作的动因有关。而伴随着征服的，是人群共同体规模的不断扩大，从而催生了众多古城和早期国家。
-
-不过，简单的分类和归纳注定不足以涵盖复杂的社会现象，任何“规律”都会存在例外。稻作的良渚文化内部也曾有过局部冲突和人祭现象；华北各龙山古国中，人祭和屠杀的数量也不相同，陶寺的人祭可能要比石峁少得多。[[fn:12]]
-
-到距今4000年前，华北地区一度星月同辉的各小型古国陷入沉寂，部落间的冲突现象也已减少，长江和黄河流域则了无生气。此时的华北地区虽零星地存在两种技术，一是可能从西北方传来的处于起步阶段的冶铜技术，二是从长江流域传来的非常成熟的水稻种植，但它们似乎并未引起华北新石器人群的太大关注，还只是可有可无的点缀。
-
-然而，在河南的嵩山脚下，却有一个小部落意识到了这两种技术的价值，而且也善于寻找更适合发展这两种技术的新环境，于是，华夏第一王朝的故事开始上演。</div>
-            </div>
-            <div class="scan"><img src="pdf_pages/page-043.jpg" alt="PDF page 045"></div>
-          </div>
-        </section>
-        <section class="page" id="page-046">
-          <div class="page-head">
-            <div class="page-title">原书阅读器页 046<span>原书物理 PDF 页 044</span><span>印刷页 32</span></div>
-            <div class="page-tools">
-              <button type="button" data-copy-page="046">复制本页</button>
-              <button type="button" data-export-page="046">导出本页</button>
-            </div>
-          </div>
-          <div class="workbench">
-            <div class="editor-wrap">
-              <div class="rich-editor" data-page="046" contenteditable="true" role="textbox" aria-multiline="true" spellcheck="false">注释
-
-1 巩启明：《姜寨遗址发掘回顾》，《中国文化遗产》2010年第1期。
-
-2 中国社科院考古所宝鸡工作队：《一九七七年宝鸡北首岭遗址发掘简报》，《考古》1979年第2期；中国社科院考古所：《宝鸡北首岭》，文物出版社，1983年。
-
-3 甘肃省文物工作队：《甘肃秦安大地湾901号房址发掘简报》，《文物》1986年第2期；钟晓青：《秦安大地湾建筑遗址略析》，《文物》2000年第5期。
-
-4 石峁古城的发掘还处于起步阶段，古城全貌尚未得到揭露，但已经发现了残忍而且大规模的人祭现象。参见孙周勇、邵晶《瓮城溯源：以石峁遗址外城东门址为中心》，《文物》2016年第2期；陕西省考古研究所《发现石窕古城》，文物出版社，2016年。
-
-5 浙江省文物考古研究所：《良渚古城综合研究报告》，文物出版社，2019年，第354、364、440页。
-
-6 中国社科院考古所：《西安半坡：原始氏族公社聚落遗址》，文物出版社，1963年，第18页。
-
-7 河南省文物研究所、中国历史博物馆考古部：《登封王城岗与阳城》，文物出版社，1992年。
-
-8 中国社科院考古所安阳工作队：《1979年安阳后岗遗址发掘报告》，《考古学报》1985年第1期。
-
-9 到殷商后期，这里又出现了恐怖的H10圆形三层祭祀坑，不过和龙山时代相隔已有一千余年。
-
-10 河南省文物研究所、中国历史博物馆考古部：《登封王城岗遗址的发掘》，《文物》1983年第3期。
-
-11 至少是石器时代还不需要，到铁器时代，随着华北人口密度增加，有些旱作地区也需要灌溉设施来提高产量。
-
-12 石峁遗址有中心宫殿建筑区“皇城台”，有外围石砌围墙，虽然目前只在城墙东门和皇城台分别发现密集的人头祭祀坑以及部分尸骨坑，尚未发布详细的发掘报告，但仅从东城门祭祀坑看，石峁古国的人祭行为已经有很大规模。</div>
-            </div>
-            <div class="scan"><img src="pdf_pages/page-044.jpg" alt="PDF page 046"></div>
-          </div>
-        </section>
-        <section class="page" id="page-047">
-          <div class="page-head">
-            <div class="page-title">原书阅读器页 047<span>原书物理 PDF 页 045</span><span>印刷页 33</span></div>
-            <div class="page-tools">
-              <button type="button" data-copy-page="047">复制本页</button>
-              <button type="button" data-export-page="047">导出本页</button>
-            </div>
-          </div>
-          <div class="workbench">
-            <div class="editor-wrap">
-              <div class="rich-editor" data-page="047" contenteditable="true" role="textbox" aria-multiline="true" spellcheck="false"></div>
-            </div>
-            <div class="scan"><img src="pdf_pages/page-045.jpg" alt="PDF page 047"></div>
-          </div>
-        </section>
-        <section class="page" id="page-048">
-          <div class="page-head">
-            <div class="page-title">原书阅读器页 048<span>原书物理 PDF 页 046</span><span>印刷页 34</span></div>
-            <div class="page-tools">
-              <button type="button" data-copy-page="048">复制本页</button>
-              <button type="button" data-export-page="048">导出本页</button>
-            </div>
-          </div>
-          <div class="workbench">
-            <div class="editor-wrap">
-              <div class="rich-editor" data-page="048" contenteditable="true" role="textbox" aria-multiline="true" spellcheck="false"></div>
-            </div>
-            <div class="scan"><img src="pdf_pages/page-046.jpg" alt="PDF page 048"></div>
-          </div>
-        </section></div>
-        <section class="notes-dock" id="notes">
-          <h2>编辑札记</h2>
-          <div class="note-grid">
-            <div class="note-controls">
-              <label>页<select id="notePage"></select></label>
-              <div class="marker-composer" id="markerComposer">
-                <h3>标记</h3>
-                <label>类型<select id="markerType">
-                  <option value="pinyin">注音</option>
-                  <option value="editor-note">编者注／脚注</option>
-                  <option value="inline-note">按语</option>
-                  <option value="pending">待核</option>
-                  <option value="user-note">用户札记</option>
-                </select></label>
-                <label>内容<input id="markerText" type="text" autocomplete="off" placeholder="输入拼音或笔记内容"></label>
-                <p class="marker-help" id="markerHelp">先在正文中选择文字，再输入拼音；可用“拼音；简注”。</p>
-                <div class="note-actions"><button id="applyMarkerBtn" type="button">应用标记</button></div>
-              </div>
-              <label>工作日志标签<input id="noteTag" type="text" value="校订" autocomplete="off"></label>
-              <textarea id="noteText" spellcheck="false"></textarea>
-              <div class="note-actions">
-                <button id="addNoteBtn" type="button">记录到编辑日志</button>
-                <button id="exportLogBtn" type="button">导出日志</button>
-                <button id="downloadLogBtn" type="button">下载日志</button>
-                <button id="clearLogBtn" type="button">清空日志</button>
-              </div>
-            </div>
-            <div><div id="logList" class="log-list"></div></div>
-          </div>
-        </section>
-        <section class="export-dock"><h2>导出文本</h2><textarea id="exportText" spellcheck="false"></textarea></section>
-      </section>
+        <section class="panel"><h2>参考表</h2><div class="nav-list"><button type="button" class="nav-button" data-target="yueducibiao"><span>阅读词表</span><span>表</span></button><button type="button" class="nav-button" data-target="qingtongqicibiao"><span>青铜器词表</span><span>表</span></button><button type="button" class="nav-button" data-target="dushuzhaji"><span>章节导读札记</span><span>表</span></button><button type="button" class="nav-button" data-target="user-notes"><span>用户札记</span><span>注</span></button></div></section>
+        <section class="panel"><h2>术语</h2><div class="term-list"><button type="button" class="term" data-term="粟米" data-pinyin="sù mǐ" data-difficulty="4" data-domain="general"><span>粟米</span><span>sù mǐ</span></button><button type="button" class="term" data-term="箭镞" data-pinyin="jiàn zú" data-difficulty="4" data-domain="general"><span>箭镞</span><span>jiàn zú</span></button><button type="button" class="term" data-term="觅食" data-pinyin="mì shí" data-difficulty="4" data-domain="general"><span>觅食</span><span>mì shí</span></button><button type="button" class="term" data-term="摇曳" data-pinyin="yáo yè" data-difficulty="4" data-domain="general"><span>摇曳</span><span>yáo yè</span></button><button type="button" class="term" data-term="狂吠" data-pinyin="kuáng fèi" data-difficulty="4" data-domain="general"><span>狂吠</span><span>kuáng fèi</span></button><button type="button" class="term" data-term="神祇" data-pinyin="shén qí" data-difficulty="4" data-domain="general"><span>神祇</span><span>shén qí</span></button><button type="button" class="term" data-term="料礓石" data-pinyin="liào jiāng shí" data-difficulty="4" data-domain="general"><span>料礓石</span><span>liào jiāng shí</span></button><button type="button" class="term" data-term="垸" data-pinyin="yuàn" data-difficulty="4" data-domain="general"><span>垸</span><span>yuàn</span></button><button type="button" class="term" data-term="屈家岭文化" data-pinyin="qū jiā lǐng wén huà" data-difficulty="5" data-domain="archaeology"><span>屈家岭文化</span><span>qū jiā lǐng wén huà</span></button><button type="button" class="term" data-term="神人兽面纹" data-pinyin="shén rén shòu miàn wén" data-difficulty="5" data-domain="archaeology"><span>神人兽面纹</span><span>shén rén shòu miàn wén</span></button><button type="button" class="term" data-term="半地穴式" data-pinyin="bàn dì xué shì" data-difficulty="3" data-domain="general"><span>半地穴式</span><span>bàn dì xué shì</span></button><button type="button" class="term" data-term="夯土地基" data-pinyin="hāng tǔ dì jī" data-difficulty="3" data-domain="general"><span>夯土地基</span><span>hāng tǔ dì jī</span></button><button type="button" class="term" data-term="考古报告" data-pinyin="kǎo gǔ bào gào" data-difficulty="4" data-domain="general"><span>考古报告</span><span>kǎo gǔ bào gào</span></button><button type="button" class="term" data-term="长江流域" data-pinyin="cháng jiāng liú yù" data-difficulty="3" data-domain="proper_name"><span>长江流域</span><span>cháng jiāng liú yù</span></button><button type="button" class="term" data-term="人奠基" data-pinyin="rén diàn jī" data-difficulty="3" data-domain="general"><span>人奠基</span><span>rén diàn jī</span></button><button type="button" class="term" data-term="宫殿区" data-pinyin="gōng diàn qū" data-difficulty="3" data-domain="general"><span>宫殿区</span><span>gōng diàn qū</span></button><button type="button" class="term" data-term="祭祀坑" data-pinyin="jì sì kēng" data-difficulty="3" data-domain="general"><span>祭祀坑</span><span>jì sì kēng</span></button><button type="button" class="term" data-term="筒形器" data-pinyin="tǒng xíng qì" data-difficulty="5" data-domain="archaeology"><span>筒形器</span><span>tǒng xíng qì</span></button><button type="button" class="term" data-term="人殉" data-pinyin="rén xùn" data-difficulty="3" data-domain="general"><span>人殉</span><span>rén xùn</span></button><button type="button" class="term" data-term="人祭" data-pinyin="rén jì" data-difficulty="3" data-domain="general"><span>人祭</span><span>rén jì</span></button><button type="button" class="term" data-term="从容" data-pinyin="cóng róng" data-difficulty="4" data-domain="general"><span>从容</span><span>cóng róng</span></button><button type="button" class="term" data-term="冶炼" data-pinyin="yě liàn" data-difficulty="4" data-domain="general"><span>冶炼</span><span>yě liàn</span></button><button type="button" class="term" data-term="冶铜" data-pinyin="yě tóng" data-difficulty="3" data-domain="general"><span>冶铜</span><span>yě tóng</span></button><button type="button" class="term" data-term="冶铸" data-pinyin="yě zhù" data-difficulty="3" data-domain="general"><span>冶铸</span><span>yě zhù</span></button><button type="button" class="term" data-term="图腾" data-pinyin="tú téng" data-difficulty="3" data-domain="general"><span>图腾</span><span>tú téng</span></button><button type="button" class="term" data-term="夯土" data-pinyin="hāng tǔ" data-difficulty="3" data-domain="general"><span>夯土</span><span>hāng tǔ</span></button><button type="button" class="term" data-term="奠基" data-pinyin="diàn jī" data-difficulty="3" data-domain="general"><span>奠基</span><span>diàn jī</span></button><button type="button" class="term" data-term="殉葬" data-pinyin="xùn zàng" data-difficulty="3" data-domain="general"><span>殉葬</span><span>xùn zàng</span></button><button type="button" class="term" data-term="殷商" data-pinyin="yīn shāng" data-difficulty="5" data-domain="general"><span>殷商</span><span>yīn shāng</span></button><button type="button" class="term" data-term="献祭" data-pinyin="xiàn jì" data-difficulty="3" data-domain="general"><span>献祭</span><span>xiàn jì</span></button><button type="button" class="term" data-term="石峁" data-pinyin="shí mǎo" data-difficulty="5" data-domain="archaeology"><span>石峁</span><span>shí mǎo</span></button><button type="button" class="term" data-term="童牲" data-pinyin="tóng shēng" data-difficulty="3" data-domain="general"><span>童牲</span><span>tóng shēng</span></button><button type="button" class="term" data-term="羽箭" data-pinyin="yǔ jiàn" data-difficulty="5" data-domain="archaeology"><span>羽箭</span><span>yǔ jiàn</span></button><button type="button" class="term" data-term="肢解" data-pinyin="zhī jiě" data-difficulty="3" data-domain="general"><span>肢解</span><span>zhī jiě</span></button><button type="button" class="term" data-term="良渚" data-pinyin="liáng zhǔ" data-difficulty="5" data-domain="archaeology"><span>良渚</span><span>liáng zhǔ</span></button><button type="button" class="term" data-term="诅咒" data-pinyin="zǔ zhòu" data-difficulty="3" data-domain="general"><span>诅咒</span><span>zǔ zhòu</span></button><button type="button" class="term" data-term="遗存" data-pinyin="yí cún" data-difficulty="3" data-domain="general"><span>遗存</span><span>yí cún</span></button><button type="button" class="term" data-term="酋邦" data-pinyin="qiú bāng" data-difficulty="3" data-domain="general"><span>酋邦</span><span>qiú bāng</span></button><button type="button" class="term" data-term="陶寺" data-pinyin="táo sì" data-difficulty="5" data-domain="archaeology"><span>陶寺</span><span>táo sì</span></button><button type="button" class="term" data-term="陶窑" data-pinyin="táo yáo" data-difficulty="5" data-domain="archaeology"><span>陶窑</span><span>táo yáo</span></button><button type="button" class="term" data-term="镞" data-pinyin="zú" data-difficulty="5" data-domain="bronze_vessel"><span>镞</span><span>zú</span></button></div></section>
+      </aside>
     </div>
   </main>
   <button class="quick-note-jump" type="button" data-target="notes">札记</button>
@@ -562,6 +561,11 @@ F901平、剖面图 [[fn:3]]（图）
     const chapterNotesBodyEl = document.getElementById('chapterNotesBody');
     const chapterNoteTitleEl = document.getElementById('chapterNoteTitle');
     const chapterNoteTextEl = document.getElementById('chapterNoteText');
+    const sourceViewerImageEl = document.getElementById('sourceViewerImage');
+    const sourceViewerMetaEl = document.getElementById('sourceViewerMeta');
+    const sourceViewerEl = document.querySelector('.source-viewer');
+    const sourceViewerHome = document.createComment('source-viewer-home');
+    sourceViewerEl.before(sourceViewerHome);
     let activeArea = null;
     let viewMode = 'clean';
     let cleanViewTexts = {};
@@ -569,8 +573,35 @@ F901平、剖面图 [[fn:3]]（图）
     let voices = [];
     let allowSave = true;
     let savedFormatRange = null;
+    let sourceNavigationLockUntil = 0;
     function setStatus(text, tone = '') { statusEl.textContent = text; statusEl.style.color = tone === 'ok' ? 'var(--ok)' : tone === 'warn' ? 'var(--warn)' : 'var(--muted)'; }
     function textareas() { return Array.from(document.querySelectorAll('.rich-editor[data-page]')); }
+    function syncSourceViewer(area) {
+      if (!area || !sourceViewerImageEl) return;
+      sourceViewerImageEl.src = area.dataset.sourceImage;
+      sourceViewerImageEl.alt = `原书 PDF 页 ${area.dataset.sourcePage}`;
+      sourceViewerMetaEl.textContent = `原阅 ${area.dataset.page} · 原PDF ${area.dataset.sourcePage} · 印 ${area.dataset.printedPage}`;
+    }
+    function restoreSourceViewer() { sourceViewerHome.after(sourceViewerEl); }
+    function currentSourceLayout() { return SOURCE_LAYOUTS.find(name => document.body.classList.contains(`source-layout-${name}`)) || 'text-primary'; }
+    function showPagePair(target) {
+      const area = target?.matches('.rich-editor') ? target : target?.querySelector('.rich-editor');
+      if (!area) return false;
+      activeArea = area;
+      sourceNavigationLockUntil = Date.now() + 1400;
+      syncSourceViewer(area);
+      if (matchMedia('(max-width:980px)').matches) {
+        const page = area.closest('.page');
+        const pdfFirst = ['pdf-primary','pdf'].includes(currentSourceLayout());
+        pdfFirst ? page.before(sourceViewerEl) : page.after(sourceViewerEl);
+        (pdfFirst ? sourceViewerEl : page).scrollIntoView({ behavior:'smooth', block:'start' });
+      } else {
+        restoreSourceViewer();
+        applySourceLayout('text-primary');
+        target.scrollIntoView({ behavior:'smooth', block:'start' });
+      }
+      return true;
+    }
     function editorText(area) { return area.innerText.replace(/ /g, ' ').replace(/\n$/, ''); }
     function nodeAtOffset(root, wanted) {
       const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT);
@@ -763,7 +794,7 @@ F901平、剖面图 [[fn:3]]（图）
     document.getElementById('insertImageBtn').addEventListener('click',()=>{if(viewMode!=='clean'){setStatus('请先切换回清稿再插入图片','warn');return}if(!activeArea){setStatus('请先在正文中放置光标','warn');return}document.getElementById('editorImageInput').click();});
     document.getElementById('editorImageInput').addEventListener('change',async event=>{const file=event.target.files[0];if(!file)return;try{const caption=prompt('请输入图片说明和来源（可稍后在正文中修改）：',file.name)||file.name;insertEditorialImage(await prepareImage(file),file.name,caption)}catch(error){setStatus(error.message,'warn')}finally{event.target.value=''}});
     document.addEventListener('click',event=>{const size=event.target.closest('[data-image-size]'),remove=event.target.closest('[data-image-remove]'),figure=event.target.closest('.editorial-image');if(size&&figure){figure.dataset.size=size.dataset.imageSize;figure.closest('.rich-editor')?.dispatchEvent(new Event('input',{bubbles:true}))}else if(remove&&figure&&confirm('删除这张插图？')){const area=figure.closest('.rich-editor'),page=area?.dataset.page;figure.remove();area?.dispatchEvent(new Event('input',{bubbles:true}));addLog('删除图片','',page)}});
-    document.querySelectorAll('[data-target]').forEach(button => button.addEventListener('click', () => document.getElementById(button.dataset.target)?.scrollIntoView({ behavior: 'smooth', block: 'start' })));
+    document.querySelectorAll('[data-target]').forEach(button => button.addEventListener('click', () => { const target=document.getElementById(button.dataset.target);if (!showPagePair(target)) target?.scrollIntoView({ behavior:'smooth',block:'start' }); }));
     textareas().forEach(initializeRichEditor);
     textareas().forEach(area => { area.addEventListener('input', () => { queueSave(); renderUserNotes(); }); area.addEventListener('focus', () => { activeArea = area; notePageEl.value = area.dataset.page; }); area.addEventListener('click', () => captureEditorSelection(area)); area.addEventListener('keyup', () => captureEditorSelection(area)); area.addEventListener('mouseup', () => captureEditorSelection(area)); area.addEventListener('keydown',event=>{if(event.key==='Enter'&&viewMode==='clean'){event.preventDefault();captureEditorSelection(area);area.setRangeText('\n');area.dispatchEvent(new Event('input',{bubbles:true}));}}); area.addEventListener('paste',event=>{if(viewMode!=='clean')return;event.preventDefault();captureEditorSelection(area);area.setRangeText(event.clipboardData.getData('text/plain'));area.dispatchEvent(new Event('input',{bubbles:true}));}); });
     document.querySelectorAll('button.term').forEach(button => button.addEventListener('click', () => addNotation(button.dataset.term, button.dataset.pinyin)));
@@ -818,30 +849,45 @@ F901平、剖面图 [[fn:3]]（图）
     document.getElementById('clearLogBtn').addEventListener('click', () => { if (!confirm('清空本浏览器保存的编辑日志？')) return; localStorage.removeItem(LOG_KEY); renderLog(); setStatus('日志已清空', 'ok'); });
     document.getElementById('resetBtn').addEventListener('click', () => { if (!confirm('恢复 chapter clean 原稿会清除本浏览器保存的编辑内容。继续？')) return; clearTimeout(timer); allowSave = false; if (viewMode === 'annotated') setView('clean'); textareas().forEach(area => area.value = ORIGINAL_TEXTS[area.dataset.page] ?? ''); cleanViewTexts = { ...ORIGINAL_TEXTS }; cleanViewHtml = {}; localStorage.removeItem(STORAGE_KEY); sessionStorage.removeItem(`${STORAGE_KEY}:view`); viewMode = 'clean'; textareas().forEach(area => { area.readOnly = false; area.classList.remove('annotated-view'); }); document.getElementById('viewToggleBtn').textContent = '切换为注音稿'; modeBadgeEl.textContent = '当前：清稿'; modeBadgeEl.classList.remove('annotated'); allowSave = true; setStatus('已恢复 chapter clean 原稿', 'ok'); addLog('恢复 clean 原稿', '', currentPage()); });
     window.addEventListener('beforeunload', () => { if (allowSave) saveNow(false); });
-    const sourceLayoutSlider = document.getElementById('sourceLayoutSlider');
-    const sourceLayoutOutput = document.getElementById('sourceLayoutOutput');
-    const SOURCE_LAYOUT_KEY = 'jianshang-text-pdf-layout-v1';
+    const sourceLayoutControl = document.querySelector('.source-layout-control');
+    const sourceLayoutButton = document.getElementById('sourceLayoutButton');
+    const SOURCE_LAYOUT_KEY = 'jianshang-primary-reference-layout-v3';
+    const SOURCE_LAYOUTS = ['text','text-primary','balanced','pdf-primary','pdf'];
+    const SOURCE_LAYOUT_LABELS = { text:'正文', 'text-primary':'正文为主', balanced:'均衡', 'pdf-primary':'PDF为主', pdf:'PDF' };
     function applySourceLayout(raw, persist=true) {
-      const pdf = Math.max(0, Math.min(100, Number(raw)));
-      const text = 100 - pdf;
-      document.documentElement.style.setProperty('--text-share', `${text || 1}fr`);
-      document.documentElement.style.setProperty('--pdf-share', `${pdf || 1}fr`);
-      document.body.classList.toggle('text-only', pdf === 0);
-      document.body.classList.toggle('pdf-only', pdf === 100);
-      document.body.classList.toggle('pdf-priority', pdf > 50 && pdf < 100);
-      sourceLayoutSlider.value = String(pdf);
-      sourceLayoutOutput.textContent = pdf === 0 ? '仅正文' : pdf === 100 ? '仅 PDF' : `正文 ${text}% · PDF ${pdf}%`;
-      if (persist) localStorage.setItem(SOURCE_LAYOUT_KEY, String(pdf));
+      const mode = SOURCE_LAYOUTS.includes(raw) ? raw : 'text-primary';
+      const layout = document.querySelector('.layout');
+      layout.classList.remove('workspace-pane-layout','workspace-pane-primary-only','workspace-pane-secondary-only','workspace-pane-secondary-first','workspace-pane-has-splitter');
+      layout.style.removeProperty('--workspace-primary-share');
+      layout.style.removeProperty('--workspace-secondary-share');
+      layout.querySelectorAll('[data-pane-primary],[data-pane-secondary]').forEach(node => { delete node.dataset.panePrimary; delete node.dataset.paneSecondary; });
+      document.querySelector('.workspace-pane-balance')?.remove();
+      SOURCE_LAYOUTS.forEach(name => document.body.classList.toggle(`source-layout-${name}`, name === mode));
+      document.querySelectorAll('[data-source-layout]').forEach(button => button.classList.toggle('active', button.dataset.sourceLayout === mode));
+      sourceLayoutButton.textContent = '分栏布局';
+      sourceLayoutButton.setAttribute('aria-label', `分栏布局，当前：${SOURCE_LAYOUT_LABELS[mode]}`);
+      if (!matchMedia('(max-width:980px)').matches) restoreSourceViewer();
+      if (persist) localStorage.setItem(SOURCE_LAYOUT_KEY, mode);
     }
-    sourceLayoutSlider.addEventListener('input', event => applySourceLayout(event.target.value));
-    document.querySelectorAll('[data-pdf-share]').forEach(button => button.addEventListener('click', () => applySourceLayout(button.dataset.pdfShare)));
-    applySourceLayout(localStorage.getItem(SOURCE_LAYOUT_KEY) ?? (matchMedia('(max-width:980px)').matches ? 0 : 30), false);
+    sourceLayoutButton.addEventListener('click', event => { event.stopPropagation(); const open = sourceLayoutControl.classList.toggle('open'); sourceLayoutButton.setAttribute('aria-expanded', String(open)); });
+    document.querySelectorAll('[data-source-layout]').forEach(button => button.addEventListener('click', () => { applySourceLayout(button.dataset.sourceLayout); sourceLayoutControl.classList.remove('open'); sourceLayoutButton.setAttribute('aria-expanded','false'); }));
+    document.addEventListener('click', event => { if (!sourceLayoutControl.contains(event.target)) { sourceLayoutControl.classList.remove('open'); sourceLayoutButton.setAttribute('aria-expanded','false'); } });
+    document.addEventListener('keydown', event => { if (event.key === 'Escape') { sourceLayoutControl.classList.remove('open'); sourceLayoutButton.setAttribute('aria-expanded','false'); } });
+    applySourceLayout(localStorage.getItem(SOURCE_LAYOUT_KEY) ?? 'text-primary', false);
     populateNotePages();
     updateMarkerGuidance();
     loadSaved();
     renderUserNotes();
     renderChapterNotes();
     activeArea = textareas()[0] || null;
+    syncSourceViewer(activeArea);
+    textareas().forEach(area => area.addEventListener('focusin', () => syncSourceViewer(area)));
+    const sourcePageObserver = new IntersectionObserver(entries => {
+      if (Date.now() < sourceNavigationLockUntil) return;
+      const visible = entries.filter(entry => entry.isIntersecting).sort((a,b) => b.intersectionRatio - a.intersectionRatio)[0];
+      if (visible) syncSourceViewer(visible.target);
+    }, { rootMargin:'-15% 0px -65% 0px', threshold:[0,.25,.5] });
+    textareas().forEach(area => sourcePageObserver.observe(area));
     applyDictionarySettings();
     loadProjectDictionaryOverrides();
     loadVoices();

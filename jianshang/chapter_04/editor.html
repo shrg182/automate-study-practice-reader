@@ -35,8 +35,16 @@
     .format-divider { height:1px; margin:5px 4px; background:#ddd7cb; }
     .status { color:var(--muted); font-size:.86rem; min-width:132px; text-align:right; }
     main { width:min(1440px,calc(100% - 28px)); margin:18px auto 48px; }
-    .layout { display:grid; grid-template-columns:280px minmax(0,1fr); gap:18px; align-items:start; }
-    aside { position:sticky; top:calc(var(--editor-header-height, 75px) + 12px); display:grid; gap:14px; max-height:calc(100vh - var(--editor-header-height, 75px) - 24px); overflow:auto; }
+    .layout { display:grid; grid-template-columns:minmax(0,7fr) minmax(320px,3fr); gap:18px; align-items:start; }
+    .editing-pane, .layout > aside { min-width:0; }
+    aside { position:sticky; top:calc(var(--editor-header-height, 75px) + 12px); display:grid; gap:14px; max-height:calc(100vh - var(--editor-header-height, 75px) - 24px); overflow:auto; container-type:inline-size; }
+    body.source-layout-text-primary .layout { grid-template-columns:minmax(0,7fr) minmax(320px,3fr) !important; }
+    body.source-layout-balanced .layout { grid-template-columns:minmax(0,1fr) minmax(320px,1fr) !important; }
+    body.source-layout-pdf-primary .layout { grid-template-columns:minmax(0,2fr) minmax(320px,3fr) !important; }
+    body.source-layout-text .layout, body.source-layout-pdf .layout { grid-template-columns:minmax(0,1fr) !important; }
+    body.source-layout-text .editing-pane { order:1; } body.source-layout-text .layout > aside { order:2; }
+    body.source-layout-pdf .layout > aside { order:1; } body.source-layout-pdf .editing-pane { order:2; }
+    body.source-layout-text .layout > aside, body.source-layout-pdf .layout > aside { position:static; max-height:none; }
     .panel, .page, .toc-page, .reference-panel, .notes-dock, .export-dock { background:var(--paper); border:1px solid var(--line); box-shadow:var(--shadow); }
     .panel h2, .reference-panel h2, .notes-dock h2, .export-dock h2 { margin:0; padding:10px 12px; font-size:.95rem; border-bottom:1px solid var(--line); background:var(--soft); }
     .page-number-legend { padding:8px 11px; font-size:.82rem; color:var(--muted); }
@@ -52,9 +60,12 @@
     .toc-page, .reference-panel, .page { scroll-margin-top:86px; }
     .toc-head { display:flex; justify-content:space-between; gap:14px; align-items:baseline; padding:14px 16px; border-bottom:1px solid var(--line); background:#fff; }
     .toc-head h2 { margin:0; font-size:1.15rem; }
-    .toc-body { display:grid; grid-template-columns:minmax(0,1fr) minmax(280px,.72fr); gap:18px; padding:14px 16px 16px; }
+    .toc-body { display:grid; grid-template-columns:minmax(0,1fr); gap:18px; padding:14px 16px 16px; }
     .toc-body h3 { margin:0 0 8px; font-size:.95rem; }
     .toc-links { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:6px; }
+    .toc-work-notes { padding-top:14px; border-top:1px solid var(--line); }
+    .toc-work-notes p:last-child { margin-bottom:0; }
+    @container (max-width:560px) { .toc-links { grid-template-columns:minmax(0,1fr); } }
     .toc-link { display:flex; justify-content:space-between; gap:10px; border:1px solid var(--line); border-radius:6px; background:#fff; color:var(--ink); text-decoration:none; padding:7px 9px; min-height:34px; align-items:center; }
     .toc-link.available { border-left:4px solid var(--ok); background:#f4fbf6; }
     .toc-link.current { border:2px solid var(--accent); background:#fff0ec; color:var(--accent); font-weight:700; }
@@ -64,7 +75,7 @@
     .legend-current::before { background:var(--accent); } .legend-available::before { background:var(--ok); } .legend-unavailable::before { background:#aaa; }
     .toc-link span:first-child { overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
     .toc-link span:last-child { color:var(--muted); font-size:.86rem; font-variant-numeric:tabular-nums; white-space:nowrap; }
-    .reference-grid { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:14px; margin:18px 0; align-items:start; }
+    .reference-grid { display:grid; grid-template-columns:1fr; gap:14px; align-items:start; }
     #user-notes { grid-column:1 / -1; }
     #user-notes .table-scroll { max-height:440px; }
     #user-notes table { table-layout:fixed; }
@@ -87,14 +98,13 @@
     .page-title { font-weight:700; }
     .page-title span { color:var(--muted); font-weight:500; margin-left:8px; }
     .page-tools { display:flex; gap:8px; flex-wrap:wrap; }
-    .source-layout-control { margin:12px auto; max-width:760px; padding:10px 14px; border:1px solid var(--line); border-radius:10px; background:#fff; display:flex; align-items:center; gap:10px; flex-wrap:wrap; }
-    .source-layout-control strong { margin-right:auto; }
-    .source-layout-control input { width:min(280px,48vw); }
-    .source-layout-control output { min-width:145px; color:var(--muted); font-size:.86rem; }
-    .workbench { display:grid; grid-template-columns:minmax(340px,var(--text-share,70fr)) minmax(300px,var(--pdf-share,30fr)); gap:0; align-items:stretch; }
-    body.text-only .workbench, body.pdf-only .workbench { grid-template-columns:1fr; }
-    body.text-only .scan, body.pdf-only .editor-wrap { display:none; }
-    .editor-wrap { padding:12px; border-right:1px solid var(--line); display:flex; min-height:560px; }
+    .source-layout-control { position:relative; display:inline-flex; }
+    .source-layout-popover { position:absolute; z-index:60; top:calc(100% + 6px); right:0; display:none; min-width:150px; padding:6px; border:1px solid var(--line); border-radius:8px; background:#fff; box-shadow:0 10px 30px #2927202e; }
+    .source-layout-control.open .source-layout-popover { display:grid; gap:4px; }
+    .source-layout-popover button { width:100%; text-align:left; white-space:nowrap; }
+    .source-layout-popover button.active { background:#e6f4ea; color:#137333; font-weight:700; }
+    .workbench { display:block; }
+    .editor-wrap { padding:12px; display:flex; min-height:560px; }
     textarea { width:100%; min-height:0; border:1px solid var(--line); background:#fff; color:var(--ink); padding:14px; border-radius:6px; line-height:1.85; font-size:1.02rem; letter-spacing:0; overflow:auto; }
     .rich-editor { width:100%; min-height:536px; border:1px solid var(--line); background:#fff; color:var(--ink); padding:14px; border-radius:6px; line-height:1.85; font-size:1.02rem; letter-spacing:0; overflow:auto; white-space:pre-wrap; overflow-wrap:anywhere; }
     .rich-editor.annotated-view { background:#fff9e8; color:#5b481f; }
@@ -104,8 +114,13 @@
     .speech-rate { display:flex; align-items:center; gap:4px; color:var(--muted); font-size:.82rem; }
     #speechRate { width:82px; }
     .hidden { display:none !important; }
-    .scan { padding:12px; background:#fbfaf6; display:flex; }
-    .scan img { width:100%; height:auto; display:block; border:1px solid var(--line); background:#fff; align-self:flex-start; }
+    .source-viewer { background:#fbfaf6; }
+    .source-viewer-head { display:flex; justify-content:space-between; gap:8px; padding:9px 11px; border-bottom:1px solid var(--line); align-items:center; }
+    .source-viewer-head strong { font-size:.9rem; }
+    .source-viewer-meta { color:var(--muted); font-size:.78rem; }
+    .source-viewer img { width:100%; height:auto; display:block; background:#fff; }
+    .source-viewer-actions { display:flex; gap:7px; padding:9px; border-top:1px solid var(--line); }
+    .source-viewer-actions a { flex:1; justify-content:center; text-align:center; }
     .notes-dock { margin-top:18px; scroll-margin-top:86px; }
     .note-grid { display:grid; grid-template-columns:minmax(240px,.75fr) minmax(320px,1fr); gap:12px; padding:12px; }
     .note-controls { display:grid; gap:10px; align-content:start; }
@@ -124,7 +139,7 @@
     .export-dock { margin-top:18px; }
     #exportText { min-height:240px; border:0; border-radius:0; }
     .quick-note-jump { position:fixed; right:18px; bottom:18px; z-index:25; background:var(--accent); color:var(--accent-ink); border-color:var(--accent); box-shadow:0 8px 24px rgba(30,24,16,.18); }
-    @media (max-width:980px) { .topbar { grid-template-columns:1fr; } .actions { justify-content:flex-start; } .status { text-align:left; } .layout { grid-template-columns:1fr; } aside { position:static; max-height:none; } .toc-body, .note-grid { grid-template-columns:1fr; } .toc-links { grid-template-columns:1fr; } .reference-grid { grid-template-columns:1fr; } .workbench { grid-template-columns:1fr; } .editor-wrap { border-right:0; border-bottom:1px solid var(--line); } body.pdf-priority .scan { grid-row:1; } body.pdf-priority .editor-wrap { grid-row:2; } .rich-editor { min-height:520px; } .quick-note-jump { right:12px; bottom:12px; } }
+    @media (max-width:980px) { .topbar { grid-template-columns:1fr; } .actions { justify-content:flex-start; } .status { text-align:left; } .layout, body.source-layout-text-primary .layout, body.source-layout-balanced .layout, body.source-layout-pdf-primary .layout { grid-template-columns:minmax(0,1fr) !important; } aside { position:static; max-height:none; } body.source-layout-pdf-primary .layout > aside, body.source-layout-pdf .layout > aside { order:1; } body.source-layout-pdf-primary .editing-pane, body.source-layout-pdf .editing-pane { order:2; } body.source-layout-text .editing-pane, body.source-layout-text-primary .editing-pane, body.source-layout-balanced .editing-pane { order:1; } body.source-layout-text .layout > aside, body.source-layout-text-primary .layout > aside, body.source-layout-balanced .layout > aside { order:2; } .source-layout-popover { position:fixed; top:var(--editor-header-height,75px); right:12px; } .toc-body, .note-grid { grid-template-columns:1fr; } .toc-links { grid-template-columns:1fr; } .reference-grid { grid-template-columns:1fr; } .rich-editor { min-height:520px; } .quick-note-jump { right:12px; bottom:12px; } }
   </style>
 </head>
 <body>
@@ -134,24 +149,396 @@
     reference-href="../reference_tables.html">
     <noscript>此编辑器需要启用 JavaScript。</noscript>
   </jianshang-editor-header>
-  <section class="source-layout-control" aria-label="正文与 PDF 布局">
-    <strong>正文 / PDF</strong>
-    <button type="button" data-pdf-share="0">仅正文</button>
-    <button type="button" data-pdf-share="30">正文优先</button>
-    <button type="button" data-pdf-share="50">均衡</button>
-    <button type="button" data-pdf-share="100">仅 PDF</button>
-    <input id="sourceLayoutSlider" type="range" min="0" max="100" step="5" aria-label="PDF 所占比例">
-    <output id="sourceLayoutOutput"></output>
-  </section>
   <main>
     <div class="layout">
+      <section class="editing-pane">
+        <div class="pages">
+        <section class="page" id="page-089">
+          <div class="page-head">
+            <div class="page-title">原书阅读器页 089<span>原书物理 PDF 页 087</span><span>印刷页 75</span></div>
+            <div class="page-tools">
+              <button type="button" data-copy-page="089">复制本页</button>
+              <button type="button" data-export-page="089">导出本页</button>
+            </div>
+          </div>
+          <div class="workbench">
+            <div class="editor-wrap">
+              <div class="rich-editor" data-page="089" data-source-page="087" data-printed-page="75" data-source-image="pdf_pages/page-087.jpg" contenteditable="true" role="textbox" aria-multiline="true" spellcheck="false">第四章异族占领二里头
+
+夏朝和商朝的更迭，在史书中有道德评判色彩很强的记载：末代帝王夏桀胡作非为引起天怒人怨，终于被新兴的有道之君商汤取代。
+
+帝桀之时……桀不务德而武伤百姓，百姓弗堪……汤修德，诸侯皆归汤，汤遂率兵以伐夏桀。桀走鸣条，遂放而死……汤乃践天子位，代夏朝天下。[[fn:1]]
+
+但考古呈现出来的过程更为复杂，一些来源各异的落后人群曾侵入二里头古城，统治时间长达半个世纪。中国历史上的第一次王朝更迭显得扑朔迷离。
+
+夏朝的敌人来自哪里？这需要从二里头古国的疆域开始考察。
+
+五百里王朝
+
+在二里头二期，古城扩张到3平方公里后，已经达到一个早期国家的体量。这就带来一个问题：这个早期国家统治的范围有多大？
+
+从最低标准看，洛阳盆地是二里头都邑能够控制的范围。盆地东西狭长，跨度约50公里。有研究者曾统计洛阳盆地内的聚落数量：在二里头一期，古城之外发现聚落19个，二期迅速增长到83个，到三、四期稳定保持在100个左右，其中，面积在0.5平方公里左右的“乡镇”级大聚落约20个，其余为0.1平方公里及以下的村落。从“王都”到乡镇、村落，等级格局非常明显，显然属于同一个王国政体。[[fn:2]]
+
+至于二里头-夏王朝在洛阳盆地外能够控制的疆域，史书和考古都难以给出标准答案。其一，编写相关史书的主要是战国到西汉时人，他们还没有对早期国家的考古知识，只能按自己生活的世界想象三皇五帝和夏商时代，所以孟子会说，大禹治水的范围遍及江、河、淮、汉：“禹掘地而注之海，驱蛇龙而放之范，水由地中行，江、淮、河、汉是也。” （《孟子•滕文公章句下》）这是战国时代华夏人的认知世界，但上古的华夏范围还没这么大。</div>
+            </div>
+          </div>
+        </section>
+        <section class="page" id="page-090">
+          <div class="page-head">
+            <div class="page-title">原书阅读器页 090<span>原书物理 PDF 页 088</span><span>印刷页 76</span></div>
+            <div class="page-tools">
+              <button type="button" data-copy-page="090">复制本页</button>
+              <button type="button" data-export-page="090">导出本页</button>
+            </div>
+          </div>
+          <div class="workbench">
+            <div class="editor-wrap">
+              <div class="rich-editor" data-page="090" data-source-page="088" data-printed-page="76" data-source-image="pdf_pages/page-088.jpg" contenteditable="true" role="textbox" aria-multiline="true" spellcheck="false">其二，考古学也很难解答政治史层面的问题。考古的主要对象是古人生产的器物，特别是数量最多的陶器，虽然从陶器风格可以划出“二里头文化”分布的范围，但陶器分布范围和古国政治体并不是一回事，不然，七八千年前的裴李岗文化和仰韶文化都会是地跨上千里的古国。
+
+以陶器为基础的二里头文化分布范围比较广，从晋南到关中、河南省大部，甚至远及安徽省，但风格并不完全一致，还会按地域分成几个“类型”，所以陶器文化很难和古国的政治疆域等同。二里头人对铸铜技术严格保密，制作的铜器很少出现在外地，也难以作为指标。
+
+二里头文化遗址的分布及出土陶礼器的遗址示意图：黑点是二里头文化遗址，编号的空心方框是出土二里头风格陶礼器的地点。
+
+关于二里头-夏朝的疆域，日本学者西江清高和久慈大介曾提出一个方法：考察陶礼器的分布。[[fn:3]] 二里头文化拥有独特的陶礼器（酒器）群，觚、爵、盉、斝、鬶等，只有地位较高的人才能拥有成套的陶礼器。如果这些陶礼器群出现在二里头古城之外的地方，就可能是二里头-夏朝的控制范围，或者是夏王室给外地酋长的赏赐，我们由此可以窥探古国的政治影响力范围。
+
+从西江清高制作的分布地图可见，陶礼器出现最集中的地方在黄河南岸以及嵩山东南麓，西起河南陕县，东到郑州，东西约200公里，南北约100公里。本书推测，这应当是二里头古国（夏朝）直接统治的区域，比二里头文化分布范围要小得多。</div>
+            </div>
+          </div>
+        </section>
+        <section class="page" id="page-091">
+          <div class="page-head">
+            <div class="page-title">原书阅读器页 091<span>原书物理 PDF 页 089</span><span>印刷页 77</span></div>
+            <div class="page-tools">
+              <button type="button" data-copy-page="091">复制本页</button>
+              <button type="button" data-export-page="091">导出本页</button>
+            </div>
+          </div>
+          <div class="workbench">
+            <div class="editor-wrap">
+              <div class="rich-editor" data-page="091" data-source-page="089" data-printed-page="77" data-source-image="pdf_pages/page-089.jpg" contenteditable="true" role="textbox" aria-multiline="true" spellcheck="false">在较远的外围也有一些零星的二里头陶礼器出土，如河南省南部的方城八里桥和驻马店杨庄，陕西商州的东龙山。这些可能是和二里头古国（夏朝）存在朝贡关系的部落，反映了夏朝的影响力范围。
+
+这个“王朝”疆域要低于战国时人的想象，但已经超过以往中国境内的任何古国。究其实质，二里头-夏朝属于古国和王朝之间的过渡状态，或者说在前文明与文明之间的门槛上。
+
+古史有“启征西河”的记载，即禹的儿子启曾远征晋南地区：“（启）三十五年，征河西。”（《帝王世纪》）从地理环境推测，夏王朝应当和铜、盐矿产丰富的晋南有密切联系。山西省南部，特别是汾河下游地区，有比较密集的二里头文化聚落，属于晋南本地的东下冯类型。[[fn:4]]
+
+在二里头一夏朝时期，晋南地区的绛县西吴壁出现了冶铜工场，主要是把铜矿石冶炼成红铜，但没有在当地发现青铜铸造技术。发掘者推测，西吴壁可能是二里头-夏朝控制的一处采矿和冶炼基地，生产的红铜供应二里头。但西吴壁尚未发现高规格的城邑、建筑和墓葬等，缺少夏朝统治的直接证据；也许，它是由本地部族掌控的，用铜料和二里头人贸易。
+
+晋南没有发现二里头-夏朝建立的城池，直到商朝早期，商人才在晋南建立了两座夯土小城池，距离西吴壁数十公里，说明商人已经控制西吴壁铜矿。在早商，西吴壁的炼铜炉底部还有人祭遗存，[[fn:5]] 这似乎是当地族群接受商文化的表现。</div>
+            </div>
+          </div>
+        </section>
+        <section class="page" id="page-092">
+          <div class="page-head">
+            <div class="page-title">原书阅读器页 092<span>原书物理 PDF 页 090</span><span>印刷页 78</span></div>
+            <div class="page-tools">
+              <button type="button" data-copy-page="092">复制本页</button>
+              <button type="button" data-export-page="092">导出本页</button>
+            </div>
+          </div>
+          <div class="workbench">
+            <div class="editor-wrap">
+              <div class="rich-editor" data-page="092" data-source-page="090" data-printed-page="78" data-source-image="pdf_pages/page-090.jpg" contenteditable="true" role="textbox" aria-multiline="true" spellcheck="false">在东方，夏王朝有两个比较重要的据点——郑州大师姑古城和新郑望京楼古城，距离二里头100公里左右，城池规模不大，边长仅数百米，城内没有发现高等级建筑和墓葬，但抛掷在灰坑里的尸骨较多，显示有较强的权力因素和社会冲突，也可能是和异族之间的战争比较频繁。
+
+这两座小城，意在守卫夏朝的“边疆”。从这两地再向东，是山东地区的岳石文化；向北，是辉卫文化和下七垣文化。当然，它们和夏都二里头的关系也难以确定，也许是二里头直接管辖的边疆据点，也许是接受二里头册封的地方自治“诸侯”。
+
+夏末商初中原主要考古文化分布图6：郑州（大师姑）和新郑望京楼处在二里头文化的东部边疆，其中的二里岗（冈）文化兴起较晚，和二里头是前后承接关系。（图）
+
+夏王都沦丧
+
+距今3600—3500年间，是二里头文化的尾声——第四期。这一百年又分前后两段：前面半个世纪，二里头人仍旧按照原来的轨迹生活，沿用着三期建成的宫殿和宫城墙，各种手工作坊都在生产，铜器铸造技术稳步提高；后半个世纪则发生了剧烈变化，宫城墙开始塌毁，几座宫殿逐渐废弃，某些外来者侵入了二里头。
+
+在后半阶段，D1宫殿仍在使用，但明显更换了主人：院落里挖掘了很多灰坑（垃圾坑），有些灰坑破坏了柱廊和宫殿台基；院落围墙下有很多低等级墓葬，有些死者居然被埋在柱廊下；西廊檐下甚至挖出了一座陶窑，说明曾有人在宫殿院里挖土制陶，生产下等人使用的陶器。</div>
+            </div>
+          </div>
+        </section>
+        <section class="page" id="page-093">
+          <div class="page-head">
+            <div class="page-title">原书阅读器页 093<span>原书物理 PDF 页 091</span><span>印刷页 79</span></div>
+            <div class="page-tools">
+              <button type="button" data-copy-page="093">复制本页</button>
+              <button type="button" data-export-page="093">导出本页</button>
+            </div>
+          </div>
+          <div class="workbench">
+            <div class="editor-wrap">
+              <div class="rich-editor" data-page="093" data-source-page="091" data-printed-page="79" data-source-image="pdf_pages/page-091.jpg" contenteditable="true" role="textbox" aria-multiline="true" spellcheck="false">种种迹象显示，这座夏都最宏大的宫殿已经成了大杂院，主人不再是显贵豪门，而是一大批外来的乡土民众。此外，D2宫殿院落以及南邻的D4也在发生类似的变化，被外来者粗暴利用，很快就失去了往日的辉煌。
+
+这些鹊巢鸠占，反客为主的外来者是谁？没有文字记录，考古学者只能从最擅长的陶片分析入手。
+
+在夏朝最后的半个世纪，二里头突然出现了来自豫北下七垣文化和山东岳石文化的陶器，特别是D1、D2宫殿灰坑中的陶片，主要是外来风格。这说明，有大量来自东北方向的人群入主了二里头，他们很多虽只是普通民众，但作为征服者，入住了D1、D2这种高级宫殿。
+
+宫城西南角的两座门楼（D7基址和D8基址）在四期晚段也被废弃，踩踏出的道路覆压在柱洞之上，说明门楼建筑已被夷为平地。宫城东墙也出现了坍塌迹象，有些小路穿过城墙，还有堆积的垃圾。
+
+这一轮变化发生在距今约3550年前；对照史书，这正是东方商族崛起、夏商易代的时间，商汤（武王）带领商人攻灭了夏朝。[[fn:7]]
+
+在半个世纪的“占领期”，商人征服者放任二里头的宏伟宫殿逐渐失修、损坏，而新建了两处较大型建筑。其中的一座，在宫城东墙下，D2院落北侧，借用了一段东城墙，同时封堵了东墙最北的一座城门，被编号为D6宫殿基址。
+
+D6宫殿是分三次逐渐形成的，最早在西端建了一座接近方形的建筑，然后分两次向东扩建，最后和东宫墙连接。它没有之前二里头宫殿的宏大和规整，而是更加紧凑和实用。这是典型的商人早期风格：四合院结构，贴着围墙建房子，不在院落中央建造独立的主体殿堂。</div>
+            </div>
+          </div>
+        </section>
+        <section class="page" id="page-094">
+          <div class="page-head">
+            <div class="page-title">原书阅读器页 094<span>原书物理 PDF 页 092</span><span>印刷页 80</span></div>
+            <div class="page-tools">
+              <button type="button" data-copy-page="094">复制本页</button>
+              <button type="button" data-export-page="094">导出本页</button>
+            </div>
+          </div>
+          <div class="workbench">
+            <div class="editor-wrap">
+              <div class="rich-editor" data-page="094" data-source-page="092" data-printed-page="80" data-source-image="pdf_pages/page-092.jpg" contenteditable="true" role="textbox" aria-multiline="true" spellcheck="false">占领者新建的另一座建筑是D10，不太大，在宫城的外侧东南角，恰好占据了宫南路大道。可见，此时宫城南墙已经塌毁，可以随意通行。
+
+商朝占领时期的二里头宫殿区平面图[[fn:8]] ：6号和10号基址就是在这一时期新建的，昔日的1号和2号基址则逐渐被废弃。
+
+商人没有继续把二里头当作都城，而是在二里头以东8公里的偃师市（区）郊建造了一座新聚落，同时，在现今的郑州市区也建了一座。这两座聚落逐渐扩大，并修筑了城墙，被考古学者分别称为偃师商城和郑州商城。
+
+这说明，商人对二里头的占领完全是实用和策略性的，新建筑也不太重视礼仪性。另一方面，第四期发现的被随意抛弃的尸骨数量大增，其中大部分应当来自商人入侵和统治二里头时的杀戮。比如，一座四期晚段的墓葬（1984VIM5），墓主的胸骨被一枚8厘米长的铜镞射入，埋在宫殿区以北的六（VI）区传统墓地。他很可能就是被商人占领军所杀的夏人，但家人还是尽量按正常标准埋葬了他。[[fn:9]]
+
+商人占领二里头时期的杀戮还表现在灰坑中，不仅坑中的人骨明显增加，还有长期积累的零碎人骨。比如，有一个深达1.85米的灰坑，在其使用期间，一直有零星的人骨被扔进去，而且坑中其他垃圾主要是各种动物的骨骸以及陶制炊器残片。这很可能是食人者房屋旁边的垃圾坑：</div>
+            </div>
+          </div>
+        </section>
+        <section class="page" id="page-095">
+          <div class="page-head">
+            <div class="page-title">原书阅读器页 095<span>原书物理 PDF 页 093</span><span>印刷页 81</span></div>
+            <div class="page-tools">
+              <button type="button" data-copy-page="095">复制本页</button>
+              <button type="button" data-export-page="095">导出本页</button>
+            </div>
+          </div>
+          <div class="workbench">
+            <div class="editor-wrap">
+              <div class="rich-editor" data-page="095" data-source-page="093" data-printed-page="81" data-source-image="pdf_pages/page-093.jpg" contenteditable="true" role="textbox" aria-multiline="true" spellcheck="false">人骨在2000IIIH17的不同层次、不同部位都有出现，似肢解后弃于坑中。出土有包括深腹罐、圆腹罐、鼎、甑、鬲、甗、刻槽盆、大口尊、觚、器盖等在内的较多陶片，牛、羊、猪、麋鹿、鸟、蚌、丽蚌、圆顶珠蚌、圆田螺动物遗存。[[fn:10]]
+
+再晚一些，作坊区东北侧的一座灰坑（2004VH305）有五具较完整的人骨。这座灰坑边长约2米，深约1.3米，最底部有一名十六七岁的男性，上面是四名女性，其中一名女性（2号）身下铺有约2毫米厚的朱砂。这五人的身体多蜷曲，很可能是死于他杀。
+
+二里头较高级的墓葬中，常给墓主铺垫朱砂，这是自龙山时代已经出现的葬俗；但2号女性是和其他人一起被抛尸灰坑的，不是正常的死亡和丧葬，为何独独她获得了铺垫朱砂的待遇？可能她死前有一定地位，负责抛尸埋葬者对她有些同情且也有获得朱砂的能力，但仍不会（或者说不敢）给她挖一个单独的专用墓穴。这座坑不太像祭祀坑，因为坑中包含较多生活垃圾。[[fn:11]]
+
+存在征服之后的暴力统治，但也维持着相对稳定的社会秩序，这是被占领下的二里头的基本状态。
+
+在夏商易代之际，二里头人的青铜冶铸技术堪称独步中原甚至东亚，商族人自然会非常重视。商人从二里头铸铜区调拨了一些人，分配到偃师和郑州商城建立冶铸工场，但二里头铸铜场的主体仍在继续生产。</div>
+            </div>
+          </div>
+        </section>
+        <section class="page" id="page-096">
+          <div class="page-head">
+            <div class="page-title">原书阅读器页 096<span>原书物理 PDF 页 094</span><span>印刷页 82</span></div>
+            <div class="page-tools">
+              <button type="button" data-copy-page="096">复制本页</button>
+              <button type="button" data-export-page="096">导出本页</button>
+            </div>
+          </div>
+          <div class="workbench">
+            <div class="editor-wrap">
+              <div class="rich-editor" data-page="096" data-source-page="094" data-printed-page="82" data-source-image="pdf_pages/page-094.jpg" contenteditable="true" role="textbox" aria-multiline="true" spellcheck="false">二里头的铸铜人群和商人的关系似乎不错。在商人占领期间，手工作坊区的北墙也有发生损坏，但立刻进行了重建。[[fn:12]] 铸铜场区并未发现太多外来陶片，看来商人占领者比较尊重冶铸场所，没有在这里建立营地。
+
+这也使人产生了这样一个联想：也许，铸铜族群是灭亡夏朝一二里头的“第五纵队”，他们不甘心宫殿区族群垄断权力，坐享统治收益，便联合外来者商族，一起征服了宫殿区族群。铸铜族群和商人的协作，换来了二里头古城半个世纪的寿命。
+
+但二里头的夏王族群并未被赶尽杀绝。新建的偃师商城发现了一些二里头风格的陶器，而且二里头宫殿区的某些规划特点又出现在了偃师商城的宫殿区。看来，商人征服者把二里头宫廷人群（或是其中的一部分）迁到了8公里外的偃师商城，让他们参与建设新城。
+
+而在苟延残喘近半个世纪后，二里头的青铜作坊还是被彻底迁移到了郑州商城。从此，二里头古城消失，夏王朝最后的痕迹不复存在。
+
+遥远的巢湖殖民地
+
+《尚书・仲虺之诰》记载，商汤灭夏之后，把末代夏王桀驱赶到了“南巢”：“成汤放桀于南巢。”古代注家认为，“南巢”是安徽的巢湖之滨：“庐州巢县有巢湖，即《尚书》‘成汤伐桀，放于南巢’者也。"（《史记正义》引《括地志》）
+
+巢湖，在二里头东南方500多公里外，不仅不是二里头文化区，甚至不属于二里头前身（新智人所属的煤山文化分布区）。夏桀的逃亡为何指向巢湖？从史书里再也找不到旁证。</div>
+            </div>
+          </div>
+        </section>
+        <section class="page" id="page-097">
+          <div class="page-head">
+            <div class="page-title">原书阅读器页 097<span>原书物理 PDF 页 095</span><span>印刷页 83</span></div>
+            <div class="page-tools">
+              <button type="button" data-copy-page="097">复制本页</button>
+              <button type="button" data-export-page="097">导出本页</button>
+            </div>
+          </div>
+          <div class="workbench">
+            <div class="editor-wrap">
+              <div class="rich-editor" data-page="097" data-source-page="095" data-printed-page="83" data-source-image="pdf_pages/page-095.jpg" contenteditable="true" role="textbox" aria-multiline="true" spellcheck="false">1972年，安徽肥西县的大墩孜村出土了两件青铜斝和一枚青铜铃，铜铃是二里头墓葬中常见的造型，两件青铜斝也属于二里头晚期特征。肥西县在巢湖西岸，似乎和夏桀逃亡“南巢”相呼应。
+
+之后，肥西县多次出土二里头风格的青铜器和陶器。在二里头古城之外，肥西是当时出土青铜器最多的地区。较新的发现是三官庙聚落遗址，有房屋被烧毁后的红烧土堆积，里面有十多件青铜器，主要是钺、戚和戈等兵器。[[fn:14]]
+
+碳十四测年显示，三官庙遗址距今约3700年，正当二里头古国最鼎盛的第三期，所以，可能是当时二里头铸铜人群曾发生内讧，一部分被排挤者被迫南下另谋生路，迁徙到了肥西三官庙定居。从那之后，他们和夏朝的联系似乎很弱，其中的一个表现是，他们制作的青铜器逐渐和二里头拉开了距离，甚至出现了二里头没有的造型，比如“半月形铜钺”。
+
+不考虑沿途部落的敌意，从二里头到肥西的交通算不上太困难：
+
+先步行到新砦一带，乘坐舟筏先后进入颍河和淮河，再溯泗水而上，便可抵达肥西附近。
+
+目前尚未在肥西县发现冶铸铜的遗址，也没有发现高等级的宫殿和大型聚落，但零星发现的青铜器证明，确实有来自二里头的人长期定居于此。
+
+当夏王朝被商人占领，也许末代王夏桀想起了遥远南方的那批二里头铸铜师，于是南逃寻求庇护，结果商人追踪而至，毁灭了夏人这个南方据点：房屋被焚毁，被杀者的尸骨和兵器被埋在了灰烬中。</div>
+            </div>
+          </div>
+        </section>
+        <section class="page" id="page-098">
+          <div class="page-head">
+            <div class="page-title">原书阅读器页 098<span>原书物理 PDF 页 096</span><span>印刷页 84</span></div>
+            <div class="page-tools">
+              <button type="button" data-copy-page="098">复制本页</button>
+              <button type="button" data-export-page="098">导出本页</button>
+            </div>
+          </div>
+          <div class="workbench">
+            <div class="editor-wrap">
+              <div class="rich-editor" data-page="098" data-source-page="096" data-printed-page="84" data-source-image="pdf_pages/page-096.jpg" contenteditable="true" role="textbox" aria-multiline="true" spellcheck="false">至于二里头的征服者，灭掉了夏王朝的商人，为什么他们的陶器分属下七垣和岳石文化，却没有自己的特色？
+
+这群征服者的来历扑朔迷离。
+
+附录：关于夏朝的记忆
+
+目前已发现的殷商甲骨卜辞从来没有提到过夏朝，这有点不好解释。有学者认为，从来没有过夏朝，所以商人没有记载；也有学者认为，商人肯定知道夏朝，只是甲骨卜辞只专注祭祀神灵和现实问题，不涉及改朝换代的历史，所以不用提及。[[fn:17]]
+
+《尚书•汤誓》是商汤灭夏时的讲话，不过考古学者认为，这篇内容并不可靠，很可能是西周以后的人创作的。
+
+《诗经》里有一组商人的史诗“商颂”，在歌颂商汤功业的《长发》中，出现了一句“韦顾既伐，昆吾夏桀”，大意是，商汤先讨伐韦和顾，然后又进攻昆吾和夏桀。对于灭亡夏朝的丰功伟业，“商颂”只有这一处。
+
+而且，《诗经》里的“商颂”未必是商朝原创的作品。灭商之后，周朝把一部分商王族分封到了宋国，以传承商朝的世系，但宋国人最
+
+初并没有“商颂”，是春秋初期的宋国贵族正考父从周朝掌管音乐的“太师”那里得到了“商颂十二篇"。[[fn:18]]
+
+这组“商颂”的最初作者已无从知晓，也许是商朝的史诗被周朝接收，又保存了三四百年才交给宋国人，这中间，周人很可能对它们进行过改编，原创性打了很多折扣。正考父是孔子的七世祖，编辑《诗经》时，孔子把“商颂”也编了进去，遂流传至今。</div>
+            </div>
+          </div>
+        </section>
+        <section class="page" id="page-099">
+          <div class="page-head">
+            <div class="page-title">原书阅读器页 099<span>原书物理 PDF 页 097</span><span>印刷页 85</span></div>
+            <div class="page-tools">
+              <button type="button" data-copy-page="099">复制本页</button>
+              <button type="button" data-export-page="099">导出本页</button>
+            </div>
+          </div>
+          <div class="workbench">
+            <div class="editor-wrap">
+              <div class="rich-editor" data-page="099" data-source-page="097" data-printed-page="85" data-source-image="pdf_pages/page-097.jpg" contenteditable="true" role="textbox" aria-multiline="true" spellcheck="false">在可信的史料里面，最早提到夏朝的是灭商的周人：
+
+其一，《尚书》中周武王和周公两兄弟之间的讲话经常用夏朝做历史借鉴。周人认为，晋南地区是夏朝故地，周武王之子成王分封弟弟叔虞到晋国时曾发表一篇训话，提到当地是“夏墟”；成王还说，应当用夏朝的政治理念（“夏政”）去统治当地土著。（《左传•定公四年》）但在考古中，晋南尚未发现夏朝的高等级城邑。
+
+其二，周人似乎还记得二里头古城的存在。周武王灭商后，准备在洛水边建一座新城，武王说，那里是夏朝的故地：“自洛泗延于伊讷，居阳无固，其有夏之居（《逸周书•度邑解》）所以周朝在这里营建了洛邑（洛阳），位于二里头古城以西20公里处。
+
+在传世古书中，对夏都记载最准确的就是这一处，出自《逸周书》。这部书因没有进入儒家“六经”，长期不受重视，但它的很多信息非常独家，不是毫不知情的后来者能杜撰出来的。
+
+注释
+
+1《史记•夏本纪》。《史记•殷本纪》：“夏桀为虐政淫荒，而诸侯昆吾氏为乱。汤乃兴师率诸侯……遂伐桀……桀败于有嫉之虚，桀奔于鸣条，夏师败绩…… 汤既胜夏……于是诸侯毕服，汤乃践天子位，平定海内。”
+
+2陈国梁：《合与分：聚落考古视角下二里头都邑的兴衰解析》，《中原文物》2019年第4期。
+
+3 ［日］西江清高、［日］久慈大介：《从地域间关系看二里头文化期中原王朝的空间结构》，杜金鹏、许宏主编：《二里头遗址与二里头文化研究》，科学出版社，2006年。</div>
+            </div>
+          </div>
+        </section>
+        <section class="page" id="page-100">
+          <div class="page-head">
+            <div class="page-title">原书阅读器页 100<span>原书物理 PDF 页 098</span><span>印刷页 86</span></div>
+            <div class="page-tools">
+              <button type="button" data-copy-page="100">复制本页</button>
+              <button type="button" data-export-page="100">导出本页</button>
+            </div>
+          </div>
+          <div class="workbench">
+            <div class="editor-wrap">
+              <div class="rich-editor" data-page="100" data-source-page="098" data-printed-page="86" data-source-image="pdf_pages/page-098.jpg" contenteditable="true" role="textbox" aria-multiline="true" spellcheck="false">4但也有学者认为，东下冯是独立于二里头的文化。参见张立东《论辉卫文化》，《考古学集刊》（10），地质出版社，1996年；常怀颖《从新峡遗址再论二里头与东下冯之关系》，《文物季刊》2022年第1期。
+
+5戴向明等：《山西绛县西吴壁遗址2018—2019年发掘简报》，《考古》2020年第7期。
+
+6侯卫东：《论二里头文化四期中原腹地的社会变迁》，《中原文物》2020年第3期。
+
+7一般认为夏商易代发生在公元前1600年前后，碳十四测年的精度很难体现50年范围的差别，所以这个小差别目前只能忽略。
+
+8赵海涛：《二里头遗址二里头文化四期晚段遗存探析》，《南方文物》2016年第4期。
+
+9参见中科院考古所二里头工作队《1984年秋河南偃师二里头遗址发现的几座墓葬》，《考古》1986年第4期。
+
+10中科院考古所：《二里头：1999—2006》第一册，第257页。
+
+11关于2004VH305灰坑，详见中科院考古所《二里头：1999—2006》第一册，第417页。
+
+12新墙编号Q3，详见赵海涛《二里头遗址二里头文化四期晚段遗存探析》。
+
+13程露：《也谈肥西大墩孜出土的青铜壁和铃》，《东方博物》第25辑，浙江大学出版社，2007年。
+
+14秦让平：《安徽肥西三官庙遗址发现二里头时期遗存》，《中国文物报》2019年8月23日；方林：《肥西三官庙遗址出土青铜兵器的年代及相关问题》，《文物鉴定与鉴赏》2020年第10期下。</div>
+            </div>
+          </div>
+        </section>
+        <section class="page" id="page-101">
+          <div class="page-head">
+            <div class="page-title">原书阅读器页 101<span>原书物理 PDF 页 099</span><span>印刷页 87</span></div>
+            <div class="page-tools">
+              <button type="button" data-copy-page="101">复制本页</button>
+              <button type="button" data-export-page="101">导出本页</button>
+            </div>
+          </div>
+          <div class="workbench">
+            <div class="editor-wrap">
+              <div class="rich-editor" data-page="101" data-source-page="099" data-printed-page="87" data-source-image="pdf_pages/page-099.jpg" contenteditable="true" role="textbox" aria-multiline="true" spellcheck="false">15这件“半月形铜钺”更像是5000多年前长江下游的多孔石刀，在南京北阴阳营和安徽薛家岗都有发现。
+
+16方林：《肥西三官庙遗址出土青铜兵器的年代及相关问题》。
+
+17戴向明：《夏文化、夏王朝及相关问题》，《江汉考古》2021年第6期；中国先秦史学会等：《夏文化研究论集》，中华书局，1996年。
+
+18《毛诗序》：“有正考甫者，得商颂十二篇于周之大师。”</div>
+            </div>
+          </div>
+        </section>
+        <section class="page" id="page-102">
+          <div class="page-head">
+            <div class="page-title">原书阅读器页 102<span>原书物理 PDF 页 100</span><span>印刷页 88</span></div>
+            <div class="page-tools">
+              <button type="button" data-copy-page="102">复制本页</button>
+              <button type="button" data-export-page="102">导出本页</button>
+            </div>
+          </div>
+          <div class="workbench">
+            <div class="editor-wrap">
+              <div class="rich-editor" data-page="102" data-source-page="100" data-printed-page="88" data-source-image="pdf_pages/page-100.jpg" contenteditable="true" role="textbox" aria-multiline="true" spellcheck="false"></div>
+            </div>
+          </div>
+        </section></div>
+        <section class="notes-dock" id="notes">
+          <h2>编辑札记</h2>
+          <div class="note-grid">
+            <div class="note-controls">
+              <label>页<select id="notePage"></select></label>
+              <div class="marker-composer" id="markerComposer">
+                <h3>标记</h3>
+                <label>类型<select id="markerType">
+                  <option value="pinyin">注音</option>
+                  <option value="editor-note">编者注／脚注</option>
+                  <option value="inline-note">按语</option>
+                  <option value="pending">待核</option>
+                  <option value="user-note">用户札记</option>
+                </select></label>
+                <label>内容<input id="markerText" type="text" autocomplete="off" placeholder="输入拼音或笔记内容"></label>
+                <p class="marker-help" id="markerHelp">先在正文中选择文字，再输入拼音；可用“拼音；简注”。</p>
+                <div class="note-actions"><button id="applyMarkerBtn" type="button">应用标记</button></div>
+              </div>
+              <label>工作日志标签<input id="noteTag" type="text" value="校订" autocomplete="off"></label>
+              <textarea id="noteText" spellcheck="false"></textarea>
+              <div class="note-actions">
+                <button id="addNoteBtn" type="button">记录到编辑日志</button>
+                <button id="exportLogBtn" type="button">导出日志</button>
+                <button id="downloadLogBtn" type="button">下载日志</button>
+                <button id="clearLogBtn" type="button">清空日志</button>
+              </div>
+            </div>
+            <div><div id="logList" class="log-list"></div></div>
+          </div>
+        </section>
+        <section class="export-dock"><h2>导出文本</h2><textarea id="exportText" spellcheck="false"></textarea></section>
+      </section>
       <aside>
+        <section class="panel source-viewer" aria-label="当前原书 PDF 页">
+          <div class="source-viewer-head"><strong>当前原书 PDF 页</strong><span class="source-viewer-meta" id="sourceViewerMeta"></span></div>
+          <img id="sourceViewerImage" src="pdf_pages/page-087.jpg" alt="原书 PDF 页 087">
+          <div class="source-viewer-actions"><a class="action-link" href="chapter_04_annotated.pdf" target="_blank" rel="noopener">打开注音版 PDF</a></div>
+        </section>
         <section class="panel"><h2>页码说明</h2><div class="page-number-legend"><p><strong>原阅</strong> 089-102：原书在阅读器中显示的页码</p><p><strong>原PDF</strong> 087-100：原书文件的物理页码</p><p><strong>印</strong> 75-88：书页印刷页码</p><p><strong>注音PDF</strong> 1-12：独立重排页码，不与原书逐页对应</p></div></section>
         <section class="panel"><h2>页</h2><div class="nav-list"><button type="button" class="nav-button" data-target="toc"><span>目录</span><span>top</span></button><button type="button" class="nav-button" data-target="notes"><span>编辑札记</span><span>log</span></button><button type="button" class="nav-button" data-target="page-089"><span>原阅 089 · 原PDF 087</span><span>印 75</span></button><button type="button" class="nav-button" data-target="page-090"><span>原阅 090 · 原PDF 088</span><span>印 76</span></button><button type="button" class="nav-button" data-target="page-091"><span>原阅 091 · 原PDF 089</span><span>印 77</span></button><button type="button" class="nav-button" data-target="page-092"><span>原阅 092 · 原PDF 090</span><span>印 78</span></button><button type="button" class="nav-button" data-target="page-093"><span>原阅 093 · 原PDF 091</span><span>印 79</span></button><button type="button" class="nav-button" data-target="page-094"><span>原阅 094 · 原PDF 092</span><span>印 80</span></button><button type="button" class="nav-button" data-target="page-095"><span>原阅 095 · 原PDF 093</span><span>印 81</span></button><button type="button" class="nav-button" data-target="page-096"><span>原阅 096 · 原PDF 094</span><span>印 82</span></button><button type="button" class="nav-button" data-target="page-097"><span>原阅 097 · 原PDF 095</span><span>印 83</span></button><button type="button" class="nav-button" data-target="page-098"><span>原阅 098 · 原PDF 096</span><span>印 84</span></button><button type="button" class="nav-button" data-target="page-099"><span>原阅 099 · 原PDF 097</span><span>印 85</span></button><button type="button" class="nav-button" data-target="page-100"><span>原阅 100 · 原PDF 098</span><span>印 86</span></button><button type="button" class="nav-button" data-target="page-101"><span>原阅 101 · 原PDF 099</span><span>印 87</span></button><button type="button" class="nav-button" data-target="page-102"><span>原阅 102 · 原PDF 100</span><span>印 88</span></button></div></section>
-        <section class="panel"><h2>参考表</h2><div class="nav-list"><button type="button" class="nav-button" data-target="yueducibiao"><span>阅读词表</span><span>表</span></button><button type="button" class="nav-button" data-target="qingtongqicibiao"><span>青铜器词表</span><span>表</span></button><button type="button" class="nav-button" data-target="dushuzhaji"><span>章节导读札记</span><span>表</span></button><button type="button" class="nav-button" data-target="user-notes"><span>用户札记</span><span>注</span></button></div></section>
-        <section class="panel"><h2>术语</h2><div class="term-list"><button type="button" class="term" data-term="肥西" data-pinyin="féi xī" data-difficulty="3" data-domain="proper_name"><span>肥西</span><span>féi xī</span></button><button type="button" class="term" data-term="灰坑" data-pinyin="huī kēng" data-difficulty="3" data-domain="general"><span>灰坑</span><span>huī kēng</span></button><button type="button" class="term" data-term="夏桀" data-pinyin="xià jié" data-difficulty="3" data-domain="proper_name"><span>夏桀</span><span>xià jié</span></button><button type="button" class="term" data-term="商颂" data-pinyin="shāng sòng" data-difficulty="4" data-domain="general"><span>商颂</span><span>shāng sòng</span></button><button type="button" class="term" data-term="陶礼器" data-pinyin="táo lǐ qì" data-difficulty="5" data-domain="archaeology"><span>陶礼器</span><span>táo lǐ qì</span></button><button type="button" class="term" data-term="西吴壁" data-pinyin="xī wú bì" data-difficulty="5" data-domain="archaeology"><span>西吴壁</span><span>xī wú bì</span></button><button type="button" class="term" data-term="商汤" data-pinyin="shāng tāng" data-difficulty="3" data-domain="proper_name"><span>商汤</span><span>shāng tāng</span></button><button type="button" class="term" data-term="巢湖" data-pinyin="cháo hú" data-difficulty="3" data-domain="proper_name"><span>巢湖</span><span>cháo hú</span></button><button type="button" class="term" data-term="三官庙" data-pinyin="sān guān miào" data-difficulty="5" data-domain="archaeology"><span>三官庙</span><span>sān guān miào</span></button><button type="button" class="term" data-term="南巢" data-pinyin="nán cháo" data-difficulty="3" data-domain="proper_name"><span>南巢</span><span>nán cháo</span></button><button type="button" class="term" data-term="疆域" data-pinyin="jiāng yù" data-difficulty="3" data-domain="general"><span>疆域</span><span>jiāng yù</span></button><button type="button" class="term" data-term="偃师商城" data-pinyin="yǎn shī shāng chéng" data-difficulty="5" data-domain="archaeology"><span>偃师商城</span><span>yǎn shī shāng chéng</span></button><button type="button" class="term" data-term="朱砂" data-pinyin="zhū shā" data-difficulty="4" data-domain="general"><span>朱砂</span><span>zhū shā</span></button><button type="button" class="term" data-term="东下冯" data-pinyin="dōng xià féng" data-difficulty="5" data-domain="archaeology"><span>东下冯</span><span>dōng xià féng</span></button><button type="button" class="term" data-term="岳石文化" data-pinyin="yuè shí wén huà" data-difficulty="5" data-domain="archaeology"><span>岳石文化</span><span>yuè shí wén huà</span></button><button type="button" class="term" data-term="郑州商城" data-pinyin="zhèng zhōu shāng chéng" data-difficulty="5" data-domain="archaeology"><span>郑州商城</span><span>zhèng zhōu shāng chéng</span></button><button type="button" class="term" data-term="正考父" data-pinyin="zhèng kǎo fǔ" data-difficulty="3" data-domain="proper_name"><span>正考父</span><span>zhèng kǎo fǔ</span></button><button type="button" class="term" data-term="大师姑" data-pinyin="dà shī gū" data-difficulty="5" data-domain="archaeology"><span>大师姑</span><span>dà shī gū</span></button><button type="button" class="term" data-term="望京楼" data-pinyin="wàng jīng lóu" data-difficulty="5" data-domain="archaeology"><span>望京楼</span><span>wàng jīng lóu</span></button><button type="button" class="term" data-term="下七垣文化" data-pinyin="xià qī yuán wén huà" data-difficulty="5" data-domain="archaeology"><span>下七垣文化</span><span>xià qī yuán wén huà</span></button><button type="button" class="term" data-term="逸周书" data-pinyin="yì zhōu shū" data-difficulty="4" data-domain="general"><span>逸周书</span><span>yì zhōu shū</span></button><button type="button" class="term" data-term="扑朔迷离" data-pinyin="pū shuò mí lí" data-difficulty="3" data-domain="phrase"><span>扑朔迷离</span><span>pū shuò mí lí</span></button><button type="button" class="term" data-term="冶炼" data-pinyin="yě liàn" data-difficulty="4" data-domain="general"><span>冶炼</span><span>yě liàn</span></button><button type="button" class="term" data-term="都邑" data-pinyin="dū yì" data-difficulty="3" data-domain="general"><span>都邑</span><span>dū yì</span></button><button type="button" class="term" data-term="碳十四" data-pinyin="tàn shí sì" data-difficulty="3" data-domain="general"><span>碳十四</span><span>tàn shí sì</span></button><button type="button" class="term" data-term="仲虺之诰" data-pinyin="zhòng huǐ zhī gào" data-difficulty="4" data-domain="general"><span>仲虺之诰</span><span>zhòng huǐ zhī gào</span></button><button type="button" class="term" data-term="括地志" data-pinyin="kuò dì zhì" data-difficulty="4" data-domain="general"><span>括地志</span><span>kuò dì zhì</span></button><button type="button" class="term" data-term="殷商甲骨卜辞" data-pinyin="yīn shāng jiǎ gǔ bǔ cí" data-difficulty="4" data-domain="general"><span>殷商甲骨卜辞</span><span>yīn shāng jiǎ gǔ bǔ cí</span></button><button type="button" class="term" data-term="汤誓" data-pinyin="tāng shì" data-difficulty="4" data-domain="general"><span>汤誓</span><span>tāng shì</span></button><button type="button" class="term" data-term="长发" data-pinyin="cháng fā" data-difficulty="4" data-domain="general"><span>长发</span><span>cháng fā</span></button><button type="button" class="term" data-term="沦丧" data-pinyin="lún sàng" data-difficulty="4" data-domain="general"><span>沦丧</span><span>lún sàng</span></button><button type="button" class="term" data-term="鹊巢鸠占" data-pinyin="què cháo jiū zhàn" data-difficulty="3" data-domain="phrase"><span>鹊巢鸠占</span><span>què cháo jiū zhàn</span></button><button type="button" class="term" data-term="夷为平地" data-pinyin="yí wéi píng dì" data-difficulty="3" data-domain="phrase"><span>夷为平地</span><span>yí wéi píng dì</span></button><button type="button" class="term" data-term="麋鹿" data-pinyin="mí lù" data-difficulty="4" data-domain="general"><span>麋鹿</span><span>mí lù</span></button><button type="button" class="term" data-term="蜷曲" data-pinyin="quán qū" data-difficulty="4" data-domain="general"><span>蜷曲</span><span>quán qū</span></button><button type="button" class="term" data-term="苟延残喘" data-pinyin="gǒu yán cán chuǎn" data-difficulty="3" data-domain="phrase"><span>苟延残喘</span><span>gǒu yán cán chuǎn</span></button><button type="button" class="term" data-term="舟筏" data-pinyin="zhōu fá" data-difficulty="4" data-domain="general"><span>舟筏</span><span>zhōu fá</span></button><button type="button" class="term" data-term="陶窑" data-pinyin="táo yáo" data-difficulty="5" data-domain="archaeology"><span>陶窑</span><span>táo yáo</span></button><button type="button" class="term" data-term="政体" data-pinyin="zhèng tǐ" data-difficulty="3" data-domain="general"><span>政体</span><span>zhèng tǐ</span></button><button type="button" class="term" data-term="酋长" data-pinyin="qiú zhǎng" data-difficulty="3" data-domain="general"><span>酋长</span><span>qiú zhǎng</span></button><button type="button" class="term" data-term="朝贡" data-pinyin="cháo gòng" data-difficulty="3" data-domain="general"><span>朝贡</span><span>cháo gòng</span></button><button type="button" class="term" data-term="葬俗" data-pinyin="zàng sú" data-difficulty="3" data-domain="general"><span>葬俗</span><span>zàng sú</span></button><button type="button" class="term" data-term="第五纵队" data-pinyin="dì wǔ zòng duì" data-difficulty="3" data-domain="general"><span>第五纵队</span><span>dì wǔ zòng duì</span></button><button type="button" class="term" data-term="夏墟" data-pinyin="xià xū" data-difficulty="3" data-domain="general"><span>夏墟</span><span>xià xū</span></button><button type="button" class="term" data-term="甲骨卜辞" data-pinyin="jiǎ gǔ bǔ cí" data-difficulty="4" data-domain="general"><span>甲骨卜辞</span><span>jiǎ gǔ bǔ cí</span></button><button type="button" class="term" data-term="辉卫文化" data-pinyin="huī wèi wén huà" data-difficulty="5" data-domain="archaeology"><span>辉卫文化</span><span>huī wèi wén huà</span></button><button type="button" class="term" data-term="周武王" data-pinyin="zhōu wǔ wáng" data-difficulty="3" data-domain="proper_name"><span>周武王</span><span>zhōu wǔ wáng</span></button><button type="button" class="term" data-term="宫殿区" data-pinyin="gōng diàn qū" data-difficulty="3" data-domain="general"><span>宫殿区</span><span>gōng diàn qū</span></button><button type="button" class="term" data-term="祭祀坑" data-pinyin="jì sì kēng" data-difficulty="3" data-domain="general"><span>祭祀坑</span><span>jì sì kēng</span></button><button type="button" class="term" data-term="红烧土" data-pinyin="hóng shāo tǔ" data-difficulty="3" data-domain="general"><span>红烧土</span><span>hóng shāo tǔ</span></button><button type="button" class="term" data-term="人祭" data-pinyin="rén jì" data-difficulty="3" data-domain="general"><span>人祭</span><span>rén jì</span></button><button type="button" class="term" data-term="偃师" data-pinyin="yǎn shī" data-difficulty="3" data-domain="proper_name"><span>偃师</span><span>yǎn shī</span></button><button type="button" class="term" data-term="儒家" data-pinyin="rú jiā" data-difficulty="3" data-domain="general"><span>儒家</span><span>rú jiā</span></button><button type="button" class="term" data-term="先后" data-pinyin="xiān hòu" data-difficulty="4" data-domain="general"><span>先后</span><span>xiān hòu</span></button><button type="button" class="term" data-term="六经" data-pinyin="liù jīng" data-difficulty="4" data-domain="general"><span>六经</span><span>liù jīng</span></button><button type="button" class="term" data-term="冶铜" data-pinyin="yě tóng" data-difficulty="3" data-domain="general"><span>冶铜</span><span>yě tóng</span></button><button type="button" class="term" data-term="冶铸" data-pinyin="yě zhù" data-difficulty="3" data-domain="general"><span>冶铸</span><span>yě zhù</span></button><button type="button" class="term" data-term="分封" data-pinyin="fēn fēng" data-difficulty="3" data-domain="general"><span>分封</span><span>fēn fēng</span></button><button type="button" class="term" data-term="卜辞" data-pinyin="bǔ cí" data-difficulty="4" data-domain="general"><span>卜辞</span><span>bǔ cí</span></button><button type="button" class="term" data-term="周公" data-pinyin="zhōu gōng" data-difficulty="3" data-domain="proper_name"><span>周公</span><span>zhōu gōng</span></button><button type="button" class="term" data-term="商族" data-pinyin="shāng zú" data-difficulty="3" data-domain="general"><span>商族</span><span>shāng zú</span></button><button type="button" class="term" data-term="商王" data-pinyin="shāng wáng" data-difficulty="3" data-domain="proper_name"><span>商王</span><span>shāng wáng</span></button><button type="button" class="term" data-term="土著" data-pinyin="tǔ zhù" data-difficulty="3" data-domain="general"><span>土著</span><span>tǔ zhù</span></button><button type="button" class="term" data-term="城邑" data-pinyin="chéng yì" data-difficulty="3" data-domain="general"><span>城邑</span><span>chéng yì</span></button><button type="button" class="term" data-term="基址" data-pinyin="jī zhǐ" data-difficulty="3" data-domain="general"><span>基址</span><span>jī zhǐ</span></button><button type="button" class="term" data-term="夯土" data-pinyin="hāng tǔ" data-difficulty="3" data-domain="general"><span>夯土</span><span>hāng tǔ</span></button><button type="button" class="term" data-term="孔子" data-pinyin="kǒng zǐ" data-difficulty="3" data-domain="proper_name"><span>孔子</span><span>kǒng zǐ</span></button><button type="button" class="term" data-term="宋国" data-pinyin="sòng guó" data-difficulty="3" data-domain="proper_name"><span>宋国</span><span>sòng guó</span></button><button type="button" class="term" data-term="宫城" data-pinyin="gōng chéng" data-difficulty="3" data-domain="general"><span>宫城</span><span>gōng chéng</span></button><button type="button" class="term" data-term="尚书" data-pinyin="shàng shū" data-difficulty="4" data-domain="general"><span>尚书</span><span>shàng shū</span></button><button type="button" class="term" data-term="左传" data-pinyin="zuǒ zhuàn" data-difficulty="4" data-domain="general"><span>左传</span><span>zuǒ zhuàn</span></button><button type="button" class="term" data-term="廊檐" data-pinyin="láng yán" data-difficulty="3" data-domain="general"><span>廊檐</span><span>láng yán</span></button><button type="button" class="term" data-term="成王" data-pinyin="chéng wáng" data-difficulty="3" data-domain="proper_name"><span>成王</span><span>chéng wáng</span></button><button type="button" class="term" data-term="新砦" data-pinyin="xīn zhài" data-difficulty="5" data-domain="archaeology"><span>新砦</span><span>xīn zhài</span></button><button type="button" class="term" data-term="春秋" data-pinyin="chūn qiū" data-difficulty="4" data-domain="general"><span>春秋</span><span>chūn qiū</span></button><button type="button" class="term" data-term="柱洞" data-pinyin="zhù dòng" data-difficulty="3" data-domain="general"><span>柱洞</span><span>zhù dòng</span></button><button type="button" class="term" data-term="武王" data-pinyin="wǔ wáng" data-difficulty="3" data-domain="proper_name"><span>武王</span><span>wǔ wáng</span></button><button type="button" class="term" data-term="殷商" data-pinyin="yīn shāng" data-difficulty="5" data-domain="general"><span>殷商</span><span>yīn shāng</span></button><button type="button" class="term" data-term="江汉" data-pinyin="jiāng hàn" data-difficulty="3" data-domain="proper_name"><span>江汉</span><span>jiāng hàn</span></button><button type="button" class="term" data-term="洛邑" data-pinyin="luò yì" data-difficulty="3" data-domain="proper_name"><span>洛邑</span><span>luò yì</span></button><button type="button" class="term" data-term="淮河" data-pinyin="huái hé" data-difficulty="3" data-domain="proper_name"><span>淮河</span><span>huái hé</span></button><button type="button" class="term" data-term="肢解" data-pinyin="zhī jiě" data-difficulty="3" data-domain="general"><span>肢解</span><span>zhī jiě</span></button><button type="button" class="term" data-term="许宏" data-pinyin="xǔ hóng" data-difficulty="3" data-domain="proper_name"><span>许宏</span><span>xǔ hóng</span></button><button type="button" class="term" data-term="诗经" data-pinyin="shī jīng" data-difficulty="4" data-domain="general"><span>诗经</span><span>shī jīng</span></button><button type="button" class="term" data-term="迁徙" data-pinyin="qiān xǐ" data-difficulty="3" data-domain="general"><span>迁徙</span><span>qiān xǐ</span></button><button type="button" class="term" data-term="遗存" data-pinyin="yí cún" data-difficulty="3" data-domain="general"><span>遗存</span><span>yí cún</span></button><button type="button" class="term" data-term="铜斝" data-pinyin="tóng jiǎ" data-difficulty="5" data-domain="bronze_vessel"><span>铜斝</span><span>tóng jiǎ</span></button><button type="button" class="term" data-term="铜钺" data-pinyin="tóng yuè" data-difficulty="5" data-domain="bronze_vessel"><span>铜钺</span><span>tóng yuè</span></button><button type="button" class="term" data-term="铜镞" data-pinyin="tóng zú" data-difficulty="5" data-domain="bronze_vessel"><span>铜镞</span><span>tóng zú</span></button><button type="button" class="term" data-term="门楼" data-pinyin="mén lóu" data-difficulty="5" data-domain="archaeology"><span>门楼</span><span>mén lóu</span></button><button type="button" class="term" data-term="斝" data-pinyin="jiǎ" data-difficulty="5" data-domain="bronze_vessel"><span>斝</span><span>jiǎ</span></button><button type="button" class="term" data-term="觚" data-pinyin="gū" data-difficulty="5" data-domain="bronze_vessel"><span>觚</span><span>gū</span></button><button type="button" class="term" data-term="钺" data-pinyin="yuè" data-difficulty="5" data-domain="bronze_vessel"><span>钺</span><span>yuè</span></button><button type="button" class="term" data-term="爵" data-pinyin="jué" data-difficulty="5" data-domain="bronze_vessel"><span>爵</span><span>jué</span></button><button type="button" class="term" data-term="盉" data-pinyin="hé" data-difficulty="5" data-domain="bronze_vessel"><span>盉</span><span>hé</span></button><button type="button" class="term" data-term="鬶" data-pinyin="guī" data-difficulty="5" data-domain="bronze_vessel"><span>鬶</span><span>guī</span></button><button type="button" class="term" data-term="镞" data-pinyin="zú" data-difficulty="5" data-domain="bronze_vessel"><span>镞</span><span>zú</span></button><button type="button" class="term" data-term="甑" data-pinyin="zèng" data-difficulty="5" data-domain="bronze_vessel"><span>甑</span><span>zèng</span></button><button type="button" class="term" data-term="鬲" data-pinyin="lì" data-difficulty="5" data-domain="bronze_vessel"><span>鬲</span><span>lì</span></button><button type="button" class="term" data-term="甗" data-pinyin="yǎn" data-difficulty="5" data-domain="bronze_vessel"><span>甗</span><span>yǎn</span></button><button type="button" class="term" data-term="戚" data-pinyin="qī" data-difficulty="5" data-domain="bronze_vessel"><span>戚</span><span>qī</span></button><button type="button" class="term" data-term="戈" data-pinyin="gē" data-difficulty="5" data-domain="bronze_vessel"><span>戈</span><span>gē</span></button></div></section>
-      </aside>
-      <section>
         <jianshang-editor-toc current-chapter="chapter_04">
           <noscript>目录需要启用 JavaScript。</noscript>
         </jianshang-editor-toc>
@@ -201,399 +588,9 @@
             </table>
           </div>
         </section></div>
-        <div class="pages">
-        <section class="page" id="page-089">
-          <div class="page-head">
-            <div class="page-title">原书阅读器页 089<span>原书物理 PDF 页 087</span><span>印刷页 75</span></div>
-            <div class="page-tools">
-              <button type="button" data-copy-page="089">复制本页</button>
-              <button type="button" data-export-page="089">导出本页</button>
-            </div>
-          </div>
-          <div class="workbench">
-            <div class="editor-wrap">
-              <div class="rich-editor" data-page="089" contenteditable="true" role="textbox" aria-multiline="true" spellcheck="false">第四章异族占领二里头
-
-夏朝和商朝的更迭，在史书中有道德评判色彩很强的记载：末代帝王夏桀胡作非为引起天怒人怨，终于被新兴的有道之君商汤取代。
-
-帝桀之时……桀不务德而武伤百姓，百姓弗堪……汤修德，诸侯皆归汤，汤遂率兵以伐夏桀。桀走鸣条，遂放而死……汤乃践天子位，代夏朝天下。[[fn:1]]
-
-但考古呈现出来的过程更为复杂，一些来源各异的落后人群曾侵入二里头古城，统治时间长达半个世纪。中国历史上的第一次王朝更迭显得扑朔迷离。
-
-夏朝的敌人来自哪里？这需要从二里头古国的疆域开始考察。
-
-五百里王朝
-
-在二里头二期，古城扩张到3平方公里后，已经达到一个早期国家的体量。这就带来一个问题：这个早期国家统治的范围有多大？
-
-从最低标准看，洛阳盆地是二里头都邑能够控制的范围。盆地东西狭长，跨度约50公里。有研究者曾统计洛阳盆地内的聚落数量：在二里头一期，古城之外发现聚落19个，二期迅速增长到83个，到三、四期稳定保持在100个左右，其中，面积在0.5平方公里左右的“乡镇”级大聚落约20个，其余为0.1平方公里及以下的村落。从“王都”到乡镇、村落，等级格局非常明显，显然属于同一个王国政体。[[fn:2]]
-
-至于二里头-夏王朝在洛阳盆地外能够控制的疆域，史书和考古都难以给出标准答案。其一，编写相关史书的主要是战国到西汉时人，他们还没有对早期国家的考古知识，只能按自己生活的世界想象三皇五帝和夏商时代，所以孟子会说，大禹治水的范围遍及江、河、淮、汉：“禹掘地而注之海，驱蛇龙而放之范，水由地中行，江、淮、河、汉是也。” （《孟子•滕文公章句下》）这是战国时代华夏人的认知世界，但上古的华夏范围还没这么大。</div>
-            </div>
-            <div class="scan"><img src="pdf_pages/page-087.jpg" alt="PDF page 089"></div>
-          </div>
-        </section>
-        <section class="page" id="page-090">
-          <div class="page-head">
-            <div class="page-title">原书阅读器页 090<span>原书物理 PDF 页 088</span><span>印刷页 76</span></div>
-            <div class="page-tools">
-              <button type="button" data-copy-page="090">复制本页</button>
-              <button type="button" data-export-page="090">导出本页</button>
-            </div>
-          </div>
-          <div class="workbench">
-            <div class="editor-wrap">
-              <div class="rich-editor" data-page="090" contenteditable="true" role="textbox" aria-multiline="true" spellcheck="false">其二，考古学也很难解答政治史层面的问题。考古的主要对象是古人生产的器物，特别是数量最多的陶器，虽然从陶器风格可以划出“二里头文化”分布的范围，但陶器分布范围和古国政治体并不是一回事，不然，七八千年前的裴李岗文化和仰韶文化都会是地跨上千里的古国。
-
-以陶器为基础的二里头文化分布范围比较广，从晋南到关中、河南省大部，甚至远及安徽省，但风格并不完全一致，还会按地域分成几个“类型”，所以陶器文化很难和古国的政治疆域等同。二里头人对铸铜技术严格保密，制作的铜器很少出现在外地，也难以作为指标。
-
-二里头文化遗址的分布及出土陶礼器的遗址示意图：黑点是二里头文化遗址，编号的空心方框是出土二里头风格陶礼器的地点。
-
-关于二里头-夏朝的疆域，日本学者西江清高和久慈大介曾提出一个方法：考察陶礼器的分布。[[fn:3]] 二里头文化拥有独特的陶礼器（酒器）群，觚、爵、盉、斝、鬶等，只有地位较高的人才能拥有成套的陶礼器。如果这些陶礼器群出现在二里头古城之外的地方，就可能是二里头-夏朝的控制范围，或者是夏王室给外地酋长的赏赐，我们由此可以窥探古国的政治影响力范围。
-
-从西江清高制作的分布地图可见，陶礼器出现最集中的地方在黄河南岸以及嵩山东南麓，西起河南陕县，东到郑州，东西约200公里，南北约100公里。本书推测，这应当是二里头古国（夏朝）直接统治的区域，比二里头文化分布范围要小得多。</div>
-            </div>
-            <div class="scan"><img src="pdf_pages/page-088.jpg" alt="PDF page 090"></div>
-          </div>
-        </section>
-        <section class="page" id="page-091">
-          <div class="page-head">
-            <div class="page-title">原书阅读器页 091<span>原书物理 PDF 页 089</span><span>印刷页 77</span></div>
-            <div class="page-tools">
-              <button type="button" data-copy-page="091">复制本页</button>
-              <button type="button" data-export-page="091">导出本页</button>
-            </div>
-          </div>
-          <div class="workbench">
-            <div class="editor-wrap">
-              <div class="rich-editor" data-page="091" contenteditable="true" role="textbox" aria-multiline="true" spellcheck="false">在较远的外围也有一些零星的二里头陶礼器出土，如河南省南部的方城八里桥和驻马店杨庄，陕西商州的东龙山。这些可能是和二里头古国（夏朝）存在朝贡关系的部落，反映了夏朝的影响力范围。
-
-这个“王朝”疆域要低于战国时人的想象，但已经超过以往中国境内的任何古国。究其实质，二里头-夏朝属于古国和王朝之间的过渡状态，或者说在前文明与文明之间的门槛上。
-
-古史有“启征西河”的记载，即禹的儿子启曾远征晋南地区：“（启）三十五年，征河西。”（《帝王世纪》）从地理环境推测，夏王朝应当和铜、盐矿产丰富的晋南有密切联系。山西省南部，特别是汾河下游地区，有比较密集的二里头文化聚落，属于晋南本地的东下冯类型。[[fn:4]]
-
-在二里头一夏朝时期，晋南地区的绛县西吴壁出现了冶铜工场，主要是把铜矿石冶炼成红铜，但没有在当地发现青铜铸造技术。发掘者推测，西吴壁可能是二里头-夏朝控制的一处采矿和冶炼基地，生产的红铜供应二里头。但西吴壁尚未发现高规格的城邑、建筑和墓葬等，缺少夏朝统治的直接证据；也许，它是由本地部族掌控的，用铜料和二里头人贸易。
-
-晋南没有发现二里头-夏朝建立的城池，直到商朝早期，商人才在晋南建立了两座夯土小城池，距离西吴壁数十公里，说明商人已经控制西吴壁铜矿。在早商，西吴壁的炼铜炉底部还有人祭遗存，[[fn:5]] 这似乎是当地族群接受商文化的表现。</div>
-            </div>
-            <div class="scan"><img src="pdf_pages/page-089.jpg" alt="PDF page 091"></div>
-          </div>
-        </section>
-        <section class="page" id="page-092">
-          <div class="page-head">
-            <div class="page-title">原书阅读器页 092<span>原书物理 PDF 页 090</span><span>印刷页 78</span></div>
-            <div class="page-tools">
-              <button type="button" data-copy-page="092">复制本页</button>
-              <button type="button" data-export-page="092">导出本页</button>
-            </div>
-          </div>
-          <div class="workbench">
-            <div class="editor-wrap">
-              <div class="rich-editor" data-page="092" contenteditable="true" role="textbox" aria-multiline="true" spellcheck="false">在东方，夏王朝有两个比较重要的据点——郑州大师姑古城和新郑望京楼古城，距离二里头100公里左右，城池规模不大，边长仅数百米，城内没有发现高等级建筑和墓葬，但抛掷在灰坑里的尸骨较多，显示有较强的权力因素和社会冲突，也可能是和异族之间的战争比较频繁。
-
-这两座小城，意在守卫夏朝的“边疆”。从这两地再向东，是山东地区的岳石文化；向北，是辉卫文化和下七垣文化。当然，它们和夏都二里头的关系也难以确定，也许是二里头直接管辖的边疆据点，也许是接受二里头册封的地方自治“诸侯”。
-
-夏末商初中原主要考古文化分布图6：郑州（大师姑）和新郑望京楼处在二里头文化的东部边疆，其中的二里岗（冈）文化兴起较晚，和二里头是前后承接关系。（图）
-
-夏王都沦丧
-
-距今3600—3500年间，是二里头文化的尾声——第四期。这一百年又分前后两段：前面半个世纪，二里头人仍旧按照原来的轨迹生活，沿用着三期建成的宫殿和宫城墙，各种手工作坊都在生产，铜器铸造技术稳步提高；后半个世纪则发生了剧烈变化，宫城墙开始塌毁，几座宫殿逐渐废弃，某些外来者侵入了二里头。
-
-在后半阶段，D1宫殿仍在使用，但明显更换了主人：院落里挖掘了很多灰坑（垃圾坑），有些灰坑破坏了柱廊和宫殿台基；院落围墙下有很多低等级墓葬，有些死者居然被埋在柱廊下；西廊檐下甚至挖出了一座陶窑，说明曾有人在宫殿院里挖土制陶，生产下等人使用的陶器。</div>
-            </div>
-            <div class="scan"><img src="pdf_pages/page-090.jpg" alt="PDF page 092"></div>
-          </div>
-        </section>
-        <section class="page" id="page-093">
-          <div class="page-head">
-            <div class="page-title">原书阅读器页 093<span>原书物理 PDF 页 091</span><span>印刷页 79</span></div>
-            <div class="page-tools">
-              <button type="button" data-copy-page="093">复制本页</button>
-              <button type="button" data-export-page="093">导出本页</button>
-            </div>
-          </div>
-          <div class="workbench">
-            <div class="editor-wrap">
-              <div class="rich-editor" data-page="093" contenteditable="true" role="textbox" aria-multiline="true" spellcheck="false">种种迹象显示，这座夏都最宏大的宫殿已经成了大杂院，主人不再是显贵豪门，而是一大批外来的乡土民众。此外，D2宫殿院落以及南邻的D4也在发生类似的变化，被外来者粗暴利用，很快就失去了往日的辉煌。
-
-这些鹊巢鸠占，反客为主的外来者是谁？没有文字记录，考古学者只能从最擅长的陶片分析入手。
-
-在夏朝最后的半个世纪，二里头突然出现了来自豫北下七垣文化和山东岳石文化的陶器，特别是D1、D2宫殿灰坑中的陶片，主要是外来风格。这说明，有大量来自东北方向的人群入主了二里头，他们很多虽只是普通民众，但作为征服者，入住了D1、D2这种高级宫殿。
-
-宫城西南角的两座门楼（D7基址和D8基址）在四期晚段也被废弃，踩踏出的道路覆压在柱洞之上，说明门楼建筑已被夷为平地。宫城东墙也出现了坍塌迹象，有些小路穿过城墙，还有堆积的垃圾。
-
-这一轮变化发生在距今约3550年前；对照史书，这正是东方商族崛起、夏商易代的时间，商汤（武王）带领商人攻灭了夏朝。[[fn:7]]
-
-在半个世纪的“占领期”，商人征服者放任二里头的宏伟宫殿逐渐失修、损坏，而新建了两处较大型建筑。其中的一座，在宫城东墙下，D2院落北侧，借用了一段东城墙，同时封堵了东墙最北的一座城门，被编号为D6宫殿基址。
-
-D6宫殿是分三次逐渐形成的，最早在西端建了一座接近方形的建筑，然后分两次向东扩建，最后和东宫墙连接。它没有之前二里头宫殿的宏大和规整，而是更加紧凑和实用。这是典型的商人早期风格：四合院结构，贴着围墙建房子，不在院落中央建造独立的主体殿堂。</div>
-            </div>
-            <div class="scan"><img src="pdf_pages/page-091.jpg" alt="PDF page 093"></div>
-          </div>
-        </section>
-        <section class="page" id="page-094">
-          <div class="page-head">
-            <div class="page-title">原书阅读器页 094<span>原书物理 PDF 页 092</span><span>印刷页 80</span></div>
-            <div class="page-tools">
-              <button type="button" data-copy-page="094">复制本页</button>
-              <button type="button" data-export-page="094">导出本页</button>
-            </div>
-          </div>
-          <div class="workbench">
-            <div class="editor-wrap">
-              <div class="rich-editor" data-page="094" contenteditable="true" role="textbox" aria-multiline="true" spellcheck="false">占领者新建的另一座建筑是D10，不太大，在宫城的外侧东南角，恰好占据了宫南路大道。可见，此时宫城南墙已经塌毁，可以随意通行。
-
-商朝占领时期的二里头宫殿区平面图[[fn:8]] ：6号和10号基址就是在这一时期新建的，昔日的1号和2号基址则逐渐被废弃。
-
-商人没有继续把二里头当作都城，而是在二里头以东8公里的偃师市（区）郊建造了一座新聚落，同时，在现今的郑州市区也建了一座。这两座聚落逐渐扩大，并修筑了城墙，被考古学者分别称为偃师商城和郑州商城。
-
-这说明，商人对二里头的占领完全是实用和策略性的，新建筑也不太重视礼仪性。另一方面，第四期发现的被随意抛弃的尸骨数量大增，其中大部分应当来自商人入侵和统治二里头时的杀戮。比如，一座四期晚段的墓葬（1984VIM5），墓主的胸骨被一枚8厘米长的铜镞射入，埋在宫殿区以北的六（VI）区传统墓地。他很可能就是被商人占领军所杀的夏人，但家人还是尽量按正常标准埋葬了他。[[fn:9]]
-
-商人占领二里头时期的杀戮还表现在灰坑中，不仅坑中的人骨明显增加，还有长期积累的零碎人骨。比如，有一个深达1.85米的灰坑，在其使用期间，一直有零星的人骨被扔进去，而且坑中其他垃圾主要是各种动物的骨骸以及陶制炊器残片。这很可能是食人者房屋旁边的垃圾坑：</div>
-            </div>
-            <div class="scan"><img src="pdf_pages/page-092.jpg" alt="PDF page 094"></div>
-          </div>
-        </section>
-        <section class="page" id="page-095">
-          <div class="page-head">
-            <div class="page-title">原书阅读器页 095<span>原书物理 PDF 页 093</span><span>印刷页 81</span></div>
-            <div class="page-tools">
-              <button type="button" data-copy-page="095">复制本页</button>
-              <button type="button" data-export-page="095">导出本页</button>
-            </div>
-          </div>
-          <div class="workbench">
-            <div class="editor-wrap">
-              <div class="rich-editor" data-page="095" contenteditable="true" role="textbox" aria-multiline="true" spellcheck="false">人骨在2000IIIH17的不同层次、不同部位都有出现，似肢解后弃于坑中。出土有包括深腹罐、圆腹罐、鼎、甑、鬲、甗、刻槽盆、大口尊、觚、器盖等在内的较多陶片，牛、羊、猪、麋鹿、鸟、蚌、丽蚌、圆顶珠蚌、圆田螺动物遗存。[[fn:10]]
-
-再晚一些，作坊区东北侧的一座灰坑（2004VH305）有五具较完整的人骨。这座灰坑边长约2米，深约1.3米，最底部有一名十六七岁的男性，上面是四名女性，其中一名女性（2号）身下铺有约2毫米厚的朱砂。这五人的身体多蜷曲，很可能是死于他杀。
-
-二里头较高级的墓葬中，常给墓主铺垫朱砂，这是自龙山时代已经出现的葬俗；但2号女性是和其他人一起被抛尸灰坑的，不是正常的死亡和丧葬，为何独独她获得了铺垫朱砂的待遇？可能她死前有一定地位，负责抛尸埋葬者对她有些同情且也有获得朱砂的能力，但仍不会（或者说不敢）给她挖一个单独的专用墓穴。这座坑不太像祭祀坑，因为坑中包含较多生活垃圾。[[fn:11]]
-
-存在征服之后的暴力统治，但也维持着相对稳定的社会秩序，这是被占领下的二里头的基本状态。
-
-在夏商易代之际，二里头人的青铜冶铸技术堪称独步中原甚至东亚，商族人自然会非常重视。商人从二里头铸铜区调拨了一些人，分配到偃师和郑州商城建立冶铸工场，但二里头铸铜场的主体仍在继续生产。</div>
-            </div>
-            <div class="scan"><img src="pdf_pages/page-093.jpg" alt="PDF page 095"></div>
-          </div>
-        </section>
-        <section class="page" id="page-096">
-          <div class="page-head">
-            <div class="page-title">原书阅读器页 096<span>原书物理 PDF 页 094</span><span>印刷页 82</span></div>
-            <div class="page-tools">
-              <button type="button" data-copy-page="096">复制本页</button>
-              <button type="button" data-export-page="096">导出本页</button>
-            </div>
-          </div>
-          <div class="workbench">
-            <div class="editor-wrap">
-              <div class="rich-editor" data-page="096" contenteditable="true" role="textbox" aria-multiline="true" spellcheck="false">二里头的铸铜人群和商人的关系似乎不错。在商人占领期间，手工作坊区的北墙也有发生损坏，但立刻进行了重建。[[fn:12]] 铸铜场区并未发现太多外来陶片，看来商人占领者比较尊重冶铸场所，没有在这里建立营地。
-
-这也使人产生了这样一个联想：也许，铸铜族群是灭亡夏朝一二里头的“第五纵队”，他们不甘心宫殿区族群垄断权力，坐享统治收益，便联合外来者商族，一起征服了宫殿区族群。铸铜族群和商人的协作，换来了二里头古城半个世纪的寿命。
-
-但二里头的夏王族群并未被赶尽杀绝。新建的偃师商城发现了一些二里头风格的陶器，而且二里头宫殿区的某些规划特点又出现在了偃师商城的宫殿区。看来，商人征服者把二里头宫廷人群（或是其中的一部分）迁到了8公里外的偃师商城，让他们参与建设新城。
-
-而在苟延残喘近半个世纪后，二里头的青铜作坊还是被彻底迁移到了郑州商城。从此，二里头古城消失，夏王朝最后的痕迹不复存在。
-
-遥远的巢湖殖民地
-
-《尚书・仲虺之诰》记载，商汤灭夏之后，把末代夏王桀驱赶到了“南巢”：“成汤放桀于南巢。”古代注家认为，“南巢”是安徽的巢湖之滨：“庐州巢县有巢湖，即《尚书》‘成汤伐桀，放于南巢’者也。"（《史记正义》引《括地志》）
-
-巢湖，在二里头东南方500多公里外，不仅不是二里头文化区，甚至不属于二里头前身（新智人所属的煤山文化分布区）。夏桀的逃亡为何指向巢湖？从史书里再也找不到旁证。</div>
-            </div>
-            <div class="scan"><img src="pdf_pages/page-094.jpg" alt="PDF page 096"></div>
-          </div>
-        </section>
-        <section class="page" id="page-097">
-          <div class="page-head">
-            <div class="page-title">原书阅读器页 097<span>原书物理 PDF 页 095</span><span>印刷页 83</span></div>
-            <div class="page-tools">
-              <button type="button" data-copy-page="097">复制本页</button>
-              <button type="button" data-export-page="097">导出本页</button>
-            </div>
-          </div>
-          <div class="workbench">
-            <div class="editor-wrap">
-              <div class="rich-editor" data-page="097" contenteditable="true" role="textbox" aria-multiline="true" spellcheck="false">1972年，安徽肥西县的大墩孜村出土了两件青铜斝和一枚青铜铃，铜铃是二里头墓葬中常见的造型，两件青铜斝也属于二里头晚期特征。肥西县在巢湖西岸，似乎和夏桀逃亡“南巢”相呼应。
-
-之后，肥西县多次出土二里头风格的青铜器和陶器。在二里头古城之外，肥西是当时出土青铜器最多的地区。较新的发现是三官庙聚落遗址，有房屋被烧毁后的红烧土堆积，里面有十多件青铜器，主要是钺、戚和戈等兵器。[[fn:14]]
-
-碳十四测年显示，三官庙遗址距今约3700年，正当二里头古国最鼎盛的第三期，所以，可能是当时二里头铸铜人群曾发生内讧，一部分被排挤者被迫南下另谋生路，迁徙到了肥西三官庙定居。从那之后，他们和夏朝的联系似乎很弱，其中的一个表现是，他们制作的青铜器逐渐和二里头拉开了距离，甚至出现了二里头没有的造型，比如“半月形铜钺”。
-
-不考虑沿途部落的敌意，从二里头到肥西的交通算不上太困难：
-
-先步行到新砦一带，乘坐舟筏先后进入颍河和淮河，再溯泗水而上，便可抵达肥西附近。
-
-目前尚未在肥西县发现冶铸铜的遗址，也没有发现高等级的宫殿和大型聚落，但零星发现的青铜器证明，确实有来自二里头的人长期定居于此。
-
-当夏王朝被商人占领，也许末代王夏桀想起了遥远南方的那批二里头铸铜师，于是南逃寻求庇护，结果商人追踪而至，毁灭了夏人这个南方据点：房屋被焚毁，被杀者的尸骨和兵器被埋在了灰烬中。</div>
-            </div>
-            <div class="scan"><img src="pdf_pages/page-095.jpg" alt="PDF page 097"></div>
-          </div>
-        </section>
-        <section class="page" id="page-098">
-          <div class="page-head">
-            <div class="page-title">原书阅读器页 098<span>原书物理 PDF 页 096</span><span>印刷页 84</span></div>
-            <div class="page-tools">
-              <button type="button" data-copy-page="098">复制本页</button>
-              <button type="button" data-export-page="098">导出本页</button>
-            </div>
-          </div>
-          <div class="workbench">
-            <div class="editor-wrap">
-              <div class="rich-editor" data-page="098" contenteditable="true" role="textbox" aria-multiline="true" spellcheck="false">至于二里头的征服者，灭掉了夏王朝的商人，为什么他们的陶器分属下七垣和岳石文化，却没有自己的特色？
-
-这群征服者的来历扑朔迷离。
-
-附录：关于夏朝的记忆
-
-目前已发现的殷商甲骨卜辞从来没有提到过夏朝，这有点不好解释。有学者认为，从来没有过夏朝，所以商人没有记载；也有学者认为，商人肯定知道夏朝，只是甲骨卜辞只专注祭祀神灵和现实问题，不涉及改朝换代的历史，所以不用提及。[[fn:17]]
-
-《尚书•汤誓》是商汤灭夏时的讲话，不过考古学者认为，这篇内容并不可靠，很可能是西周以后的人创作的。
-
-《诗经》里有一组商人的史诗“商颂”，在歌颂商汤功业的《长发》中，出现了一句“韦顾既伐，昆吾夏桀”，大意是，商汤先讨伐韦和顾，然后又进攻昆吾和夏桀。对于灭亡夏朝的丰功伟业，“商颂”只有这一处。
-
-而且，《诗经》里的“商颂”未必是商朝原创的作品。灭商之后，周朝把一部分商王族分封到了宋国，以传承商朝的世系，但宋国人最
-
-初并没有“商颂”，是春秋初期的宋国贵族正考父从周朝掌管音乐的“太师”那里得到了“商颂十二篇"。[[fn:18]]
-
-这组“商颂”的最初作者已无从知晓，也许是商朝的史诗被周朝接收，又保存了三四百年才交给宋国人，这中间，周人很可能对它们进行过改编，原创性打了很多折扣。正考父是孔子的七世祖，编辑《诗经》时，孔子把“商颂”也编了进去，遂流传至今。</div>
-            </div>
-            <div class="scan"><img src="pdf_pages/page-096.jpg" alt="PDF page 098"></div>
-          </div>
-        </section>
-        <section class="page" id="page-099">
-          <div class="page-head">
-            <div class="page-title">原书阅读器页 099<span>原书物理 PDF 页 097</span><span>印刷页 85</span></div>
-            <div class="page-tools">
-              <button type="button" data-copy-page="099">复制本页</button>
-              <button type="button" data-export-page="099">导出本页</button>
-            </div>
-          </div>
-          <div class="workbench">
-            <div class="editor-wrap">
-              <div class="rich-editor" data-page="099" contenteditable="true" role="textbox" aria-multiline="true" spellcheck="false">在可信的史料里面，最早提到夏朝的是灭商的周人：
-
-其一，《尚书》中周武王和周公两兄弟之间的讲话经常用夏朝做历史借鉴。周人认为，晋南地区是夏朝故地，周武王之子成王分封弟弟叔虞到晋国时曾发表一篇训话，提到当地是“夏墟”；成王还说，应当用夏朝的政治理念（“夏政”）去统治当地土著。（《左传•定公四年》）但在考古中，晋南尚未发现夏朝的高等级城邑。
-
-其二，周人似乎还记得二里头古城的存在。周武王灭商后，准备在洛水边建一座新城，武王说，那里是夏朝的故地：“自洛泗延于伊讷，居阳无固，其有夏之居（《逸周书•度邑解》）所以周朝在这里营建了洛邑（洛阳），位于二里头古城以西20公里处。
-
-在传世古书中，对夏都记载最准确的就是这一处，出自《逸周书》。这部书因没有进入儒家“六经”，长期不受重视，但它的很多信息非常独家，不是毫不知情的后来者能杜撰出来的。
-
-注释
-
-1《史记•夏本纪》。《史记•殷本纪》：“夏桀为虐政淫荒，而诸侯昆吾氏为乱。汤乃兴师率诸侯……遂伐桀……桀败于有嫉之虚，桀奔于鸣条，夏师败绩…… 汤既胜夏……于是诸侯毕服，汤乃践天子位，平定海内。”
-
-2陈国梁：《合与分：聚落考古视角下二里头都邑的兴衰解析》，《中原文物》2019年第4期。
-
-3 ［日］西江清高、［日］久慈大介：《从地域间关系看二里头文化期中原王朝的空间结构》，杜金鹏、许宏主编：《二里头遗址与二里头文化研究》，科学出版社，2006年。</div>
-            </div>
-            <div class="scan"><img src="pdf_pages/page-097.jpg" alt="PDF page 099"></div>
-          </div>
-        </section>
-        <section class="page" id="page-100">
-          <div class="page-head">
-            <div class="page-title">原书阅读器页 100<span>原书物理 PDF 页 098</span><span>印刷页 86</span></div>
-            <div class="page-tools">
-              <button type="button" data-copy-page="100">复制本页</button>
-              <button type="button" data-export-page="100">导出本页</button>
-            </div>
-          </div>
-          <div class="workbench">
-            <div class="editor-wrap">
-              <div class="rich-editor" data-page="100" contenteditable="true" role="textbox" aria-multiline="true" spellcheck="false">4但也有学者认为，东下冯是独立于二里头的文化。参见张立东《论辉卫文化》，《考古学集刊》（10），地质出版社，1996年；常怀颖《从新峡遗址再论二里头与东下冯之关系》，《文物季刊》2022年第1期。
-
-5戴向明等：《山西绛县西吴壁遗址2018—2019年发掘简报》，《考古》2020年第7期。
-
-6侯卫东：《论二里头文化四期中原腹地的社会变迁》，《中原文物》2020年第3期。
-
-7一般认为夏商易代发生在公元前1600年前后，碳十四测年的精度很难体现50年范围的差别，所以这个小差别目前只能忽略。
-
-8赵海涛：《二里头遗址二里头文化四期晚段遗存探析》，《南方文物》2016年第4期。
-
-9参见中科院考古所二里头工作队《1984年秋河南偃师二里头遗址发现的几座墓葬》，《考古》1986年第4期。
-
-10中科院考古所：《二里头：1999—2006》第一册，第257页。
-
-11关于2004VH305灰坑，详见中科院考古所《二里头：1999—2006》第一册，第417页。
-
-12新墙编号Q3，详见赵海涛《二里头遗址二里头文化四期晚段遗存探析》。
-
-13程露：《也谈肥西大墩孜出土的青铜壁和铃》，《东方博物》第25辑，浙江大学出版社，2007年。
-
-14秦让平：《安徽肥西三官庙遗址发现二里头时期遗存》，《中国文物报》2019年8月23日；方林：《肥西三官庙遗址出土青铜兵器的年代及相关问题》，《文物鉴定与鉴赏》2020年第10期下。</div>
-            </div>
-            <div class="scan"><img src="pdf_pages/page-098.jpg" alt="PDF page 100"></div>
-          </div>
-        </section>
-        <section class="page" id="page-101">
-          <div class="page-head">
-            <div class="page-title">原书阅读器页 101<span>原书物理 PDF 页 099</span><span>印刷页 87</span></div>
-            <div class="page-tools">
-              <button type="button" data-copy-page="101">复制本页</button>
-              <button type="button" data-export-page="101">导出本页</button>
-            </div>
-          </div>
-          <div class="workbench">
-            <div class="editor-wrap">
-              <div class="rich-editor" data-page="101" contenteditable="true" role="textbox" aria-multiline="true" spellcheck="false">15这件“半月形铜钺”更像是5000多年前长江下游的多孔石刀，在南京北阴阳营和安徽薛家岗都有发现。
-
-16方林：《肥西三官庙遗址出土青铜兵器的年代及相关问题》。
-
-17戴向明：《夏文化、夏王朝及相关问题》，《江汉考古》2021年第6期；中国先秦史学会等：《夏文化研究论集》，中华书局，1996年。
-
-18《毛诗序》：“有正考甫者，得商颂十二篇于周之大师。”</div>
-            </div>
-            <div class="scan"><img src="pdf_pages/page-099.jpg" alt="PDF page 101"></div>
-          </div>
-        </section>
-        <section class="page" id="page-102">
-          <div class="page-head">
-            <div class="page-title">原书阅读器页 102<span>原书物理 PDF 页 100</span><span>印刷页 88</span></div>
-            <div class="page-tools">
-              <button type="button" data-copy-page="102">复制本页</button>
-              <button type="button" data-export-page="102">导出本页</button>
-            </div>
-          </div>
-          <div class="workbench">
-            <div class="editor-wrap">
-              <div class="rich-editor" data-page="102" contenteditable="true" role="textbox" aria-multiline="true" spellcheck="false"></div>
-            </div>
-            <div class="scan"><img src="pdf_pages/page-100.jpg" alt="PDF page 102"></div>
-          </div>
-        </section></div>
-        <section class="notes-dock" id="notes">
-          <h2>编辑札记</h2>
-          <div class="note-grid">
-            <div class="note-controls">
-              <label>页<select id="notePage"></select></label>
-              <div class="marker-composer" id="markerComposer">
-                <h3>标记</h3>
-                <label>类型<select id="markerType">
-                  <option value="pinyin">注音</option>
-                  <option value="editor-note">编者注／脚注</option>
-                  <option value="inline-note">按语</option>
-                  <option value="pending">待核</option>
-                  <option value="user-note">用户札记</option>
-                </select></label>
-                <label>内容<input id="markerText" type="text" autocomplete="off" placeholder="输入拼音或笔记内容"></label>
-                <p class="marker-help" id="markerHelp">先在正文中选择文字，再输入拼音；可用“拼音；简注”。</p>
-                <div class="note-actions"><button id="applyMarkerBtn" type="button">应用标记</button></div>
-              </div>
-              <label>工作日志标签<input id="noteTag" type="text" value="校订" autocomplete="off"></label>
-              <textarea id="noteText" spellcheck="false"></textarea>
-              <div class="note-actions">
-                <button id="addNoteBtn" type="button">记录到编辑日志</button>
-                <button id="exportLogBtn" type="button">导出日志</button>
-                <button id="downloadLogBtn" type="button">下载日志</button>
-                <button id="clearLogBtn" type="button">清空日志</button>
-              </div>
-            </div>
-            <div><div id="logList" class="log-list"></div></div>
-          </div>
-        </section>
-        <section class="export-dock"><h2>导出文本</h2><textarea id="exportText" spellcheck="false"></textarea></section>
-      </section>
+        <section class="panel"><h2>参考表</h2><div class="nav-list"><button type="button" class="nav-button" data-target="yueducibiao"><span>阅读词表</span><span>表</span></button><button type="button" class="nav-button" data-target="qingtongqicibiao"><span>青铜器词表</span><span>表</span></button><button type="button" class="nav-button" data-target="dushuzhaji"><span>章节导读札记</span><span>表</span></button><button type="button" class="nav-button" data-target="user-notes"><span>用户札记</span><span>注</span></button></div></section>
+        <section class="panel"><h2>术语</h2><div class="term-list"><button type="button" class="term" data-term="肥西" data-pinyin="féi xī" data-difficulty="3" data-domain="proper_name"><span>肥西</span><span>féi xī</span></button><button type="button" class="term" data-term="灰坑" data-pinyin="huī kēng" data-difficulty="3" data-domain="general"><span>灰坑</span><span>huī kēng</span></button><button type="button" class="term" data-term="夏桀" data-pinyin="xià jié" data-difficulty="3" data-domain="proper_name"><span>夏桀</span><span>xià jié</span></button><button type="button" class="term" data-term="商颂" data-pinyin="shāng sòng" data-difficulty="4" data-domain="general"><span>商颂</span><span>shāng sòng</span></button><button type="button" class="term" data-term="陶礼器" data-pinyin="táo lǐ qì" data-difficulty="5" data-domain="archaeology"><span>陶礼器</span><span>táo lǐ qì</span></button><button type="button" class="term" data-term="西吴壁" data-pinyin="xī wú bì" data-difficulty="5" data-domain="archaeology"><span>西吴壁</span><span>xī wú bì</span></button><button type="button" class="term" data-term="商汤" data-pinyin="shāng tāng" data-difficulty="3" data-domain="proper_name"><span>商汤</span><span>shāng tāng</span></button><button type="button" class="term" data-term="巢湖" data-pinyin="cháo hú" data-difficulty="3" data-domain="proper_name"><span>巢湖</span><span>cháo hú</span></button><button type="button" class="term" data-term="三官庙" data-pinyin="sān guān miào" data-difficulty="5" data-domain="archaeology"><span>三官庙</span><span>sān guān miào</span></button><button type="button" class="term" data-term="南巢" data-pinyin="nán cháo" data-difficulty="3" data-domain="proper_name"><span>南巢</span><span>nán cháo</span></button><button type="button" class="term" data-term="疆域" data-pinyin="jiāng yù" data-difficulty="3" data-domain="general"><span>疆域</span><span>jiāng yù</span></button><button type="button" class="term" data-term="偃师商城" data-pinyin="yǎn shī shāng chéng" data-difficulty="5" data-domain="archaeology"><span>偃师商城</span><span>yǎn shī shāng chéng</span></button><button type="button" class="term" data-term="朱砂" data-pinyin="zhū shā" data-difficulty="4" data-domain="general"><span>朱砂</span><span>zhū shā</span></button><button type="button" class="term" data-term="东下冯" data-pinyin="dōng xià féng" data-difficulty="5" data-domain="archaeology"><span>东下冯</span><span>dōng xià féng</span></button><button type="button" class="term" data-term="岳石文化" data-pinyin="yuè shí wén huà" data-difficulty="5" data-domain="archaeology"><span>岳石文化</span><span>yuè shí wén huà</span></button><button type="button" class="term" data-term="郑州商城" data-pinyin="zhèng zhōu shāng chéng" data-difficulty="5" data-domain="archaeology"><span>郑州商城</span><span>zhèng zhōu shāng chéng</span></button><button type="button" class="term" data-term="正考父" data-pinyin="zhèng kǎo fǔ" data-difficulty="3" data-domain="proper_name"><span>正考父</span><span>zhèng kǎo fǔ</span></button><button type="button" class="term" data-term="大师姑" data-pinyin="dà shī gū" data-difficulty="5" data-domain="archaeology"><span>大师姑</span><span>dà shī gū</span></button><button type="button" class="term" data-term="望京楼" data-pinyin="wàng jīng lóu" data-difficulty="5" data-domain="archaeology"><span>望京楼</span><span>wàng jīng lóu</span></button><button type="button" class="term" data-term="下七垣文化" data-pinyin="xià qī yuán wén huà" data-difficulty="5" data-domain="archaeology"><span>下七垣文化</span><span>xià qī yuán wén huà</span></button><button type="button" class="term" data-term="逸周书" data-pinyin="yì zhōu shū" data-difficulty="4" data-domain="general"><span>逸周书</span><span>yì zhōu shū</span></button><button type="button" class="term" data-term="扑朔迷离" data-pinyin="pū shuò mí lí" data-difficulty="3" data-domain="phrase"><span>扑朔迷离</span><span>pū shuò mí lí</span></button><button type="button" class="term" data-term="冶炼" data-pinyin="yě liàn" data-difficulty="4" data-domain="general"><span>冶炼</span><span>yě liàn</span></button><button type="button" class="term" data-term="都邑" data-pinyin="dū yì" data-difficulty="3" data-domain="general"><span>都邑</span><span>dū yì</span></button><button type="button" class="term" data-term="碳十四" data-pinyin="tàn shí sì" data-difficulty="3" data-domain="general"><span>碳十四</span><span>tàn shí sì</span></button><button type="button" class="term" data-term="仲虺之诰" data-pinyin="zhòng huǐ zhī gào" data-difficulty="4" data-domain="general"><span>仲虺之诰</span><span>zhòng huǐ zhī gào</span></button><button type="button" class="term" data-term="括地志" data-pinyin="kuò dì zhì" data-difficulty="4" data-domain="general"><span>括地志</span><span>kuò dì zhì</span></button><button type="button" class="term" data-term="殷商甲骨卜辞" data-pinyin="yīn shāng jiǎ gǔ bǔ cí" data-difficulty="4" data-domain="general"><span>殷商甲骨卜辞</span><span>yīn shāng jiǎ gǔ bǔ cí</span></button><button type="button" class="term" data-term="汤誓" data-pinyin="tāng shì" data-difficulty="4" data-domain="general"><span>汤誓</span><span>tāng shì</span></button><button type="button" class="term" data-term="长发" data-pinyin="cháng fā" data-difficulty="4" data-domain="general"><span>长发</span><span>cháng fā</span></button><button type="button" class="term" data-term="沦丧" data-pinyin="lún sàng" data-difficulty="4" data-domain="general"><span>沦丧</span><span>lún sàng</span></button><button type="button" class="term" data-term="鹊巢鸠占" data-pinyin="què cháo jiū zhàn" data-difficulty="3" data-domain="phrase"><span>鹊巢鸠占</span><span>què cháo jiū zhàn</span></button><button type="button" class="term" data-term="夷为平地" data-pinyin="yí wéi píng dì" data-difficulty="3" data-domain="phrase"><span>夷为平地</span><span>yí wéi píng dì</span></button><button type="button" class="term" data-term="麋鹿" data-pinyin="mí lù" data-difficulty="4" data-domain="general"><span>麋鹿</span><span>mí lù</span></button><button type="button" class="term" data-term="蜷曲" data-pinyin="quán qū" data-difficulty="4" data-domain="general"><span>蜷曲</span><span>quán qū</span></button><button type="button" class="term" data-term="苟延残喘" data-pinyin="gǒu yán cán chuǎn" data-difficulty="3" data-domain="phrase"><span>苟延残喘</span><span>gǒu yán cán chuǎn</span></button><button type="button" class="term" data-term="舟筏" data-pinyin="zhōu fá" data-difficulty="4" data-domain="general"><span>舟筏</span><span>zhōu fá</span></button><button type="button" class="term" data-term="陶窑" data-pinyin="táo yáo" data-difficulty="5" data-domain="archaeology"><span>陶窑</span><span>táo yáo</span></button><button type="button" class="term" data-term="政体" data-pinyin="zhèng tǐ" data-difficulty="3" data-domain="general"><span>政体</span><span>zhèng tǐ</span></button><button type="button" class="term" data-term="酋长" data-pinyin="qiú zhǎng" data-difficulty="3" data-domain="general"><span>酋长</span><span>qiú zhǎng</span></button><button type="button" class="term" data-term="朝贡" data-pinyin="cháo gòng" data-difficulty="3" data-domain="general"><span>朝贡</span><span>cháo gòng</span></button><button type="button" class="term" data-term="葬俗" data-pinyin="zàng sú" data-difficulty="3" data-domain="general"><span>葬俗</span><span>zàng sú</span></button><button type="button" class="term" data-term="第五纵队" data-pinyin="dì wǔ zòng duì" data-difficulty="3" data-domain="general"><span>第五纵队</span><span>dì wǔ zòng duì</span></button><button type="button" class="term" data-term="夏墟" data-pinyin="xià xū" data-difficulty="3" data-domain="general"><span>夏墟</span><span>xià xū</span></button><button type="button" class="term" data-term="甲骨卜辞" data-pinyin="jiǎ gǔ bǔ cí" data-difficulty="4" data-domain="general"><span>甲骨卜辞</span><span>jiǎ gǔ bǔ cí</span></button><button type="button" class="term" data-term="辉卫文化" data-pinyin="huī wèi wén huà" data-difficulty="5" data-domain="archaeology"><span>辉卫文化</span><span>huī wèi wén huà</span></button><button type="button" class="term" data-term="周武王" data-pinyin="zhōu wǔ wáng" data-difficulty="3" data-domain="proper_name"><span>周武王</span><span>zhōu wǔ wáng</span></button><button type="button" class="term" data-term="宫殿区" data-pinyin="gōng diàn qū" data-difficulty="3" data-domain="general"><span>宫殿区</span><span>gōng diàn qū</span></button><button type="button" class="term" data-term="祭祀坑" data-pinyin="jì sì kēng" data-difficulty="3" data-domain="general"><span>祭祀坑</span><span>jì sì kēng</span></button><button type="button" class="term" data-term="红烧土" data-pinyin="hóng shāo tǔ" data-difficulty="3" data-domain="general"><span>红烧土</span><span>hóng shāo tǔ</span></button><button type="button" class="term" data-term="人祭" data-pinyin="rén jì" data-difficulty="3" data-domain="general"><span>人祭</span><span>rén jì</span></button><button type="button" class="term" data-term="偃师" data-pinyin="yǎn shī" data-difficulty="3" data-domain="proper_name"><span>偃师</span><span>yǎn shī</span></button><button type="button" class="term" data-term="儒家" data-pinyin="rú jiā" data-difficulty="3" data-domain="general"><span>儒家</span><span>rú jiā</span></button><button type="button" class="term" data-term="先后" data-pinyin="xiān hòu" data-difficulty="4" data-domain="general"><span>先后</span><span>xiān hòu</span></button><button type="button" class="term" data-term="六经" data-pinyin="liù jīng" data-difficulty="4" data-domain="general"><span>六经</span><span>liù jīng</span></button><button type="button" class="term" data-term="冶铜" data-pinyin="yě tóng" data-difficulty="3" data-domain="general"><span>冶铜</span><span>yě tóng</span></button><button type="button" class="term" data-term="冶铸" data-pinyin="yě zhù" data-difficulty="3" data-domain="general"><span>冶铸</span><span>yě zhù</span></button><button type="button" class="term" data-term="分封" data-pinyin="fēn fēng" data-difficulty="3" data-domain="general"><span>分封</span><span>fēn fēng</span></button><button type="button" class="term" data-term="卜辞" data-pinyin="bǔ cí" data-difficulty="4" data-domain="general"><span>卜辞</span><span>bǔ cí</span></button><button type="button" class="term" data-term="周公" data-pinyin="zhōu gōng" data-difficulty="3" data-domain="proper_name"><span>周公</span><span>zhōu gōng</span></button><button type="button" class="term" data-term="商族" data-pinyin="shāng zú" data-difficulty="3" data-domain="general"><span>商族</span><span>shāng zú</span></button><button type="button" class="term" data-term="商王" data-pinyin="shāng wáng" data-difficulty="3" data-domain="proper_name"><span>商王</span><span>shāng wáng</span></button><button type="button" class="term" data-term="土著" data-pinyin="tǔ zhù" data-difficulty="3" data-domain="general"><span>土著</span><span>tǔ zhù</span></button><button type="button" class="term" data-term="城邑" data-pinyin="chéng yì" data-difficulty="3" data-domain="general"><span>城邑</span><span>chéng yì</span></button><button type="button" class="term" data-term="基址" data-pinyin="jī zhǐ" data-difficulty="3" data-domain="general"><span>基址</span><span>jī zhǐ</span></button><button type="button" class="term" data-term="夯土" data-pinyin="hāng tǔ" data-difficulty="3" data-domain="general"><span>夯土</span><span>hāng tǔ</span></button><button type="button" class="term" data-term="孔子" data-pinyin="kǒng zǐ" data-difficulty="3" data-domain="proper_name"><span>孔子</span><span>kǒng zǐ</span></button><button type="button" class="term" data-term="宋国" data-pinyin="sòng guó" data-difficulty="3" data-domain="proper_name"><span>宋国</span><span>sòng guó</span></button><button type="button" class="term" data-term="宫城" data-pinyin="gōng chéng" data-difficulty="3" data-domain="general"><span>宫城</span><span>gōng chéng</span></button><button type="button" class="term" data-term="尚书" data-pinyin="shàng shū" data-difficulty="4" data-domain="general"><span>尚书</span><span>shàng shū</span></button><button type="button" class="term" data-term="左传" data-pinyin="zuǒ zhuàn" data-difficulty="4" data-domain="general"><span>左传</span><span>zuǒ zhuàn</span></button><button type="button" class="term" data-term="廊檐" data-pinyin="láng yán" data-difficulty="3" data-domain="general"><span>廊檐</span><span>láng yán</span></button><button type="button" class="term" data-term="成王" data-pinyin="chéng wáng" data-difficulty="3" data-domain="proper_name"><span>成王</span><span>chéng wáng</span></button><button type="button" class="term" data-term="新砦" data-pinyin="xīn zhài" data-difficulty="5" data-domain="archaeology"><span>新砦</span><span>xīn zhài</span></button><button type="button" class="term" data-term="春秋" data-pinyin="chūn qiū" data-difficulty="4" data-domain="general"><span>春秋</span><span>chūn qiū</span></button><button type="button" class="term" data-term="柱洞" data-pinyin="zhù dòng" data-difficulty="3" data-domain="general"><span>柱洞</span><span>zhù dòng</span></button><button type="button" class="term" data-term="武王" data-pinyin="wǔ wáng" data-difficulty="3" data-domain="proper_name"><span>武王</span><span>wǔ wáng</span></button><button type="button" class="term" data-term="殷商" data-pinyin="yīn shāng" data-difficulty="5" data-domain="general"><span>殷商</span><span>yīn shāng</span></button><button type="button" class="term" data-term="江汉" data-pinyin="jiāng hàn" data-difficulty="3" data-domain="proper_name"><span>江汉</span><span>jiāng hàn</span></button><button type="button" class="term" data-term="洛邑" data-pinyin="luò yì" data-difficulty="3" data-domain="proper_name"><span>洛邑</span><span>luò yì</span></button><button type="button" class="term" data-term="淮河" data-pinyin="huái hé" data-difficulty="3" data-domain="proper_name"><span>淮河</span><span>huái hé</span></button><button type="button" class="term" data-term="肢解" data-pinyin="zhī jiě" data-difficulty="3" data-domain="general"><span>肢解</span><span>zhī jiě</span></button><button type="button" class="term" data-term="许宏" data-pinyin="xǔ hóng" data-difficulty="3" data-domain="proper_name"><span>许宏</span><span>xǔ hóng</span></button><button type="button" class="term" data-term="诗经" data-pinyin="shī jīng" data-difficulty="4" data-domain="general"><span>诗经</span><span>shī jīng</span></button><button type="button" class="term" data-term="迁徙" data-pinyin="qiān xǐ" data-difficulty="3" data-domain="general"><span>迁徙</span><span>qiān xǐ</span></button><button type="button" class="term" data-term="遗存" data-pinyin="yí cún" data-difficulty="3" data-domain="general"><span>遗存</span><span>yí cún</span></button><button type="button" class="term" data-term="铜斝" data-pinyin="tóng jiǎ" data-difficulty="5" data-domain="bronze_vessel"><span>铜斝</span><span>tóng jiǎ</span></button><button type="button" class="term" data-term="铜钺" data-pinyin="tóng yuè" data-difficulty="5" data-domain="bronze_vessel"><span>铜钺</span><span>tóng yuè</span></button><button type="button" class="term" data-term="铜镞" data-pinyin="tóng zú" data-difficulty="5" data-domain="bronze_vessel"><span>铜镞</span><span>tóng zú</span></button><button type="button" class="term" data-term="门楼" data-pinyin="mén lóu" data-difficulty="5" data-domain="archaeology"><span>门楼</span><span>mén lóu</span></button><button type="button" class="term" data-term="斝" data-pinyin="jiǎ" data-difficulty="5" data-domain="bronze_vessel"><span>斝</span><span>jiǎ</span></button><button type="button" class="term" data-term="觚" data-pinyin="gū" data-difficulty="5" data-domain="bronze_vessel"><span>觚</span><span>gū</span></button><button type="button" class="term" data-term="钺" data-pinyin="yuè" data-difficulty="5" data-domain="bronze_vessel"><span>钺</span><span>yuè</span></button><button type="button" class="term" data-term="爵" data-pinyin="jué" data-difficulty="5" data-domain="bronze_vessel"><span>爵</span><span>jué</span></button><button type="button" class="term" data-term="盉" data-pinyin="hé" data-difficulty="5" data-domain="bronze_vessel"><span>盉</span><span>hé</span></button><button type="button" class="term" data-term="鬶" data-pinyin="guī" data-difficulty="5" data-domain="bronze_vessel"><span>鬶</span><span>guī</span></button><button type="button" class="term" data-term="镞" data-pinyin="zú" data-difficulty="5" data-domain="bronze_vessel"><span>镞</span><span>zú</span></button><button type="button" class="term" data-term="甑" data-pinyin="zèng" data-difficulty="5" data-domain="bronze_vessel"><span>甑</span><span>zèng</span></button><button type="button" class="term" data-term="鬲" data-pinyin="lì" data-difficulty="5" data-domain="bronze_vessel"><span>鬲</span><span>lì</span></button><button type="button" class="term" data-term="甗" data-pinyin="yǎn" data-difficulty="5" data-domain="bronze_vessel"><span>甗</span><span>yǎn</span></button><button type="button" class="term" data-term="戚" data-pinyin="qī" data-difficulty="5" data-domain="bronze_vessel"><span>戚</span><span>qī</span></button><button type="button" class="term" data-term="戈" data-pinyin="gē" data-difficulty="5" data-domain="bronze_vessel"><span>戈</span><span>gē</span></button></div></section>
+      </aside>
     </div>
   </main>
   <button class="quick-note-jump" type="button" data-target="notes">札记</button>
@@ -624,6 +621,11 @@ D6宫殿是分三次逐渐形成的，最早在西端建了一座接近方形的
     const chapterNotesBodyEl = document.getElementById('chapterNotesBody');
     const chapterNoteTitleEl = document.getElementById('chapterNoteTitle');
     const chapterNoteTextEl = document.getElementById('chapterNoteText');
+    const sourceViewerImageEl = document.getElementById('sourceViewerImage');
+    const sourceViewerMetaEl = document.getElementById('sourceViewerMeta');
+    const sourceViewerEl = document.querySelector('.source-viewer');
+    const sourceViewerHome = document.createComment('source-viewer-home');
+    sourceViewerEl.before(sourceViewerHome);
     let activeArea = null;
     let viewMode = 'clean';
     let cleanViewTexts = {};
@@ -631,8 +633,35 @@ D6宫殿是分三次逐渐形成的，最早在西端建了一座接近方形的
     let voices = [];
     let allowSave = true;
     let savedFormatRange = null;
+    let sourceNavigationLockUntil = 0;
     function setStatus(text, tone = '') { statusEl.textContent = text; statusEl.style.color = tone === 'ok' ? 'var(--ok)' : tone === 'warn' ? 'var(--warn)' : 'var(--muted)'; }
     function textareas() { return Array.from(document.querySelectorAll('.rich-editor[data-page]')); }
+    function syncSourceViewer(area) {
+      if (!area || !sourceViewerImageEl) return;
+      sourceViewerImageEl.src = area.dataset.sourceImage;
+      sourceViewerImageEl.alt = `原书 PDF 页 ${area.dataset.sourcePage}`;
+      sourceViewerMetaEl.textContent = `原阅 ${area.dataset.page} · 原PDF ${area.dataset.sourcePage} · 印 ${area.dataset.printedPage}`;
+    }
+    function restoreSourceViewer() { sourceViewerHome.after(sourceViewerEl); }
+    function currentSourceLayout() { return SOURCE_LAYOUTS.find(name => document.body.classList.contains(`source-layout-${name}`)) || 'text-primary'; }
+    function showPagePair(target) {
+      const area = target?.matches('.rich-editor') ? target : target?.querySelector('.rich-editor');
+      if (!area) return false;
+      activeArea = area;
+      sourceNavigationLockUntil = Date.now() + 1400;
+      syncSourceViewer(area);
+      if (matchMedia('(max-width:980px)').matches) {
+        const page = area.closest('.page');
+        const pdfFirst = ['pdf-primary','pdf'].includes(currentSourceLayout());
+        pdfFirst ? page.before(sourceViewerEl) : page.after(sourceViewerEl);
+        (pdfFirst ? sourceViewerEl : page).scrollIntoView({ behavior:'smooth', block:'start' });
+      } else {
+        restoreSourceViewer();
+        applySourceLayout('text-primary');
+        target.scrollIntoView({ behavior:'smooth', block:'start' });
+      }
+      return true;
+    }
     function editorText(area) { return area.innerText.replace(/ /g, ' ').replace(/\n$/, ''); }
     function nodeAtOffset(root, wanted) {
       const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT);
@@ -825,7 +854,7 @@ D6宫殿是分三次逐渐形成的，最早在西端建了一座接近方形的
     document.getElementById('insertImageBtn').addEventListener('click',()=>{if(viewMode!=='clean'){setStatus('请先切换回清稿再插入图片','warn');return}if(!activeArea){setStatus('请先在正文中放置光标','warn');return}document.getElementById('editorImageInput').click();});
     document.getElementById('editorImageInput').addEventListener('change',async event=>{const file=event.target.files[0];if(!file)return;try{const caption=prompt('请输入图片说明和来源（可稍后在正文中修改）：',file.name)||file.name;insertEditorialImage(await prepareImage(file),file.name,caption)}catch(error){setStatus(error.message,'warn')}finally{event.target.value=''}});
     document.addEventListener('click',event=>{const size=event.target.closest('[data-image-size]'),remove=event.target.closest('[data-image-remove]'),figure=event.target.closest('.editorial-image');if(size&&figure){figure.dataset.size=size.dataset.imageSize;figure.closest('.rich-editor')?.dispatchEvent(new Event('input',{bubbles:true}))}else if(remove&&figure&&confirm('删除这张插图？')){const area=figure.closest('.rich-editor'),page=area?.dataset.page;figure.remove();area?.dispatchEvent(new Event('input',{bubbles:true}));addLog('删除图片','',page)}});
-    document.querySelectorAll('[data-target]').forEach(button => button.addEventListener('click', () => document.getElementById(button.dataset.target)?.scrollIntoView({ behavior: 'smooth', block: 'start' })));
+    document.querySelectorAll('[data-target]').forEach(button => button.addEventListener('click', () => { const target=document.getElementById(button.dataset.target);if (!showPagePair(target)) target?.scrollIntoView({ behavior:'smooth',block:'start' }); }));
     textareas().forEach(initializeRichEditor);
     textareas().forEach(area => { area.addEventListener('input', () => { queueSave(); renderUserNotes(); }); area.addEventListener('focus', () => { activeArea = area; notePageEl.value = area.dataset.page; }); area.addEventListener('click', () => captureEditorSelection(area)); area.addEventListener('keyup', () => captureEditorSelection(area)); area.addEventListener('mouseup', () => captureEditorSelection(area)); area.addEventListener('keydown',event=>{if(event.key==='Enter'&&viewMode==='clean'){event.preventDefault();captureEditorSelection(area);area.setRangeText('\n');area.dispatchEvent(new Event('input',{bubbles:true}));}}); area.addEventListener('paste',event=>{if(viewMode!=='clean')return;event.preventDefault();captureEditorSelection(area);area.setRangeText(event.clipboardData.getData('text/plain'));area.dispatchEvent(new Event('input',{bubbles:true}));}); });
     document.querySelectorAll('button.term').forEach(button => button.addEventListener('click', () => addNotation(button.dataset.term, button.dataset.pinyin)));
@@ -880,30 +909,45 @@ D6宫殿是分三次逐渐形成的，最早在西端建了一座接近方形的
     document.getElementById('clearLogBtn').addEventListener('click', () => { if (!confirm('清空本浏览器保存的编辑日志？')) return; localStorage.removeItem(LOG_KEY); renderLog(); setStatus('日志已清空', 'ok'); });
     document.getElementById('resetBtn').addEventListener('click', () => { if (!confirm('恢复 chapter clean 原稿会清除本浏览器保存的编辑内容。继续？')) return; clearTimeout(timer); allowSave = false; if (viewMode === 'annotated') setView('clean'); textareas().forEach(area => area.value = ORIGINAL_TEXTS[area.dataset.page] ?? ''); cleanViewTexts = { ...ORIGINAL_TEXTS }; cleanViewHtml = {}; localStorage.removeItem(STORAGE_KEY); sessionStorage.removeItem(`${STORAGE_KEY}:view`); viewMode = 'clean'; textareas().forEach(area => { area.readOnly = false; area.classList.remove('annotated-view'); }); document.getElementById('viewToggleBtn').textContent = '切换为注音稿'; modeBadgeEl.textContent = '当前：清稿'; modeBadgeEl.classList.remove('annotated'); allowSave = true; setStatus('已恢复 chapter clean 原稿', 'ok'); addLog('恢复 clean 原稿', '', currentPage()); });
     window.addEventListener('beforeunload', () => { if (allowSave) saveNow(false); });
-    const sourceLayoutSlider = document.getElementById('sourceLayoutSlider');
-    const sourceLayoutOutput = document.getElementById('sourceLayoutOutput');
-    const SOURCE_LAYOUT_KEY = 'jianshang-text-pdf-layout-v1';
+    const sourceLayoutControl = document.querySelector('.source-layout-control');
+    const sourceLayoutButton = document.getElementById('sourceLayoutButton');
+    const SOURCE_LAYOUT_KEY = 'jianshang-primary-reference-layout-v3';
+    const SOURCE_LAYOUTS = ['text','text-primary','balanced','pdf-primary','pdf'];
+    const SOURCE_LAYOUT_LABELS = { text:'正文', 'text-primary':'正文为主', balanced:'均衡', 'pdf-primary':'PDF为主', pdf:'PDF' };
     function applySourceLayout(raw, persist=true) {
-      const pdf = Math.max(0, Math.min(100, Number(raw)));
-      const text = 100 - pdf;
-      document.documentElement.style.setProperty('--text-share', `${text || 1}fr`);
-      document.documentElement.style.setProperty('--pdf-share', `${pdf || 1}fr`);
-      document.body.classList.toggle('text-only', pdf === 0);
-      document.body.classList.toggle('pdf-only', pdf === 100);
-      document.body.classList.toggle('pdf-priority', pdf > 50 && pdf < 100);
-      sourceLayoutSlider.value = String(pdf);
-      sourceLayoutOutput.textContent = pdf === 0 ? '仅正文' : pdf === 100 ? '仅 PDF' : `正文 ${text}% · PDF ${pdf}%`;
-      if (persist) localStorage.setItem(SOURCE_LAYOUT_KEY, String(pdf));
+      const mode = SOURCE_LAYOUTS.includes(raw) ? raw : 'text-primary';
+      const layout = document.querySelector('.layout');
+      layout.classList.remove('workspace-pane-layout','workspace-pane-primary-only','workspace-pane-secondary-only','workspace-pane-secondary-first','workspace-pane-has-splitter');
+      layout.style.removeProperty('--workspace-primary-share');
+      layout.style.removeProperty('--workspace-secondary-share');
+      layout.querySelectorAll('[data-pane-primary],[data-pane-secondary]').forEach(node => { delete node.dataset.panePrimary; delete node.dataset.paneSecondary; });
+      document.querySelector('.workspace-pane-balance')?.remove();
+      SOURCE_LAYOUTS.forEach(name => document.body.classList.toggle(`source-layout-${name}`, name === mode));
+      document.querySelectorAll('[data-source-layout]').forEach(button => button.classList.toggle('active', button.dataset.sourceLayout === mode));
+      sourceLayoutButton.textContent = '分栏布局';
+      sourceLayoutButton.setAttribute('aria-label', `分栏布局，当前：${SOURCE_LAYOUT_LABELS[mode]}`);
+      if (!matchMedia('(max-width:980px)').matches) restoreSourceViewer();
+      if (persist) localStorage.setItem(SOURCE_LAYOUT_KEY, mode);
     }
-    sourceLayoutSlider.addEventListener('input', event => applySourceLayout(event.target.value));
-    document.querySelectorAll('[data-pdf-share]').forEach(button => button.addEventListener('click', () => applySourceLayout(button.dataset.pdfShare)));
-    applySourceLayout(localStorage.getItem(SOURCE_LAYOUT_KEY) ?? (matchMedia('(max-width:980px)').matches ? 0 : 30), false);
+    sourceLayoutButton.addEventListener('click', event => { event.stopPropagation(); const open = sourceLayoutControl.classList.toggle('open'); sourceLayoutButton.setAttribute('aria-expanded', String(open)); });
+    document.querySelectorAll('[data-source-layout]').forEach(button => button.addEventListener('click', () => { applySourceLayout(button.dataset.sourceLayout); sourceLayoutControl.classList.remove('open'); sourceLayoutButton.setAttribute('aria-expanded','false'); }));
+    document.addEventListener('click', event => { if (!sourceLayoutControl.contains(event.target)) { sourceLayoutControl.classList.remove('open'); sourceLayoutButton.setAttribute('aria-expanded','false'); } });
+    document.addEventListener('keydown', event => { if (event.key === 'Escape') { sourceLayoutControl.classList.remove('open'); sourceLayoutButton.setAttribute('aria-expanded','false'); } });
+    applySourceLayout(localStorage.getItem(SOURCE_LAYOUT_KEY) ?? 'text-primary', false);
     populateNotePages();
     updateMarkerGuidance();
     loadSaved();
     renderUserNotes();
     renderChapterNotes();
     activeArea = textareas()[0] || null;
+    syncSourceViewer(activeArea);
+    textareas().forEach(area => area.addEventListener('focusin', () => syncSourceViewer(area)));
+    const sourcePageObserver = new IntersectionObserver(entries => {
+      if (Date.now() < sourceNavigationLockUntil) return;
+      const visible = entries.filter(entry => entry.isIntersecting).sort((a,b) => b.intersectionRatio - a.intersectionRatio)[0];
+      if (visible) syncSourceViewer(visible.target);
+    }, { rootMargin:'-15% 0px -65% 0px', threshold:[0,.25,.5] });
+    textareas().forEach(area => sourcePageObserver.observe(area));
     applyDictionarySettings();
     loadProjectDictionaryOverrides();
     loadVoices();

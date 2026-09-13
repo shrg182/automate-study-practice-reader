@@ -455,7 +455,7 @@ class JianshangEditorToc extends HTMLElement {{
     section.id = "toc";
     section.innerHTML = `<div class="toc-head"><h2>目录</h2><span>手工校订工作台</span></div>
       <div class="toc-body"><div><h3>章节</h3><div class="toc-legend"><span class="legend-current">当前章节</span><span class="legend-available">可打开</span><span class="legend-unavailable">尚未生成</span></div><div class="toc-links"></div></div>
-      <div><h3>工作说明</h3><p>左侧文字来自已处理的 clean 文本，并按段落近似切分到 PDF 页。右侧为源 PDF 页面图像。手工修改后请使用“生成文本”或“下载 TXT”，作为 manual edition 输出。</p><p>浏览器自动保存只保存在本机 localStorage；长期保存请下载 TXT 和日志。</p></div></div>`;
+      <div class="toc-work-notes"><h3>工作说明</h3><p>左侧文字来自已处理的 clean 文本，并按段落近似切分到 PDF 页。右侧为源 PDF 页面图像。手工修改后请使用“生成文本”或“下载 TXT”，作为 manual edition 输出。</p><p>浏览器自动保存只保存在本机 localStorage；长期保存请下载 TXT 和日志。</p></div></div>`;
     const links = section.querySelector(".toc-links");
     for (const item of JIANSHANG_CHAPTERS) {{
       const link = document.createElement("a");
@@ -655,9 +655,8 @@ def render_editor(mapping: ChapterMap, chunks: list[str]) -> str:
           </div>
           <div class="workbench">
             <div class="editor-wrap">
-              <div class="rich-editor" data-page="{pdf_page:03d}" contenteditable="true" role="textbox" aria-multiline="true" spellcheck="false">{esc(body)}</div>
+              <div class="rich-editor" data-page="{pdf_page:03d}" data-source-page="{source_page:03d}" data-printed-page="{printed_page}" data-source-image="{image}" contenteditable="true" role="textbox" aria-multiline="true" spellcheck="false">{esc(body)}</div>
             </div>
-            <div class="scan"><img src="{image}" alt="PDF page {pdf_page:03d}"></div>
           </div>
         </section>"""
         )
@@ -767,8 +766,16 @@ def render_editor(mapping: ChapterMap, chunks: list[str]) -> str:
     .format-divider {{ height:1px; margin:5px 4px; background:#ddd7cb; }}
     .status {{ color:var(--muted); font-size:.86rem; min-width:132px; text-align:right; }}
     main {{ width:min(1440px,calc(100% - 28px)); margin:18px auto 48px; }}
-    .layout {{ display:grid; grid-template-columns:280px minmax(0,1fr); gap:18px; align-items:start; }}
-    aside {{ position:sticky; top:calc(var(--editor-header-height, 75px) + 12px); display:grid; gap:14px; max-height:calc(100vh - var(--editor-header-height, 75px) - 24px); overflow:auto; }}
+    .layout {{ display:grid; grid-template-columns:minmax(0,7fr) minmax(320px,3fr); gap:18px; align-items:start; }}
+    .editing-pane, .layout > aside {{ min-width:0; }}
+    aside {{ position:sticky; top:calc(var(--editor-header-height, 75px) + 12px); display:grid; gap:14px; max-height:calc(100vh - var(--editor-header-height, 75px) - 24px); overflow:auto; container-type:inline-size; }}
+    body.source-layout-text-primary .layout {{ grid-template-columns:minmax(0,7fr) minmax(320px,3fr) !important; }}
+    body.source-layout-balanced .layout {{ grid-template-columns:minmax(0,1fr) minmax(320px,1fr) !important; }}
+    body.source-layout-pdf-primary .layout {{ grid-template-columns:minmax(0,2fr) minmax(320px,3fr) !important; }}
+    body.source-layout-text .layout, body.source-layout-pdf .layout {{ grid-template-columns:minmax(0,1fr) !important; }}
+    body.source-layout-text .editing-pane {{ order:1; }} body.source-layout-text .layout > aside {{ order:2; }}
+    body.source-layout-pdf .layout > aside {{ order:1; }} body.source-layout-pdf .editing-pane {{ order:2; }}
+    body.source-layout-text .layout > aside, body.source-layout-pdf .layout > aside {{ position:static; max-height:none; }}
     .panel, .page, .toc-page, .reference-panel, .notes-dock, .export-dock {{ background:var(--paper); border:1px solid var(--line); box-shadow:var(--shadow); }}
     .panel h2, .reference-panel h2, .notes-dock h2, .export-dock h2 {{ margin:0; padding:10px 12px; font-size:.95rem; border-bottom:1px solid var(--line); background:var(--soft); }}
     .page-number-legend {{ padding:8px 11px; font-size:.82rem; color:var(--muted); }}
@@ -784,9 +791,12 @@ def render_editor(mapping: ChapterMap, chunks: list[str]) -> str:
     .toc-page, .reference-panel, .page {{ scroll-margin-top:86px; }}
     .toc-head {{ display:flex; justify-content:space-between; gap:14px; align-items:baseline; padding:14px 16px; border-bottom:1px solid var(--line); background:#fff; }}
     .toc-head h2 {{ margin:0; font-size:1.15rem; }}
-    .toc-body {{ display:grid; grid-template-columns:minmax(0,1fr) minmax(280px,.72fr); gap:18px; padding:14px 16px 16px; }}
+    .toc-body {{ display:grid; grid-template-columns:minmax(0,1fr); gap:18px; padding:14px 16px 16px; }}
     .toc-body h3 {{ margin:0 0 8px; font-size:.95rem; }}
     .toc-links {{ display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:6px; }}
+    .toc-work-notes {{ padding-top:14px; border-top:1px solid var(--line); }}
+    .toc-work-notes p:last-child {{ margin-bottom:0; }}
+    @container (max-width:560px) {{ .toc-links {{ grid-template-columns:minmax(0,1fr); }} }}
     .toc-link {{ display:flex; justify-content:space-between; gap:10px; border:1px solid var(--line); border-radius:6px; background:#fff; color:var(--ink); text-decoration:none; padding:7px 9px; min-height:34px; align-items:center; }}
     .toc-link.available {{ border-left:4px solid var(--ok); background:#f4fbf6; }}
     .toc-link.current {{ border:2px solid var(--accent); background:#fff0ec; color:var(--accent); font-weight:700; }}
@@ -796,7 +806,7 @@ def render_editor(mapping: ChapterMap, chunks: list[str]) -> str:
     .legend-current::before {{ background:var(--accent); }} .legend-available::before {{ background:var(--ok); }} .legend-unavailable::before {{ background:#aaa; }}
     .toc-link span:first-child {{ overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }}
     .toc-link span:last-child {{ color:var(--muted); font-size:.86rem; font-variant-numeric:tabular-nums; white-space:nowrap; }}
-    .reference-grid {{ display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:14px; margin:18px 0; align-items:start; }}
+    .reference-grid {{ display:grid; grid-template-columns:1fr; gap:14px; align-items:start; }}
     #user-notes {{ grid-column:1 / -1; }}
     #user-notes .table-scroll {{ max-height:440px; }}
     #user-notes table {{ table-layout:fixed; }}
@@ -819,14 +829,13 @@ def render_editor(mapping: ChapterMap, chunks: list[str]) -> str:
     .page-title {{ font-weight:700; }}
     .page-title span {{ color:var(--muted); font-weight:500; margin-left:8px; }}
     .page-tools {{ display:flex; gap:8px; flex-wrap:wrap; }}
-    .source-layout-control {{ margin:12px auto; max-width:760px; padding:10px 14px; border:1px solid var(--line); border-radius:10px; background:#fff; display:flex; align-items:center; gap:10px; flex-wrap:wrap; }}
-    .source-layout-control strong {{ margin-right:auto; }}
-    .source-layout-control input {{ width:min(280px,48vw); }}
-    .source-layout-control output {{ min-width:145px; color:var(--muted); font-size:.86rem; }}
-    .workbench {{ display:grid; grid-template-columns:minmax(340px,var(--text-share,70fr)) minmax(300px,var(--pdf-share,30fr)); gap:0; align-items:stretch; }}
-    body.text-only .workbench, body.pdf-only .workbench {{ grid-template-columns:1fr; }}
-    body.text-only .scan, body.pdf-only .editor-wrap {{ display:none; }}
-    .editor-wrap {{ padding:12px; border-right:1px solid var(--line); display:flex; min-height:560px; }}
+    .source-layout-control {{ position:relative; display:inline-flex; }}
+    .source-layout-popover {{ position:absolute; z-index:60; top:calc(100% + 6px); right:0; display:none; min-width:150px; padding:6px; border:1px solid var(--line); border-radius:8px; background:#fff; box-shadow:0 10px 30px #2927202e; }}
+    .source-layout-control.open .source-layout-popover {{ display:grid; gap:4px; }}
+    .source-layout-popover button {{ width:100%; text-align:left; white-space:nowrap; }}
+    .source-layout-popover button.active {{ background:#e6f4ea; color:#137333; font-weight:700; }}
+    .workbench {{ display:block; }}
+    .editor-wrap {{ padding:12px; display:flex; min-height:560px; }}
     textarea {{ width:100%; min-height:0; border:1px solid var(--line); background:#fff; color:var(--ink); padding:14px; border-radius:6px; line-height:1.85; font-size:1.02rem; letter-spacing:0; overflow:auto; }}
     .rich-editor {{ width:100%; min-height:536px; border:1px solid var(--line); background:#fff; color:var(--ink); padding:14px; border-radius:6px; line-height:1.85; font-size:1.02rem; letter-spacing:0; overflow:auto; white-space:pre-wrap; overflow-wrap:anywhere; }}
     .rich-editor.annotated-view {{ background:#fff9e8; color:#5b481f; }}
@@ -836,8 +845,13 @@ def render_editor(mapping: ChapterMap, chunks: list[str]) -> str:
     .speech-rate {{ display:flex; align-items:center; gap:4px; color:var(--muted); font-size:.82rem; }}
     #speechRate {{ width:82px; }}
     .hidden {{ display:none !important; }}
-    .scan {{ padding:12px; background:#fbfaf6; display:flex; }}
-    .scan img {{ width:100%; height:auto; display:block; border:1px solid var(--line); background:#fff; align-self:flex-start; }}
+    .source-viewer {{ background:#fbfaf6; }}
+    .source-viewer-head {{ display:flex; justify-content:space-between; gap:8px; padding:9px 11px; border-bottom:1px solid var(--line); align-items:center; }}
+    .source-viewer-head strong {{ font-size:.9rem; }}
+    .source-viewer-meta {{ color:var(--muted); font-size:.78rem; }}
+    .source-viewer img {{ width:100%; height:auto; display:block; background:#fff; }}
+    .source-viewer-actions {{ display:flex; gap:7px; padding:9px; border-top:1px solid var(--line); }}
+    .source-viewer-actions a {{ flex:1; justify-content:center; text-align:center; }}
     .notes-dock {{ margin-top:18px; scroll-margin-top:86px; }}
     .note-grid {{ display:grid; grid-template-columns:minmax(240px,.75fr) minmax(320px,1fr); gap:12px; padding:12px; }}
     .note-controls {{ display:grid; gap:10px; align-content:start; }}
@@ -856,7 +870,7 @@ def render_editor(mapping: ChapterMap, chunks: list[str]) -> str:
     .export-dock {{ margin-top:18px; }}
     #exportText {{ min-height:240px; border:0; border-radius:0; }}
     .quick-note-jump {{ position:fixed; right:18px; bottom:18px; z-index:25; background:var(--accent); color:var(--accent-ink); border-color:var(--accent); box-shadow:0 8px 24px rgba(30,24,16,.18); }}
-    @media (max-width:980px) {{ .topbar {{ grid-template-columns:1fr; }} .actions {{ justify-content:flex-start; }} .status {{ text-align:left; }} .layout {{ grid-template-columns:1fr; }} aside {{ position:static; max-height:none; }} .toc-body, .note-grid {{ grid-template-columns:1fr; }} .toc-links {{ grid-template-columns:1fr; }} .reference-grid {{ grid-template-columns:1fr; }} .workbench {{ grid-template-columns:1fr; }} .editor-wrap {{ border-right:0; border-bottom:1px solid var(--line); }} body.pdf-priority .scan {{ grid-row:1; }} body.pdf-priority .editor-wrap {{ grid-row:2; }} .rich-editor {{ min-height:520px; }} .quick-note-jump {{ right:12px; bottom:12px; }} }}
+    @media (max-width:980px) {{ .topbar {{ grid-template-columns:1fr; }} .actions {{ justify-content:flex-start; }} .status {{ text-align:left; }} .layout, body.source-layout-text-primary .layout, body.source-layout-balanced .layout, body.source-layout-pdf-primary .layout {{ grid-template-columns:minmax(0,1fr) !important; }} aside {{ position:static; max-height:none; }} body.source-layout-pdf-primary .layout > aside, body.source-layout-pdf .layout > aside {{ order:1; }} body.source-layout-pdf-primary .editing-pane, body.source-layout-pdf .editing-pane {{ order:2; }} body.source-layout-text .editing-pane, body.source-layout-text-primary .editing-pane, body.source-layout-balanced .editing-pane {{ order:1; }} body.source-layout-text .layout > aside, body.source-layout-text-primary .layout > aside, body.source-layout-balanced .layout > aside {{ order:2; }} .source-layout-popover {{ position:fixed; top:var(--editor-header-height,75px); right:12px; }} .toc-body, .note-grid {{ grid-template-columns:1fr; }} .toc-links {{ grid-template-columns:1fr; }} .reference-grid {{ grid-template-columns:1fr; }} .rich-editor {{ min-height:520px; }} .quick-note-jump {{ right:12px; bottom:12px; }} }}
   </style>
 </head>
 <body>
@@ -866,28 +880,9 @@ def render_editor(mapping: ChapterMap, chunks: list[str]) -> str:
     reference-href="../reference_tables.html">
     <noscript>此编辑器需要启用 JavaScript。</noscript>
   </jianshang-editor-header>
-  <section class="source-layout-control" aria-label="正文与 PDF 布局">
-    <strong>正文 / PDF</strong>
-    <button type="button" data-pdf-share="0">仅正文</button>
-    <button type="button" data-pdf-share="30">正文优先</button>
-    <button type="button" data-pdf-share="50">均衡</button>
-    <button type="button" data-pdf-share="100">仅 PDF</button>
-    <input id="sourceLayoutSlider" type="range" min="0" max="100" step="5" aria-label="PDF 所占比例">
-    <output id="sourceLayoutOutput"></output>
-  </section>
   <main>
     <div class="layout">
-      <aside>
-        <section class="panel"><h2>页码说明</h2><div class="page-number-legend"><p><strong>原阅</strong> {mapping.pdf_start:03d}-{mapping.pdf_end:03d}：原书在阅读器中显示的页码</p><p><strong>原PDF</strong> {mapping.source_start:03d}-{mapping.source_end:03d}：原书文件的物理页码</p><p><strong>印</strong> {mapping.printed_start}-{mapping.printed_end}：书页印刷页码</p><p><strong>注音PDF</strong> {annotated_page_label}：独立重排页码，不与原书逐页对应</p></div></section>
-        <section class="panel"><h2>页</h2><div class="nav-list">{''.join(nav_buttons)}</div></section>
-        <section class="panel"><h2>参考表</h2><div class="nav-list">{''.join(reference_buttons)}</div></section>
-        <section class="panel"><h2>术语</h2><div class="term-list">{term_items}</div></section>
-      </aside>
-      <section>
-        <jianshang-editor-toc current-chapter="{chapter}">
-          <noscript>目录需要启用 JavaScript。</noscript>
-        </jianshang-editor-toc>
-        <div class="reference-grid">{reference_tables}</div>
+      <section class="editing-pane">
         <div class="pages">{''.join(pages)}</div>
         <section class="notes-dock" id="notes">
           <h2>编辑札记</h2>
@@ -921,6 +916,21 @@ def render_editor(mapping: ChapterMap, chunks: list[str]) -> str:
         </section>
         <section class="export-dock"><h2>导出文本</h2><textarea id="exportText" spellcheck="false"></textarea></section>
       </section>
+      <aside>
+        <section class="panel source-viewer" aria-label="当前原书 PDF 页">
+          <div class="source-viewer-head"><strong>当前原书 PDF 页</strong><span class="source-viewer-meta" id="sourceViewerMeta"></span></div>
+          <img id="sourceViewerImage" src="pdf_pages/{page_image_name(mapping.source_start)}" alt="原书 PDF 页 {mapping.source_start:03d}">
+          <div class="source-viewer-actions"><a class="action-link" href="{annotated_pdf_name}" target="_blank" rel="noopener">打开注音版 PDF</a></div>
+        </section>
+        <section class="panel"><h2>页码说明</h2><div class="page-number-legend"><p><strong>原阅</strong> {mapping.pdf_start:03d}-{mapping.pdf_end:03d}：原书在阅读器中显示的页码</p><p><strong>原PDF</strong> {mapping.source_start:03d}-{mapping.source_end:03d}：原书文件的物理页码</p><p><strong>印</strong> {mapping.printed_start}-{mapping.printed_end}：书页印刷页码</p><p><strong>注音PDF</strong> {annotated_page_label}：独立重排页码，不与原书逐页对应</p></div></section>
+        <section class="panel"><h2>页</h2><div class="nav-list">{''.join(nav_buttons)}</div></section>
+        <jianshang-editor-toc current-chapter="{chapter}">
+          <noscript>目录需要启用 JavaScript。</noscript>
+        </jianshang-editor-toc>
+        <div class="reference-grid">{reference_tables}</div>
+        <section class="panel"><h2>参考表</h2><div class="nav-list">{''.join(reference_buttons)}</div></section>
+        <section class="panel"><h2>术语</h2><div class="term-list">{term_items}</div></section>
+      </aside>
     </div>
   </main>
   <button class="quick-note-jump" type="button" data-target="notes">札记</button>
@@ -951,6 +961,11 @@ def render_editor(mapping: ChapterMap, chunks: list[str]) -> str:
     const chapterNotesBodyEl = document.getElementById('chapterNotesBody');
     const chapterNoteTitleEl = document.getElementById('chapterNoteTitle');
     const chapterNoteTextEl = document.getElementById('chapterNoteText');
+    const sourceViewerImageEl = document.getElementById('sourceViewerImage');
+    const sourceViewerMetaEl = document.getElementById('sourceViewerMeta');
+    const sourceViewerEl = document.querySelector('.source-viewer');
+    const sourceViewerHome = document.createComment('source-viewer-home');
+    sourceViewerEl.before(sourceViewerHome);
     let activeArea = null;
     let viewMode = 'clean';
     let cleanViewTexts = {{}};
@@ -958,8 +973,35 @@ def render_editor(mapping: ChapterMap, chunks: list[str]) -> str:
     let voices = [];
     let allowSave = true;
     let savedFormatRange = null;
+    let sourceNavigationLockUntil = 0;
     function setStatus(text, tone = '') {{ statusEl.textContent = text; statusEl.style.color = tone === 'ok' ? 'var(--ok)' : tone === 'warn' ? 'var(--warn)' : 'var(--muted)'; }}
     function textareas() {{ return Array.from(document.querySelectorAll('.rich-editor[data-page]')); }}
+    function syncSourceViewer(area) {{
+      if (!area || !sourceViewerImageEl) return;
+      sourceViewerImageEl.src = area.dataset.sourceImage;
+      sourceViewerImageEl.alt = `原书 PDF 页 ${{area.dataset.sourcePage}}`;
+      sourceViewerMetaEl.textContent = `原阅 ${{area.dataset.page}} · 原PDF ${{area.dataset.sourcePage}} · 印 ${{area.dataset.printedPage}}`;
+    }}
+    function restoreSourceViewer() {{ sourceViewerHome.after(sourceViewerEl); }}
+    function currentSourceLayout() {{ return SOURCE_LAYOUTS.find(name => document.body.classList.contains(`source-layout-${{name}}`)) || 'text-primary'; }}
+    function showPagePair(target) {{
+      const area = target?.matches('.rich-editor') ? target : target?.querySelector('.rich-editor');
+      if (!area) return false;
+      activeArea = area;
+      sourceNavigationLockUntil = Date.now() + 1400;
+      syncSourceViewer(area);
+      if (matchMedia('(max-width:980px)').matches) {{
+        const page = area.closest('.page');
+        const pdfFirst = ['pdf-primary','pdf'].includes(currentSourceLayout());
+        pdfFirst ? page.before(sourceViewerEl) : page.after(sourceViewerEl);
+        (pdfFirst ? sourceViewerEl : page).scrollIntoView({{ behavior:'smooth', block:'start' }});
+      }} else {{
+        restoreSourceViewer();
+        applySourceLayout('text-primary');
+        target.scrollIntoView({{ behavior:'smooth', block:'start' }});
+      }}
+      return true;
+    }}
     function editorText(area) {{ return area.innerText.replace(/\u00a0/g, ' ').replace(/\\n$/, ''); }}
     function nodeAtOffset(root, wanted) {{
       const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT);
@@ -1144,7 +1186,7 @@ def render_editor(mapping: ChapterMap, chunks: list[str]) -> str:
     document.getElementById('insertImageBtn').addEventListener('click',()=>{{if(viewMode!=='clean'){{setStatus('请先切换回清稿再插入图片','warn');return}}if(!activeArea){{setStatus('请先在正文中放置光标','warn');return}}document.getElementById('editorImageInput').click();}});
     document.getElementById('editorImageInput').addEventListener('change',async event=>{{const file=event.target.files[0];if(!file)return;try{{const caption=prompt('请输入图片说明和来源（可稍后在正文中修改）：',file.name)||file.name;insertEditorialImage(await prepareImage(file),file.name,caption)}}catch(error){{setStatus(error.message,'warn')}}finally{{event.target.value=''}}}});
     document.addEventListener('click',event=>{{const size=event.target.closest('[data-image-size]'),remove=event.target.closest('[data-image-remove]'),figure=event.target.closest('.editorial-image');if(size&&figure){{figure.dataset.size=size.dataset.imageSize;figure.closest('.rich-editor')?.dispatchEvent(new Event('input',{{bubbles:true}}))}}else if(remove&&figure&&confirm('删除这张插图？')){{const area=figure.closest('.rich-editor'),page=area?.dataset.page;figure.remove();area?.dispatchEvent(new Event('input',{{bubbles:true}}));addLog('删除图片','',page)}}}});
-    document.querySelectorAll('[data-target]').forEach(button => button.addEventListener('click', () => document.getElementById(button.dataset.target)?.scrollIntoView({{ behavior: 'smooth', block: 'start' }})));
+    document.querySelectorAll('[data-target]').forEach(button => button.addEventListener('click', () => {{ const target=document.getElementById(button.dataset.target);if (!showPagePair(target)) target?.scrollIntoView({{ behavior:'smooth',block:'start' }}); }}));
     textareas().forEach(initializeRichEditor);
     textareas().forEach(area => {{ area.addEventListener('input', () => {{ queueSave(); renderUserNotes(); }}); area.addEventListener('focus', () => {{ activeArea = area; notePageEl.value = area.dataset.page; }}); area.addEventListener('click', () => captureEditorSelection(area)); area.addEventListener('keyup', () => captureEditorSelection(area)); area.addEventListener('mouseup', () => captureEditorSelection(area)); area.addEventListener('keydown',event=>{{if(event.key==='Enter'&&viewMode==='clean'){{event.preventDefault();captureEditorSelection(area);area.setRangeText('\\n');area.dispatchEvent(new Event('input',{{bubbles:true}}));}}}}); area.addEventListener('paste',event=>{{if(viewMode!=='clean')return;event.preventDefault();captureEditorSelection(area);area.setRangeText(event.clipboardData.getData('text/plain'));area.dispatchEvent(new Event('input',{{bubbles:true}}));}}); }});
     document.querySelectorAll('button.term').forEach(button => button.addEventListener('click', () => addNotation(button.dataset.term, button.dataset.pinyin)));
@@ -1199,30 +1241,45 @@ def render_editor(mapping: ChapterMap, chunks: list[str]) -> str:
     document.getElementById('clearLogBtn').addEventListener('click', () => {{ if (!confirm('清空本浏览器保存的编辑日志？')) return; localStorage.removeItem(LOG_KEY); renderLog(); setStatus('日志已清空', 'ok'); }});
     document.getElementById('resetBtn').addEventListener('click', () => {{ if (!confirm('恢复 chapter clean 原稿会清除本浏览器保存的编辑内容。继续？')) return; clearTimeout(timer); allowSave = false; if (viewMode === 'annotated') setView('clean'); textareas().forEach(area => area.value = ORIGINAL_TEXTS[area.dataset.page] ?? ''); cleanViewTexts = {{ ...ORIGINAL_TEXTS }}; cleanViewHtml = {{}}; localStorage.removeItem(STORAGE_KEY); sessionStorage.removeItem(`${{STORAGE_KEY}}:view`); viewMode = 'clean'; textareas().forEach(area => {{ area.readOnly = false; area.classList.remove('annotated-view'); }}); document.getElementById('viewToggleBtn').textContent = '切换为注音稿'; modeBadgeEl.textContent = '当前：清稿'; modeBadgeEl.classList.remove('annotated'); allowSave = true; setStatus('已恢复 chapter clean 原稿', 'ok'); addLog('恢复 clean 原稿', '', currentPage()); }});
     window.addEventListener('beforeunload', () => {{ if (allowSave) saveNow(false); }});
-    const sourceLayoutSlider = document.getElementById('sourceLayoutSlider');
-    const sourceLayoutOutput = document.getElementById('sourceLayoutOutput');
-    const SOURCE_LAYOUT_KEY = 'jianshang-text-pdf-layout-v1';
+    const sourceLayoutControl = document.querySelector('.source-layout-control');
+    const sourceLayoutButton = document.getElementById('sourceLayoutButton');
+    const SOURCE_LAYOUT_KEY = 'jianshang-primary-reference-layout-v3';
+    const SOURCE_LAYOUTS = ['text','text-primary','balanced','pdf-primary','pdf'];
+    const SOURCE_LAYOUT_LABELS = {{ text:'正文', 'text-primary':'正文为主', balanced:'均衡', 'pdf-primary':'PDF为主', pdf:'PDF' }};
     function applySourceLayout(raw, persist=true) {{
-      const pdf = Math.max(0, Math.min(100, Number(raw)));
-      const text = 100 - pdf;
-      document.documentElement.style.setProperty('--text-share', `${{text || 1}}fr`);
-      document.documentElement.style.setProperty('--pdf-share', `${{pdf || 1}}fr`);
-      document.body.classList.toggle('text-only', pdf === 0);
-      document.body.classList.toggle('pdf-only', pdf === 100);
-      document.body.classList.toggle('pdf-priority', pdf > 50 && pdf < 100);
-      sourceLayoutSlider.value = String(pdf);
-      sourceLayoutOutput.textContent = pdf === 0 ? '仅正文' : pdf === 100 ? '仅 PDF' : `正文 ${{text}}% · PDF ${{pdf}}%`;
-      if (persist) localStorage.setItem(SOURCE_LAYOUT_KEY, String(pdf));
+      const mode = SOURCE_LAYOUTS.includes(raw) ? raw : 'text-primary';
+      const layout = document.querySelector('.layout');
+      layout.classList.remove('workspace-pane-layout','workspace-pane-primary-only','workspace-pane-secondary-only','workspace-pane-secondary-first','workspace-pane-has-splitter');
+      layout.style.removeProperty('--workspace-primary-share');
+      layout.style.removeProperty('--workspace-secondary-share');
+      layout.querySelectorAll('[data-pane-primary],[data-pane-secondary]').forEach(node => {{ delete node.dataset.panePrimary; delete node.dataset.paneSecondary; }});
+      document.querySelector('.workspace-pane-balance')?.remove();
+      SOURCE_LAYOUTS.forEach(name => document.body.classList.toggle(`source-layout-${{name}}`, name === mode));
+      document.querySelectorAll('[data-source-layout]').forEach(button => button.classList.toggle('active', button.dataset.sourceLayout === mode));
+      sourceLayoutButton.textContent = '分栏布局';
+      sourceLayoutButton.setAttribute('aria-label', `分栏布局，当前：${{SOURCE_LAYOUT_LABELS[mode]}}`);
+      if (!matchMedia('(max-width:980px)').matches) restoreSourceViewer();
+      if (persist) localStorage.setItem(SOURCE_LAYOUT_KEY, mode);
     }}
-    sourceLayoutSlider.addEventListener('input', event => applySourceLayout(event.target.value));
-    document.querySelectorAll('[data-pdf-share]').forEach(button => button.addEventListener('click', () => applySourceLayout(button.dataset.pdfShare)));
-    applySourceLayout(localStorage.getItem(SOURCE_LAYOUT_KEY) ?? (matchMedia('(max-width:980px)').matches ? 0 : 30), false);
+    sourceLayoutButton.addEventListener('click', event => {{ event.stopPropagation(); const open = sourceLayoutControl.classList.toggle('open'); sourceLayoutButton.setAttribute('aria-expanded', String(open)); }});
+    document.querySelectorAll('[data-source-layout]').forEach(button => button.addEventListener('click', () => {{ applySourceLayout(button.dataset.sourceLayout); sourceLayoutControl.classList.remove('open'); sourceLayoutButton.setAttribute('aria-expanded','false'); }}));
+    document.addEventListener('click', event => {{ if (!sourceLayoutControl.contains(event.target)) {{ sourceLayoutControl.classList.remove('open'); sourceLayoutButton.setAttribute('aria-expanded','false'); }} }});
+    document.addEventListener('keydown', event => {{ if (event.key === 'Escape') {{ sourceLayoutControl.classList.remove('open'); sourceLayoutButton.setAttribute('aria-expanded','false'); }} }});
+    applySourceLayout(localStorage.getItem(SOURCE_LAYOUT_KEY) ?? 'text-primary', false);
     populateNotePages();
     updateMarkerGuidance();
     loadSaved();
     renderUserNotes();
     renderChapterNotes();
     activeArea = textareas()[0] || null;
+    syncSourceViewer(activeArea);
+    textareas().forEach(area => area.addEventListener('focusin', () => syncSourceViewer(area)));
+    const sourcePageObserver = new IntersectionObserver(entries => {{
+      if (Date.now() < sourceNavigationLockUntil) return;
+      const visible = entries.filter(entry => entry.isIntersecting).sort((a,b) => b.intersectionRatio - a.intersectionRatio)[0];
+      if (visible) syncSourceViewer(visible.target);
+    }}, {{ rootMargin:'-15% 0px -65% 0px', threshold:[0,.25,.5] }});
+    textareas().forEach(area => sourcePageObserver.observe(area));
     applyDictionarySettings();
     loadProjectDictionaryOverrides();
     loadVoices();

@@ -58,9 +58,9 @@ def entry_time_for(path: Path) -> str:
 
 
 def source_target_for(path: Path, root: Path) -> str:
-    """Return the reading editor beside a vocabulary file, when one exists."""
+    """Return the nearby editor, falling back to the vocabulary source itself."""
     target = path.parent / "editor.html"
-    return relative(target, root) if target.is_file() else ""
+    return relative(target if target.is_file() else path, root)
 
 
 def difficulty_for(entry_type: str, explicit: object = "") -> int:

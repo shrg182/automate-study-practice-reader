@@ -798,7 +798,7 @@
   }
 
   function installPaneBalancer() {
-    if (document.querySelector(".pane-balance,.bilingual-layout-control,.workspace-pane-balance,#layoutButton,[data-pane-balancer]")) return;
+    if (document.querySelector(".pane-balance,.bilingual-layout-control,.workspace-pane-balance,.source-layout-control,#layoutButton,[data-pane-balancer]")) return;
     const containers = [...document.querySelectorAll(".workspace,.content-grid,.editor-shell,.reader-layout,.main-layout,.reading-layout,.split-layout,.layout,main")];
     const candidate = containers.map(container => {
       const allChildren = [...container.children].filter(node => !node.matches("script,style,template") && getComputedStyle(node).display !== "none");
