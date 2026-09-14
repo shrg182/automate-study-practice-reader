@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
+from datetime import datetime, timedelta, timezone
 import csv
 import json
 from html import escape
@@ -14,7 +15,7 @@ import re
 
 BASE_DIR = Path(__file__).resolve().parent
 OUTPUT = BASE_DIR / "index.html"
-MOBILE_READER_VERSION = "1.20.1"
+MOBILE_READER_VERSION = "1.22.2"
 COPYRIGHT_YEAR = 2026
 COPYRIGHT_HOLDER = "Ruixing"
 
@@ -226,6 +227,24 @@ def editor_content_search_terms(editor: Path) -> str:
         )
 
 
+def initial_download_time(editor: Path) -> str:
+    """Return the durable source retrieval time in the reader's local timezone."""
+    metadata_path = editor.parent / "source.json"
+    if not metadata_path.exists():
+        return "—"
+    try:
+        metadata = json.loads(metadata_path.read_text(encoding="utf-8"))
+        value = str(metadata.get("retrieved_at") or "").strip()
+        if not value:
+            return "—"
+        downloaded = datetime.fromisoformat(value.replace("Z", "+00:00"))
+        if downloaded.tzinfo is not None:
+            downloaded = downloaded.astimezone(timezone(timedelta(hours=8)))
+        return downloaded.strftime("%Y/%m/%d %H:%M")
+    except (OSError, ValueError, TypeError, json.JSONDecodeError):
+        return "—"
+
+
 def collect_entries() -> dict[str, list[dict[str, str | None]]]:
     grouped: dict[str, list[dict[str, str | None]]] = {key: [] for key in COLLECTION_ORDER}
     for editor in sorted(BASE_DIR.rglob("editor.html"), key=natural_key):
@@ -242,6 +261,7 @@ def collect_entries() -> dict[str, list[dict[str, str | None]]]:
             {
                 "title": editor_title(editor),
                 "context": entry_context(editor, collection_key),
+                "initial_download": initial_download_time(editor),
                 "editor": editor.relative_to(BASE_DIR).as_posix(),
                 "pdf": pdf.relative_to(BASE_DIR).as_posix() if pdf else None,
                 "search": " ".join((editor_title(editor), relative.as_posix(), COLLECTIONS[collection_key].title, editor_content_search_terms(editor))),
@@ -422,7 +442,7 @@ def entry_card(entry: dict[str, str | None], number: int) -> str:
     </article>'''
     return f'''<article class="entry" data-search="{escape(str(entry['search']).casefold(), quote=True)}" data-editor-path="{escape(str(entry['editor']), quote=True)}">
       <div class="entry-number">{number:02d}</div>
-      <div class="entry-copy"><span>{escape(str(entry['context']))}</span><h3><a class="entry-title-link" href="{escape(href, quote=True)}" target="_blank" rel="noopener">{escape(str(entry['title']))}</a></h3></div>
+      <div class="entry-copy"><h3><a class="entry-title-link" href="{escape(href, quote=True)}" target="_blank" rel="noopener">{escape(str(entry['title']))}</a></h3><span class="entry-download-time" title="初次下载">{escape(str(entry.get('initial_download') or '—'))}</span></div>
       <div class="entry-reading"><strong>未读</strong><time></time></div>
       <div class="entry-editing"><strong>未编辑</strong><time></time></div>
       <div class="entry-action entry-editor"><a class="primary" href="{escape(href, quote=True)}" target="_blank" rel="noopener">{escape(action_label)}</a></div>
@@ -614,11 +634,11 @@ h1{{font:500 20px/1.25 Arial,"PingFang SC",sans-serif;letter-spacing:0}}
 .entries{{border-color:var(--line);box-shadow:0 1px 2px #3c40431a}}
 .entry{{grid-template-columns:52px minmax(260px,1fr) 190px;min-height:48px;padding:0;border-color:var(--line);gap:0;background:#fff}}
 .entry:hover{{background:#f8fbff}}.entry-number{{align-self:stretch;display:grid;place-items:center;background:#f1f3f4;border-right:1px solid var(--line);color:var(--muted);font:11px Arial,sans-serif}}
-.entry-copy{{align-self:stretch;display:grid;grid-template-columns:90px minmax(0,1fr);align-items:center;border-right:1px solid var(--line)}}
-.entry-copy span{{margin:0;padding:0 12px;color:#137333;font-size:11px;letter-spacing:0}}.entry-copy h3{{margin:0;padding:9px 12px;border-left:1px solid var(--line);font:500 14px/1.35 Arial,"PingFang SC",sans-serif}}
+.entry-copy{{align-self:stretch;display:grid;grid-template-columns:minmax(0,1fr) 125px;align-items:center;border-right:1px solid var(--line)}}
+.entry-copy span{{align-self:stretch;display:flex;align-items:center;margin:0;padding:0 12px;border-left:1px solid var(--line);color:var(--muted);font-size:11px;letter-spacing:0;white-space:nowrap}}.entry-copy h3{{margin:0;padding:9px 12px;font:500 14px/1.35 Arial,"PingFang SC",sans-serif}}
 .entry-title-link{{color:inherit;text-decoration:none}}.entry-title-link:hover{{color:#174ea6;text-decoration:underline;text-underline-offset:3px}}.entry-title-link:focus-visible{{outline:2px solid #1a73e8;outline-offset:3px;border-radius:2px}}
 .entry-actions{{padding:6px 9px;justify-content:flex-end;align-items:center}}.entry-actions a{{padding:6px 10px;border-radius:16px;font-size:11px}}.entry-actions .primary{{background:#188038}}.entry-actions .primary:hover{{background:#137333}}
-@media(max-width:760px){{.masthead-inner{{padding:12px 16px}}.lede{{display:none}}.shell{{padding:0 8px}}.collection-meta strong{{display:none}}.collection-tool{{min-height:38px;display:flex;align-items:center}}.entry{{grid-template-columns:38px 1fr}}.entry-copy{{grid-template-columns:70px 1fr;border-right:0}}.entry-actions{{grid-column:2;padding:5px 9px;justify-content:flex-start;border-top:1px solid var(--line)}}}}
+@media(max-width:760px){{.masthead-inner{{padding:12px 16px}}.lede{{display:none}}.shell{{padding:0 8px}}.collection-meta strong{{display:none}}.collection-tool{{min-height:38px;display:flex;align-items:center}}.entry{{grid-template-columns:38px 1fr}}.entry-copy{{grid-template-columns:minmax(180px,1fr) 125px;border-right:0}}.entry-actions{{grid-column:2;padding:5px 9px;justify-content:flex-start;border-top:1px solid var(--line)}}}}
 /* Restore the original book-like catalog when reading mode is selected. */
 html[data-workspace-skin="reading"]{{--ink:#25231f;--muted:#716d64;--paper:#f8f5ed;--panel:#fffdf8;--line:#d9d2c4;--red:#83372f;--blue:#315b73;--gold:#b28335}}
 html[data-workspace-skin="reading"] body{{background:#e9e4d9;font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Noto Sans CJK SC",sans-serif}}
@@ -629,7 +649,7 @@ html[data-workspace-skin="reading"] .shell{{width:min(1180px,calc(100% - 36px));
 html[data-workspace-skin="reading"] .collection-nav{{gap:7px}}html[data-workspace-skin="reading"] .category-chip{{padding:10px 13px;border-color:var(--line);border-radius:8px;background:var(--panel);color:var(--ink);font-size:13px}}html[data-workspace-skin="reading"] .category-chip:hover,html[data-workspace-skin="reading"] .category-chip:focus-visible,html[data-workspace-skin="reading"] .category-chip.active{{border-color:var(--red);background:#f7f1e6;color:var(--red)}}html[data-workspace-skin="reading"] .collection-nav b{{height:24px;min-width:24px;background:#eee8dc;color:var(--ink);font-size:11px}}
 html[data-workspace-skin="reading"] .category-header{{border-color:var(--line);background:#ded7c9}}html[data-workspace-skin="reading"] .category-header strong{{font:700 20px/1.3 "Songti SC","STSong",serif}}
 html[data-workspace-skin="reading"] .collection{{margin-top:34px;scroll-margin-top:90px}}html[data-workspace-skin="reading"] .collection-header{{padding:0 3px 15px;align-items:end;border:0;border-bottom:2px solid var(--ink);background:transparent}}html[data-workspace-skin="reading"] .collection-eyebrow{{display:block}}html[data-workspace-skin="reading"] .collection-title{{font:700 28px/1.25 "Songti SC","STSong",serif!important}}html[data-workspace-skin="reading"] .collection-description{{margin-top:7px;font-size:13px}}html[data-workspace-skin="reading"] .collection-tool{{border-radius:6px;background:var(--panel);color:var(--red)}}
-html[data-workspace-skin="reading"] .entries{{box-shadow:none}}html[data-workspace-skin="reading"] .entry{{grid-template-columns:54px minmax(0,1fr) auto;gap:16px;min-height:84px;padding:13px 17px;border-color:#e6e0d5}}html[data-workspace-skin="reading"] .entry-number{{display:block;align-self:auto;background:transparent;border:0;color:#a49b8c;font:600 12px/1 Georgia,serif}}html[data-workspace-skin="reading"] .entry-copy{{display:block;align-self:auto;border:0}}html[data-workspace-skin="reading"] .entry-copy span{{padding:0;color:var(--blue);font-size:11px;letter-spacing:.06em}}html[data-workspace-skin="reading"] .entry-copy h3{{margin:5px 0 0;padding:0;border:0;font:650 18px/1.35 "Songti SC","STSong",serif}}html[data-workspace-skin="reading"] .entry-actions{{padding:0}}html[data-workspace-skin="reading"] .entry-actions a{{padding:8px 11px;border-radius:6px;font-size:12px}}html[data-workspace-skin="reading"] .entry-actions .primary{{background:var(--red)}}
+html[data-workspace-skin="reading"] .entries{{box-shadow:none}}html[data-workspace-skin="reading"] .entry{{grid-template-columns:54px minmax(0,1fr) auto;gap:16px;min-height:84px;padding:13px 17px;border-color:#e6e0d5}}html[data-workspace-skin="reading"] .entry-number{{display:block;align-self:auto;background:transparent;border:0;color:#a49b8c;font:600 12px/1 Georgia,serif}}html[data-workspace-skin="reading"] .entry-copy{{display:grid;grid-template-columns:minmax(0,1fr) 125px;align-self:stretch;border-right:1px solid var(--line)}}html[data-workspace-skin="reading"] .entry-copy span{{display:flex;align-items:center;padding:0 12px;border-left:1px solid var(--line);color:var(--muted);font-size:11px;letter-spacing:0}}html[data-workspace-skin="reading"] .entry-copy h3{{display:flex;align-items:center;margin:0;padding:9px 12px;border:0;font:650 18px/1.35 "Songti SC","STSong",serif}}html[data-workspace-skin="reading"] .entry-actions{{padding:0}}html[data-workspace-skin="reading"] .entry-actions a{{padding:8px 11px;border-radius:6px;font-size:12px}}html[data-workspace-skin="reading"] .entry-actions .primary{{background:var(--red)}}
 /* Separate editor and PDF into aligned spreadsheet columns. */
 .entry{{grid-template-columns:52px minmax(260px,1fr) 145px 145px 140px 72px}}
 .entry-reading,.entry-editing{{align-self:stretch;display:flex;flex-direction:column;justify-content:center;padding:6px 12px;border-right:1px solid var(--line);color:var(--muted);font-size:11px;line-height:1.35}}.entry-reading strong,.entry-editing strong{{color:#5f6368;font-size:12px}}.entry-reading.read strong,.entry-editing.edited strong{{color:#137333}}.entry-reading time,.entry-editing time{{margin-top:2px;white-space:nowrap}}
