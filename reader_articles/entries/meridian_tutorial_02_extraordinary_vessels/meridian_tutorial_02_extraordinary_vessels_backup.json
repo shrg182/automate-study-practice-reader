@@ -1,0 +1,15 @@
+{
+  "schema": "reader-article-v1",
+  "id": "d5fa7977-d2f7-5d52-983e-2a27d86d09fb",
+  "savedAt": "2026-09-20T12:00:00+08:00",
+  "metadata": {
+    "type": "Reading material",
+    "date": "2026-09-20",
+    "title": "经络阅读教程（二）：奇经八脉与八脉交会穴",
+    "byline": "Reader tutorial · assembled from user-provided material"
+  },
+  "bodyHTML": "<nav class=\"series-navigation\" aria-label=\"教程导航\"><a href=\"../meridian_tutorial_01_framework/editor.html\">← 上一篇：经络阅读教程（一）：先建立十二经脉的框架</a><a href=\"../../../index.html#reader_articles\">返回 Reader Articles</a><a href=\"../meridian_tutorial_03_point_reference/editor.html\">下一篇：经络阅读教程（三）：十四经穴名称检索表 →</a></nav>\n<p><strong>学习目标：</strong>说出奇经八脉的名称，理解它们与十二经脉的区别，并识别八脉交会穴的配属关系。</p>\n<p class=\"callout\"><strong>学习边界：</strong>下文描述传统理论中的功能关系，不等同于现代临床疗效证明，也不构成针灸处方。</p>\n<h2>一、“奇”是什么意思</h2>\n<p>奇经八脉是不同于十二正经的一组特殊经脉。它们不参加十二经脉的循环流注，没有十二正经那样的阴阳表里配对。传统教材常用“联络、统率、调节、蓄溢”概括其作用。</p>\n<h2>二、八脉总览</h2>\n<table><thead><tr><th>名称</th><th>阅读抓手</th></tr></thead><tbody>\n<tr><th>督脉</th><td>行于后正中线；传统称“阳脉之海”。</td></tr>\n<tr><th>任脉</th><td>行于前正中线；传统称“阴脉之海”，并与胞胎、生殖相关。</td></tr>\n<tr><th>冲脉</th><td>传统称“十二经之海”和“血海”。</td></tr>\n<tr><th>带脉</th><td>横向环腰，用“约束纵行诸经”帮助记忆。</td></tr>\n<tr><th>阴维脉</th><td>维系一身阴经。</td></tr>\n<tr><th>阳维脉</th><td>维系一身阳经。</td></tr>\n<tr><th>阴跷脉</th><td>传统上联系下肢内侧运动、眼睑开合与睡眠。</td></tr>\n<tr><th>阳跷脉</th><td>传统上联系下肢外侧运动、眼睑开合与睡眠。</td></tr>\n</tbody></table>\n<h2>三、为什么常把它们比作湖泊</h2>\n<p>一种常见比喻是：十二经脉如江河，奇经八脉如湖泊水库。十二经气血充盛时，奇经可以蓄存；十二经不足时，奇经可以调节。这个比喻用于理解传统体系内部的关系，不是对人体存在实体“气血水库”的解剖声明。</p>\n<h2>四、任督与“十四经”</h2>\n<p>任脉与督脉具有本经穴位。十二正经加任、督二脉，合称<strong>十四经</strong>。其余六条奇经没有本经专属穴位，而是借助与十二经相通的穴位建立联系。</p>\n<h2>五、八脉交会穴</h2>\n<table><thead><tr><th>穴位</th><th>所属正经</th><th>所通奇经</th></tr></thead><tbody>\n<tr><td>公孙</td><td>足太阴脾经</td><td>冲脉</td></tr><tr><td>内关</td><td>手厥阴心包经</td><td>阴维脉</td></tr>\n<tr><td>后溪</td><td>手太阳小肠经</td><td>督脉</td></tr><tr><td>申脉</td><td>足太阳膀胱经</td><td>阳跷脉</td></tr>\n<tr><td>足临泣</td><td>足少阳胆经</td><td>带脉</td></tr><tr><td>外关</td><td>手少阳三焦经</td><td>阳维脉</td></tr>\n<tr><td>列缺</td><td>手太阴肺经</td><td>任脉</td></tr><tr><td>照海</td><td>足少阴肾经</td><td>阴跷脉</td></tr>\n</tbody></table>\n<h2>六、自测</h2>\n<ol><li>奇经八脉与十二经脉在流注和表里关系上有何不同？</li><li>为什么“十四经”只从奇经八脉中加入任、督二脉？</li><li>分别找出通于带脉、任脉和督脉的交会穴。</li><li>“江河—湖泊”比喻能够说明什么，又不能证明什么？</li></ol>\n<nav class=\"series-navigation\" aria-label=\"教程导航\"><a href=\"../meridian_tutorial_01_framework/editor.html\">← 上一篇：经络阅读教程（一）：先建立十二经脉的框架</a><a href=\"../../../index.html#reader_articles\">返回 Reader Articles</a><a href=\"../meridian_tutorial_03_point_reference/editor.html\">下一篇：经络阅读教程（三）：十四经穴名称检索表 →</a></nav>",
+  "footnotes": [],
+  "notes": "Source conversation: https://chat.deepseek.com/share/km6zn4kmhm71ody7cp\nEducational use only; not medical advice or self-needling instruction.",
+  "splitPercent": 50
+}

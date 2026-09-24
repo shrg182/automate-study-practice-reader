@@ -52,8 +52,9 @@ def build_selector(base,config,source_html=None,refresh=False):
 
 def build_editors(base,config):
     shared=PRACTICE/"shiji"/"shiji_lisheng_lujia";sys.path.insert(0,str(shared));from build_editor import build_html,load_global_terms,load_review_notes,load_terms
+    shared_terms=load_terms(base/"rare_terms.csv") if (base/"rare_terms.csv").exists() else []
     for row in read_csv(base/"catalog.csv"):
-        target=base/f"{int(row['sequence']):02d}_{row['slug']}";text=((target/"reading.txt") if (target/"reading.txt").exists() else (target/"original.txt")).read_text(encoding="utf-8");terms=load_terms(target/"reading_terms.csv")
+        target=base/f"{int(row['sequence']):02d}_{row['slug']}";text=((target/"reading.txt") if (target/"reading.txt").exists() else (target/"original.txt")).read_text(encoding="utf-8");local_terms=load_terms(target/"reading_terms.csv");local_names={item["term"] for item in local_terms};terms=local_terms+[item for item in shared_terms if item["term"] in text and item["term"] not in local_names]
         seed_path=target/f"{config['key']}_{int(row['sequence']):02d}_editor_seed.json";seed=json.loads(seed_path.read_text(encoding="utf-8")) if seed_path.exists() else {};initial_media=[]
         for item in seed.get("media",[]):
             media_path=target/item["path"];initial_media.append({**item,"dataUrl":f"data:{item['type']};base64,{base64.b64encode(media_path.read_bytes()).decode('ascii')}"})

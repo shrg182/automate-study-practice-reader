@@ -1,0 +1,34 @@
+{
+  "schema_version": 1,
+  "id": "dementia_prevention",
+  "title": "认知健康与痴呆风险降低",
+  "edition": "循证学习版 2026",
+  "language": "zh-CN",
+  "medical_use": "education_only",
+  "units": [
+    {
+      "number": 1,
+      "title": "证据边界：预防、延缓与“逆转”",
+      "path": "chapters/01_evidence_and_claims/editor.html",
+      "source_url": "https://www.who.int/publications/i/item/9789240123557"
+    },
+    {
+      "number": 2,
+      "title": "全生命周期的十四项可改变风险因素",
+      "path": "chapters/02_life_course_risk_reduction/editor.html",
+      "source_url": "https://discovery.ucl.ac.uk/id/eprint/10196488/"
+    },
+    {
+      "number": 3,
+      "title": "饮食、代谢与补充剂：我们真正知道什么",
+      "path": "chapters/03_diet_and_supplements/editor.html",
+      "source_url": "https://www.nia.nih.gov/health/alzheimers-and-dementia/what-do-we-know-about-diet-and-prevention-alzheimers-disease"
+    },
+    {
+      "number": 4,
+      "title": "中国实践指南：早识别、早就医与家庭支持",
+      "path": "chapters/04_practical_chinese_guidance/editor.html",
+      "source_url": "https://www.nhc.gov.cn/lljks/c100158/201909/c124c2c91fb74701b11d560aba0ad827.shtml"
+    }
+  ]
+}

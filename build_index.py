@@ -51,6 +51,7 @@ COLLECTIONS = {
     "russian_wars": Collection("russian_wars", "Войны России", "Russian-first chronicle with selectable English and Chinese study support", "Russian history"),
     "mao_annotated_24_histories": Collection("mao_annotated_24_histories", "《毛泽东批注二十四史》", "九十一册横排简体字本：二十四史、批注、史论与研究资料", "历史典籍"),
     "tcm_foundations": Collection("tcm_foundations", "《中医基础理论》", "原创学习教材：传统理论、现代医学边界、术语与复习", "中医基础课程"),
+    "dementia_prevention": Collection("dementia_prevention", "认知健康与痴呆风险降低", "WHO、Lancet、NIA 与国家卫健委资料的循证学习指南", "健康科学"),
     "offline_readings": Collection("offline_readings", "Offline Readings", "Public reading workspaces for books supplied privately on the reader’s device", "Local-file library"),
 }
 
@@ -67,7 +68,7 @@ CATEGORIES = {
 CATEGORY_COLLECTIONS = {
     "chinese_classics": ["rongzhai_suibi", "guwen_guanzhi", "laozi", "sunzi", "thirty_six_stratagems", "liaozhai_stories", "shiji"],
     "history_politics": ["chinese_wars", "american_civil_war", "jianshang", "nine_commentaries", "marxist_classics", "russian_wars", "mao_annotated_24_histories"],
-    "courses": ["ai_course", "python", "tcm_foundations"],
+    "courses": ["ai_course", "python", "tcm_foundations", "dementia_prevention"],
     "russian_literature": ["russian_poetry", "russian_short_stories"],
     "news": ["news_reports"],
     "writing": ["reader_articles", "personal_writings"],
@@ -548,7 +549,7 @@ def build_html(grouped: dict[str, list[dict[str, str | None]]]) -> str:
     running_number = 0
     for key, entries in active:
         collection = COLLECTIONS[key]
-        selector_links = {"rongzhai_suibi": "rongzhai_suibi/select_articles.html", "guwen_guanzhi": "guwen_guanzhi/select_articles.html", "chinese_wars": "chinese_wars/select_entries.html", "american_civil_war": "american_civil_war/select_battles.html", "laozi": "laozi/select_chapters.html", "sunzi": "sunzi/select_entries.html", "thirty_six_stratagems": "thirty_six_stratagems/select_entries.html", "liaozhai_stories": "liaozhai_stories/select_articles.html", "shiji": "shiji/select_articles.html", "nine_commentaries": "nine_commentaries/source_index/select_readings.html", "python": "python/index.html", "russian_wars": "russian_wars/select_articles.html", "mao_annotated_24_histories": "mao_annotated_24_histories/select_histories.html", "tcm_foundations": "tcm_foundations/index.html"}
+        selector_links = {"rongzhai_suibi": "rongzhai_suibi/select_articles.html", "guwen_guanzhi": "guwen_guanzhi/select_articles.html", "chinese_wars": "chinese_wars/select_entries.html", "american_civil_war": "american_civil_war/select_battles.html", "laozi": "laozi/select_chapters.html", "sunzi": "sunzi/select_entries.html", "thirty_six_stratagems": "thirty_six_stratagems/select_entries.html", "liaozhai_stories": "liaozhai_stories/select_articles.html", "shiji": "shiji/select_articles.html", "nine_commentaries": "nine_commentaries/source_index/select_readings.html", "python": "python/index.html", "russian_wars": "russian_wars/select_articles.html", "mao_annotated_24_histories": "mao_annotated_24_histories/select_histories.html", "tcm_foundations": "tcm_foundations/index.html", "dementia_prevention": "dementia_prevention/index.html"}
         selector_link = (f'<a class="collection-tool" href="{selector_links[key]}">选择更多篇目</a>' if key in selector_links else "")
         resource_links = {
             "jianshang": '<a class="collection-resource" href="jianshang/翦商.pdf" target="_blank" rel="noopener">原书 PDF</a>',

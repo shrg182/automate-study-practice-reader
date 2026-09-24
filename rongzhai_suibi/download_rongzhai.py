@@ -103,6 +103,15 @@ def write_entry(row: dict[str, str], html_text: str) -> None:
     parsed = parse_page(html_text, row)
     target = entry_dir(row)
     target.mkdir(parents=True, exist_ok=True)
+    terms_path = target / "reading_terms.csv"
+    existing_pinyin: dict[str, str] = {}
+    if terms_path.exists():
+        with terms_path.open(encoding="utf-8-sig", newline="") as file:
+            existing_pinyin = {
+                item["term"]: item.get("pinyin", "")
+                for item in csv.DictReader(file)
+                if item.get("term")
+            }
     (target / "original.txt").write_text(str(parsed["original"]) + "\n", encoding="utf-8")
     (target / "reading.txt").write_text(str(parsed["reading"]) + "\n", encoding="utf-8")
     (target / "translation.txt").write_text(str(parsed["translation"]) + "\n", encoding="utf-8")
@@ -110,11 +119,11 @@ def write_entry(row: dict[str, str], html_text: str) -> None:
         writer = csv.DictWriter(file, fieldnames=["order", "source_key", "term", "annotation"], delimiter="\t")
         writer.writeheader()
         writer.writerows(parsed["notes"])
-    with (target / "reading_terms.csv").open("w", encoding="utf-8", newline="") as file:
+    with terms_path.open("w", encoding="utf-8", newline="") as file:
         writer = csv.DictWriter(file, fieldnames=["term", "pinyin", "annotation", "type"])
         writer.writeheader()
         for note in parsed["notes"]:
-            writer.writerow({"term": note["term"], "pinyin": "", "annotation": note["annotation"], "type": "source_note"})
+            writer.writerow({"term": note["term"], "pinyin": existing_pinyin.get(note["term"], ""), "annotation": note["annotation"], "type": "source_note"})
     (target / "review_notes.tsv").write_text("text\tissue\tstatus\n", encoding="utf-8")
     metadata = {
         "sequence": int(row["sequence"]),
