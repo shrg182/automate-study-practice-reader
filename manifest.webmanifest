@@ -1,7 +1,7 @@
 {
-  "name": "校读书斋",
-  "short_name": "校读书斋",
-  "description": "古籍、文章与课程材料的移动阅读和校读工作区",
+  "name": "校读书房 · Study Studio",
+  "short_name": "校读书房",
+  "description": "古籍、文章、课程材料与项目记录的移动阅读、校读和编辑工作区",
   "lang": "zh-CN",
   "start_url": "./index.html?source=pwa",
   "scope": "./",

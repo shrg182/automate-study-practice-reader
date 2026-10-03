@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="color-scheme" content="light dark">
+<title>项目工作室 · Project Workshop</title>
+<style>
+:root{--bg:#f8f9fa;--card:#fff;--ink:#202124;--muted:#5f6368;--line:#dadce0;--blue:#1a73e8;--green:#188038;--soft:#e8f0fe}*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.6 Arial,"PingFang SC","Noto Sans CJK SC",sans-serif}a{color:var(--blue)}header,main,footer{width:min(1040px,calc(100% - 32px));margin:auto}header{padding:48px 0 28px}.back{display:inline-block;margin-bottom:24px;text-decoration:none}.eyebrow{margin:0;color:var(--green);font-size:12px;font-weight:700;letter-spacing:.12em;text-transform:uppercase}h1{margin:5px 0 10px;font-size:clamp(30px,6vw,50px);line-height:1.15}.lede{max-width:720px;margin:0;color:var(--muted)}.notice{margin:0 0 22px;padding:14px 16px;border:1px solid #c4d8f3;border-radius:10px;background:var(--soft)}.grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}.card{display:flex;flex-direction:column;padding:22px;border:1px solid var(--line);border-radius:12px;background:var(--card);box-shadow:0 1px 2px #3c40431a}.number{color:var(--green);font-size:12px;font-weight:700}.card h2{margin:5px 0 2px;font-size:21px;line-height:1.3}.english{margin:0 0 14px;color:var(--muted);font-size:13px}.purpose{min-height:72px;margin:0 0 18px}.label{margin:14px 0 4px;color:var(--muted);font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase}.milestone{margin:0;font-weight:600}.links{display:grid;gap:8px;margin-top:auto;padding-top:20px}.links a{display:block;padding:9px 12px;border:1px solid var(--line);border-radius:18px;text-align:center;text-decoration:none;font-size:13px;font-weight:700}.links a.primary{border-color:var(--blue);background:var(--blue);color:#fff}.guide{margin-top:22px;padding:22px;border:1px solid var(--line);border-radius:12px;background:var(--card)}.guide h2{margin-top:0}.guide dl{display:grid;grid-template-columns:150px 1fr;gap:8px 16px;margin-bottom:0}.guide dt{font-weight:700}.guide dd{margin:0;color:var(--muted)}footer{padding:32px 0 48px;color:var(--muted);font-size:12px}@media(max-width:780px){.grid{grid-template-columns:1fr}.purpose{min-height:0}.guide dl{grid-template-columns:1fr}.guide dd{margin-bottom:8px}}@media(prefers-color-scheme:dark){:root{--bg:#202124;--card:#292a2d;--ink:#e8eaed;--muted:#bdc1c6;--line:#5f6368;--soft:#25324a;--blue:#8ab4f8;--green:#81c995}.links a.primary{color:#202124}}
+</style>
+</head>
+<body>
+<header>
+  <a class="back" href="../index.html#project_workshop">← 返回校读书房</a>
+  <p class="eyebrow">Development records · 开发记录</p>
+  <h1>项目工作室</h1>
+  <p class="lede">集中查看三个在建应用的当前目标、交接记录、开发日志和源代码。此页面只负责阅读；权威记录保存在各自的开发仓库中。</p>
+</header>
+<main>
+  <p class="notice"><strong>公开范围：</strong>这里可以发布项目状态和技术记录，但不应放入密码、私人对话或个人健康测量数据。</p>
+  <section class="grid" aria-label="Active projects">
+    <article class="card">
+      <span class="number">01</span><h2>校读书房</h2><p class="english">Study Studio</p>
+      <p class="purpose">准备、校读、编辑并发布学习材料；公开阅读站点由此工作区生成。</p>
+      <p class="label">Current milestone</p><p class="milestone">建立项目记录中心，并验证从编辑到公开阅读的完整流程。</p>
+      <div class="links"><a class="primary" href="../../index.html">打开应用</a><a href="https://github.com/shrg182/automate_study_practices" target="_blank" rel="noopener">开发仓库</a><a href="https://github.com/shrg182/automate-study-practice-reader" target="_blank" rel="noopener">公开阅读仓库</a><a href="https://github.com/shrg182/automate_study_practices/blob/main/HANDOFF.md" target="_blank" rel="noopener">HANDOFF.md</a><a href="https://github.com/shrg182/automate_study_practices/blob/main/DEVELOPMENT_LOG.md" target="_blank" rel="noopener">Development log</a></div>
+    </article>
+    <article class="card">
+      <span class="number">02</span><h2>随身书房</h2><p class="english">Personal Reader</p>
+      <p class="purpose">个人书库、阅读进度、标注、词汇、EPUB 导入与可携带备份。</p>
+      <p class="label">Current milestone</p><p class="milestone">完善 EPUB 封面、EPUB 2 NCX 导航和书库分类。</p>
+      <div class="links"><a class="primary" href="https://github.com/shrg182/reader_app" target="_blank" rel="noopener">打开仓库</a><a href="https://github.com/shrg182/reader_app/blob/main/README.md" target="_blank" rel="noopener">README.md</a><a href="https://github.com/shrg182/reader_app/blob/main/HANDOFF.md" target="_blank" rel="noopener">HANDOFF.md</a></div>
+    </article>
+    <article class="card">
+      <span class="number">03</span><h2>指尖脉搏</h2><p class="english">Fingertip Pulse Lab</p>
+      <p class="purpose">研究手机摄像头指尖 PPG 信号、脉搏分析与袖带对照记录。</p>
+      <p class="label">Current milestone</p><p class="milestone">在真实手机上验证摄像头流程、低质量拒绝和三次袖带配对。</p>
+      <div class="links"><a class="primary" href="https://shrg182.github.io/blood-pressure-measure/" target="_blank" rel="noopener">打开应用</a><a href="https://github.com/shrg182/blood-pressure-measure" target="_blank" rel="noopener">开发仓库</a><a href="https://github.com/shrg182/blood-pressure-measure/blob/main/HANDOFF.md" target="_blank" rel="noopener">HANDOFF.md</a><a href="https://github.com/shrg182/blood-pressure-measure/blob/main/IMPLEMENTATION_PROGRESS.md" target="_blank" rel="noopener">Implementation progress</a></div>
+    </article>
+  </section>
+  <section class="guide">
+    <h2>记录规则</h2>
+    <dl><dt>README.md</dt><dd>说明应用是什么、怎样安装和使用。</dd><dt>HANDOFF.md</dt><dd>只记录当前状态、验证结果、已知问题和接下来的三项工作。</dd><dt>DEVELOPMENT_LOG.md</dt><dd>按日期保留已经完成的工作和重要变化。</dd><dt>Git history</dt><dd>保存逐文件的技术变化；提交说明应简短、具体并可追踪。</dd></dl>
+  </section>
+</main>
+<footer>项目工作室 · Updated 2026-10-02</footer>
+</body>
+</html>
