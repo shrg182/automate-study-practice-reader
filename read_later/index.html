@@ -6,6 +6,7 @@
   <meta name="color-scheme" content="light dark">
   <title>Read Later · 稍后阅读</title>
   <link rel="stylesheet" href="read_later.css">
+  <link rel="stylesheet" href="read_later_links.css">
 </head>
 <body>
   <header class="topbar"><a href="../index.html#read_later">Reader catalog</a><span id="saveStatus" role="status">Saved in this browser</span></header>
@@ -45,7 +46,7 @@
   <template id="linkTemplate">
     <article class="link-card">
       <div class="card-main">
-        <div class="card-heading"><span class="status-dot" aria-hidden="true"></span><div><a class="url" target="_blank" rel="noopener noreferrer"></a><h2></h2></div></div>
+        <div class="card-heading"><span class="status-dot" aria-hidden="true"></span><div><a class="url" target="_blank" rel="noopener noreferrer"></a><h2><a class="title-link" target="_blank" rel="noopener noreferrer"></a></h2></div></div>
         <p class="notes"></p>
         <div class="meta"><span class="category"></span><time></time></div>
       </div>

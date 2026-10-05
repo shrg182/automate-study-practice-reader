@@ -75,7 +75,7 @@
     const visible = filtered();
     visible.forEach(item => {
       const card = template.content.firstElementChild.cloneNode(true); card.dataset.status = item.status;
-      card.querySelector("h2").textContent = item.title;
+      const title = card.querySelector(".title-link"); title.href = item.url; title.textContent = item.title;
       const url = card.querySelector(".url"); url.href = item.url; url.textContent = item.url;
       const open = card.querySelector(".open"); open.href = item.url;
       card.querySelector(".notes").textContent = item.notes || "";

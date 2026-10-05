@@ -1,0 +1,19 @@
+.link-card:hover h2 {
+  text-decoration: none;
+}
+
+.title-link {
+  color: #1a0dab;
+  text-decoration: none;
+}
+
+.title-link:hover,
+.title-link:focus-visible {
+  text-decoration: underline;
+}
+
+@media (prefers-color-scheme: dark) {
+  .title-link {
+    color: #8ab4f8;
+  }
+}
