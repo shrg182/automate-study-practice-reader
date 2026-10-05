@@ -1,7 +1,7 @@
 (function () {
   const mobile = matchMedia("(max-width: 760px)");
   const isEditor = /\/editor\.html$/.test(location.pathname);
-  const isBookPage = /\/(?:marxist_classics\/(?:capital|anti_duhring)\/select_readings|tcm_foundations\/index)\.html$/.test(location.pathname);
+  const isBookPage = /\/(?:marxist_classics\/(?:capital|anti_duhring)\/select_readings|tcm_foundations\/(?:index|jingluo_tutorial\/(?:index|gallery)))\.html$/.test(location.pathname);
   const englishFirst = /English-First Reader/i.test(document.title);
   const russianFirst = /Russian Reader/i.test(document.title) || document.documentElement.lang.toLowerCase().startsWith("ru");
   const interfacePreference = localStorage.getItem("reading-workspace-interface-language-v1") || "auto";
@@ -128,6 +128,10 @@
     (manifest.units || []).forEach(unit => urls.push(new URL(unit.path, manifestUrl).href));
     Object.values(manifest.components || {}).forEach(component => {
       if (component?.path) urls.push(new URL(component.path, manifestUrl).href);
+    });
+    (manifest.assets || []).forEach(asset => {
+      const path = typeof asset === "string" ? asset : asset?.path;
+      if (path) urls.push(new URL(path, manifestUrl).href);
     });
     ["workspace_theme.css", "workspace_skin.js", "mobile_pwa.js", "index.html"].forEach(path => urls.push(new URL(path, scriptRoot).href));
     return [...new Set(urls)];

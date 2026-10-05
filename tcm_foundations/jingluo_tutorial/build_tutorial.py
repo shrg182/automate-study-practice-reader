@@ -177,6 +177,7 @@ def build() -> None:
         "language": "zh-CN",
         "medical_use": "education_only",
         "components": {"image_gallery": {"path": "gallery.html"}},
+        "assets": [{"path": f"assets/{item[0]}.jpg", "title": f"{item[1]}循行与穴位示意图"} for item in CHANNELS],
         "units": [{"path": f"chapters/{item[0]}/editor.html", "title": item[1]} for item in CHANNELS],
     }
     (BASE / "book_manifest.json").write_text(json.dumps(manifest, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")

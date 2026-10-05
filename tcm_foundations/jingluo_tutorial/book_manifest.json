@@ -9,6 +9,88 @@
       "path": "gallery.html"
     }
   },
+  "assets": [
+    {
+      "path": "assets/01_lung.jpg",
+      "title": "手太阴肺经循行与穴位示意图"
+    },
+    {
+      "path": "assets/02_large_intestine.jpg",
+      "title": "手阳明大肠经循行与穴位示意图"
+    },
+    {
+      "path": "assets/03_stomach.jpg",
+      "title": "足阳明胃经循行与穴位示意图"
+    },
+    {
+      "path": "assets/04_spleen.jpg",
+      "title": "足太阴脾经循行与穴位示意图"
+    },
+    {
+      "path": "assets/05_heart.jpg",
+      "title": "手少阴心经循行与穴位示意图"
+    },
+    {
+      "path": "assets/06_small_intestine.jpg",
+      "title": "手太阳小肠经循行与穴位示意图"
+    },
+    {
+      "path": "assets/07_bladder.jpg",
+      "title": "足太阳膀胱经循行与穴位示意图"
+    },
+    {
+      "path": "assets/08_kidney.jpg",
+      "title": "足少阴肾经循行与穴位示意图"
+    },
+    {
+      "path": "assets/09_pericardium.jpg",
+      "title": "手厥阴心包经循行与穴位示意图"
+    },
+    {
+      "path": "assets/10_sanjiao.jpg",
+      "title": "手少阳三焦经循行与穴位示意图"
+    },
+    {
+      "path": "assets/11_gallbladder.jpg",
+      "title": "足少阳胆经循行与穴位示意图"
+    },
+    {
+      "path": "assets/12_liver.jpg",
+      "title": "足厥阴肝经循行与穴位示意图"
+    },
+    {
+      "path": "assets/13_du.jpg",
+      "title": "督脉循行与穴位示意图"
+    },
+    {
+      "path": "assets/14_ren.jpg",
+      "title": "任脉循行与穴位示意图"
+    },
+    {
+      "path": "assets/15_chong.jpg",
+      "title": "冲脉循行与穴位示意图"
+    },
+    {
+      "path": "assets/16_dai.jpg",
+      "title": "带脉循行与穴位示意图"
+    },
+    {
+      "path": "assets/17_yinqiao.jpg",
+      "title": "阴跷脉循行与穴位示意图"
+    },
+    {
+      "path": "assets/18_yangqiao.jpg",
+      "title": "阳跷脉循行与穴位示意图"
+    },
+    {
+      "path": "assets/19_yinwei.jpg",
+      "title": "阴维脉循行与穴位示意图"
+    },
+    {
+      "path": "assets/20_yangwei.jpg",
+      "title": "阳维脉循行与穴位示意图"
+    }
+  ],
   "units": [
     {
       "path": "chapters/01_lung/editor.html",

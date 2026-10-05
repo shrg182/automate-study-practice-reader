@@ -1,4 +1,4 @@
-const VERSION = "reading-room-v120";
+const VERSION = "reading-room-v121";
 const CORE_CACHE = `${VERSION}-core`;
 const ARTICLE_CACHE = `${VERSION}-articles`;
 const root = new URL("./", self.registration.scope);
@@ -8,11 +8,15 @@ const coreFiles = [
 ].map(path => new URL(path, root).href);
 
 self.addEventListener("install", event => {
-  event.waitUntil(caches.open(CORE_CACHE).then(cache => cache.addAll(coreFiles)));
+  event.waitUntil(caches.open(CORE_CACHE).then(cache => cache.addAll(coreFiles)).then(() => self.skipWaiting()));
 });
 
 self.addEventListener("activate", event => {
-  event.waitUntil(caches.keys().then(keys => Promise.all(keys.filter(key => ![CORE_CACHE, ARTICLE_CACHE].includes(key)).map(key => caches.delete(key)))).then(() => self.clients.claim()));
+  event.waitUntil(caches.keys()
+    .then(keys => Promise.all(keys.filter(key => ![CORE_CACHE, ARTICLE_CACHE].includes(key)).map(key => caches.delete(key))))
+    .then(() => self.clients.claim())
+    .then(() => self.clients.matchAll({type: "window"}))
+    .then(clients => clients.forEach(client => client.postMessage({type: "APP_REFRESHED", version: VERSION}))));
 });
 
 self.addEventListener("fetch", event => {
