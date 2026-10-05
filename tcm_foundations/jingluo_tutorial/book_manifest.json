@@ -1,0 +1,94 @@
+{
+  "schema_version": 1,
+  "id": "jingluo_tutorial",
+  "title": "十二正经与奇经八脉",
+  "language": "zh-CN",
+  "medical_use": "education_only",
+  "components": {
+    "image_gallery": {
+      "path": "gallery.html"
+    }
+  },
+  "units": [
+    {
+      "path": "chapters/01_lung/editor.html",
+      "title": "手太阴肺经"
+    },
+    {
+      "path": "chapters/02_large_intestine/editor.html",
+      "title": "手阳明大肠经"
+    },
+    {
+      "path": "chapters/03_stomach/editor.html",
+      "title": "足阳明胃经"
+    },
+    {
+      "path": "chapters/04_spleen/editor.html",
+      "title": "足太阴脾经"
+    },
+    {
+      "path": "chapters/05_heart/editor.html",
+      "title": "手少阴心经"
+    },
+    {
+      "path": "chapters/06_small_intestine/editor.html",
+      "title": "手太阳小肠经"
+    },
+    {
+      "path": "chapters/07_bladder/editor.html",
+      "title": "足太阳膀胱经"
+    },
+    {
+      "path": "chapters/08_kidney/editor.html",
+      "title": "足少阴肾经"
+    },
+    {
+      "path": "chapters/09_pericardium/editor.html",
+      "title": "手厥阴心包经"
+    },
+    {
+      "path": "chapters/10_sanjiao/editor.html",
+      "title": "手少阳三焦经"
+    },
+    {
+      "path": "chapters/11_gallbladder/editor.html",
+      "title": "足少阳胆经"
+    },
+    {
+      "path": "chapters/12_liver/editor.html",
+      "title": "足厥阴肝经"
+    },
+    {
+      "path": "chapters/13_du/editor.html",
+      "title": "督脉"
+    },
+    {
+      "path": "chapters/14_ren/editor.html",
+      "title": "任脉"
+    },
+    {
+      "path": "chapters/15_chong/editor.html",
+      "title": "冲脉"
+    },
+    {
+      "path": "chapters/16_dai/editor.html",
+      "title": "带脉"
+    },
+    {
+      "path": "chapters/17_yinqiao/editor.html",
+      "title": "阴跷脉"
+    },
+    {
+      "path": "chapters/18_yangqiao/editor.html",
+      "title": "阳跷脉"
+    },
+    {
+      "path": "chapters/19_yinwei/editor.html",
+      "title": "阴维脉"
+    },
+    {
+      "path": "chapters/20_yangwei/editor.html",
+      "title": "阳维脉"
+    }
+  ]
+}

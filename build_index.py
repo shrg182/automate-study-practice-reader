@@ -15,7 +15,7 @@ import re
 
 BASE_DIR = Path(__file__).resolve().parent
 OUTPUT = BASE_DIR / "index.html"
-MOBILE_READER_VERSION = "1.24.3"
+MOBILE_READER_VERSION = "1.25.0"
 COPYRIGHT_YEAR = 2026
 COPYRIGHT_HOLDER = "Ruixing"
 
@@ -272,6 +272,18 @@ def collect_entries() -> dict[str, list[dict[str, str | None]]]:
                 "direct_link": None,
             }
         )
+    jingluo_gallery = BASE_DIR / "tcm_foundations" / "jingluo_tutorial" / "gallery.html"
+    if jingluo_gallery.exists():
+        grouped["tcm_foundations"].append({
+            "title": "经络图总览：十二正经与奇经八脉",
+            "context": "20 幅经络图 · 一页浏览 · 点击进入对应课程",
+            "initial_download": "—",
+            "editor": jingluo_gallery.relative_to(BASE_DIR).as_posix(),
+            "pdf": None,
+            "search": "经络图 总览 十二正经 奇经八脉 jingluo meridian image gallery",
+            "action_label": "查看全部图像",
+            "direct_link": "yes",
+        })
     news_items = [
         ("cuba_crisis/cuba_crisis_report_20260520.pdf", "Historical report", "May 20, 2026", "The Cuban Missile Crisis"),
         ("putin_visit_to_china_3/putin_china_visit_report_20260520.pdf", "News report", "May 20, 2026", "Putin’s Visit to China"),
