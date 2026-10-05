@@ -1,6 +1,7 @@
 (() => {
   const STORAGE_KEY = "study-studio-read-later-v1";
   const DEFAULT_ITEMS = [
+    {id:"youtube-feng-zhiqiang-1992",url:"https://www.youtube.com/watch?v=iKS5_2wRll8",title:"冯志强",category:"Taiji Video",notes:"Feng Zhiqiang Wang Fengming Chen Style Tai Chi performance during 1992 visit. 1:29:06",status:"unread",createdAt:"2026-10-05T10:03:41.040Z",updatedAt:"2026-10-05T10:03:41.040Z"},
     {id:"deepseek-lenin-quotes",url:"https://chat.deepseek.com/share/o7nxp5pxe30i2kphkj",title:"网传列宁语录",category:"Philosophy",notes:"Repeated reading in Russian.",status:"unread",createdAt:"2026-10-05T08:32:48.482Z",updatedAt:"2026-10-05T08:32:48.482Z"},
     {id:"deepseek-lenin-philosophical-notebooks",url:"https://chat.deepseek.com/share/vhv5c4aklvzc9cebga",title:"列宁《哲学笔记》",category:"Philosophy",notes:"Repeated reading in Russian.",status:"unread",createdAt:"2026-10-05T08:06:38.022Z",updatedAt:"2026-10-05T08:06:38.022Z"},
     {id:"example-chatgpt-share",url:"https://chatgpt.com/share/6ac34d9a-3f00-83e9-94aa-879c15fc214c",title:"Shared ChatGPT conversation",category:"AI",notes:"Public ChatGPT link saved as an example for later reading.",status:"unread",createdAt:"2026-10-05T00:00:00.000Z",updatedAt:"2026-10-05T00:00:00.000Z"}
@@ -24,7 +25,8 @@
   }
   function normalizeCategory(value) {
     const category = String(value || "").trim();
-    return category.toLocaleLowerCase() === "phylosophy" ? "Philosophy" : category;
+    const normalized = {phylosophy:"Philosophy","taiji video":"Taiji Video"};
+    return normalized[category.toLocaleLowerCase()] || category;
   }
   function save(message = "Saved in this browser") {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(items));
