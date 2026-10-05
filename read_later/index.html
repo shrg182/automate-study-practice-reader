@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="color-scheme" content="light dark">
+  <title>Read Later · 稍后阅读</title>
+  <link rel="stylesheet" href="read_later.css">
+</head>
+<body>
+  <header class="topbar"><a href="../index.html#read_later">Reader catalog</a><span id="saveStatus" role="status">Saved in this browser</span></header>
+  <main>
+    <section class="intro">
+      <p class="wordmark" aria-label="Read Later"><span>R</span><span>e</span><span>a</span><span>d</span> <span>L</span><span>a</span><span>t</span><span>e</span><span>r</span></p>
+      <p class="tagline">Keep a link now. Read it when the time is right.</p>
+    </section>
+
+    <section class="search-shell">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m21 21-4.35-4.35m2.35-5.65a8 8 0 1 1-16 0 8 8 0 0 1 16 0Z"/></svg>
+      <input id="search" type="search" placeholder="Search saved links" aria-label="Search saved links">
+      <button id="showAddForm" class="add-link" type="button" aria-expanded="false" aria-controls="linkForm">＋ Add link</button>
+    </section>
+
+    <form id="linkForm" class="composer" hidden>
+      <header><strong>Add to Read Later</strong><span>Public HTTP or HTTPS links</span></header>
+      <div class="field url-field"><label for="url">Public link</label><input id="url" name="url" type="url" inputmode="url" autocomplete="url" placeholder="https://…" required></div>
+      <div class="field"><label for="title">Title</label><input id="title" name="title" maxlength="180" placeholder="What do you want to read?"></div>
+      <div class="field"><label for="category">Category</label><input id="category" name="category" maxlength="60" list="categorySuggestions" placeholder="AI, history, health…"><datalist id="categorySuggestions"></datalist></div>
+      <div class="field notes-field"><label for="notes">Notes</label><textarea id="notes" name="notes" rows="2" maxlength="1200" placeholder="Why save this link? What should you look for?"></textarea></div>
+      <div class="form-actions"><button id="cancelAdd" type="button">Cancel</button><button class="primary" type="submit">Save link</button></div>
+    </form>
+
+    <section class="controls" aria-label="Reading queue controls">
+      <select id="statusFilter" aria-label="Filter by reading status"><option value="all">All statuses</option><option value="unread">Unread</option><option value="reading">Reading</option><option value="read">Read</option></select>
+      <select id="sortOrder" aria-label="Sort links"><option value="newest">Newest saved</option><option value="oldest">Oldest saved</option><option value="title">Title</option></select>
+      <button id="exportBtn" type="button">Export backup</button>
+      <label class="button" for="importInput">Import backup</label><input id="importInput" class="hidden" type="file" accept="application/json,.json">
+    </section>
+
+    <section class="summary" aria-live="polite"><span id="resultCount">0 links</span><span id="statusCounts"></span></section>
+    <section id="linkList" class="link-list" aria-label="Saved links"></section>
+    <p id="emptyState" class="empty" hidden>No links match this view.</p>
+  </main>
+
+  <template id="linkTemplate">
+    <article class="link-card">
+      <div class="card-main">
+        <div class="card-heading"><span class="status-dot" aria-hidden="true"></span><div><a class="url" target="_blank" rel="noopener noreferrer"></a><h2></h2></div></div>
+        <p class="notes"></p>
+        <div class="meta"><span class="category"></span><time></time></div>
+      </div>
+      <div class="actions">
+        <select class="item-status" aria-label="Reading status"><option value="unread">Unread</option><option value="reading">Reading</option><option value="read">Read</option></select>
+        <a class="open primary" target="_blank" rel="noopener noreferrer">Open</a>
+        <button class="edit" type="button">Edit</button>
+        <button class="delete danger" type="button">Delete</button>
+      </div>
+    </article>
+  </template>
+  <script src="read_later.js"></script>
+</body>
+</html>

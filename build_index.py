@@ -15,7 +15,7 @@ import re
 
 BASE_DIR = Path(__file__).resolve().parent
 OUTPUT = BASE_DIR / "index.html"
-MOBILE_READER_VERSION = "1.22.2"
+MOBILE_READER_VERSION = "1.24.1"
 COPYRIGHT_YEAR = 2026
 COPYRIGHT_HOLDER = "Ruixing"
 
@@ -45,6 +45,8 @@ COLLECTIONS = {
     "news_reports": Collection("news_reports", "News Reports", "English-language news reports, transcripts, and study editions", "Current affairs reading"),
     "reader_articles": Collection("reader_articles", "Reader Articles", "Write, annotate, preview, back up, and export original articles", "Personal authoring workspace"),
     "personal_writings": Collection("personal_writings", "Personal Writings", "Private diaries, schedules, journals, reflections, and notes", "Browser-local writing workspace"),
+    "read_later": Collection("read_later", "Read Later · 稍后阅读", "Collect public links now and return to them when time permits", "Browser-local reading queue"),
+    "project_workshop": Collection("project_workshop", "项目工作室 · Project Workshop", "查看三个在建应用的状态、交接记录、开发日志与源代码", "Development records"),
     "python": Collection("python", "Python", "Beginning, Intermediate, and Advanced courses by Codex (OpenAI)", "Programming"),
     "russian_poetry": Collection("russian_poetry", "Русская поэзия", "Russian-first poetry readings with concise English study support", "Russian literature"),
     "russian_short_stories": Collection("russian_short_stories", "Русские рассказы", "Short Russian prose: humor, fable, prose miniature, and philosophical sketch", "Russian prose"),
@@ -71,7 +73,7 @@ CATEGORY_COLLECTIONS = {
     "courses": ["ai_course", "python", "tcm_foundations", "dementia_prevention"],
     "russian_literature": ["russian_poetry", "russian_short_stories"],
     "news": ["news_reports"],
-    "writing": ["reader_articles", "personal_writings"],
+    "writing": ["reader_articles", "personal_writings", "read_later", "project_workshop"],
     "offline": ["offline_readings"],
 }
 
@@ -381,6 +383,28 @@ def collect_entries() -> dict[str, list[dict[str, str | None]]]:
             "action_label": "Start writing",
             "direct_link": "yes",
         })
+    read_later = BASE_DIR / "read_later" / "index.html"
+    if read_later.exists():
+        grouped["read_later"].append({
+            "title": "Open Read Later",
+            "context": "Save, organize, search, and revisit public links",
+            "editor": read_later.relative_to(BASE_DIR).as_posix(),
+            "pdf": None,
+            "search": "read later saved links bookmarks reading queue collect public links 稍后阅读 收藏 链接",
+            "action_label": "Open collection",
+            "direct_link": "yes",
+        })
+    project_workshop = BASE_DIR / "project_workshop" / "index.html"
+    if project_workshop.exists():
+        grouped["project_workshop"].append({
+            "title": "Three Active Projects",
+            "context": "Status, handoffs, development records, and repository links",
+            "editor": project_workshop.relative_to(BASE_DIR).as_posix(),
+            "pdf": None,
+            "search": "project workshop development records logs handoff reader editor personal reader fingertip pulse lab memory film archive photos video zhenglei taiji 项目 工作室 开发 记录 日志 交接",
+            "action_label": "Open workshop",
+            "direct_link": "yes",
+        })
         grouped["personal_writings"].append({
             "title": "Open Personal Writing Studio",
             "context": "Open the workspace; a private browser draft is restored automatically",
@@ -589,7 +613,7 @@ def build_html(grouped: dict[str, list[dict[str, str | None]]]) -> str:
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>校读书斋 · 阅读编辑器目录</title>
+<title>校读书房 · Study Studio</title>
 <style>
 :root{{--ink:#25231f;--muted:#716d64;--paper:#f8f5ed;--panel:#fffdf8;--line:#d9d2c4;--red:#83372f;--blue:#315b73;--gold:#b28335}}
 *{{box-sizing:border-box}}html{{scroll-behavior:smooth}}body{{margin:0;background:#e9e4d9;color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Noto Sans CJK SC",sans-serif}}
@@ -668,7 +692,7 @@ html[data-workspace-skin="reading"] .news-columns{{background:#eee8dc;color:var(
 <script src="workspace_skin.js"></script>
 </head>
 <body>
-<header class="masthead"><div class="masthead-inner"><div><p class="kicker">Reading workspace</p><h1>校读书斋</h1><p class="lede">文章、古籍与课程材料的阅读编辑器目录。搜索篇名，或按系列进入清稿、注音、脚注、按语与札记工作区。</p></div><div class="count"><b>{total}</b><span>个阅读编辑器</span></div><nav class="masthead-books" aria-label="书目分组"><div class="collection-nav">{nav}</div></nav></div></header>
+<header class="masthead"><div class="masthead-inner"><div><p class="kicker">Reading and editing workspace</p><h1>校读书房 · Study Studio</h1><p class="lede">文章、古籍与课程材料的阅读、校读和编辑工作区。搜索篇名，或按系列进入清稿、注音、脚注、按语、札记与项目记录。</p></div><div class="count"><b>{total}</b><span>个阅读编辑器</span></div><nav class="masthead-books" aria-label="书目分组"><div class="collection-nav">{nav}</div></nav></div></header>
 <main class="shell">
   <div class="controls"><label class="search"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></svg><input id="catalogSearch" type="search" placeholder="搜索文章、篇章或系列…" autocomplete="off"></label></div>
   {"".join(category_groups)}
