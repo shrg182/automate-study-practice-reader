@@ -50,7 +50,7 @@
       @media(min-width:761px){
         body.mobile-pwa{padding-bottom:64px!important}
         .mobile-pwa-bar{box-sizing:border-box!important;position:fixed;z-index:300;left:50%;bottom:14px;display:flex;max-width:min(760px,calc(100vw - 28px));padding:5px;border:1px solid #dadce0;border-radius:24px;background:#fff;color:#3c4043;box-shadow:0 4px 18px #0002;transform:translateX(-50%)}
-        .mobile-pwa-bar.mobile-home-bar{max-width:260px}.mobile-pwa-bar button{display:grid!important;flex:1 1 auto;place-items:center;min-width:66px!important;min-height:38px!important;padding:5px 8px!important;border:0!important;border-radius:16px!important;background:transparent!important;color:inherit!important;font:11px/1.2 Arial,"PingFang SC",sans-serif!important}.mobile-pwa-bar button.active{color:#137333!important;background:#e6f4ea!important;font-weight:700!important}
+        .mobile-pwa-bar.mobile-home-bar{max-width:350px}.mobile-pwa-bar button{display:grid!important;flex:1 1 auto;place-items:center;min-width:66px!important;min-height:38px!important;padding:5px 8px!important;border:0!important;border-radius:16px!important;background:transparent!important;color:inherit!important;font:11px/1.2 Arial,"PingFang SC",sans-serif!important}.mobile-pwa-bar button.active{color:#137333!important;background:#e6f4ea!important;font-weight:700!important}
       }
       @media print{.mobile-pwa-bar,.mobile-pwa-toast{display:none!important}}
     `;
@@ -112,6 +112,50 @@
     const {usage = 0, quota = 0} = await navigator.storage.estimate();
     return `${(usage / 1048576).toFixed(1)} MB / ${(quota / 1073741824).toFixed(1)} GB`;
   }
+
+  function exportAllEditingRecords() {
+    const preferencePatterns = [
+      /^reading-workspace-(?:skin|color-theme|interface-language|pane-balance)/,
+      /(?:toolbar-mode|toolbar-collapsed|difficulty)$/,
+      /(?:font-size|line-height|reading-width|interface-language)/
+    ];
+    const records = [], preferences = [];
+    for (let index = 0; index < localStorage.length; index += 1) {
+      const key = localStorage.key(index);
+      if (!key) continue;
+      const rawValue = localStorage.getItem(key) ?? "";
+      let value = rawValue, format = "text";
+      try { value = JSON.parse(rawValue); format = "json"; } catch {}
+      const item = {key, format, value};
+      (preferencePatterns.some(pattern => pattern.test(key)) ? preferences : records).push(item);
+    }
+    records.sort((a, b) => a.key.localeCompare(b.key));
+    preferences.sort((a, b) => a.key.localeCompare(b.key));
+    const exportedAt = new Date();
+    const archive = {
+      archiveType: "study-studio-all-editing-records",
+      archiveVersion: 1,
+      exportedAt: exportedAt.toISOString(),
+      source: {origin: location.origin, appPath: scriptRoot.pathname},
+      summary: {editingRecordCount: records.length, preferenceCount: preferences.length},
+      records,
+      preferences,
+      notes: [
+        "This archive contains reader data saved in this browser profile for this app origin.",
+        "Media attachments stored in IndexedDB are not embedded in this text-processing archive."
+      ]
+    };
+    const date = `${exportedAt.getFullYear()}-${String(exportedAt.getMonth() + 1).padStart(2, "0")}-${String(exportedAt.getDate()).padStart(2, "0")}`;
+    const link = document.createElement("a");
+    link.href = URL.createObjectURL(new Blob([JSON.stringify(archive, null, 2)], {type: "application/json"}));
+    link.download = `study-studio-all-edits-${date}.json`;
+    document.body.appendChild(link); link.click(); link.remove();
+    setTimeout(() => URL.revokeObjectURL(link.href), 1000);
+    toast(records.length ? `已导出 ${records.length} 项编辑记录到下载文件夹` : "已导出存档；当前浏览器尚无编辑记录");
+    return archive;
+  }
+  window.ReadingWorkspace ||= {};
+  window.ReadingWorkspace.exportAllEditingRecords = exportAllEditingRecords;
 
   async function cacheArticle() {
     if (!navigator.serviceWorker?.controller) return toast("离线功能将在重新打开应用后可用");
@@ -223,7 +267,7 @@
         : '<button data-mobile-action="home">目录</button><button data-mobile-action="book">书目</button><button data-mobile-action="pane" aria-pressed="false">窗格</button><button data-mobile-action="immersive">沉浸</button><button data-mobile-action="settings">设置</button><button data-mobile-action="notes">札记</button><button data-mobile-action="sync">同步</button><button data-mobile-action="edit">编辑</button><button data-mobile-action="offline">离线</button><button data-mobile-action="install">安装</button>'
       : isBookPage
         ? '<button data-mobile-action="home">目录</button><button data-mobile-action="book-offline">保存本书</button><button data-mobile-action="book-remove">移除离线</button><button data-mobile-action="update">更新</button><button data-mobile-action="install">安装</button>'
-        : '<button data-mobile-action="home" class="active">目录</button><button data-mobile-action="update">更新</button><button data-mobile-action="install">安装</button>';
+        : `<button data-mobile-action="home" class="active">${englishInterface ? "Home" : russianInterface ? "Главная" : "目录"}</button><button data-mobile-action="export-all">${englishInterface ? "Export edits" : russianInterface ? "Экспорт" : "导出编辑"}</button><button data-mobile-action="update">${englishInterface ? "Update" : russianInterface ? "Обновить" : "更新"}</button><button data-mobile-action="install">${englishInterface ? "Install" : russianInterface ? "Установить" : "安装"}</button>`;
     document.body.insertAdjacentHTML("beforeend", `<div class="mobile-pwa-toast" role="status"></div><div class="mobile-pwa-update" role="status"><span>${englishInterface ? "A Mobile Reader update is available" : russianInterface ? "Доступно обновление Reader" : "发现新版 Mobile Reader"}</span><button type="button">${englishInterface ? "Update now" : russianInterface ? "Обновить" : "立即更新"}</button></div><nav class="mobile-pwa-bar${isEditor ? "" : " mobile-home-bar"}" aria-label="${englishInterface ? "Reader tools" : russianInterface ? "Инструменты чтения" : "阅读工具"}">${buttons}</nav>`);
     if (registration?.waiting && navigator.serviceWorker.controller) document.querySelector(".mobile-pwa-update").classList.add("show");
     document.querySelector(".mobile-pwa-update button").addEventListener("click", updateApp);
@@ -240,6 +284,7 @@
       if (action === "offline") cacheArticle();
       if (action === "book-offline") manageOfflineBook(false);
       if (action === "book-remove") manageOfflineBook(true);
+      if (action === "export-all") exportAllEditingRecords();
       if (action === "update") updateApp();
       if (action === "install") install();
     });
