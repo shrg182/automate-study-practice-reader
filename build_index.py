@@ -15,7 +15,7 @@ import re
 
 BASE_DIR = Path(__file__).resolve().parent
 OUTPUT = BASE_DIR / "index.html"
-MOBILE_READER_VERSION = "1.26.0"
+MOBILE_READER_VERSION = "1.26.1"
 COPYRIGHT_YEAR = 2026
 COPYRIGHT_HOLDER = "Ruixing"
 
@@ -490,6 +490,16 @@ def entry_card(entry: dict[str, str | None], number: int) -> str:
 def marxist_book_groups(entries: list[dict[str, str | None]]) -> list[dict[str, object]]:
     """Arrange Marxist readings as book -> contents -> selected article."""
     groups: list[dict[str, object]] = [
+        {
+            "key": "qibenyu-memoir",
+            "title": "《戚本禹回忆录》",
+            "meta": "戚本禹 · 2016 · 链接阅读版",
+            "contents": "五部分、卷首与结语；原文链接、搜索和浏览器本地札记",
+            "catalog_total": 62,
+            "tool": "marxist_classics/qibenyu/index.html",
+            "tool_label": "打开完整目录",
+            "prefix": "marxist_classics/qibenyu/",
+        },
         {
             "key": "american-civil-war",
             "title": "《马克思恩格斯论美国内战》",
