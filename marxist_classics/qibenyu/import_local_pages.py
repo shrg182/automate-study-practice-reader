@@ -44,7 +44,8 @@ def main() -> int:
         page = folder / row["file"]
         if not page.is_file(): raise FileNotFoundError(page)
         path = row["source_url"].rsplit("/", 1)[-1]
-        bundle[path] = {"title":row["title"], "section":row["section"], "sourceUrl":row["source_url"], "html":extract_content(page.read_bytes(), row["source_url"])}
+        section = "第五部分 继续革命" if path.startswith("5-") or path == "6.htm" else row["section"]
+        bundle[path] = {"title":row["title"], "section":section, "sourceUrl":row["source_url"], "html":extract_content(page.read_bytes(), row["source_url"])}
     if len(bundle) != 62: raise ValueError(f"Expected 62 pages, found {len(bundle)}")
     OUTPUT.write_text("window.QIBENYU_BOOK_CONTENT = " + json.dumps(bundle, ensure_ascii=False, separators=(",", ":")) + ";\n", encoding="utf-8")
     print(f"Imported {len(bundle)} pages into {OUTPUT}")

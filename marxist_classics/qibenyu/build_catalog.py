@@ -29,6 +29,8 @@ class ContentsParser(HTMLParser):
     def handle_endtag(self, tag):
         if tag == "h5" and self.in_heading:
             self.section = re.sub(r"\s+", " ", "".join(self.text)).strip(); self.in_heading = False
+            if self.section == "第五章 我听到了江青的歌声":
+                self.section = "第五部分 继续革命"
         elif tag == "a" and self.link:
             title = re.sub(r"\s+", " ", "".join(self.text)).strip()
             self.entries.append({"section": self.section, "title": title, "path": self.link, "url": urljoin(SOURCE, self.link)}); self.link = None
