@@ -15,7 +15,7 @@ import re
 
 BASE_DIR = Path(__file__).resolve().parent
 OUTPUT = BASE_DIR / "index.html"
-MOBILE_READER_VERSION = "1.26.2"
+MOBILE_READER_VERSION = "1.26.3"
 COPYRIGHT_YEAR = 2026
 COPYRIGHT_HOLDER = "Ruixing"
 
@@ -41,6 +41,7 @@ COLLECTIONS = {
     "jianshang": Collection("jianshang", "《翦商》", "章节校读、注释与阅读记录", "历史阅读"),
     "nine_commentaries": Collection("nine_commentaries", "九评", "章节阅读与校读材料", "专题阅读"),
     "marxist_classics": Collection("marxist_classics", "马克思主义经典", "经典文本专题摘录与注释", "理论文献"),
+    "qibenyu_memoir": Collection("qibenyu_memoir", "《戚本禹回忆录》", "2016年回忆录：原文目录、来源链接与个人阅读札记", "历史回忆录"),
     "ai_course": Collection("ai_course", "AI 课程", "课程文章、讲义与学习笔记", "课程资料"),
     "news_reports": Collection("news_reports", "News Reports", "English-language news reports, transcripts, and study editions", "Current affairs reading"),
     "reader_articles": Collection("reader_articles", "Reader Articles", "Write, annotate, preview, back up, and export original articles", "Personal authoring workspace"),
@@ -69,7 +70,7 @@ CATEGORIES = {
 
 CATEGORY_COLLECTIONS = {
     "chinese_classics": ["rongzhai_suibi", "guwen_guanzhi", "laozi", "sunzi", "thirty_six_stratagems", "liaozhai_stories", "shiji"],
-    "history_politics": ["chinese_wars", "american_civil_war", "jianshang", "nine_commentaries", "marxist_classics", "russian_wars", "mao_annotated_24_histories"],
+    "history_politics": ["chinese_wars", "american_civil_war", "jianshang", "nine_commentaries", "marxist_classics", "qibenyu_memoir", "russian_wars", "mao_annotated_24_histories"],
     "courses": ["ai_course", "python", "tcm_foundations", "dementia_prevention"],
     "russian_literature": ["russian_poetry", "russian_short_stories"],
     "news": ["news_reports"],
@@ -491,16 +492,6 @@ def marxist_book_groups(entries: list[dict[str, str | None]]) -> list[dict[str, 
     """Arrange Marxist readings as book -> contents -> selected article."""
     groups: list[dict[str, object]] = [
         {
-            "key": "qibenyu-memoir",
-            "title": "《戚本禹回忆录》",
-            "meta": "戚本禹 · 2016 · 链接阅读版",
-            "contents": "五部分、卷首与结语；原文链接、搜索和浏览器本地札记",
-            "catalog_total": 62,
-            "tool": "marxist_classics/qibenyu/index.html",
-            "tool_label": "打开完整目录",
-            "prefix": "marxist_classics/qibenyu/",
-        },
-        {
             "key": "american-civil-war",
             "title": "《马克思恩格斯论美国内战》",
             "meta": "马克思、恩格斯 · 1861–1865",
@@ -585,7 +576,7 @@ def marxist_books_html(entries: list[dict[str, str | None]], start_number: int) 
 
 def build_html(grouped: dict[str, list[dict[str, str | None]]]) -> str:
     total = sum(len(entries) for entries in grouped.values())
-    active = [(key, entries) for key, entries in grouped.items() if entries or key in {"guwen_guanzhi", "chinese_wars", "american_civil_war", "laozi", "sunzi", "thirty_six_stratagems", "russian_wars", "mao_annotated_24_histories"}]
+    active = [(key, entries) for key, entries in grouped.items() if entries or key in {"guwen_guanzhi", "chinese_wars", "american_civil_war", "laozi", "sunzi", "thirty_six_stratagems", "qibenyu_memoir", "russian_wars", "mao_annotated_24_histories"}]
     category_counts = {category: sum(len(grouped[key]) for key in collections) for category, collections in CATEGORY_COLLECTIONS.items()}
     nav = '<button type="button" class="category-chip active" data-category-filter="all"><span>All Collections</span><b>{}</b></button>'.format(total) + "".join(
         f'<button type="button" class="category-chip" data-category-filter="{category}"><span>{escape(CATEGORIES[category][0])}</span><b>{category_counts[category]}</b></button>'
@@ -595,8 +586,9 @@ def build_html(grouped: dict[str, list[dict[str, str | None]]]) -> str:
     running_number = 0
     for key, entries in active:
         collection = COLLECTIONS[key]
-        selector_links = {"rongzhai_suibi": "rongzhai_suibi/select_articles.html", "guwen_guanzhi": "guwen_guanzhi/select_articles.html", "chinese_wars": "chinese_wars/select_entries.html", "american_civil_war": "american_civil_war/select_battles.html", "laozi": "laozi/select_chapters.html", "sunzi": "sunzi/select_entries.html", "thirty_six_stratagems": "thirty_six_stratagems/select_entries.html", "liaozhai_stories": "liaozhai_stories/select_articles.html", "shiji": "shiji/select_articles.html", "nine_commentaries": "nine_commentaries/source_index/select_readings.html", "python": "python/index.html", "russian_wars": "russian_wars/select_articles.html", "mao_annotated_24_histories": "mao_annotated_24_histories/select_histories.html", "tcm_foundations": "tcm_foundations/index.html", "dementia_prevention": "dementia_prevention/index.html"}
-        selector_link = (f'<a class="collection-tool" href="{selector_links[key]}">选择更多篇目</a>' if key in selector_links else "")
+        selector_links = {"rongzhai_suibi": "rongzhai_suibi/select_articles.html", "guwen_guanzhi": "guwen_guanzhi/select_articles.html", "chinese_wars": "chinese_wars/select_entries.html", "american_civil_war": "american_civil_war/select_battles.html", "laozi": "laozi/select_chapters.html", "sunzi": "sunzi/select_entries.html", "thirty_six_stratagems": "thirty_six_stratagems/select_entries.html", "liaozhai_stories": "liaozhai_stories/select_articles.html", "shiji": "shiji/select_articles.html", "nine_commentaries": "nine_commentaries/source_index/select_readings.html", "qibenyu_memoir": "marxist_classics/qibenyu/index.html", "python": "python/index.html", "russian_wars": "russian_wars/select_articles.html", "mao_annotated_24_histories": "mao_annotated_24_histories/select_histories.html", "tcm_foundations": "tcm_foundations/index.html", "dementia_prevention": "dementia_prevention/index.html"}
+        selector_label = "打开完整目录" if key == "qibenyu_memoir" else "选择更多篇目"
+        selector_link = (f'<a class="collection-tool" href="{selector_links[key]}">{selector_label}</a>' if key in selector_links else "")
         resource_links = {
             "jianshang": '<a class="collection-resource" href="jianshang/翦商.pdf" target="_blank" rel="noopener">原书 PDF</a>',
             "tcm_foundations": '<a class="collection-resource" href="tcm_foundations/source_reader.html">PDF 与页边札记</a><a class="collection-resource" href="tcm_foundations/中医基础理论.pdf" target="_blank" rel="noopener">原书 PDF</a>',
@@ -613,7 +605,7 @@ def build_html(grouped: dict[str, list[dict[str, str | None]]]) -> str:
                 cards.append(entry_card(entry, running_number))
             heading = '<div class="news-columns" aria-hidden="true"><span>No.</span><span>Type</span><span>Date</span><span>Title</span><span>Reading</span><span>Editing</span><span>Report</span></div>' if key == "news_reports" else ""
             cards_html = heading + "".join(cards)
-            collection_count_label = f"{len(entries)} 篇"
+            collection_count_label = "62 篇" if key == "qibenyu_memoir" else f"{len(entries)} 篇"
         category = COLLECTION_CATEGORY[key]
         sections[category].append(f'''<section class="collection" id="{key}" data-collection data-category="{category}">
   <header class="collection-header">
