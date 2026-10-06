@@ -33,6 +33,7 @@
   <section class="pane"><div class="pane-head"><strong>可编辑正文</strong><span class="status" id="saveStatus">尚未导入正文</span></div><div id="editor" contenteditable="true" spellcheck="false" data-placeholder="请先在右侧打开原网页，将页面存到电脑，然后使用“导入原网页文件”。导入后正文可在这里编辑。"></div></section>
   <aside class="pane source-pane"><div class="pane-head"><strong>原网页参考</strong><span class="status">导入后可并排核对</span></div><div class="source-body" id="sourceBody"><div class="source-empty"><div><p>原网站禁止第三方页面直接嵌入。请点击下面的按钮打开原网页，在浏览器中选择“存储页面”，再导入保存的 HTML 文件。</p><a class="button primary" id="sourceOpen" target="_blank" rel="noreferrer">打开原网页 ↗</a><p>导入只保存在当前浏览器中，不会把全书正文发布到本站。</p></div></div></div></aside>
 </main>
+<script src="book_content.js"></script>
 <script>
 const params=new URLSearchParams(location.search),path=params.get('path')||'',title=params.get('title')||'未命名章节',section=params.get('section')||'';
 const safePath=/^(?:00[ab]|[1-5]-\d{2}|6)\.htm$/.test(path)?path:'';
@@ -41,7 +42,8 @@ document.title=`${title} · 阅读与编辑`;pageTitle.textContent=title;pageSec
 const editor=document.getElementById('editor'),sourceBody=document.getElementById('sourceBody'),saveStatus=document.getElementById('saveStatus');
 const key=`qibenyu-editor-v1:${safePath}`;let timer;
 function setStatus(text){saveStatus.textContent=text} function save(){localStorage.setItem(key,JSON.stringify({html:editor.innerHTML,source:sourceBody.querySelector('.source-document')?.innerHTML||'',updated:new Date().toISOString()}));setStatus('已自动保存')}
-try{const saved=JSON.parse(localStorage.getItem(key)||'null');if(saved?.html){editor.innerHTML=saved.html;setStatus('已恢复浏览器存稿')}if(saved?.source){sourceBody.innerHTML=`<article class="source-document">${saved.source}</article>`}}catch{}
+const bundled=window.QIBENYU_BOOK_CONTENT?.[safePath];
+try{const saved=JSON.parse(localStorage.getItem(key)||'null');if(saved?.html){editor.innerHTML=saved.html;setStatus('已恢复浏览器存稿')}else if(bundled?.html){editor.innerHTML=bundled.html;setStatus('已载入书内正文')}if(saved?.source){sourceBody.innerHTML=`<article class="source-document">${saved.source}</article>`}else if(bundled?.html){sourceBody.innerHTML=`<article class="source-document">${bundled.html}</article>`}}catch{if(bundled?.html){editor.innerHTML=bundled.html;sourceBody.innerHTML=`<article class="source-document">${bundled.html}</article>`;setStatus('已载入书内正文')}}
 editor.addEventListener('input',()=>{setStatus('正在编辑…');clearTimeout(timer);timer=setTimeout(save,500)});
 document.querySelectorAll('[data-command]').forEach(button=>button.addEventListener('click',()=>{document.execCommand(button.dataset.command);editor.focus()}));
 highlightBtn.addEventListener('click',()=>{document.execCommand('hiliteColor',false,'#ffe36e');editor.focus()});clearBtn.addEventListener('click',()=>{document.execCommand('removeFormat');editor.focus()});
