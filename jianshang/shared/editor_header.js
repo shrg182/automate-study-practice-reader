@@ -1,3 +1,9 @@
+if (!document.querySelector('script[src$="workspace_skin.js"]')) {
+  const sharedWorkspace = document.createElement("script");
+  sharedWorkspace.src = new URL("../../workspace_skin.js", document.currentScript.src).href;
+  document.head.appendChild(sharedWorkspace);
+}
+
 class JianshangEditorHeader extends HTMLElement {
   connectedCallback() {
     if (this.dataset.rendered === "true") return;

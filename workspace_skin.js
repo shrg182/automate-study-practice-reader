@@ -5,7 +5,7 @@
   const key = "reading-workspace-skin";
   const requested = new URLSearchParams(location.search).get("skin");
   const saved = localStorage.getItem(key);
-  const englishFirst = /English-First Reader/i.test(document.title);
+  const englishFirst = /English-First Reader/i.test(document.title) || document.documentElement.lang.toLowerCase().startsWith("en");
   const russianFirst = /Russian Reader/i.test(document.title) || document.documentElement.lang.toLowerCase().startsWith("ru");
   const interfaceLanguageKey = "reading-workspace-interface-language-v1";
   const interfacePreference = localStorage.getItem(interfaceLanguageKey) || "auto";
@@ -958,7 +958,39 @@
     new MutationObserver(() => queueMicrotask(translate)).observe(document.body, { childList: true, subtree: true, characterData: true });
   }
 
-  function installWorkspaceControls() { installToolbarLayering(); installColoredUnderlines(); installDictionaryOccurrences(); installProjectDictionaryLinks(); installRussianInterfaceTranslation(); installContextNavigation(); installHomeMark(); installSwitch(); installReadingThemeToggle(); installReadingEnvironment(); installPaneBalancer(); installFileMenu(); installInsertMenu(); installUserNotesAccess(); installExpandingReviewFields(); installAnnotationSync(); installAllNotesView(); installImmersiveMode(); installGoogleVoicePriority(); window.ReadingWorkspace ||= {}; window.ReadingWorkspace.interfaceLanguage = interfaceLanguage; }
+  function installBasicEditorToolbar() {
+    if (document.querySelector(".toolbar")) return;
+    const editor = document.querySelector('[contenteditable="true"],textarea');
+    if (!editor) return;
+    const editable = editor.matches('[contenteditable="true"]');
+    const chinese = !englishInterface && !russianInterface;
+    const words = chinese
+      ? { tools:"编辑工具栏", collapse:"收起工具栏", expand:"展开工具栏", undo:"撤销", redo:"重做", search:"搜索正文关键词", previous:"上一个", next:"下一个", highlight:"高亮", bold:"粗体", read:"朗读选中/全文", pause:"暂停", stop:"停止", speed:"语速", save:"保存到浏览器", text:"导出文本", backup:"备份 JSON" }
+      : { tools:"Editor toolbar", collapse:"Collapse toolbar", expand:"Expand toolbar", undo:"Undo", redo:"Redo", search:"Search text", previous:"Previous", next:"Next", highlight:"Highlight", bold:"Bold", read:"Read aloud", pause:"Pause", stop:"Stop", speed:"Speed", save:"Save", text:"Export text", backup:"Backup JSON" };
+    const toolbar = document.createElement("nav");
+    toolbar.className = "toolbar unified-basic-toolbar";
+    toolbar.setAttribute("aria-label", words.tools);
+    toolbar.innerHTML = `<button type="button" data-basic="toggle">${words.collapse}</button><div class="group"><button type="button" data-basic="undo">${words.undo}</button><button type="button" data-basic="redo">${words.redo}</button></div><div class="group" role="search"><input type="search" data-basic="search" placeholder="${words.search}" aria-label="${words.search}"><button type="button" data-basic="previous" title="${words.previous}">↑</button><button type="button" data-basic="next" title="${words.next}">↓</button><span data-basic="search-status" aria-live="polite"></span></div><div class="group"><button type="button" data-basic="highlight" ${editable?"":"disabled"}>${words.highlight}</button><button type="button" data-basic="bold" ${editable?"":"disabled"}><b>B</b></button></div><div class="group"><button type="button" data-basic="read">${words.read}</button><button type="button" data-basic="pause">${words.pause}</button><button type="button" data-basic="stop">${words.stop}</button><label>${words.speed} <input type="range" data-basic="rate" min="0.5" max="1.5" step="0.1" value="0.8"><span data-basic="rate-value">0.8×</span></label></div><div class="group"><button type="button" data-basic="save">${words.save}</button><button type="button" data-basic="text">${words.text}</button><button type="button" data-basic="backup">${words.backup}</button></div>`;
+    const header = document.querySelector(".topbar,header");
+    (header || document.body).insertAdjacentElement(header ? "afterend" : "afterbegin", toolbar);
+    const style = document.createElement("style");
+    style.textContent = `.unified-basic-toolbar{position:sticky;top:0;z-index:500;display:flex;gap:7px;align-items:center;flex-wrap:wrap;padding:9px 14px;background:#eef4fd;border-bottom:1px solid #cdd8e8;box-shadow:0 2px 8px #00000012}.unified-basic-toolbar .group{display:flex;gap:5px;align-items:center;padding-right:8px;border-right:1px solid #c8d2df}.unified-basic-toolbar input[type=search]{width:min(260px,38vw);min-height:34px;padding:6px 10px;border:1px solid #b9c5d4;border-radius:5px}.unified-basic-toolbar label{display:flex;gap:5px;align-items:center;font-size:12px}.unified-basic-toolbar.collapsed>:not([data-basic=toggle]){display:none}.unified-basic-toolbar button,.unified-basic-toolbar input{font:inherit}@media(max-width:700px){.unified-basic-toolbar{position:relative}.unified-basic-toolbar .group{border-right:0}.unified-basic-toolbar input[type=search]{width:55vw}}@media print{.unified-basic-toolbar{display:none!important}}`;
+    document.head.appendChild(style);
+    const control = name => toolbar.querySelector(`[data-basic="${name}"]`), selectionText = () => getSelection()?.toString().trim() || (editor.value ?? editor.innerText);
+    control("toggle").onclick = event => { const collapsed=toolbar.classList.toggle("collapsed");event.currentTarget.textContent=collapsed?words.expand:words.collapse;event.currentTarget.setAttribute("aria-expanded",String(!collapsed)); };
+    for (const command of ["undo","redo"]) control(command).onclick = () => { editor.focus();document.execCommand(command); };
+    for (const command of ["highlight","bold"]) control(command).onclick = () => { editor.focus();document.execCommand(command==="highlight"?"hiliteColor":"bold",false,command==="highlight"?"#fff1a8":null);editor.dispatchEvent(new InputEvent("input",{bubbles:true,inputType:`format${command}`})); };
+    const search = control("search"), matches = () => { const q=search.value.trim();if(!q)return [];const text=editor.value??editor.innerText,result=[];let i=0;while((i=text.toLocaleLowerCase().indexOf(q.toLocaleLowerCase(),i))!==-1){result.push(i);i+=Math.max(q.length,1)}return result; }; let searchIndex=-1;
+    const locate = delta => { const found=matches();if(!found.length){control("search-status").textContent="0";return}searchIndex=(searchIndex+delta+found.length)%found.length;const start=found[searchIndex];if(editor.setSelectionRange){editor.focus();editor.setSelectionRange(start,start+search.value.length)}else window.find(search.value,false,delta<0,true);control("search-status").textContent=`${searchIndex+1}/${found.length}`; };
+    control("previous").onclick=()=>locate(-1);control("next").onclick=()=>locate(1);search.oninput=()=>{searchIndex=-1;control("search-status").textContent=search.value?String(matches().length):""};
+    control("rate").oninput=event=>control("rate-value").textContent=`${Number(event.target.value).toFixed(1)}×`;
+    control("read").onclick=()=>{speechSynthesis.cancel();const utterance=new SpeechSynthesisUtterance(selectionText());utterance.lang=document.documentElement.lang||"zh-CN";utterance.rate=Number(control("rate").value);speechSynthesis.speak(utterance)};control("pause").onclick=()=>speechSynthesis.paused?speechSynthesis.resume():speechSynthesis.pause();control("stop").onclick=()=>speechSynthesis.cancel();
+    const download=(name,text,type)=>{const link=document.createElement("a");link.href=URL.createObjectURL(new Blob([text],{type}));link.download=name;link.click();setTimeout(()=>URL.revokeObjectURL(link.href),1000)},identity=location.pathname.split("/").filter(Boolean).slice(-2,-1)[0]||"reading";
+    control("save").onclick=()=>{const existing=document.querySelector('#save,#saveBtn,[data-action="save"]');if(existing&&!toolbar.contains(existing))existing.click();else{localStorage.setItem(`unified-editor:${location.pathname}`,editable?editor.innerHTML:editor.value);editor.dispatchEvent(new Event("change",{bubbles:true}))}};
+    control("text").onclick=()=>download(`${identity}.txt`,editor.value??editor.innerText,"text/plain;charset=utf-8");control("backup").onclick=()=>download(`${identity}-backup.json`,JSON.stringify({url:location.href,html:editable?editor.innerHTML:null,text:editor.value??editor.innerText,savedAt:new Date().toISOString()},null,2),"application/json");
+  }
+
+  function installWorkspaceControls() { installBasicEditorToolbar(); installToolbarLayering(); installColoredUnderlines(); installDictionaryOccurrences(); installProjectDictionaryLinks(); installRussianInterfaceTranslation(); installContextNavigation(); installHomeMark(); installSwitch(); installReadingThemeToggle(); installReadingEnvironment(); installPaneBalancer(); installFileMenu(); installInsertMenu(); installUserNotesAccess(); installExpandingReviewFields(); installAnnotationSync(); installAllNotesView(); installImmersiveMode(); installGoogleVoicePriority(); window.ReadingWorkspace ||= {}; window.ReadingWorkspace.interfaceLanguage = interfaceLanguage; }
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", installWorkspaceControls);
   else installWorkspaceControls();
 })();
