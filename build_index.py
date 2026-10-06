@@ -15,7 +15,7 @@ import re
 
 BASE_DIR = Path(__file__).resolve().parent
 OUTPUT = BASE_DIR / "index.html"
-MOBILE_READER_VERSION = "1.26.4"
+MOBILE_READER_VERSION = "1.27.0"
 COPYRIGHT_YEAR = 2026
 COPYRIGHT_HOLDER = "Ruixing"
 
@@ -41,7 +41,7 @@ COLLECTIONS = {
     "jianshang": Collection("jianshang", "《翦商》", "章节校读、注释与阅读记录", "历史阅读"),
     "nine_commentaries": Collection("nine_commentaries", "九评", "章节阅读与校读材料", "专题阅读"),
     "marxist_classics": Collection("marxist_classics", "马克思主义经典", "经典文本专题摘录与注释", "理论文献"),
-    "qibenyu_memoir": Collection("qibenyu_memoir", "《戚本禹回忆录》", "2016年回忆录：原文目录、来源链接与个人阅读札记", "历史回忆录"),
+    "qibenyu_memoir": Collection("qibenyu_memoir", "《戚本禹回忆录》", "2016年回忆录：分栏阅读编辑器、原网页核对与个人札记", "历史回忆录"),
     "ai_course": Collection("ai_course", "AI 课程", "课程文章、讲义与学习笔记", "课程资料"),
     "news_reports": Collection("news_reports", "News Reports", "English-language news reports, transcripts, and study editions", "Current affairs reading"),
     "reader_articles": Collection("reader_articles", "Reader Articles", "Write, annotate, preview, back up, and export original articles", "Personal authoring workspace"),

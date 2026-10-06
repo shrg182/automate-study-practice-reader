@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>《戚本禹回忆录》阅读与编辑</title>
+  <link rel="stylesheet" href="../../workspace_theme.css">
+  <style>
+    *{box-sizing:border-box} :root{--line:#d8d3c7;--paper:#fffdfa;--ink:#242424;--muted:#666;--accent:#176a3a}
+    body{margin:0;background:#f5f3ed;color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC",sans-serif}
+    header{position:sticky;top:0;z-index:10;background:#fff;border-bottom:1px solid var(--line)}
+    .titlebar,.toolbar{display:flex;align-items:center;gap:9px;flex-wrap:wrap;padding:9px 14px}.titlebar{justify-content:space-between}.titlebar h1{margin:0;font-size:18px}.subtitle{color:var(--muted);font-size:12px}
+    button,.button{min-height:34px;padding:6px 10px;border:1px solid var(--line);border-radius:6px;background:#fff;color:var(--ink);font:inherit;text-decoration:none;cursor:pointer}.primary{background:var(--accent);border-color:var(--accent);color:#fff}.toolbar{border-top:1px solid #eee;background:#f6f8fb}.toolbar label{display:inline-flex;align-items:center;gap:6px}.toolbar input[type=range]{width:88px}
+    .layout{display:grid;grid-template-columns:minmax(0,1fr) minmax(340px,1fr);gap:12px;height:calc(100vh - 112px);padding:12px}.pane{display:flex;min-width:0;min-height:0;flex-direction:column;border:1px solid var(--line);background:var(--paper);box-shadow:0 5px 18px #332b1d12}.pane-head{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:9px 11px;border-bottom:1px solid var(--line);background:#eee8dc}.pane-head strong{font-size:14px}.status{color:var(--muted);font-size:12px}
+    #editor{flex:1;overflow:auto;padding:26px 32px;font:17px/1.9 "Songti SC","STSong",serif;white-space:pre-wrap;outline:0}#editor:empty:before{content:attr(data-placeholder);color:#888}.source-body{flex:1;min-height:0;overflow:auto;background:#fff}.source-empty{display:grid;place-items:center;min-height:100%;padding:30px;text-align:center;color:var(--muted);line-height:1.7}.source-empty>div{max-width:520px}.source-empty .button{display:inline-flex;margin:7px 3px;align-items:center}.source-document{padding:26px 30px;font:16px/1.8 "Songti SC","STSong",serif}.source-document img{max-width:100%;height:auto}.source-document table{max-width:100%}
+    mark{background:#ffe36e} @media(max-width:900px){.layout{grid-template-columns:1fr;height:auto}.pane{min-height:70vh}.source-pane{min-height:60vh}}
+  </style>
+  <script src="../../workspace_skin.js"></script>
+</head>
+<body>
+<header>
+  <div class="titlebar"><div><h1 id="pageTitle">《戚本禹回忆录》</h1><div class="subtitle" id="pageSection"></div></div><div><a class="button" href="index.html">返回目录</a> <a class="button" id="sourceLink" target="_blank" rel="noreferrer">打开原网页 ↗</a></div></div>
+  <div class="toolbar" role="toolbar" aria-label="编辑工具">
+    <button type="button" data-command="undo">撤销</button><button type="button" data-command="redo">重做</button>
+    <button type="button" data-command="bold"><b>B</b></button><button type="button" data-command="underline"><u>U</u></button><button type="button" id="highlightBtn">高亮</button>
+    <button type="button" id="clearBtn">清除格式</button><button type="button" id="speakBtn">朗读选中/全文</button><button type="button" id="stopBtn">停止</button>
+    <label>语速 <input id="rate" type="range" min="0.5" max="1.5" step="0.1" value="0.8"><span id="rateValue">0.8×</span></label>
+    <button type="button" id="exportBtn">导出文本</button><button type="button" id="backupBtn">备份 JSON</button>
+    <label class="button primary">导入原网页文件<input id="sourceFile" type="file" accept=".html,.htm,text/html" hidden></label>
+  </div>
+</header>
+<main class="layout">
+  <section class="pane"><div class="pane-head"><strong>可编辑正文</strong><span class="status" id="saveStatus">尚未导入正文</span></div><div id="editor" contenteditable="true" spellcheck="false" data-placeholder="请先在右侧打开原网页，将页面存到电脑，然后使用“导入原网页文件”。导入后正文可在这里编辑。"></div></section>
+  <aside class="pane source-pane"><div class="pane-head"><strong>原网页参考</strong><span class="status">导入后可并排核对</span></div><div class="source-body" id="sourceBody"><div class="source-empty"><div><p>原网站禁止第三方页面直接嵌入。请点击下面的按钮打开原网页，在浏览器中选择“存储页面”，再导入保存的 HTML 文件。</p><a class="button primary" id="sourceOpen" target="_blank" rel="noreferrer">打开原网页 ↗</a><p>导入只保存在当前浏览器中，不会把全书正文发布到本站。</p></div></div></div></aside>
+</main>
+<script>
+const params=new URLSearchParams(location.search),path=params.get('path')||'',title=params.get('title')||'未命名章节',section=params.get('section')||'';
+const safePath=/^(?:00[ab]|[1-5]-\d{2}|6)\.htm$/.test(path)?path:'';
+const sourceUrl=`https://www.marxists.org/chinese/reference-books/qibenyu/${safePath}`;
+document.title=`${title} · 阅读与编辑`;pageTitle.textContent=title;pageSection.textContent=section;sourceLink.href=sourceOpen.href=sourceUrl;
+const editor=document.getElementById('editor'),sourceBody=document.getElementById('sourceBody'),saveStatus=document.getElementById('saveStatus');
+const key=`qibenyu-editor-v1:${safePath}`;let timer;
+function setStatus(text){saveStatus.textContent=text} function save(){localStorage.setItem(key,JSON.stringify({html:editor.innerHTML,source:sourceBody.querySelector('.source-document')?.innerHTML||'',updated:new Date().toISOString()}));setStatus('已自动保存')}
+try{const saved=JSON.parse(localStorage.getItem(key)||'null');if(saved?.html){editor.innerHTML=saved.html;setStatus('已恢复浏览器存稿')}if(saved?.source){sourceBody.innerHTML=`<article class="source-document">${saved.source}</article>`}}catch{}
+editor.addEventListener('input',()=>{setStatus('正在编辑…');clearTimeout(timer);timer=setTimeout(save,500)});
+document.querySelectorAll('[data-command]').forEach(button=>button.addEventListener('click',()=>{document.execCommand(button.dataset.command);editor.focus()}));
+highlightBtn.addEventListener('click',()=>{document.execCommand('hiliteColor',false,'#ffe36e');editor.focus()});clearBtn.addEventListener('click',()=>{document.execCommand('removeFormat');editor.focus()});
+rate.addEventListener('input',()=>rateValue.textContent=`${Number(rate.value).toFixed(1)}×`);speakBtn.addEventListener('click',()=>{speechSynthesis.cancel();const utterance=new SpeechSynthesisUtterance(getSelection().toString().trim()||editor.innerText);utterance.lang='zh-CN';utterance.rate=Number(rate.value);speechSynthesis.speak(utterance)});stopBtn.addEventListener('click',()=>speechSynthesis.cancel());
+function download(name,text,type='text/plain'){const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([text],{type}));a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1000)}
+exportBtn.addEventListener('click',()=>download(`${safePath||'chapter'}-edited.txt`,editor.innerText));backupBtn.addEventListener('click',()=>download(`${safePath||'chapter'}-backup.json`,JSON.stringify({path,title,section,html:editor.innerHTML,source:sourceBody.querySelector('.source-document')?.innerHTML||'',savedAt:new Date().toISOString()},null,2),'application/json'));
+sourceFile.addEventListener('change',async event=>{const file=event.target.files[0];if(!file)return;const raw=await file.text(),doc=new DOMParser().parseFromString(raw,'text/html');doc.querySelectorAll('script,style,link,meta,base,noscript,iframe,object,embed,form').forEach(node=>node.remove());const candidate=doc.querySelector('main,article,.content,#content,body'),clone=candidate.cloneNode(true);clone.querySelectorAll('*').forEach(node=>[...node.attributes].forEach(attr=>{if(attr.name.toLowerCase().startsWith('on'))node.removeAttribute(attr.name)}));clone.querySelectorAll('a').forEach(a=>{const href=a.getAttribute('href');if(href)try{const url=new URL(href,sourceUrl);a.href=['http:','https:'].includes(url.protocol)?url.href:'#'}catch{a.removeAttribute('href')}});clone.querySelectorAll('img').forEach(img=>{const src=img.getAttribute('src');if(src)try{const url=new URL(src,sourceUrl);if(['http:','https:'].includes(url.protocol))img.src=url.href;else img.removeAttribute('src')}catch{img.removeAttribute('src')}});sourceBody.innerHTML='';const sourceArticle=document.createElement('article');sourceArticle.className='source-document';sourceArticle.innerHTML=clone.innerHTML;sourceBody.append(sourceArticle);if(!editor.innerText.trim())editor.innerHTML=clone.innerHTML;save();setStatus('原网页已导入并保存');event.target.value=''});
+window.addEventListener('beforeunload',()=>{if(editor.innerHTML)save()});
+</script>
+<script src="../../mobile_pwa.js"></script>
+</body></html>
