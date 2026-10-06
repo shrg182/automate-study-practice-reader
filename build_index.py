@@ -15,7 +15,7 @@ import re
 
 BASE_DIR = Path(__file__).resolve().parent
 OUTPUT = BASE_DIR / "index.html"
-MOBILE_READER_VERSION = "1.26.1"
+MOBILE_READER_VERSION = "1.26.2"
 COPYRIGHT_YEAR = 2026
 COPYRIGHT_HOLDER = "Ruixing"
 
@@ -605,6 +605,7 @@ def build_html(grouped: dict[str, list[dict[str, str | None]]]) -> str:
         if key == "marxist_classics":
             cards_html = marxist_books_html(entries, running_number)
             running_number += len(entries)
+            collection_count_label = f"{len(marxist_book_groups(entries))} 本"
         else:
             cards = []
             for entry in entries:
@@ -612,11 +613,12 @@ def build_html(grouped: dict[str, list[dict[str, str | None]]]) -> str:
                 cards.append(entry_card(entry, running_number))
             heading = '<div class="news-columns" aria-hidden="true"><span>No.</span><span>Type</span><span>Date</span><span>Title</span><span>Reading</span><span>Editing</span><span>Report</span></div>' if key == "news_reports" else ""
             cards_html = heading + "".join(cards)
+            collection_count_label = f"{len(entries)} 篇"
         category = COLLECTION_CATEGORY[key]
         sections[category].append(f'''<section class="collection" id="{key}" data-collection data-category="{category}">
   <header class="collection-header">
     <button class="collection-toggle" type="button" aria-expanded="true" aria-controls="{key}-entries"><span class="collection-toggle-copy"><span class="collection-eyebrow">{escape(collection.eyebrow)}</span><span class="collection-title">{escape(collection.title)}</span><span class="collection-description">{escape(collection.description)}</span></span><i aria-hidden="true">▾</i></button>
-    <div class="collection-meta">{selector_link}<strong>{len(entries)} 篇</strong></div>
+    <div class="collection-meta">{selector_link}<strong>{collection_count_label}</strong></div>
   </header>
 {resources_block}
   <div class="entries{' hierarchical-entries' if key == 'marxist_classics' else ''}" id="{key}-entries">{cards_html}</div>
