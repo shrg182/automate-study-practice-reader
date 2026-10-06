@@ -9,19 +9,20 @@
     *{box-sizing:border-box} :root{--line:#d8d3c7;--paper:#fffdfa;--ink:#242424;--muted:#666;--accent:#176a3a}
     body{margin:0;background:#f5f3ed;color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC",sans-serif}
     header{position:sticky;top:0;z-index:10;background:#fff;border-bottom:1px solid var(--line)}
-    .titlebar,.toolbar{display:flex;align-items:center;gap:9px;flex-wrap:wrap;padding:9px 14px}.titlebar{justify-content:space-between}.titlebar h1{margin:0;font-size:18px}.subtitle{color:var(--muted);font-size:12px}
+    .titlebar,.toolbar{display:flex;align-items:center;gap:9px;flex-wrap:wrap;padding:9px 14px}.titlebar{justify-content:space-between}.titlebar h1{margin:0;font-size:18px}.subtitle{color:var(--muted);font-size:12px}.title-actions,.chapter-nav{display:flex;align-items:center;gap:6px}.chapter-nav a[hidden]{display:none}.chapter-nav-floating{display:none}
     button,.button{min-height:34px;padding:6px 10px;border:1px solid var(--line);border-radius:6px;background:#fff;color:var(--ink);font:inherit;text-decoration:none;cursor:pointer}.primary{background:var(--accent);border-color:var(--accent);color:#fff}.toolbar{border-top:1px solid #eee;background:#f6f8fb}.toolbar .group{display:flex;gap:5px;align-items:center;padding-right:8px;border-right:1px solid var(--line)}.toolbar label{display:inline-flex;align-items:center;gap:6px}.toolbar input[type=range]{width:88px}.toolbar input[type=search]{width:min(240px,30vw);min-height:34px;padding:6px 10px;border:1px solid var(--line);border-radius:6px}.toolbar.collapsed>:not(#toolbarToggle){display:none}.doubt{background:#f7d9d6;border-bottom:2px wavy #a52d24}.comment-anchor{background:#dcebf0;border-bottom:1px dashed #315b73}.footnote-ref{color:#8a1f1f;font-weight:700}
     .layout{display:grid;grid-template-columns:minmax(0,1fr) minmax(340px,1fr);gap:12px;height:calc(100vh - 112px);padding:12px}.pane{display:flex;min-width:0;min-height:0;flex-direction:column;border:1px solid var(--line);background:var(--paper);box-shadow:0 5px 18px #332b1d12}.pane-head{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:9px 11px;border-bottom:1px solid var(--line);background:#eee8dc}.pane-head strong{font-size:14px}.status{color:var(--muted);font-size:12px}
     #editor{flex:1;overflow:auto;padding:26px 32px;font:17px/1.9 "Songti SC","STSong",serif;white-space:normal;outline:0}#editor:empty:before{content:attr(data-placeholder);color:#888}.source-body{flex:1;min-height:0;overflow:auto;background:#fff;color:#222}.source-empty{display:grid;place-items:center;min-height:100%;padding:30px;text-align:center;color:var(--muted);line-height:1.7}.source-empty>div{max-width:520px}.source-empty .button{display:inline-flex;margin:7px 3px;align-items:center}.source-document{padding:26px 30px;color:#222;font:16px/1.8 "Songti SC","STSong",serif}.source-document img{max-width:100%;height:auto}.source-document table{max-width:100%}
     html[data-reading-theme="night"] #editor a{color:#9ec1ff!important;font-weight:700;text-decoration:underline!important;text-decoration-thickness:1.5px!important;text-underline-offset:.2em!important}
     html[data-reading-theme="night"] .source-body,html[data-reading-theme="night"] .source-document,html[data-reading-theme="night"] .source-document table,html[data-reading-theme="night"] .source-document tbody,html[data-reading-theme="night"] .source-document tr,html[data-reading-theme="night"] .source-document td{background:#fffef8!important;color:#222!important}html[data-reading-theme="night"] .source-document a{color:#174ea6!important;font-weight:700;text-decoration:underline!important;text-decoration-thickness:1.5px!important;text-underline-offset:.2em!important}
     mark{background:#ffe36e} @media(max-width:900px){.layout{grid-template-columns:1fr;height:auto}.pane{min-height:70vh}.source-pane{min-height:60vh}}
+    body.reading-immersive .chapter-nav-floating{position:fixed;z-index:1000;right:14px;bottom:14px;display:flex;gap:7px}body.reading-immersive #editor{max-width:min(1400px,calc(100vw - clamp(36px,8vw,150px)))!important;text-align:justify;text-justify:inter-ideograph}body.reading-immersive #editor>*{max-width:100%!important}body.reading-immersive #editor p{text-align:justify!important}
   </style>
   <script src="../../workspace_skin.js"></script>
 </head>
 <body>
 <header>
-  <div class="titlebar"><div><h1 id="pageTitle">《戚本禹回忆录》</h1><div class="subtitle" id="pageSection"></div></div><div><a class="button" href="index.html">返回目录</a> <a class="button" id="sourceLink" target="_blank" rel="noreferrer">打开原网页 ↗</a></div></div>
+  <div class="titlebar"><div><h1 id="pageTitle">《戚本禹回忆录》</h1><div class="subtitle" id="pageSection"></div></div><div class="title-actions"><nav class="chapter-nav" aria-label="章节翻页"><a class="button" data-page="previous">← 上一页</a><a class="button" data-page="next">下一页 →</a></nav><a class="button" href="index.html">返回目录</a><a class="button" id="sourceLink" target="_blank" rel="noreferrer">打开原网页 ↗</a></div></div>
   <div class="toolbar" role="toolbar" aria-label="编辑工具">
     <button type="button" id="toolbarToggle" aria-expanded="true">收起工具栏</button>
     <div class="group"><button type="button" data-command="undo">撤销</button><button type="button" data-command="redo">重做</button></div>
@@ -36,6 +37,7 @@
   <section class="pane"><div class="pane-head"><strong>可编辑正文</strong><span class="status" id="saveStatus">尚未导入正文</span></div><div id="editor" contenteditable="true" spellcheck="false" data-placeholder="请先在右侧打开原网页，将页面存到电脑，然后使用“导入原网页文件”。导入后正文可在这里编辑。"></div></section>
   <aside class="pane source-pane"><div class="pane-head"><strong>原网页参考</strong><span class="status">导入后可并排核对</span></div><div class="source-body" id="sourceBody"><div class="source-empty"><div><p>原网站禁止第三方页面直接嵌入。请点击下面的按钮打开原网页，在浏览器中选择“存储页面”，再导入保存的 HTML 文件。</p><a class="button primary" id="sourceOpen" target="_blank" rel="noreferrer">打开原网页 ↗</a><p>导入只保存在当前浏览器中，不会把全书正文发布到本站。</p></div></div></div></aside>
 </main>
+<nav class="chapter-nav chapter-nav-floating" aria-label="全屏章节翻页"><a class="button" data-page="previous">← 上一页</a><a class="button" data-page="next">下一页 →</a></nav>
 <script src="book_content.js"></script>
 <script>
 const params=new URLSearchParams(location.search),path=params.get('path')||'',requestedTitle=params.get('title')||'未命名章节',requestedSection=params.get('section')||'';
@@ -43,6 +45,11 @@ const safePath=/^(?:00[ab]|[1-5]-\d{2}|6)\.htm$/.test(path)?path:'';
 const sourceUrl=`https://www.marxists.org/chinese/reference-books/qibenyu/${safePath}`;
 const bundled=window.QIBENYU_BOOK_CONTENT?.[safePath],title=bundled?.title||requestedTitle,section=bundled?.section||requestedSection;
 document.title=`${title} · 阅读与编辑`;pageTitle.textContent=title;pageSection.textContent=section;sourceLink.href=sourceOpen.href=sourceUrl;
+const chapters=Object.entries(window.QIBENYU_BOOK_CONTENT||{}),chapterIndex=chapters.findIndex(([chapterPath])=>chapterPath===safePath);
+function chapterHref(entry){const [chapterPath,chapter]=entry;const query=new URLSearchParams({path:chapterPath,title:chapter.title||'',section:chapter.section||''});return `reader_editor.html?${query}`}
+document.querySelectorAll('[data-page="previous"]').forEach(link=>{if(chapterIndex>0)link.href=chapterHref(chapters[chapterIndex-1]);else link.hidden=true});
+document.querySelectorAll('[data-page="next"]').forEach(link=>{if(chapterIndex>=0&&chapterIndex<chapters.length-1)link.href=chapterHref(chapters[chapterIndex+1]);else link.hidden=true});
+document.addEventListener('keydown',event=>{if(!event.altKey||event.metaKey||event.ctrlKey)return;const direction=event.key==='ArrowLeft'?'previous':event.key==='ArrowRight'?'next':'';const link=direction&&document.querySelector(`[data-page="${direction}"]:not([hidden])`);if(link){event.preventDefault();link.click()}});
 const editor=document.getElementById('editor'),sourceBody=document.getElementById('sourceBody'),saveStatus=document.getElementById('saveStatus');
 const key=`qibenyu-editor-v1:${safePath}`;let timer;
 function setStatus(text){saveStatus.textContent=text} function save(){localStorage.setItem(key,JSON.stringify({html:editor.innerHTML,source:sourceBody.querySelector('.source-document')?.innerHTML||'',updated:new Date().toISOString()}));setStatus('已自动保存')}
