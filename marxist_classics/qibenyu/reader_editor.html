@@ -36,14 +36,14 @@
 </main>
 <script src="book_content.js"></script>
 <script>
-const params=new URLSearchParams(location.search),path=params.get('path')||'',title=params.get('title')||'未命名章节',section=params.get('section')||'';
+const params=new URLSearchParams(location.search),path=params.get('path')||'',requestedTitle=params.get('title')||'未命名章节',requestedSection=params.get('section')||'';
 const safePath=/^(?:00[ab]|[1-5]-\d{2}|6)\.htm$/.test(path)?path:'';
 const sourceUrl=`https://www.marxists.org/chinese/reference-books/qibenyu/${safePath}`;
+const bundled=window.QIBENYU_BOOK_CONTENT?.[safePath],title=bundled?.title||requestedTitle,section=bundled?.section||requestedSection;
 document.title=`${title} · 阅读与编辑`;pageTitle.textContent=title;pageSection.textContent=section;sourceLink.href=sourceOpen.href=sourceUrl;
 const editor=document.getElementById('editor'),sourceBody=document.getElementById('sourceBody'),saveStatus=document.getElementById('saveStatus');
 const key=`qibenyu-editor-v1:${safePath}`;let timer;
 function setStatus(text){saveStatus.textContent=text} function save(){localStorage.setItem(key,JSON.stringify({html:editor.innerHTML,source:sourceBody.querySelector('.source-document')?.innerHTML||'',updated:new Date().toISOString()}));setStatus('已自动保存')}
-const bundled=window.QIBENYU_BOOK_CONTENT?.[safePath];
 try{const saved=JSON.parse(localStorage.getItem(key)||'null');if(saved?.html){editor.innerHTML=saved.html;setStatus('已恢复浏览器存稿')}else if(bundled?.html){editor.innerHTML=bundled.html;setStatus('已载入书内正文')}if(saved?.source){sourceBody.innerHTML=`<article class="source-document">${saved.source}</article>`}else if(bundled?.html){sourceBody.innerHTML=`<article class="source-document">${bundled.html}</article>`}}catch{if(bundled?.html){editor.innerHTML=bundled.html;sourceBody.innerHTML=`<article class="source-document">${bundled.html}</article>`;setStatus('已载入书内正文')}}
 editor.addEventListener('input',()=>{setStatus('正在编辑…');clearTimeout(timer);timer=setTimeout(save,500)});
 document.querySelectorAll('[data-command]').forEach(button=>button.addEventListener('click',()=>{document.execCommand(button.dataset.command);editor.focus()}));
