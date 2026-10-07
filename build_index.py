@@ -301,6 +301,7 @@ def collect_entries() -> dict[str, list[dict[str, str | None]]]:
         ("trump_at_press_conference_20260708/trump_press_conference_20260708_full_transcript.pdf", "Full transcript", "July 8, 2026", "Trump Press Conference"),
         ("trump_iran_live_pdf_20260711/trump_iran_live_study_report_time_under_subtitle.pdf", "Timed study report", "July 11, 2026", "Trump and Iran Live Report"),
         ("trump_recent_news_20260712/trump_recent_news_english_study_20260712.pdf", "Study edition", "July 12, 2026", "Recent Trump News"),
+        ("xi_visit_to_usa/xi_jinping_usa_visit_news_report_20260930.pdf", "News report", "October 2, 2026", "Xi Jinping's State Visit to the United States"),
         ("xi_trump_world_reactions_20261007/xi_trump_world_reactions_20261007.pdf", "News analysis", "October 7, 2026", "World Reactions to the Xi-Trump Washington Summit"),
     ]
     for relative, report_type, report_date, title in news_items:
