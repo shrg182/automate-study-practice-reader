@@ -35,6 +35,11 @@
 </nav>
 
 <main id="workspace" data-layout="english-first">
+  <section class="private-install-note" id="privateInstallNote" aria-label="Private offline library setup">
+    <strong>Install your private book files for offline reading</strong>
+    <span>Attach each edition once in a normal browser window. With “Remember attached PDFs” enabled, the files remain in this browser on this device and are not uploaded to the public site.</span>
+    <button type="button" id="dismissInstallNote">Got it</button>
+  </section>
   <section class="pane english-pane">
     <header><strong>English edition</strong><span id="englishState">No PDF attached</span><button data-remove="english" hidden>Remove</button></header>
     <div class="empty" id="englishEmpty"><strong>Attach your English PDF to begin.</strong><br>The file is stored only in this browser on this device.</div>
