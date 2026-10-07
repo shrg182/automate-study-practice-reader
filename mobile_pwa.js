@@ -232,6 +232,10 @@
   }
 
   async function updateApp() {
+    if (location.protocol === "file:") {
+      location.reload();
+      return;
+    }
     if (!registration) return toast("更新服务正在启动，请稍后再试");
     toast("正在检查并刷新应用…");
     try {

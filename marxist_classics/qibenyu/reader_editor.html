@@ -22,7 +22,7 @@
 </head>
 <body>
 <header>
-  <div class="titlebar"><div><h1 id="pageTitle">《戚本禹回忆录》</h1><div class="subtitle" id="pageSection"></div></div><div class="title-actions"><nav class="chapter-nav" aria-label="章节翻页"><a class="button" data-page="previous">← 上一页</a><a class="button" data-page="next">下一页 →</a></nav><a class="button" href="index.html">返回目录</a><a class="button" id="sourceLink" target="_blank" rel="noreferrer">打开原网页 ↗</a></div></div>
+  <div class="titlebar"><div><h1 id="pageTitle">《戚本禹回忆录》</h1><div class="subtitle" id="pageSection"></div></div><div class="title-actions"><nav class="chapter-nav" aria-label="章节翻页"><a class="button" data-page="previous">← 上一页</a><a class="button" data-page="next">下一页 →</a></nav><a class="button" id="sourceLink" target="_blank" rel="noreferrer">打开原网页 ↗</a></div></div>
   <div class="toolbar" role="toolbar" aria-label="编辑工具">
     <button type="button" id="toolbarToggle" aria-expanded="true">收起工具栏</button>
     <div class="group"><button type="button" data-command="undo">撤销</button><button type="button" data-command="redo">重做</button></div>
@@ -41,6 +41,7 @@
 <script src="book_content.js"></script>
 <script>
 const params=new URLSearchParams(location.search),path=params.get('path')||'',requestedTitle=params.get('title')||'未命名章节',requestedSection=params.get('section')||'';
+window.ReadingWorkspace||={};window.ReadingWorkspace.directoryHref=new URL('index.html',location.href).href;window.ReadingWorkspace.bookDirectoryHref=window.ReadingWorkspace.directoryHref;
 const safePath=/^(?:00[ab]|[1-5]-\d{2}|6)\.htm$/.test(path)?path:'';
 const sourceUrl=`https://www.marxists.org/chinese/reference-books/qibenyu/${safePath}`;
 const bundled=window.QIBENYU_BOOK_CONTENT?.[safePath],title=bundled?.title||requestedTitle,section=bundled?.section||requestedSection;
