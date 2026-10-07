@@ -1000,7 +1000,69 @@
     control("text").onclick=()=>download(`${identity}.txt`,editor.value??editor.innerText,"text/plain;charset=utf-8");control("backup").onclick=()=>download(`${identity}-backup.json`,JSON.stringify({url:location.href,html:editable?editor.innerHTML:null,text:editor.value??editor.innerText,savedAt:new Date().toISOString()},null,2),"application/json");
   }
 
-  function installWorkspaceControls() { installBasicEditorToolbar(); installToolbarLayering(); installColoredUnderlines(); installDictionaryOccurrences(); installProjectDictionaryLinks(); installRussianInterfaceTranslation(); installContextNavigation(); installHomeMark(); installSwitch(); installReadingThemeToggle(); installReadingEnvironment(); installPaneBalancer(); installFileMenu(); installInsertMenu(); installUserNotesAccess(); installExpandingReviewFields(); installAnnotationSync(); installAllNotesView(); installImmersiveMode(); installGoogleVoicePriority(); window.ReadingWorkspace ||= {}; window.ReadingWorkspace.interfaceLanguage = interfaceLanguage; }
+  function installReadFromCursor() {
+    if (!("speechSynthesis" in window) || document.querySelector("[data-read-from-cursor]")) return;
+    const editor = document.querySelector('#editor[contenteditable="true"],.editor[contenteditable="true"],[contenteditable="true"],textarea');
+    if (!editor) return;
+    const existingRead = document.querySelector('#speakBtn,[data-basic="read"]') || [...document.querySelectorAll("button")].find(button => /朗读选中|Read aloud|Читать вслух/.test(button.textContent));
+    if (!existingRead) return;
+    const button = document.createElement("button");
+    button.type = "button";
+    button.dataset.readFromCursor = "true";
+    button.textContent = russianInterface ? "Читать от курсора" : englishInterface ? "Read from cursor" : "从光标朗读";
+    button.title = russianInterface ? "Начать чтение с позиции текстового курсора" : englishInterface ? "Start reading at the text cursor" : "从正文中的文字光标位置开始朗读";
+    existingRead.insertAdjacentElement("afterend", button);
+
+    let savedRange = null;
+    const rememberCaret = () => {
+      if (editor.setSelectionRange) return;
+      const selection = getSelection();
+      if (!selection?.rangeCount || !editor.contains(selection.focusNode)) return;
+      const range = document.createRange();
+      try {
+        range.setStart(selection.focusNode, selection.focusOffset);
+        range.collapse(true);
+        savedRange = range.cloneRange();
+      } catch {}
+    };
+    document.addEventListener("selectionchange", rememberCaret);
+    editor.addEventListener("pointerup", rememberCaret);
+    editor.addEventListener("keyup", rememberCaret);
+    button.addEventListener("mousedown", event => event.preventDefault());
+
+    const textFromCaret = () => {
+      if (editor.setSelectionRange) {
+        const start = Number.isInteger(editor.selectionStart) ? editor.selectionStart : 0;
+        return editor.value.slice(start).trim();
+      }
+      const range = savedRange || (() => {
+        const first = document.createRange(); first.selectNodeContents(editor); first.collapse(true); return first;
+      })();
+      if (!editor.contains(range.startContainer)) return editor.innerText.trim();
+      const remainder = document.createRange();
+      remainder.setStart(range.startContainer, range.startOffset);
+      remainder.selectNodeContents(editor);
+      remainder.setStart(range.startContainer, range.startOffset);
+      return remainder.cloneContents().textContent.replace(/\s+/g, " ").trim();
+    };
+    button.addEventListener("click", () => {
+      const text = textFromCaret();
+      if (!text) return;
+      speechSynthesis.cancel();
+      const utterance = new SpeechSynthesisUtterance(text);
+      utterance.lang = document.documentElement.lang || "zh-CN";
+      const rateControl = document.querySelector('#rate,[data-basic="rate"]');
+      if (rateControl) utterance.rate = Number(rateControl.value) || 0.8;
+      const voiceControl = document.querySelector("#voiceSelect");
+      const voices = speechSynthesis.getVoices();
+      if (voiceControl?.value !== "" && voices[Number(voiceControl.value)]) utterance.voice = voices[Number(voiceControl.value)];
+      speechSynthesis.speak(utterance);
+      const status = document.querySelector("#saveStatus,.status");
+      if (status) status.textContent = !englishInterface && !russianInterface ? "正在从光标位置朗读" : russianInterface ? "Чтение от курсора" : "Reading from cursor";
+    });
+  }
+
+  function installWorkspaceControls() { installBasicEditorToolbar(); installReadFromCursor(); installToolbarLayering(); installColoredUnderlines(); installDictionaryOccurrences(); installProjectDictionaryLinks(); installRussianInterfaceTranslation(); installContextNavigation(); installHomeMark(); installSwitch(); installReadingThemeToggle(); installReadingEnvironment(); installPaneBalancer(); installFileMenu(); installInsertMenu(); installUserNotesAccess(); installExpandingReviewFields(); installAnnotationSync(); installAllNotesView(); installImmersiveMode(); installGoogleVoicePriority(); window.ReadingWorkspace ||= {}; window.ReadingWorkspace.interfaceLanguage = interfaceLanguage; }
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", installWorkspaceControls);
   else installWorkspaceControls();
 })();
