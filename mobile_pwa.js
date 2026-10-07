@@ -22,8 +22,8 @@
     localStorage.setItem("reader-admin-device-id", deviceId);
     const ua = navigator.userAgentData;
     const suggestedLabel = `${ua?.mobile ? "Mobile" : "Computer"} · ${ua?.platform || navigator.platform || "Unknown platform"}`;
-    let deviceLabel = localStorage.getItem("reader-admin-device-label");
-    if (!deviceLabel) { deviceLabel = prompt("Name this Reader installation for the iMac administrator (for example: Bedroom iPad or Ruixing iPhone):", suggestedLabel)?.trim() || suggestedLabel; localStorage.setItem("reader-admin-device-label", deviceLabel); }
+    const deviceLabel = localStorage.getItem("reader-admin-device-label") || suggestedLabel;
+    localStorage.setItem("reader-admin-device-label", deviceLabel);
     const response = await fetch("/api/register", {method: "POST", headers: {"Content-Type": "application/json"}, body: JSON.stringify({device_id: deviceId, device_token: localStorage.getItem("reader-admin-device-token") || "", label: deviceLabel, app_id: "study-studio-reader", device_info: {platform: ua?.platform || navigator.platform || "", mobile: ua?.mobile ?? matchMedia("(pointer:coarse)").matches, screen: `${screen.width}×${screen.height}`, timezone: Intl.DateTimeFormat().resolvedOptions().timeZone, language: navigator.language, browser: navigator.userAgent}})});
     if (!response.ok) return null;
     const result = await response.json();
