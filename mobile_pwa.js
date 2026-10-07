@@ -14,6 +14,29 @@
   let reloadingForUpdate = false;
   let editing = false;
   let originalEditable = [];
+  const managedByIMac = location.pathname.startsWith("/app/");
+
+  async function registerWithAdministrator() {
+    if (!managedByIMac) return null;
+    const deviceId = localStorage.getItem("reader-admin-device-id") || crypto.randomUUID();
+    localStorage.setItem("reader-admin-device-id", deviceId);
+    const response = await fetch("/api/register", {method: "POST", headers: {"Content-Type": "application/json"}, body: JSON.stringify({device_id: deviceId, device_token: localStorage.getItem("reader-admin-device-token") || "", label: localStorage.getItem("reader-admin-device-label") || navigator.platform || "Reader device", app_id: "study-studio-reader"})});
+    if (!response.ok) return null;
+    const result = await response.json();
+    localStorage.setItem("reader-admin-device-token", result.device_token);
+    window.ReadingWorkspace ||= {}; window.ReadingWorkspace.adminRegistration = result;
+    return result;
+  }
+
+  async function submitEditingArchive(archive) {
+    if (!managedByIMac) return false;
+    const token = localStorage.getItem("reader-admin-device-token") || (await registerWithAdministrator())?.device_token;
+    if (!token) return false;
+    const response = await fetch("/api/edits", {method: "POST", headers: {"Authorization": `Bearer ${token}`, "Content-Type": "application/json"}, body: JSON.stringify(archive)});
+    if (response.status === 403) { toast("iMac administrator has not permitted editing submission for this app"); return false; }
+    if (!response.ok) { toast("Editing submission to iMac failed"); return false; }
+    toast("Editing records were sent to the iMac for processing"); return true;
+  }
 
   function ensureWorkspaceSkin() {
     if (document.querySelector('script[src$="workspace_skin.js"]')) return;
@@ -152,6 +175,7 @@
     document.body.appendChild(link); link.click(); link.remove();
     setTimeout(() => URL.revokeObjectURL(link.href), 1000);
     toast(records.length ? `已导出 ${records.length} 项编辑记录到下载文件夹` : "已导出存档；当前浏览器尚无编辑记录");
+    submitEditingArchive(archive).catch(() => toast("Editing submission to iMac failed"));
     return archive;
   }
   window.ReadingWorkspace ||= {};
@@ -261,6 +285,7 @@
   }
 
   function mount() {
+    registerWithAdministrator().catch(() => {});
     if (document.querySelector(".mobile-pwa-bar")) return;
     style(); document.body.classList.add("mobile-pwa");
     const buttons = isEditor

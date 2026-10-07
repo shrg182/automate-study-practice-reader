@@ -26,6 +26,7 @@
   <button id="exportBackup">Export backup</button>
   <label class="button file">Import backup<input id="importBackup" type="file" accept="application/json"></label>
   <button id="settingsButton">Settings</button>
+  <button id="installPrivateSources">Install permitted private files</button>
   <div class="second-row">
     <label>Chapter <select id="chapter"></select></label>
     <label>English page <input id="englishPage" type="number" min="1" value="19"></label><button data-go="english">Go</button>
@@ -78,6 +79,7 @@
   <label><input id="rememberFiles" type="checkbox" checked> Remember attached PDFs on this device</label>
   <button id="clearNotes" class="danger">Delete all notes</button>
 </div>
+<script>window.OFFLINE_READER_CONFIG={book:'engineering-cybernetics',title:'Engineering Cybernetics',privateFiles:{english:'engineering_cybernetics/engineering_cybernetics_en_1954.pdf',chinese:'engineering_cybernetics/engineering_cybernetics_zh_1958.pdf'}};</script>
 <script src="reader.js"></script>
 <script src="../../workspace_skin.js"></script>
 <script src="../../mobile_pwa.js"></script>
