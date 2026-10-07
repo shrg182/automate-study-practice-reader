@@ -20,7 +20,8 @@
     if (!managedByIMac) return null;
     const deviceId = localStorage.getItem("reader-admin-device-id") || crypto.randomUUID();
     localStorage.setItem("reader-admin-device-id", deviceId);
-    const response = await fetch("/api/register", {method: "POST", headers: {"Content-Type": "application/json"}, body: JSON.stringify({device_id: deviceId, device_token: localStorage.getItem("reader-admin-device-token") || "", label: localStorage.getItem("reader-admin-device-label") || navigator.platform || "Reader device", app_id: "study-studio-reader"})});
+    const ua = navigator.userAgentData;
+    const response = await fetch("/api/register", {method: "POST", headers: {"Content-Type": "application/json"}, body: JSON.stringify({device_id: deviceId, device_token: localStorage.getItem("reader-admin-device-token") || "", label: localStorage.getItem("reader-admin-device-label") || `${ua?.mobile ? "Mobile" : "Computer"} · ${ua?.platform || navigator.platform || "Unknown platform"}`, app_id: "study-studio-reader", device_info: {platform: ua?.platform || navigator.platform || "", mobile: ua?.mobile ?? matchMedia("(pointer:coarse)").matches, screen: `${screen.width}×${screen.height}`, timezone: Intl.DateTimeFormat().resolvedOptions().timeZone, language: navigator.language, browser: navigator.userAgent}})});
     if (!response.ok) return null;
     const result = await response.json();
     localStorage.setItem("reader-admin-device-token", result.device_token);
