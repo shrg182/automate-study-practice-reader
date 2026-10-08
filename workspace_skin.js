@@ -1026,6 +1026,184 @@
     control("text").onclick=()=>download(`${identity}.txt`,editor.value??editor.innerText,"text/plain;charset=utf-8");control("backup").onclick=()=>download(`${identity}-backup.json`,JSON.stringify({url:location.href,html:editable?editor.innerHTML:null,text:editor.value??editor.innerText,savedAt:new Date().toISOString()},null,2),"application/json");
   }
 
+  // Keep one strongly referenced utterance; ignore late events from canceled requests.
+  function createSpeechPlayback(synth, Utterance, notify, timers = {setTimeout: (fn, delay) => window.setTimeout(fn, delay), clearTimeout: id => window.clearTimeout(id)}) {
+    let session = null;
+    function chunks(text, limit) {
+      const result = [];
+      let rest = String(text).trim();
+      while (rest) {
+        const points = Array.from(rest), head = points.slice(0, limit).join('');
+        let cut = head.length;
+        if (points.length > limit) {
+          const matches = [...head.matchAll(/[。！？；.!?;，,\s]/g)];
+          const boundary = matches.at(-1);
+          if (boundary && boundary.index > 0) cut = boundary.index + boundary[0].length;
+        }
+        result.push(rest.slice(0, cut));
+        rest = rest.slice(cut);
+      }
+      return result;
+    }
+    function clearTimer(s) { if (s?.timer != null) timers.clearTimeout(s.timer); if (s) s.timer = null; }
+    function stop(announce = true) {
+      const previous = session;
+      session = null;
+      clearTimer(previous);
+      synth.cancel();
+      // cancel() does not reset the synthesis engine's paused state.
+      synth.resume();
+      if (announce) notify({state: 'stopped'});
+    }
+    function emit(s, state, extra = {}) { notify({state, voice: s.voice, fallback: s.fallback, ...extra}); }
+    function fail(s, reason) {
+      if (session !== s) return;
+      clearTimer(s);
+      s.attempt++;
+      synth.cancel();
+      synth.resume();
+      if (s.voice && !s.fallback) {
+        const language = s.voice.lang || s.lang;
+        const available = synth.getVoices();
+        s.voice = available.find(v => v.localService && v.lang === language) ||
+          available.find(v => v.localService && v.lang.split('-')[0] === language.split('-')[0]) || null;
+        s.fallback = true;
+        s.reason = reason;
+        emit(s, 'fallback', {reason});
+        next(s);
+      } else {
+        session = null;
+        emit(s, 'error', {reason});
+      }
+    }
+    function next(s) {
+      if (session !== s || s.paused) return;
+      if (s.index >= s.parts.length) { session = null; emit(s, 'ended'); return; }
+      const attempt = ++s.attempt;
+      const utterance = new Utterance(s.parts[s.index]);
+      s.utterance = utterance;
+      utterance.lang = s.voice?.lang || s.lang;
+      utterance.rate = s.rate;
+      if (s.voice) utterance.voice = s.voice;
+      const current = () => session === s && s.attempt === attempt;
+      s.started = false;
+      utterance.onstart = () => {
+        if (!current()) return;
+        clearTimer(s);
+        s.started = true;
+        emit(s, s.paused ? 'paused' : 'playing');
+      };
+      utterance.onend = () => {
+        if (!current()) return;
+        clearTimer(s);
+        s.utterance = null;
+        s.index++;
+        next(s);
+      };
+      utterance.onerror = event => { if (current()) fail(s, event.error || 'synthesis-failed'); };
+      s.timer = timers.setTimeout(() => { if (current()) fail(s, 'startup-timeout'); }, 6000);
+      try { synth.speak(utterance); } catch (error) { fail(s, error.name || 'synthesis-failed'); }
+    }
+    return {
+      start(text, {voice = null, lang = 'zh-CN', rate = 0.8} = {}) {
+        stop(false);
+        // Keep each request short, including at slower reading speeds.
+        const parts = chunks(text, Math.max(20, Math.floor(50 * rate)));
+        if (!parts.length) { notify({state: 'empty'}); return; }
+        const s = {parts, index: 0, voice, lang, rate, attempt: 0, paused: false, fallback: false};
+        session = s;
+        emit(s, 'loading');
+        next(s);
+      },
+      stop,
+      togglePause() {
+        const s = session;
+        if (!s) return;
+        s.paused = !s.paused;
+        if (s.paused) { clearTimer(s); synth.pause(); emit(s, 'paused'); }
+        else {
+          synth.resume();
+          emit(s, s.started ? 'playing' : 'loading');
+          if (!s.utterance) next(s);
+          else if (!s.started) s.timer = timers.setTimeout(() => fail(s, 'startup-timeout'), 6000);
+        }
+      }
+    };
+  }
+
+  function installReliableSpeechReading() {
+    if (!('speechSynthesis' in window)) return;
+    const read = document.querySelector('#speakBtn,[data-basic="read"]') || [...document.querySelectorAll('button')].find(button => /朗读选中|Read aloud|Читать вслух/.test(button.textContent));
+    const editor = document.querySelector('#editor[contenteditable="true"],.editor[contenteditable="true"],[contenteditable="true"],textarea');
+    if (!read || !editor) return;
+    const pause = document.querySelector('#pauseBtn,[data-basic="pause"]');
+    const stop = document.querySelector('#stopBtn,[data-basic="stop"]');
+    const select = document.getElementById('voiceSelect');
+    // Speech status is separate from autosave status, which changes while reading.
+    const status = document.createElement('span');
+    status.dataset.speechStatus = 'true';
+    status.setAttribute('role', 'status');
+    status.style.cssText = 'font-size:12px;max-width:32em;white-space:normal';
+    read.parentElement.append(status);
+    const zh = !englishInterface && !russianInterface;
+    const label = (cn, en, ru) => zh ? cn : russianInterface ? ru : en;
+    let mode = '', chosenLabel = select?.selectedOptions[0]?.textContent || '';
+    select?.addEventListener('change', () => { chosenLabel = select.selectedOptions[0]?.textContent || ''; });
+    // Page-level voice loaders rebuild the list when voices arrive asynchronously.
+    speechSynthesis.addEventListener('voiceschanged', () => {
+      if (!select) return;
+      const option = [...select.options].find(item => item.textContent === chosenLabel);
+      if (option) select.value = option.value;
+    });
+    const playback = createSpeechPlayback(speechSynthesis, SpeechSynthesisUtterance, event => {
+      const active = ['loading', 'playing', 'paused', 'fallback'].includes(event.state);
+      if (pause) {
+        pause.disabled = !active;
+        pause.dataset.speechPaused = String(event.state === 'paused');
+        pause.textContent = event.state === 'paused' ? label('继续', 'Continue', 'Продолжить') : label('暂停', 'Pause', 'Пауза');
+      }
+      if (stop) stop.disabled = !active;
+      const fallback = event.fallback ? label('所选声音未响应，已改用 ', 'Selected voice unavailable; using ', 'Выбранный голос недоступен; используется ') + (event.voice?.name || label('系统默认声音', 'system default', 'системный голос')) + ' · ' : '';
+      const messages = {
+        loading: label('正在准备朗读…', 'Preparing speech…', 'Подготовка чтения…'),
+        playing: mode,
+        fallback: label('正在切换声音…', 'Switching voice…', 'Смена голоса…'),
+        paused: label('已暂停', 'Paused', 'Пауза'),
+        stopped: label('已停止朗读', 'Stopped', 'Чтение остановлено'),
+        ended: label('朗读完成', 'Finished reading', 'Чтение завершено'),
+        empty: label('没有可朗读的正文', 'No text to read', 'Нет текста для чтения'),
+        error: label('朗读失败，请选择其他声音后重试', 'Speech failed; select another voice and retry', 'Ошибка чтения; выберите другой голос') + ` (${event.reason})`
+      };
+      status.textContent = fallback + messages[event.state];
+    });
+    const clean = fragment => {
+      fragment.querySelectorAll?.('rt,rp,.inline-gloss,.comment-block,.footnote-ref,.inline-media').forEach(node => node.remove());
+      return (fragment.textContent || '').replace(/[■□▪▫◼◻⬛⬜]+/g, '').replace(/\s+/g, ' ').trim();
+    };
+    const start = (text, readingMode) => {
+      mode = readingMode;
+      const voices = speechSynthesis.getVoices();
+      const option = select?.selectedOptions[0];
+      const voice = select?.value ? voices.find(v => v.voiceURI === select.value || option?.textContent === `${v.name} — ${v.lang}` || option?.textContent === v.name || option?.textContent.startsWith(`${v.name} (`)) : null;
+      playback.start(text, {voice, lang: document.documentElement.lang || 'zh-CN', rate: Number(document.querySelector('#rate,[data-basic="rate"]')?.value) || 0.8});
+    };
+    window.ReadingWorkspace ||= {};
+    window.ReadingWorkspace.readAloud = start;
+    window.ReadingWorkspace.cleanSpeechFragment = clean;
+    read.addEventListener('mousedown', event => event.preventDefault());
+    read.addEventListener('click', event => {
+      event.preventDefault(); event.stopImmediatePropagation();
+      const selection = getSelection();
+      const selected = selection?.rangeCount && !selection.isCollapsed && editor.contains(selection.anchorNode) && editor.contains(selection.focusNode) ? clean(selection.getRangeAt(0).cloneContents()) : '';
+      const text = editor.setSelectionRange ? (editor.value.slice(editor.selectionStart, editor.selectionEnd) || editor.value) : (selected || clean(editor.cloneNode(true)));
+      start(text, selected ? label('正在朗读所选原文', 'Reading selection', 'Чтение выделенного текста') : label('正在朗读原文全文', 'Reading full text', 'Чтение всего текста'));
+    }, true);
+    for (const [control, action] of [[pause, () => playback.togglePause()], [stop, () => playback.stop()]]) {
+      control?.addEventListener('click', event => { event.preventDefault(); event.stopImmediatePropagation(); action(); }, true);
+    }
+    window.addEventListener('pagehide', () => playback.stop(false));
+  }
+
   function installReadFromCursor() {
     if (!("speechSynthesis" in window) || document.querySelector("[data-read-from-cursor]")) return;
     const editor = document.querySelector('#editor[contenteditable="true"],.editor[contenteditable="true"],[contenteditable="true"],textarea');
@@ -1064,77 +1242,21 @@
       const range = savedRange || (() => {
         const first = document.createRange(); first.selectNodeContents(editor); first.collapse(true); return first;
       })();
-      if (!editor.contains(range.startContainer)) return editor.innerText.trim();
+      if (!editor.contains(range.startContainer)) return window.ReadingWorkspace.cleanSpeechFragment(editor.cloneNode(true));
       const remainder = document.createRange();
       remainder.setStart(range.startContainer, range.startOffset);
       remainder.selectNodeContents(editor);
       remainder.setStart(range.startContainer, range.startOffset);
-      return remainder.cloneContents().textContent.replace(/[■□▪▫◼◻⬛⬜]+/g, "").replace(/\s+/g, " ").trim();
+      return window.ReadingWorkspace.cleanSpeechFragment(remainder.cloneContents());
     };
     button.addEventListener("click", () => {
       const text = textFromCaret();
       if (!text) return;
-      speechSynthesis.cancel();
-      const utterance = new SpeechSynthesisUtterance(text);
-      utterance.lang = document.documentElement.lang || "zh-CN";
-      const rateControl = document.querySelector('#rate,[data-basic="rate"]');
-      if (rateControl) utterance.rate = Number(rateControl.value) || 0.8;
-      const voiceControl = document.querySelector("#voiceSelect");
-      const voices = speechSynthesis.getVoices();
-      if (voiceControl?.value !== "") {
-        const label = voiceControl.selectedOptions?.[0]?.textContent?.trim() || "";
-        const selectedVoice = voices.find(voice => label === voice.name || label.startsWith(`${voice.name} —`) || label.startsWith(`${voice.name} (`) || voice.voiceURI === voiceControl.value);
-        if (selectedVoice) { utterance.voice = selectedVoice; utterance.lang = selectedVoice.lang || utterance.lang; }
-      }
-      const pauseControl = document.querySelector("#pauseBtn,[data-basic='pause']");
-      const stopControl = document.querySelector("#stopBtn,[data-basic='stop']");
-      const pauseLabel = !englishInterface && !russianInterface ? "暂停" : russianInterface ? "Пауза" : "Pause";
-      const setSpeechControls = active => {
-        if (pauseControl) { pauseControl.disabled = !active; pauseControl.dataset.speechPaused = "false"; pauseControl.textContent = pauseLabel; }
-        if (stopControl) stopControl.disabled = !active;
-      };
-      if (stopControl && !stopControl.dataset.cursorSpeechReset) {
-        stopControl.dataset.cursorSpeechReset = "true";
-        stopControl.addEventListener("click", () => setTimeout(() => setSpeechControls(false), 0));
-      }
-      utterance.onstart = () => setSpeechControls(true);
-      utterance.onend = utterance.onerror = () => setSpeechControls(false);
-      speechSynthesis.speak(utterance);
-      setSpeechControls(true);
-      const status = document.querySelector("#saveStatus,.status");
-      if (status) status.textContent = !englishInterface && !russianInterface ? "正在从光标位置朗读" : russianInterface ? "Чтение от курсора" : "Reading from cursor";
+      window.ReadingWorkspace.readAloud(text, !englishInterface && !russianInterface ? "正在从光标位置朗读" : russianInterface ? "Чтение от курсора" : "Reading from cursor");
     });
   }
 
-  function installReliableSpeechPause() {
-    if (!("speechSynthesis" in window)) return;
-    const pauseControl = document.querySelector("#pauseBtn,[data-basic='pause']");
-    if (!pauseControl || pauseControl.dataset.reliableSpeechPause) return;
-    pauseControl.dataset.reliableSpeechPause = "true";
-    const pauseLabel = !englishInterface && !russianInterface ? "暂停" : russianInterface ? "Пауза" : "Pause";
-    const continueLabel = !englishInterface && !russianInterface ? "继续" : russianInterface ? "Продолжить" : "Continue";
-    const reset = () => { pauseControl.dataset.speechPaused = "false"; pauseControl.textContent = pauseLabel; };
-    document.querySelectorAll("#speakBtn,[data-basic='read'],[data-read-from-cursor]").forEach(control => control.addEventListener("click", reset, true));
-    document.querySelectorAll("#stopBtn,[data-basic='stop']").forEach(control => control.addEventListener("click", reset, true));
-    pauseControl.addEventListener("click", event => {
-      event.preventDefault();
-      event.stopImmediatePropagation();
-      const shouldResume = pauseControl.dataset.speechPaused === "true" || /继续|Continue|Продолжить/i.test(pauseControl.textContent || "");
-      if (shouldResume) {
-        pauseControl.dataset.speechPaused = "false";
-        pauseControl.textContent = pauseLabel;
-        // Chromium and WebKit occasionally ignore the first resume request,
-        // particularly for long utterances. Reissuing resume is harmless.
-        [0, 50, 150, 350].forEach(delay => setTimeout(() => speechSynthesis.resume(), delay));
-      } else {
-        speechSynthesis.pause();
-        pauseControl.dataset.speechPaused = "true";
-        pauseControl.textContent = continueLabel;
-      }
-    }, true);
-  }
-
-  function installWorkspaceControls() { installBasicEditorToolbar(); installReadFromCursor(); installReliableSpeechPause(); installToolbarLayering(); installColoredUnderlines(); installDictionaryOccurrences(); installProjectDictionaryLinks(); installRussianInterfaceTranslation(); installContextNavigation(); installHomeMark(); installSwitch(); installReadingThemeToggle(); installReadingEnvironment(); installPaneBalancer(); installFileMenu(); installInsertMenu(); installUserNotesAccess(); installExpandingReviewFields(); installAnnotationSync(); installAllNotesView(); installImmersiveMode(); installGoogleVoicePriority(); window.ReadingWorkspace ||= {}; window.ReadingWorkspace.interfaceLanguage = interfaceLanguage; }
+  function installWorkspaceControls() { installBasicEditorToolbar(); installReliableSpeechReading(); installReadFromCursor(); installToolbarLayering(); installColoredUnderlines(); installDictionaryOccurrences(); installProjectDictionaryLinks(); installRussianInterfaceTranslation(); installContextNavigation(); installHomeMark(); installSwitch(); installReadingThemeToggle(); installReadingEnvironment(); installPaneBalancer(); installFileMenu(); installInsertMenu(); installUserNotesAccess(); installExpandingReviewFields(); installAnnotationSync(); installAllNotesView(); installImmersiveMode(); installGoogleVoicePriority(); window.ReadingWorkspace ||= {}; window.ReadingWorkspace.interfaceLanguage = interfaceLanguage; }
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", installWorkspaceControls);
   else installWorkspaceControls();
 })();

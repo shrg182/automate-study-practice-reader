@@ -1,0 +1,72 @@
+{
+  "version": 4,
+  "savedAt": "2026-10-08T13:51:31.352Z",
+  "bodyHTML": "<p data-paragraph=\"1\">十月，晋阴饴甥会秦伯，盟于王城。</p>\n<p data-paragraph=\"2\">秦伯曰：“晋国和乎？”对曰：“不和。小人耻失其君，而悼丧其亲，不惮征缮以立<span class=\"notation auto-notation\" data-term=\"圉\" data-note=\"圉 | yǔ | | 粵拼 jyu5 雨 |\n① 養馬\n圉人。\n② 養馬的地方\n圈圉。\" title=\"圉 | yǔ | | 粵拼 jyu5 雨 |\n① 養馬\n圉人。\n② 養馬的地方\n圈圉。\"><span class=\"term-anchor\" tabindex=\"0\" role=\"link\" aria-label=\"查看“圉”的词典解释\"><ruby>圉<rt>yu1</rt></ruby>圉<sup class=\"footnote-ref\" data-note-id=\"15cf7862-df65-47c5-96e7-9f403639caaa\" contenteditable=\"false\" title=\"Fixed both bugs:\n\n- Adding pinyin preserves the original character and footnote without duplication.\n- 撤销 / 重做 now restore text, annotations, and dictionary changes.\n- Reloading repairs the specific duplicate markup created by the old code.\n\nVerified in Chrome; all 13 related tests passed.\n\nPlease reload the editor tab to use the fixes. Undo history starts fresh after reloading.\" aria-label=\"脚注 1\">〔1〕</sup><sup class=\"footnote-ref\" data-note-id=\"d9647c3a-205f-4767-aad1-19f169f46e25\" contenteditable=\"false\" title=\"Please note that there are two 圉 standing together in the text. The cause is that when I tried to add PinYin to 圉, which is already having a footnote, it added a new 圉 before the original one. The new 圉 has a pinyin on top and added to the dictionary properly.\n\nBut when I tried to withdraw or redo it, neither buttons of 撤销 or 重做 was responding.\n\nPlease debug and fix it.\" aria-label=\"脚注 2\">〔2〕</sup></span></span><sup class=\"footnote-ref\" data-note-id=\"clean-footnote-1\" contenteditable=\"false\" title=\"【来源注释】圉：晋惠公太子姬圉。\" aria-label=\"脚注 3\">〔3〕</sup>也。曰：‘必报仇，宁事戎狄。’君子爱其君而知其罪，不惮征缮以待秦命，曰：‘必报德，有死无二。’以此不和。”秦伯曰：“国谓君何？”对曰：“小人戚，谓之不免；君子恕，以为必归。小人曰：‘我毒秦，秦岂归君？’君子曰：‘我知罪矣，秦必归君。贰而执之，服而舍之，德莫厚焉，刑莫威焉。服者怀德，贰者畏刑，此一役也，秦可以霸。纳而不定，废而不立，以德为怨，秦不其然。’”秦伯曰：“是吾心也。”改馆晋侯，馈<span class=\"notation auto-notation\" data-term=\"七牢\" data-note=\"古代招待诸侯的礼节，牛、羊、猪各一为一牢。\" title=\"古代招待诸侯的礼节，牛、羊、猪各一为一牢。\"><span class=\"term-anchor\" tabindex=\"0\" role=\"link\" aria-label=\"查看“七牢”的词典解释\">七牢</span></span><sup class=\"footnote-ref\" data-note-id=\"clean-footnote-2\" contenteditable=\"false\" title=\"【来源注释】七牢：古代招待诸侯的礼节，牛、羊、猪各一为一牢。\" aria-label=\"脚注 4\">〔4〕</sup>焉。</p>\n<p data-paragraph=\"3\">原文▾十月，<span style=\"text-decoration-line: underline; text-decoration-color: rgb(217, 79, 135); text-decoration-thickness: 1.5px; text-underline-offset: 0.2em;\">晋阴饴甥会秦伯</span>，盟于王城。秦伯曰：“晋国和乎？”对曰：“不和。小人耻失其君，而悼丧其亲，不惮征缮以立圉也[1]。曰：‘必报仇，宁事戎狄。’君子爱其君而知其罪，不惮征缮以待秦命，曰：‘必报德，有死无二。’以此不和。”秦伯曰：“国谓君何？”对曰：“小人戚，谓之不免；君子恕，以为必归。小人曰：‘我毒秦，秦岂归君？’君子曰：‘我知罪矣，秦必归君。贰而执之，服而舍之，德莫厚焉，刑莫威焉。服者怀德，贰者畏刑，此一役也，秦可以霸。纳而不定，废而不立，以德为怨，秦不其然。’”秦伯曰：“是吾心也。”改馆晋侯，馈七牢焉[2]。</p>",
+  "terms": [
+    {
+      "term": "圉",
+      "pinyin": "yu1",
+      "annotation": "圉 | yǔ | | 粵拼 jyu5 雨 |\n① 養馬\n圉人。\n② 養馬的地方\n圈圉。",
+      "type": "source_note"
+    },
+    {
+      "term": "七牢",
+      "pinyin": "",
+      "annotation": "古代招待诸侯的礼节，牛、羊、猪各一为一牢。",
+      "type": "source_note"
+    }
+  ],
+  "footnotes": [
+    {
+      "id": "15cf7862-df65-47c5-96e7-9f403639caaa",
+      "note": "Fixed both bugs:\n\n- Adding pinyin preserves the original character and footnote without duplication.\n- 撤销 / 重做 now restore text, annotations, and dictionary changes.\n- Reloading repairs the specific duplicate markup created by the old code.\n\nVerified in Chrome; all 13 related tests passed.\n\nPlease reload the editor tab to use the fixes. Undo history starts fresh after reloading.",
+      "mediaIds": []
+    },
+    {
+      "id": "d9647c3a-205f-4767-aad1-19f169f46e25",
+      "note": "Please note that there are two 圉 standing together in the text. The cause is that when I tried to add PinYin to 圉, which is already having a footnote, it added a new 圉 before the original one. The new 圉 has a pinyin on top and added to the dictionary properly.\n\nBut when I tried to withdraw or redo it, neither buttons of 撤销 or 重做 was responding.\n\nPlease debug and fix it.",
+      "mediaIds": [
+        "e23e0f08-eb6e-44d1-904b-d4fa19d05c65"
+      ]
+    },
+    {
+      "id": "clean-footnote-1",
+      "note": "【来源注释】圉：晋惠公太子姬圉。",
+      "mediaIds": []
+    },
+    {
+      "id": "clean-footnote-2",
+      "note": "【来源注释】七牢：古代招待诸侯的礼节，牛、羊、猪各一为一牢。",
+      "mediaIds": []
+    }
+  ],
+  "notes": [
+    {
+      "time": "2026-10-08T14:19:30.402Z",
+      "text": "此篇添加一注音：圉。解决了已经标注的字的注音，和，撤销与重做的缺陷。",
+      "mediaIds": []
+    }
+  ],
+  "log": [
+    {
+      "time": "2026-10-08T14:19:30.403Z",
+      "action": "添加用户札记",
+      "detail": ""
+    },
+    {
+      "time": "2026-10-08T13:48:32.918Z",
+      "action": "添加编者注",
+      "detail": "Fixed both bugs:\n\n- Adding pinyin preserves the original character and footnote without duplication.\n- 撤销 / 重做 now restore text, annotations, and dictionary changes.\n- Reloading repairs the specific duplicate markup created by the old code.\n\nVerified in Chrome; all 13 related tests passed.\n\nPlease reload the editor tab to use the fixes. Undo history starts fresh after reloading."
+    },
+    {
+      "time": "2026-10-08T13:41:45.970Z",
+      "action": "添加编者注",
+      "detail": "Please note that there are two 圉 standing together in the text. The cause is that when I tried to add PinYin to 圉, which is already having a footnote, it added a new 圉 before the original one. The new 圉 has a pinyin on top and added to the dictionary properly.\n\nBut when I tried to wisdraw or redo it, neither buttons of 撤销 or 重做 was responding.\n\nPlease debug and fix it."
+    },
+    {
+      "time": "2026-10-08T13:28:19.362Z",
+      "action": "更新注音/简注",
+      "detail": "圉"
+    }
+  ]
+}

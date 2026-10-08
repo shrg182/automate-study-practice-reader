@@ -1,9 +1,9 @@
-const VERSION = "reading-room-v145";
+const VERSION = "reading-room-v146";
 const CORE_CACHE = `${VERSION}-core`;
 const ARTICLE_CACHE = `${VERSION}-articles`;
 const root = new URL("./", self.registration.scope);
 const coreFiles = [
-  "index.html", "workspace_theme.css", "workspace_skin.js", "mobile_pwa.js",
+  "index.html", "workspace_theme.css", "workspace_skin.js", "editor_history.js", "mobile_pwa.js",
   "manifest.webmanifest", "icons/reading-room-192.png", "icons/reading-room-512.png"
 ].map(path => new URL(path, root).href);
 

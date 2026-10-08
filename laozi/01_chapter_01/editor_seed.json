@@ -1,0 +1,38 @@
+{
+  "version": 4,
+  "savedAt": "2026-10-08T16:31:45.455Z",
+  "bodyHTML": "<p data-paragraph=\"1\">道可道，非常道；名可名，非常名。无名天地之始，有名万物之母。故常无，欲以观其妙；常有，欲以观其<span class=\"notation\" data-term=\"徼\" data-note=\"徼 | jiào | | 粵拼 giu3 叫 |\n① 巡邏；巡視\n徼巡。\n② 邊界\n邊徼。\" title=\"徼 | jiào | | 粵拼 giu3 叫 |\n① 巡邏；巡視\n徼巡。\n② 邊界\n邊徼。\"><span class=\"term-anchor\" tabindex=\"0\" role=\"link\" aria-label=\"查看“徼”的词典解释\"><ruby>徼<rt>jiao4</rt></ruby></span></span>。此两者同出而异名，同谓之玄，玄之又玄，众妙之门。</p><p class=\"comment-block\">有无即色空。无名是空，有名是色。对于空，要体会其妙；对于色，要观察其边界。\n\n玄之又玄是三重境界：色空，继续色空，再进一层色空。</p>",
+  "terms": [
+    {
+      "term": "徼",
+      "pinyin": "jiao4",
+      "annotation": "徼 | jiào | | 粵拼 giu3 叫 |\n① 巡邏；巡視\n徼巡。\n② 邊界\n邊徼。",
+      "type": "added"
+    }
+  ],
+  "footnotes": [],
+  "notes": [],
+  "log": [
+    {
+      "time": "2026-10-08T16:31:45.498Z",
+      "action": "导出编辑日志",
+      "detail": ""
+    },
+    {
+      "time": "2026-10-08T16:31:45.456Z",
+      "action": "导出本篇词典",
+      "detail": ""
+    },
+    {
+      "time": "2026-10-08T16:27:12.926Z",
+      "action": "插入按语",
+      "detail": "色空。无名是空，有名是色。对于空，要观察其妙；对于色，要观察其边界。"
+    },
+    {
+      "time": "2026-08-10T21:49:03.537Z",
+      "action": "添加注音/简注",
+      "detail": "徼"
+    }
+  ],
+  "media": []
+}

@@ -87,10 +87,14 @@ def write_entry(row: dict[str, str], html_text: str) -> None:
     (target / "source.json").write_text(json.dumps(metadata,ensure_ascii=False,indent=2)+"\n",encoding="utf-8");print(f"Wrote {target}: {metadata['original_characters']} chars, {metadata['source_note_count']} notes")
 
 
-def build_editors() -> None:
+def build_editors(source_ids: set[str] | None = None) -> None:
     for row in read_csv(CATALOG):
+        if source_ids is not None and row["source_id"] not in source_ids:
+            continue
         target = entry_dir(row); text = (target / "reading.txt").read_text(encoding="utf-8"); original = (target / "original.txt").read_text(encoding="utf-8"); terms = load_terms(target / "reading_terms.csv")
-        output = build_html(text, terms, row["source_url"], chapter_title=f"《古文观止·{row['title']}》", editor_title=f"《古文观止·{row['title']}》校读编辑器", storage_key=f"guwen-guanzhi-{row['source_id']}-editor-v1", file_stem=f"guwen_guanzhi_{row['source_id']}", review_notes=load_review_notes(target / "review_notes.tsv"), global_terms=load_global_terms(PRACTICE_DIR / "project_dictionary" / "dictionary.csv", original, terms), home_href="../../../index.html#guwen_guanzhi", theme_href="../../../workspace_theme.css", shared_library_href="", source_site_label="5000言")
+        seed_path = target / "editor_seed.json"
+        seed = json.loads(seed_path.read_text(encoding="utf-8")) if seed_path.exists() else None
+        output = build_html(text, terms, row["source_url"], chapter_title=f"《古文观止·{row['title']}》", editor_title=f"《古文观止·{row['title']}》校读编辑器", storage_key=f"guwen-guanzhi-{row['source_id']}-editor-v1", file_stem=f"guwen_guanzhi_{row['source_id']}", review_notes=load_review_notes(target / "review_notes.tsv"), global_terms=load_global_terms(PRACTICE_DIR / "project_dictionary" / "dictionary.csv", original, terms), home_href="../../../index.html#guwen_guanzhi", theme_href="../../../workspace_theme.css", shared_library_href="", source_site_label="5000言", editor_seed=seed)
         (target / "editor.html").write_text(output, encoding="utf-8"); print(f"Built {target/'editor.html'}")
 
 
