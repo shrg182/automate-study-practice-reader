@@ -1090,7 +1090,7 @@
       const stopControl = document.querySelector("#stopBtn,[data-basic='stop']");
       const pauseLabel = !englishInterface && !russianInterface ? "暂停" : russianInterface ? "Пауза" : "Pause";
       const setSpeechControls = active => {
-        if (pauseControl) { pauseControl.disabled = !active; if (!active) pauseControl.textContent = pauseLabel; }
+        if (pauseControl) { pauseControl.disabled = !active; pauseControl.dataset.speechPaused = "false"; pauseControl.textContent = pauseLabel; }
         if (stopControl) stopControl.disabled = !active;
       };
       if (stopControl && !stopControl.dataset.cursorSpeechReset) {
@@ -1106,7 +1106,35 @@
     });
   }
 
-  function installWorkspaceControls() { installBasicEditorToolbar(); installReadFromCursor(); installToolbarLayering(); installColoredUnderlines(); installDictionaryOccurrences(); installProjectDictionaryLinks(); installRussianInterfaceTranslation(); installContextNavigation(); installHomeMark(); installSwitch(); installReadingThemeToggle(); installReadingEnvironment(); installPaneBalancer(); installFileMenu(); installInsertMenu(); installUserNotesAccess(); installExpandingReviewFields(); installAnnotationSync(); installAllNotesView(); installImmersiveMode(); installGoogleVoicePriority(); window.ReadingWorkspace ||= {}; window.ReadingWorkspace.interfaceLanguage = interfaceLanguage; }
+  function installReliableSpeechPause() {
+    if (!("speechSynthesis" in window)) return;
+    const pauseControl = document.querySelector("#pauseBtn,[data-basic='pause']");
+    if (!pauseControl || pauseControl.dataset.reliableSpeechPause) return;
+    pauseControl.dataset.reliableSpeechPause = "true";
+    const pauseLabel = !englishInterface && !russianInterface ? "暂停" : russianInterface ? "Пауза" : "Pause";
+    const continueLabel = !englishInterface && !russianInterface ? "继续" : russianInterface ? "Продолжить" : "Continue";
+    const reset = () => { pauseControl.dataset.speechPaused = "false"; pauseControl.textContent = pauseLabel; };
+    document.querySelectorAll("#speakBtn,[data-basic='read'],[data-read-from-cursor]").forEach(control => control.addEventListener("click", reset, true));
+    document.querySelectorAll("#stopBtn,[data-basic='stop']").forEach(control => control.addEventListener("click", reset, true));
+    pauseControl.addEventListener("click", event => {
+      event.preventDefault();
+      event.stopImmediatePropagation();
+      const shouldResume = pauseControl.dataset.speechPaused === "true" || /继续|Continue|Продолжить/i.test(pauseControl.textContent || "");
+      if (shouldResume) {
+        pauseControl.dataset.speechPaused = "false";
+        pauseControl.textContent = pauseLabel;
+        // Chromium and WebKit occasionally ignore the first resume request,
+        // particularly for long utterances. Reissuing resume is harmless.
+        [0, 50, 150, 350].forEach(delay => setTimeout(() => speechSynthesis.resume(), delay));
+      } else {
+        speechSynthesis.pause();
+        pauseControl.dataset.speechPaused = "true";
+        pauseControl.textContent = continueLabel;
+      }
+    }, true);
+  }
+
+  function installWorkspaceControls() { installBasicEditorToolbar(); installReadFromCursor(); installReliableSpeechPause(); installToolbarLayering(); installColoredUnderlines(); installDictionaryOccurrences(); installProjectDictionaryLinks(); installRussianInterfaceTranslation(); installContextNavigation(); installHomeMark(); installSwitch(); installReadingThemeToggle(); installReadingEnvironment(); installPaneBalancer(); installFileMenu(); installInsertMenu(); installUserNotesAccess(); installExpandingReviewFields(); installAnnotationSync(); installAllNotesView(); installImmersiveMode(); installGoogleVoicePriority(); window.ReadingWorkspace ||= {}; window.ReadingWorkspace.interfaceLanguage = interfaceLanguage; }
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", installWorkspaceControls);
   else installWorkspaceControls();
 })();
