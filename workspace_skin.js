@@ -631,7 +631,7 @@
   function installImmersiveMode() {
     if (!document.querySelector(".editor, .rich-editor, #editor[contenteditable]")) return;
     const style = document.createElement("style");
-    style.textContent = `.reading-immersive-trigger{white-space:nowrap}.reading-immersive-exit{display:none;position:fixed;z-index:1000;top:12px;right:14px;min-height:36px;padding:7px 12px;border:1px solid #9aa0a6;border-radius:18px;background:#202124;color:#fff;box-shadow:0 3px 14px #0004;cursor:pointer}body.reading-immersive{padding-bottom:0!important;background:var(--reading-content-background,#fffdfa)!important}body.reading-immersive .reading-immersive-exit{display:block}body.reading-immersive header,body.reading-immersive .toolbar,body.reading-immersive .topbar,body.reading-immersive .masthead,body.reading-immersive jianshang-editor-header,body.reading-immersive .sidebar,body.reading-immersive .notes-dock,body.reading-immersive .export-dock,body.reading-immersive .mobile-pwa-bar,body.reading-immersive .mobile-pwa-toast,body.reading-immersive [data-pane-secondary]{display:none!important}body.reading-immersive .workspace,body.reading-immersive .main-content,body.reading-immersive .editor-shell,body.reading-immersive .content-grid,body.reading-immersive .layout{display:block!important;width:100%!important;max-width:none!important;height:auto!important;margin:0!important;padding:0!important}body.reading-immersive .paper,body.reading-immersive .editor-panel,body.reading-immersive [data-pane-primary]{display:block!important;width:100%!important;max-width:none!important;min-height:100vh!important;margin:0!important;padding:clamp(24px,5vw,64px)!important;border:0!important;box-shadow:none!important}body.reading-immersive [data-pane-primary]>.pane-head{display:none!important}body.reading-immersive .editor,body.reading-immersive .rich-editor,body.reading-immersive #editor[contenteditable]{width:min(1100px,100%)!important;min-height:100vh!important;margin:0 auto!important;padding:0!important;border:0!important;box-shadow:none!important}`;
+    style.textContent = `.reading-immersive-trigger,.reading-pane-immersive-trigger{white-space:nowrap}.reading-immersive-exit{display:none;position:fixed;z-index:1000;top:12px;right:14px;min-height:36px;padding:7px 12px;border:1px solid #9aa0a6;border-radius:18px;background:#202124;color:#fff;box-shadow:0 3px 14px #0004;cursor:pointer}body.reading-immersive{padding-bottom:0!important;background:var(--reading-content-background,#fffdfa)!important}body.reading-immersive .reading-immersive-exit{display:block}body.reading-immersive header,body.reading-immersive .toolbar,body.reading-immersive .topbar,body.reading-immersive .masthead,body.reading-immersive jianshang-editor-header,body.reading-immersive .sidebar,body.reading-immersive .notes-dock,body.reading-immersive .export-dock,body.reading-immersive .mobile-pwa-bar,body.reading-immersive .mobile-pwa-toast{display:none!important}body.reading-immersive:not(.reading-immersive-secondary) [data-pane-secondary],body.reading-immersive.reading-immersive-secondary [data-pane-primary]{display:none!important}body.reading-immersive .workspace,body.reading-immersive .main-content,body.reading-immersive .editor-shell,body.reading-immersive .content-grid,body.reading-immersive .layout{display:block!important;width:100%!important;max-width:none!important;height:auto!important;margin:0!important;padding:0!important}body.reading-immersive .paper,body.reading-immersive .editor-panel,body.reading-immersive [data-pane-primary],body.reading-immersive.reading-immersive-secondary [data-pane-secondary]{display:block!important;width:100%!important;max-width:none!important;min-height:100vh!important;height:100vh!important;margin:0!important;padding:clamp(18px,2.5vw,42px)!important;border:0!important;box-shadow:none!important}body.reading-immersive [data-pane-primary]>.pane-head,body.reading-immersive [data-pane-secondary]>.pane-head{display:none!important}body.reading-immersive .editor,body.reading-immersive .rich-editor,body.reading-immersive #editor[contenteditable]{width:100%!important;max-width:none!important;min-height:100vh!important;margin:0!important;padding:0!important;border:0!important;box-shadow:none!important}body.reading-immersive.reading-immersive-secondary [data-pane-secondary] .pdf-frame,body.reading-immersive.reading-immersive-secondary [data-pane-secondary] object,body.reading-immersive.reading-immersive-secondary [data-pane-secondary] iframe{width:100%!important;height:100%!important;min-height:100vh!important}`;
     document.head.appendChild(style);
     const toolbar = document.querySelector(".toolbar") || document.querySelector("jianshang-editor-header .view-tools") || document.querySelector(".actions");
     const enterButton = document.createElement("button");
@@ -643,8 +643,9 @@
     toolbar?.appendChild(enterButton); document.body.appendChild(exitButton);
     const contextualHome = [...document.querySelectorAll("a[href]")].find(link => /返回首页|返回目录|书目|篇目/.test(link.textContent || ""));
     const directoryHref = window.ReadingWorkspace?.directoryHref || contextualHome?.href || new URL("index.html", workspaceRoot).href;
-    const setImmersive = async enabled => {
+    const setImmersive = async (enabled, pane = "primary") => {
       document.body.classList.toggle("reading-immersive", enabled);
+      document.body.classList.toggle("reading-immersive-secondary", enabled && pane === "secondary");
       const button = document.querySelector('[data-mobile-action="immersive"]');
       if (button) { button.classList.toggle("active", enabled); button.setAttribute("aria-pressed", String(enabled)); button.textContent = enabled ? "退出沉浸" : "沉浸"; }
       if (enabled && document.documentElement.requestFullscreen && !document.fullscreenElement) await document.documentElement.requestFullscreen().catch(() => {});
@@ -654,9 +655,20 @@
     document.addEventListener("keydown", event => { if (event.key === "Escape" && document.body.classList.contains("reading-immersive")) setImmersive(false); });
     window.ReadingWorkspace ||= {};
     window.ReadingWorkspace.directoryHref = directoryHref;
-    window.ReadingWorkspace.toggleImmersive = () => setImmersive(!document.body.classList.contains("reading-immersive"));
-    enterButton.addEventListener("click", () => setImmersive(true));
+    window.ReadingWorkspace.toggleImmersive = () => setImmersive(!document.body.classList.contains("reading-immersive"), "primary");
+    enterButton.addEventListener("click", () => setImmersive(true, "primary"));
     exitButton.addEventListener("click", () => setImmersive(false));
+    const paneLabels = englishInterface ? ["Text full screen", "PDF full screen"] : russianInterface ? ["Текст во весь экран", "PDF во весь экран"] : ["正文全屏", "参考页全屏"];
+    const primaryPane = document.querySelector("[data-pane-primary]");
+    const secondaryPane = document.querySelector("[data-pane-secondary]");
+    [[primaryPane, "primary", paneLabels[0]], [secondaryPane, "secondary", paneLabels[1]]].forEach(([paneElement, pane, label]) => {
+      const head = paneElement?.querySelector(":scope > .pane-head");
+      if (!head || head.querySelector(".reading-pane-immersive-trigger")) return;
+      const button = document.createElement("button");
+      button.type = "button"; button.className = "reading-pane-immersive-trigger"; button.textContent = label;
+      button.addEventListener("click", () => setImmersive(true, pane));
+      head.appendChild(button);
+    });
   }
 
   function installAnnotationSync() {
@@ -1033,7 +1045,7 @@
     const textFromCaret = () => {
       if (editor.setSelectionRange) {
         const start = Number.isInteger(editor.selectionStart) ? editor.selectionStart : 0;
-        return editor.value.slice(start).trim();
+        return editor.value.slice(start).replace(/[■□▪▫◼◻⬛⬜]+/g, "").trim();
       }
       const range = savedRange || (() => {
         const first = document.createRange(); first.selectNodeContents(editor); first.collapse(true); return first;
@@ -1043,7 +1055,7 @@
       remainder.setStart(range.startContainer, range.startOffset);
       remainder.selectNodeContents(editor);
       remainder.setStart(range.startContainer, range.startOffset);
-      return remainder.cloneContents().textContent.replace(/\s+/g, " ").trim();
+      return remainder.cloneContents().textContent.replace(/[■□▪▫◼◻⬛⬜]+/g, "").replace(/\s+/g, " ").trim();
     };
     button.addEventListener("click", () => {
       const text = textFromCaret();
