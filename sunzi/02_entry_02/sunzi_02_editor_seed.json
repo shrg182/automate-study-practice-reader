@@ -1,0 +1,79 @@
+{
+  "version": 4,
+  "savedAt": "2026-10-08T21:22:48.853Z",
+  "bodyHTML": "<p data-paragraph=\"1\">孙子曰：凡用兵之法，驰车<span class=\"notation auto-notation\" data-term=\"千驷\" data-note=\"一千辆四马战车；驷指四马驾一车。\" title=\"一千辆四马战车；驷指四马驾一车。\"><span class=\"term-anchor\" tabindex=\"0\" role=\"link\" aria-label=\"查看“千驷”的词典解释\"><ruby>千驷<rt>qiān sì</rt></ruby></span></span>，革车<span class=\"notation auto-notation\" data-term=\"千乘\" data-note=\"一千辆兵车；乘在此读 shèng。\" title=\"一千辆兵车；乘在此读 shèng。\"><span class=\"term-anchor\" tabindex=\"0\" role=\"link\" aria-label=\"查看“千乘”的词典解释\"><ruby>千乘<rt>qiān shèng</rt></ruby></span></span>，带甲十万，千里<span class=\"notation auto-notation\" data-term=\"馈粮\" data-note=\"运送军粮。\" title=\"运送军粮。\"><span class=\"term-anchor\" tabindex=\"0\" role=\"link\" aria-label=\"查看“馈粮”的词典解释\"><ruby>馈粮<rt>kuì liáng</rt></ruby></span></span>，则内外之费，宾客之用，胶漆之材，车甲之奉，日费千金，然后十万之师举矣。</p>\n<p data-paragraph=\"2\">其用战也胜，久则<span class=\"notation auto-notation\" data-term=\"钝兵挫锐\" data-note=\"军队疲惫，锐气受挫。\" title=\"军队疲惫，锐气受挫。\"><span class=\"term-anchor\" tabindex=\"0\" role=\"link\" aria-label=\"查看“钝兵挫锐”的词典解释\"><ruby>钝兵挫锐<rt>dùn bīng cuò ruì</rt></ruby></span></span>，攻城则力屈，久暴师则国用不足。夫钝兵挫锐，屈力殚货，则诸侯乘其弊而起，虽有智者，不能善其后矣。故兵闻拙速，未睹巧之久也。夫兵久而国利者，未之有也。故不尽知用兵之害者，则不能尽知用兵之利也。</p>\n<p data-paragraph=\"3\">善用兵者，役不再籍，粮不三载，取用于国，因粮于敌，故军食可足也。国之贫于师者远输，远输则百姓贫；近师者贵卖，贵卖则百姓财竭，财竭则急于丘役。力屈财殚，中原内虚于家，百姓之费，十去其七；公家之费，破车罢马，甲胄矢弩，戟<span class=\"notation\" data-term=\"楯\" data-note=\"楯 dùn\n古同“盾1”。\n另见 shǔn。• shǔn（音同「吮」）：本義指欄杆的橫木，泛指欄杆。\n• dùn（音同「盾」）：通「盾」，即盾牌。\" title=\"楯 dùn\n古同“盾1”。\n另见 shǔn。• shǔn（音同「吮」）：本義指欄杆的橫木，泛指欄杆。\n• dùn（音同「盾」）：通「盾」，即盾牌。\"><span class=\"term-anchor\" tabindex=\"0\" role=\"link\" aria-label=\"查看“楯”的词典解释\"><ruby class=\"\">楯<rt>dun4</rt></ruby></span></span><span class=\"notation auto-notation\" data-term=\"蔽橹\" data-note=\"遮蔽箭石的大盾或攻城器具。\" title=\"遮蔽箭石的大盾或攻城器具。\"><span class=\"term-anchor\" tabindex=\"0\" role=\"link\" aria-label=\"查看“蔽橹”的词典解释\"><ruby>蔽橹<rt>bì lǔ</rt></ruby></span></span>，丘牛大车，十去其六。</p>\n<p data-paragraph=\"4\">故智将务食于敌，食敌一钟，当吾二十钟；萁秆一石，当吾二十石。</p>\n<p data-paragraph=\"5\">故杀敌者，怒也；取敌之利者，货也。故车战得车十乘已上，赏其先得者，而更其旌旗，车杂而乘之，卒善而养之，是谓胜敌而益强。</p>\n<p data-paragraph=\"6\">故兵贵胜，不贵久。故知兵之将，生民之司命，国家安危之主也。</p>",
+  "terms": [
+    {
+      "term": "千驷",
+      "pinyin": "qiān sì",
+      "annotation": "一千辆四马战车；驷指四马驾一车。",
+      "type": "classical_word"
+    },
+    {
+      "term": "千乘",
+      "pinyin": "qiān shèng",
+      "annotation": "一千辆兵车；乘在此读 shèng。",
+      "type": "classical_word"
+    },
+    {
+      "term": "馈粮",
+      "pinyin": "kuì liáng",
+      "annotation": "运送军粮。",
+      "type": "classical_word"
+    },
+    {
+      "term": "钝兵挫锐",
+      "pinyin": "dùn bīng cuò ruì",
+      "annotation": "军队疲惫，锐气受挫。",
+      "type": "classical_phrase"
+    },
+    {
+      "term": "蔽橹",
+      "pinyin": "bì lǔ",
+      "annotation": "遮蔽箭石的大盾或攻城器具。",
+      "type": "rare_word"
+    },
+    {
+      "term": "楯",
+      "pinyin": "dun4",
+      "type": "added",
+      "annotation": "楯 dùn\n古同“盾1”。\n另见 shǔn。• shǔn（音同「吮」）：本義指欄杆的橫木，泛指欄杆。\n• dùn（音同「盾」）：通「盾」，即盾牌。"
+    }
+  ],
+  "footnotes": [],
+  "notes": [
+    {
+      "time": "2026-10-08T21:22:41.938Z",
+      "text": "多音字的读音遵循注音优先。",
+      "mediaIds": []
+    },
+    {
+      "time": "2026-10-08T21:21:55.554Z",
+      "text": "添加楯(dun4)拼音。这个字有两个音，另一为shun3，意为栏杆。\n• shǔn（音同「吮」）：本義指欄杆的橫木，泛指欄杆。\n• dùn（音同「盾」）：通「盾」，即盾牌。",
+      "mediaIds": []
+    }
+  ],
+  "log": [
+    {
+      "time": "2026-10-08T21:22:41.939Z",
+      "action": "添加用户札记",
+      "detail": ""
+    },
+    {
+      "time": "2026-10-08T21:21:55.555Z",
+      "action": "添加用户札记",
+      "detail": ""
+    },
+    {
+      "time": "2026-10-08T21:21:21.897Z",
+      "action": "编辑本篇词典",
+      "detail": "楯"
+    },
+    {
+      "time": "2026-10-08T21:17:25.644Z",
+      "action": "添加注音/简注",
+      "detail": "楯"
+    }
+  ],
+  "media": []
+}

@@ -1037,6 +1037,48 @@
   }
 
   // Keep one strongly referenced utterance; ignore late events from canceled requests.
+  // Speech-only substitutions: explicit ruby readings, never dictionary-wide replacements.
+  // Common unambiguous homophones work around the browser voice's lack of phoneme controls.
+  function pinyinSpeechText(text, pinyin) {
+    const readings = {
+      '楯': {dun4:'盾', shun3:'吮'}, '乘': {sheng4:'胜'}, '食': {si4:'四', yi4:'义'},
+      '行': {hang2:'杭'}, '重': {chong2:'崇'},
+      '长': {zhang3:'掌'}, '長': {zhang3:'掌'},
+      '乐': {yue4:'月'}, '樂': {yue4:'月'},
+      '好': {hao4:'浩'}, '恶': {wu4:'务'}, '惡': {wu4:'务'},
+      '数': {shu3:'暑', shuo4:'朔'}, '數': {shu3:'暑', shuo4:'朔'},
+      '为': {wei4:'卫'}, '為': {wei4:'卫'}, '爲': {wei4:'卫'},
+      '少': {shao4:'绍'}, '将': {jiang4:'匠'}, '將': {jiang4:'匠'},
+      '相': {xiang4:'巷'}, '王': {wang4:'望'}, '衣': {yi4:'义'},
+      '冠': {guan4:'灌'}, '骑': {ji4:'计'}, '騎': {ji4:'计'},
+      '说': {shui4:'税', yue4:'月'}, '說': {shui4:'税', yue4:'月'},
+      '説': {shui4:'税', yue4:'月'}, '见': {xian4:'现'}, '見': {xian4:'现'},
+      '属': {zhu3:'主'}, '屬': {zhu3:'主'}, '予': {yu3:'雨'},
+      '度': {duo2:'夺'}, '量': {liang2:'粮'}, '任': {ren2:'仁'},
+      '燕': {yan1:'烟'}, '单': {shan4:'善', chan2:'蝉'}, '單': {shan4:'善', chan2:'蝉'},
+      '解': {xie4:'谢'}, '仇': {qiu2:'求'}, '曾': {zeng1:'增'},
+      '差': {chai1:'拆', ci1:'疵'}, '参': {shen1:'身'}, '參': {shen1:'身'},
+      '朝': {zhao1:'招'}, '调': {tiao2:'条'}, '調': {tiao2:'条'},
+      '还': {huan2:'环'}, '還': {huan2:'环'}, '藏': {zang4:'葬'},
+      '剡': {shan4:'善'}, '句': {gou1:'沟'}, '暴': {pu4:'瀑'}
+    };
+    const syllables = pinyin.trim().toLowerCase().replace(/u:/g, 'ü').split(/[\s’']+/);
+    const characters = Array.from(text);
+    if (characters.length !== syllables.length || !characters.every(c => /[\u3400-\u9fff]/.test(c))) return text;
+    const key = syllable => {
+      let tone = '', invalid = false;
+      const value = syllable.normalize('NFD').replace(/[\u0300-\u036f]/g, mark => {
+        if (mark === '\u0308') return 'v';
+        const number = {'\u0304':'1','\u0301':'2','\u030c':'3','\u0300':'4'}[mark];
+        if (!number || tone) invalid = true;
+        tone = number || tone; return '';
+      });
+      if (invalid || (tone && /[1-5]$/.test(value))) return '';
+      return tone ? value + tone : value;
+    };
+    return characters.map((character, index) => readings[character]?.[key(syllables[index])] || character).join('');
+  }
+
   function createSpeechPlayback(synth, Utterance, notify, timers = {setTimeout: (fn, delay) => window.setTimeout(fn, delay), clearTimeout: id => window.clearTimeout(id)}) {
     let session = null;
     function chunks(text, limit) {
@@ -1208,6 +1250,44 @@
       };
       status.textContent = fallback + messages[event.state];
     });
+    const chosenVoice = () => {
+      const option = select?.selectedOptions[0];
+      return select?.value ? voiceForOption(option) : null;
+    };
+    const usePinyin = () => {
+      const voice = chosenVoice();
+      return /Chrome\//.test(navigator.userAgent) && !/Edg\/|OPR\//.test(navigator.userAgent) &&
+        voice?.lang?.toLowerCase() === 'zh-cn' && /^Google\b/i.test(voice.name);
+    };
+    const speechRange = range => {
+      const copy = editor.cloneNode(true);
+      // Resolve range endpoints before replacing text; substitutions preserve UTF-16 length.
+      const clonedPoint = node => {
+        const path = [];
+        while (node !== editor) { path.unshift([...node.parentNode.childNodes].indexOf(node)); node = node.parentNode; }
+        return path.reduce((parent, index) => parent.childNodes[index], copy);
+      };
+      const startNode = range && clonedPoint(range.startContainer);
+      const endNode = range && clonedPoint(range.endContainer);
+      if (usePinyin()) copy.querySelectorAll('ruby').forEach(ruby => {
+        const rt = ruby.querySelector('rt');
+        if (!rt) return;
+        const walker = document.createTreeWalker(ruby, NodeFilter.SHOW_TEXT);
+        const nodes = []; let node;
+        while ((node = walker.nextNode())) if (!node.parentElement.closest('rt,rp')) nodes.push(node);
+        const original = nodes.map(node => node.data).join('');
+        const spoken = pinyinSpeechText(original, rt.textContent);
+        let offset = 0;
+        for (const node of nodes) { const length = node.length; if (node.data !== spoken.slice(offset, offset + length)) node.replaceData(0, length, spoken.slice(offset, offset + length)); offset += length; }
+      });
+      let fragment = copy;
+      if (range) {
+        const selected = document.createRange();
+        selected.setStart(startNode, range.startOffset); selected.setEnd(endNode, range.endOffset);
+        fragment = selected.cloneContents();
+      }
+      return clean(fragment);
+    };
     const clean = fragment => {
       fragment.querySelectorAll?.('rt,rp,.inline-gloss,.comment-block,.footnote-ref,.inline-media').forEach(node => node.remove());
       return (fragment.textContent || '').replace(/[■□▪▫◼◻⬛⬜]+/g, '').replace(/\s+/g, ' ').trim();
@@ -1222,12 +1302,13 @@
     window.ReadingWorkspace ||= {};
     window.ReadingWorkspace.readAloud = start;
     window.ReadingWorkspace.cleanSpeechFragment = clean;
+    window.ReadingWorkspace.speechRange = speechRange;
     read.addEventListener('mousedown', event => event.preventDefault());
     read.addEventListener('click', event => {
       event.preventDefault(); event.stopImmediatePropagation();
       const selection = getSelection();
-      const selected = selection?.rangeCount && !selection.isCollapsed && editor.contains(selection.anchorNode) && editor.contains(selection.focusNode) ? clean(selection.getRangeAt(0).cloneContents()) : '';
-      const text = editor.setSelectionRange ? (editor.value.slice(editor.selectionStart, editor.selectionEnd) || editor.value) : (selected || clean(editor.cloneNode(true)));
+      const selected = selection?.rangeCount && !selection.isCollapsed && editor.contains(selection.anchorNode) && editor.contains(selection.focusNode) ? speechRange(selection.getRangeAt(0)) : '';
+      const text = editor.setSelectionRange ? (editor.value.slice(editor.selectionStart, editor.selectionEnd) || editor.value) : (selected || speechRange(null));
       start(text, selected ? label('正在朗读所选原文', 'Reading selection', 'Чтение выделенного текста') : label('正在朗读原文全文', 'Reading full text', 'Чтение всего текста'));
     }, true);
     for (const [control, action] of [[pause, () => playback.togglePause()], [stop, () => playback.stop()]]) {
@@ -1274,12 +1355,12 @@
       const range = savedRange || (() => {
         const first = document.createRange(); first.selectNodeContents(editor); first.collapse(true); return first;
       })();
-      if (!editor.contains(range.startContainer)) return window.ReadingWorkspace.cleanSpeechFragment(editor.cloneNode(true));
+      if (!editor.contains(range.startContainer)) return window.ReadingWorkspace.speechRange(null);
       const remainder = document.createRange();
       remainder.setStart(range.startContainer, range.startOffset);
       remainder.selectNodeContents(editor);
       remainder.setStart(range.startContainer, range.startOffset);
-      return window.ReadingWorkspace.cleanSpeechFragment(remainder.cloneContents());
+      return window.ReadingWorkspace.speechRange(remainder);
     };
     button.addEventListener("click", () => {
       const text = textFromCaret();
