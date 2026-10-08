@@ -1081,8 +1081,26 @@
       if (rateControl) utterance.rate = Number(rateControl.value) || 0.8;
       const voiceControl = document.querySelector("#voiceSelect");
       const voices = speechSynthesis.getVoices();
-      if (voiceControl?.value !== "" && voices[Number(voiceControl.value)]) utterance.voice = voices[Number(voiceControl.value)];
+      if (voiceControl?.value !== "") {
+        const label = voiceControl.selectedOptions?.[0]?.textContent?.trim() || "";
+        const selectedVoice = voices.find(voice => label === voice.name || label.startsWith(`${voice.name} —`) || label.startsWith(`${voice.name} (`) || voice.voiceURI === voiceControl.value);
+        if (selectedVoice) { utterance.voice = selectedVoice; utterance.lang = selectedVoice.lang || utterance.lang; }
+      }
+      const pauseControl = document.querySelector("#pauseBtn,[data-basic='pause']");
+      const stopControl = document.querySelector("#stopBtn,[data-basic='stop']");
+      const pauseLabel = !englishInterface && !russianInterface ? "暂停" : russianInterface ? "Пауза" : "Pause";
+      const setSpeechControls = active => {
+        if (pauseControl) { pauseControl.disabled = !active; if (!active) pauseControl.textContent = pauseLabel; }
+        if (stopControl) stopControl.disabled = !active;
+      };
+      if (stopControl && !stopControl.dataset.cursorSpeechReset) {
+        stopControl.dataset.cursorSpeechReset = "true";
+        stopControl.addEventListener("click", () => setTimeout(() => setSpeechControls(false), 0));
+      }
+      utterance.onstart = () => setSpeechControls(true);
+      utterance.onend = utterance.onerror = () => setSpeechControls(false);
       speechSynthesis.speak(utterance);
+      setSpeechControls(true);
       const status = document.querySelector("#saveStatus,.status");
       if (status) status.textContent = !englishInterface && !russianInterface ? "正在从光标位置朗读" : russianInterface ? "Чтение от курсора" : "Reading from cursor";
     });
