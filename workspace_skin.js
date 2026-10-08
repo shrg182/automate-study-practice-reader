@@ -408,7 +408,7 @@
     let settings = defaults;
     try { settings = { ...defaults, ...JSON.parse(localStorage.getItem(key) || "{}") }; } catch {}
     const style = document.createElement("style");
-    style.textContent = `.editor,.rich-editor,#editor[contenteditable]{font-size:var(--reading-content-font-size)!important;line-height:var(--reading-content-line-height)!important;background:var(--reading-content-background)!important}.paper,.editor-panel,.page-card,.pane[data-pane-primary]{background:var(--reading-content-background,#fffdfa)!important}.reading-environment{position:relative;display:inline-flex}.reading-environment-trigger{min-height:30px!important;padding:4px 9px!important;border:1px solid #c9d2df!important;border-radius:5px!important;background:#fff!important;color:#202124!important;cursor:pointer}.reading-environment-panel{position:absolute;z-index:340;top:calc(100% + 6px);left:0;right:auto;display:none;width:min(280px,calc(100vw - 24px));padding:14px;border:1px solid #dadce0;border-radius:10px;background:#fff;color:#202124;box-shadow:0 10px 30px #0003;font:12px/1.4 Arial,"PingFang SC",sans-serif}.reading-environment.open .reading-environment-panel{display:grid;gap:12px}.reading-setting{display:grid;grid-template-columns:70px 1fr 42px;gap:8px;align-items:center}.reading-setting input{min-width:0;width:100%}.reading-language-setting select{grid-column:2/4;width:100%;min-width:0}.reading-colors{display:flex;gap:8px}.reading-color{width:30px;height:30px!important;min-height:30px!important;padding:0!important;border:2px solid #dadce0!important;border-radius:50%!important}.reading-color.active{border-color:#1a73e8!important;box-shadow:0 0 0 2px #d2e3fc}.reading-reset{justify-self:start}.bilingual-layout-popover{width:min(440px,calc(100vw - 24px))!important}.bilingual-presets button{line-height:1.2!important;white-space:normal}.bilingual-slider-label{grid-template-columns:auto minmax(140px,1fr) auto!important}.bilingual-slider-label>span{white-space:nowrap}.bilingual-layout-output{grid-column:1/-1!important}@media(max-width:520px){.bilingual-layout-popover{position:fixed!important;top:64px!important;left:12px!important;right:12px!important;width:auto!important}.bilingual-presets{grid-template-columns:repeat(3,1fr)!important}.bilingual-slider-label{grid-template-columns:1fr!important}.bilingual-slider-label>span:last-of-type{display:none}.bilingual-layout-output{grid-column:1!important}}@media print{.reading-environment{display:none!important}}`;
+    style.textContent = `.editor,.rich-editor,#editor[contenteditable]{font-size:var(--reading-content-font-size)!important;line-height:var(--reading-content-line-height)!important;background:var(--reading-content-background)!important}.paper,.editor-panel,.page-card,.pane[data-pane-primary]{background:var(--reading-content-background,#fffdfa)!important}.reading-environment{position:relative;display:inline-flex}.reading-environment-trigger{min-height:30px!important;padding:4px 9px!important;border:1px solid #c9d2df!important;border-radius:5px!important;background:#fff!important;color:#202124!important;cursor:pointer}.reading-environment-panel{position:absolute;z-index:340;top:calc(100% + 6px);left:0;right:auto;display:none;width:min(280px,calc(100vw - 24px));padding:14px;border:1px solid #dadce0;border-radius:10px;background:#fff;color:#202124;box-shadow:0 10px 30px #0003;font:12px/1.4 Arial,"PingFang SC",sans-serif}.reading-environment.open .reading-environment-panel{display:grid;gap:12px}.reading-setting{display:grid;grid-template-columns:70px 1fr 42px;gap:8px;align-items:center}.reading-setting input{min-width:0;width:100%}.reading-language-setting select{grid-column:2/4;width:100%;min-width:0}.reading-colors{display:flex;gap:8px}.reading-environment .reading-colors .reading-color{flex:0 0 30px;width:30px!important;min-width:30px!important;height:30px!important;min-height:30px!important;padding:0!important;background:var(--reading-swatch)!important;border:2px solid #aeb8c2!important;border-radius:50%!important}.reading-environment .reading-colors .reading-color.active{border-color:#1a73e8!important;box-shadow:0 0 0 2px #d2e3fc}.reading-reset{justify-self:start}.bilingual-layout-popover{width:min(440px,calc(100vw - 24px))!important}.bilingual-presets button{line-height:1.2!important;white-space:normal}.bilingual-slider-label{grid-template-columns:auto minmax(140px,1fr) auto!important}.bilingual-slider-label>span{white-space:nowrap}.bilingual-layout-output{grid-column:1/-1!important}@media(max-width:520px){.bilingual-layout-popover{position:fixed!important;top:64px!important;left:12px!important;right:12px!important;width:auto!important}.bilingual-presets{grid-template-columns:repeat(3,1fr)!important}.bilingual-slider-label{grid-template-columns:1fr!important}.bilingual-slider-label>span:last-of-type{display:none}.bilingual-layout-output{grid-column:1!important}}@media print{.reading-environment{display:none!important}}`;
     document.head.appendChild(style);
     const controls = document.createElement("div");
     controls.className = "reading-environment";
@@ -418,6 +418,12 @@
       : russianInterface
         ? `<button type="button" class="reading-environment-trigger" aria-expanded="false">Настройки</button><div class="reading-environment-panel">${languageSetting}<label class="reading-setting"><span>Размер</span><input data-reading-setting="fontSize" type="range" min="12" max="34" step="1"><output data-reading-output="fontSize"></output></label><label class="reading-setting"><span>Интервал</span><input data-reading-setting="lineHeight" type="range" min="1.3" max="2.6" step="0.05"><output data-reading-output="lineHeight"></output></label><div><div style="margin-bottom:7px">Фон</div><div class="reading-colors"><button class="reading-color" data-reading-color="#ffffff" style="background:#fff" title="Белый"></button><button class="reading-color" data-reading-color="#fffdfa" style="background:#fffdfa" title="Тёплый белый"></button><button class="reading-color" data-reading-color="#f3eedf" style="background:#f3eedf" title="Пергамент"></button><button class="reading-color" data-reading-color="#eaf2e7" style="background:#eaf2e7" title="Мягкий зелёный"></button><button class="reading-color" data-reading-color="#e9f0f5" style="background:#e9f0f5" title="Мягкий синий"></button></div></div><button type="button" class="reading-reset">Сбросить</button></div>`
       : `<button type="button" class="reading-environment-trigger" aria-expanded="false">阅读设置</button><div class="reading-environment-panel"><label class="reading-setting"><span>字号</span><input data-reading-setting="fontSize" type="range" min="12" max="34" step="1"><output data-reading-output="fontSize"></output></label><label class="reading-setting"><span>行距</span><input data-reading-setting="lineHeight" type="range" min="1.3" max="2.6" step="0.05"><output data-reading-output="lineHeight"></output></label><div><div style="margin-bottom:7px">背景颜色</div><div class="reading-colors"><button class="reading-color" data-reading-color="#ffffff" style="background:#fff" title="白色"></button><button class="reading-color" data-reading-color="#fffdfa" style="background:#fffdfa" title="米白"></button><button class="reading-color" data-reading-color="#f3eedf" style="background:#f3eedf" title="羊皮纸"></button><button class="reading-color" data-reading-color="#eaf2e7" style="background:#eaf2e7" title="护眼绿"></button><button class="reading-color" data-reading-color="#e9f0f5" style="background:#e9f0f5" title="浅蓝"></button></div></div><button type="button" class="reading-reset">恢复默认</button></div>`;
+    // Toolbar/theme button rules must not erase the color samples.
+    controls.querySelectorAll("[data-reading-color]").forEach(button => {
+      button.type = "button";
+      button.style.setProperty("--reading-swatch", button.dataset.readingColor);
+      button.setAttribute("aria-label", button.title);
+    });
     const languageSelect = controls.querySelector("[data-interface-language]");
     if (languageSelect) { languageSelect.value = interfacePreference; languageSelect.addEventListener("change", () => { localStorage.setItem(interfaceLanguageKey, languageSelect.value); location.reload(); }); }
     const trigger = controls.querySelector(".reading-environment-trigger");
@@ -438,7 +444,11 @@
       controls.querySelector('[data-reading-setting="lineHeight"]').value = settings.lineHeight;
       controls.querySelector('[data-reading-output="fontSize"]').textContent = `${settings.fontSize}px`;
       controls.querySelector('[data-reading-output="lineHeight"]').textContent = settings.lineHeight.toFixed(2);
-      controls.querySelectorAll("[data-reading-color]").forEach(button => button.classList.toggle("active", button.dataset.readingColor === settings.background));
+      controls.querySelectorAll("[data-reading-color]").forEach(button => {
+        const selected = button.dataset.readingColor === settings.background;
+        button.classList.toggle("active", selected);
+        button.setAttribute("aria-pressed", String(selected));
+      });
       if (persist) localStorage.setItem(key, JSON.stringify(settings));
     };
     controls.addEventListener("input", event => { const name = event.target.dataset.readingSetting; if (name) { settings[name] = Number(event.target.value); apply(); } });
@@ -1147,14 +1157,36 @@
     read.parentElement.append(status);
     const zh = !englishInterface && !russianInterface;
     const label = (cn, en, ru) => zh ? cn : russianInterface ? ru : en;
-    let mode = '', chosenLabel = select?.selectedOptions[0]?.textContent || '';
-    select?.addEventListener('change', () => { chosenLabel = select.selectedOptions[0]?.textContent || ''; });
-    // Page-level voice loaders rebuild the list when voices arrive asynchronously.
-    speechSynthesis.addEventListener('voiceschanged', () => {
-      if (!select) return;
-      const option = [...select.options].find(item => item.textContent === chosenLabel);
-      if (option) select.value = option.value;
+    let mode = '';
+    const voicePreferenceKey = 'reading-workspace-voice-v1';
+    let voicePreference = null;
+    try { voicePreference = JSON.parse(localStorage.getItem(voicePreferenceKey)); } catch (_) {}
+    const voiceForOption = option => speechSynthesis.getVoices().find(voice =>
+      option && (option.value === voice.voiceURI || option.textContent === `${voice.name} — ${voice.lang}` || option.textContent === voice.name || option.textContent.startsWith(`${voice.name} (`)));
+    const restoreVoice = () => {
+      if (!select || !voicePreference) return;
+      const option = [...select.options].find(option => {
+        if (voicePreference.systemDefault) return option.value === '';
+        const voice = voiceForOption(option);
+        return option.value !== '' && (voice && (voice.voiceURI === voicePreference.uri || (voice.name === voicePreference.name && voice.lang === voicePreference.lang)) || option.textContent === voicePreference.label);
+      });
+      // Keep the saved choice if its voice has not loaded or is unavailable here.
+      select.value = option ? option.value : '';
+    };
+    select?.addEventListener('change', () => {
+      const option = select.selectedOptions[0], voice = voiceForOption(option);
+      voicePreference = {systemDefault: select.value === '', uri: voice?.voiceURI, name: voice?.name, lang: voice?.lang, label: option?.textContent};
+      try { localStorage.setItem(voicePreferenceKey, JSON.stringify(voicePreference)); } catch (_) {}
     });
+    // Page-level loaders can replace the options after voices arrive asynchronously.
+    if (select) new MutationObserver(restoreVoice).observe(select, {childList: true});
+    speechSynthesis.addEventListener('voiceschanged', restoreVoice);
+    window.addEventListener('storage', event => {
+      if (event.key !== voicePreferenceKey) return;
+      try { voicePreference = JSON.parse(event.newValue); } catch (_) { voicePreference = null; }
+      restoreVoice();
+    });
+    restoreVoice();
     const playback = createSpeechPlayback(speechSynthesis, SpeechSynthesisUtterance, event => {
       const active = ['loading', 'playing', 'paused', 'fallback'].includes(event.state);
       if (pause) {
