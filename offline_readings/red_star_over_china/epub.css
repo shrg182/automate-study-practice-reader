@@ -34,3 +34,20 @@
   background: #fff;
   cursor: pointer;
 }
+
+.epub-navigation { display: none; }
+.english-pane.loaded.format-epub .epub-navigation {
+  display: flex; flex-direction: column; justify-content: center; gap: 6px;
+  height: 76px; flex: 0 0 76px; padding: 8px 12px; background: #fff; border-bottom: 1px solid #d8d5ca;
+}
+.epub-navigation > div { display: flex; align-items: center; gap: 8px; min-width: 0; }
+.epub-navigation select { min-width: 0; flex: 1; max-width: 100%; padding: 5px; }
+.epub-navigation button { padding: 5px 8px; cursor: pointer; }
+#epubLocation { font-size: 12px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.english-pane.format-epub #englishEpubViewer iframe { background: #fff; }
+body.reading-immersive .english-pane.format-epub #englishEpubViewer {
+  height: calc(100vh - 76px) !important; min-height: 0 !important;
+}
+body.reading-immersive .epub-navigation { padding-right: 150px !important; }
+/* EPUB.js maintains scroll position itself when inserting adjacent sections. */
+#englishEpubViewer .epub-container { overflow-anchor: none; }

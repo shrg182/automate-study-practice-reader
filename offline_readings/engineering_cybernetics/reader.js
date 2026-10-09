@@ -14,18 +14,68 @@ function editNote(id){const n=notes.find(x=>x.id===id);if(!n)return;$('#editingI
 function saveOptions(){options.layout=$('#workspace').dataset.layout;options.remember=$('#rememberFiles').checked;localStorage.setItem(OPTIONS_KEY,JSON.stringify(options))}
 function resizeEpub(){const rendition=epubRendition;if(!rendition?.manager?.isRendered()||!rendition.location)return;const host=$('#englishEpubViewer');if(host?.clientWidth&&host?.clientHeight)rendition.resize(host.clientWidth,host.clientHeight)}
 function setLayout(v){$('#workspace').dataset.layout=v;saveOptions();$('#layoutMenu').hidden=true;requestAnimationFrame(resizeEpub)}
-function go(edition){if(formats[edition]==='epub'){const target=chapters[$('#chapter').value]?.[1];if(epubRendition&&target)epubRendition.display(target);return}const page=Math.max(1,Number($(`#${edition}Page`).value)||1),viewer=$(`#${edition}Viewer`);viewer.dataset.page=page;if(urls[edition])viewer.src=`${urls[edition]}#page=${page}&view=FitH`}
+function go(edition,target){if(formats[edition]==='epub'){const index=Math.max(0,Number($('#englishPage').value)-1);const section=epubBook?.spine.get(index);if(epubRendition&&(target||section))epubRendition.display(target||section.href);return}const page=Math.max(1,Number($(`#${edition}Page`).value)||1),viewer=$(`#${edition}Viewer`);viewer.dataset.page=page;if(urls[edition])viewer.src=`${urls[edition]}#page=${page}&view=FitH`}
 function db(){return new Promise((resolve,reject)=>{const req=indexedDB.open('offline-reader-files',1);req.onupgradeneeded=()=>req.result.createObjectStore('pdfs');req.onsuccess=()=>resolve(req.result);req.onerror=()=>reject(req.error)})}
 async function storeFile(edition,file){const d=await db();await new Promise((res,rej)=>{const tx=d.transaction('pdfs','readwrite');tx.objectStore('pdfs').put(file,`${BOOK}-${edition}`);tx.oncomplete=res;tx.onerror=()=>rej(tx.error)});d.close()}
 async function loadStored(edition){const d=await db(),value=await new Promise((res,rej)=>{const q=d.transaction('pdfs').objectStore('pdfs').get(`${BOOK}-${edition}`);q.onsuccess=()=>res(q.result);q.onerror=()=>rej(q.error)});d.close();if(value)showFile(edition,value)}
 async function removeFile(edition){const d=await db();await new Promise((res,rej)=>{const tx=d.transaction('pdfs','readwrite');tx.objectStore('pdfs').delete(`${BOOK}-${edition}`);tx.oncomplete=res;tx.onerror=()=>rej(tx.error)});d.close();if(urls[edition])URL.revokeObjectURL(urls[edition]);delete urls[edition];epubRendition?.destroy();epubBook?.destroy();epubRendition=epubBook=null;$('#englishEpubViewer')?.replaceChildren();$(`#${edition}Viewer`).removeAttribute('src');$(`.${edition}-pane`).classList.remove('loaded','format-epub','format-pdf');$(`#${edition}State`).textContent='No book file attached';$(`[data-remove=${edition}]`).hidden=true}
-async function showEpub(file){if(typeof ePub!=='function')throw Error('EPUB reader is unavailable');epubRendition?.destroy();epubBook?.destroy();const data=await file.arrayBuffer();epubBook=ePub();await epubBook.open(data,'binary');epubRendition=epubBook.renderTo('englishEpubViewer',{width:'100%',height:'100%',flow:'paginated',spread:'none'});epubRendition.themes.default({'html, body':{'overflow':'hidden !important','max-width':'100% !important'},body:{margin:'0 auto !important',padding:'1.5rem 2rem !important','box-sizing':'border-box !important'},img:{'max-width':'100% !important',height:'auto !important'}});await epubRendition.display(chapters[$('#chapter').value]?.[1]);requestAnimationFrame(resizeEpub);epubRendition.on('relocated',location=>{$('#englishPage').value=location.start.index+1;$(`#englishState`).textContent=`${file.name} · section ${location.start.index+1}`})}
-async function showFile(edition,file){const format=fileFormat(file,formats[edition]);formats[edition]=format;if(format==='epub'&&$('#workspace').dataset.layout==='chinese-only')setLayout('balanced');const pane=$(`.${edition}-pane`);pane.classList.remove('format-epub','format-pdf');pane.classList.add('loaded',`format-${format}`);$(`#${edition}State`).textContent=file.name||`${format.toUpperCase()} stored on device`;$(`[data-remove=${edition}]`).hidden=false;if(format==='epub'){try{await showEpub(file)}catch(e){console.error(e);pane.classList.remove('loaded');alert('This EPUB could not be opened. You can attach the PDF edition instead.')}return}if(urls[edition])URL.revokeObjectURL(urls[edition]);urls[edition]=URL.createObjectURL(file);go(edition)}
+async function showEpub(file){
+  if(typeof ePub!=='function')throw Error('EPUB reader is unavailable');
+  epubRendition?.destroy();epubBook?.destroy();
+  const book=ePub();epubBook=book;
+  await book.open(await file.arrayBuffer(),'binary');
+  const navigation=await book.loaded.navigation;
+  const toc=$('#epubContents');
+  const sections=book.spine.spineItems;
+  const labels=new Map();
+  const flatten=(items,depth=0)=>items.flatMap(item=>[{...item,depth},...flatten(item.subitems||[],depth+1)]);
+  const entries=flatten(navigation.toc||[]).map(item=>({...item,label:item.label.trim().replace(/^ch\d+_fn(\d+)$/i,(_,number)=>`Note ${Number(number)}`)}));
+  for(const item of entries){const section=book.spine.get(item.href);if(section&&!labels.has(section.index))labels.set(section.index,item.label.trim());}
+  if(toc){
+    toc.replaceChildren();
+    const contents=document.createElement('optgroup');contents.label='Book contents';
+    entries.forEach(item=>contents.append(new Option('  '.repeat(item.depth)+item.label.trim(),item.href)));
+    toc.append(contents);
+    const all=document.createElement('optgroup');all.label='All book sections (including front matter)';
+    sections.forEach((section,index)=>all.append(new Option(`${index+1}. ${labels.get(index)||`Book section ${index+1}`}`,section.href)));
+    toc.append(all);toc.onchange=()=>epubRendition?.display(toc.value);
+  }
+  const positionKey=`offline-reader-${BOOK}-epub-position-v1`;
+  const fingerprint=`${file.name}:${file.size}:${book.key()}`;
+  const saved=read(positionKey,null);
+  const rendition=book.renderTo('englishEpubViewer',{width:'100%',height:'100%',manager:'continuous',flow:'scrolled',spread:'none'});
+  epubRendition=rendition;
+  rendition.themes.default({body:{margin:'0 auto !important',padding:'1.5rem 2rem !important','box-sizing':'border-box !important','font-size':'18px !important','line-height':'1.6 !important',background:'#fff !important',color:'#24241f !important'},img:{'max-width':'100% !important',height:'auto !important'}});
+  rendition.on('rendered',(section,view)=>{
+    if(labels.has(section.index))return;
+    const heading=view.document?.querySelector('h1,h2,h3,h4')?.textContent.trim().replace(/\s+/g,' ');
+    const title=heading||(section.index===0?'Cover':`Book section ${section.index+1}`);
+    labels.set(section.index,title);
+    const option=toc?.querySelector('optgroup:last-child')?.children[section.index];
+    if(option)option.textContent=`${section.index+1}. ${title}`;
+  });
+  rendition.on('relocated',location=>{
+    if(rendition!==epubRendition||formats.english!=='epub')return;
+    const index=location.start.index,section=sections[index];
+    const last=location.end?.index??index,range=last>index?`${index+1}–${last+1}`:`${index+1}`;
+    const title=labels.get(index)||`Book section ${index+1}`||'Front matter';
+    $('#englishPage').value=index+1;
+    $('#englishState').textContent=`${file.name} · section ${range} of ${sections.length}`;
+    if($('#epubLocation'))$('#epubLocation').textContent=`${title} · Section ${range} of ${sections.length} · Scroll to continue`;
+    if(toc&&section)toc.value=section.href;
+    try{localStorage.setItem(positionKey,JSON.stringify({fingerprint,cfi:location.start.cfi}))}catch{}
+  });
+  if($('#epubStart'))$('#epubStart').onclick=()=>rendition.display(sections[0].href);
+  if($('#epubEnd'))$('#epubEnd').onclick=()=>rendition.display(sections[sections.length-1].href);
+  try{await rendition.display(saved?.fingerprint===fingerprint?saved.cfi:sections[0].href)}catch{await rendition.display()}
+
+}
+async function showFile(edition,file){const format=fileFormat(file,formats[edition]);formats[edition]=format;if(format==='epub'&&$('#workspace').dataset.layout==='chinese-only')setLayout('balanced');const pane=$(`.${edition}-pane`);pane.classList.remove('format-epub','format-pdf');pane.classList.add('loaded',`format-${format}`);$(`#${edition}State`).textContent=file.name||`${format.toUpperCase()} stored on device`;$(`[data-remove=${edition}]`).hidden=false;if(format==='epub'){try{await showEpub(file)}catch(e){console.error(e);pane.classList.remove('loaded');alert('This EPUB could not be opened. You can attach the PDF edition instead.')}return}if(edition==='english'){epubRendition?.destroy();epubBook?.destroy();epubRendition=epubBook=null;$('#englishEpubViewer')?.replaceChildren()}if(urls[edition])URL.revokeObjectURL(urls[edition]);urls[edition]=URL.createObjectURL(file);go(edition)}
 async function attach(edition,file){if(!file)return;const format=fileFormat(file,'');if(!format||(edition==='chinese'&&format!=='pdf'))return alert(edition==='english'?'Please select an EPUB or PDF file.':'Please select a PDF file.');formats[edition]=format;if(format==='epub'&&$('#workspace').dataset.layout==='chinese-only')setLayout('balanced');await showFile(edition,file);if($('#rememberFiles').checked)try{await navigator.storage?.persist?.();await storeFile(edition,file);$('#saveStatus').textContent='Book file and notes saved on this device'}catch(e){console.warn(e);alert(`The ${format.toUpperCase()} opened, but this browser could not store it permanently. Your notes will still be saved.`)}}
 async function installPrivateSources(){const token=localStorage.getItem('reader-admin-device-token');if(!token||!location.pathname.startsWith('/app/'))return alert('Open this reader through the iMac administrator service first.');const entries=Object.entries(config.privateFiles||{});if(!entries.length)return alert('No private source files are configured for this reader.');$('#installPrivateSources').disabled=true;try{for(const [edition,path] of entries){const response=await fetch(`/api/private/file?path=${encodeURIComponent(path)}`,{headers:{Authorization:`Bearer ${token}`}});if(response.status===403)throw Error('The iMac administrator has not permitted private-source reading for this app.');if(!response.ok)throw Error(`Could not load ${path}`);const blob=await response.blob(),name=path.split('/').pop();await attach(edition,new File([blob],name,{type:blob.type}))}$('#saveStatus').textContent='Permitted private books installed for offline reading'}catch(error){alert(error.message)}finally{$('#installPrivateSources').disabled=false}}
 function exportBackup(){const blob=new Blob([JSON.stringify({format:'offline-reader-notes',version:1,book:BOOK,exported:new Date().toISOString(),notes,options},null,2)],{type:'application/json'}),a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=`${BOOK}-notes-${new Date().toISOString().slice(0,10)}.json`;a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1000)}
 async function importBackup(file){if(!file)return;try{const data=JSON.parse(await file.text());if(data.book!==BOOK||!Array.isArray(data.notes))throw Error();snapshot();notes=data.notes;persist();openDrawer()}catch{alert(`This is not a valid ${BOOK_TITLE} notes backup.`)}}
-chapters.forEach(([name,en,zh],i)=>$('#chapter').insertAdjacentHTML('beforeend',`<option value="${i}">${name}</option>`));if(chapters[0]){$('#englishPage').value=chapters[0][1]||1;$('#chinesePage').value=chapters[0][2]||1}$('#chapter').onchange=e=>{const c=chapters[e.target.value];$('#englishPage').value=c[1]||1;$('#chinesePage').value=c[2]||1;go('english');go('chinese')};
+chapters.forEach(([name,en,zh],i)=>$('#chapter').insertAdjacentHTML('beforeend',`<option value="${i}">${name}</option>`));if(chapters[0]){$('#englishPage').value=chapters[0][1]||1;$('#chinesePage').value=chapters[0][2]||1}$('#chapter').onchange=e=>{const c=chapters[e.target.value];$('#englishPage').value=c[1]||1;$('#chinesePage').value=c[2]||1;go('english',c[1]);go('chinese')};
 $$('[data-go]').forEach(b=>b.onclick=()=>go(b.dataset.go));$$('[data-epub-nav]').forEach(b=>b.onclick=()=>epubRendition?.[b.dataset.epubNav]());$$('[data-layout]').forEach(b=>b.onclick=()=>setLayout(b.dataset.layout));$$('[data-remove]').forEach(b=>b.onclick=()=>confirm(`Remove the stored ${b.dataset.remove} ${formats[b.dataset.remove].toUpperCase()} from this browser? Your notes will remain.`)&&removeFile(b.dataset.remove));
 $('#englishFile').onchange=e=>attach('english',e.target.files[0]);$('#chineseFile').onchange=e=>attach('chinese',e.target.files[0]);$('#addNote').onclick=beginNote;$('#showNotes').onclick=()=>openDrawer();$('#closeNotes').onclick=closeDrawer;$('#cancelNote').onclick=()=>{$('#noteForm').hidden=true};$('#noteSearch').oninput=()=>{renderNotes();openDrawer()};
 $('#noteForm').onsubmit=e=>{e.preventDefault();snapshot();const id=$('#editingId').value,old=notes.find(n=>n.id===id),now=new Date().toISOString(),record={id:id||crypto.randomUUID(),edition:$('#noteEdition').value,page:Number($('#notePage').value)||'',kind:$('#noteKind').value,quote:$('#noteQuote').value.trim(),text:$('#noteText').value.trim(),created:old?.created||now,updated:now};notes=id?notes.map(n=>n.id===id?record:n):[...notes,record];persist();$('#noteForm').hidden=true};
@@ -35,6 +85,5 @@ $('#layoutButton').onclick=()=>{$('#layoutMenu').hidden=!$('#layoutMenu').hidden
 if($('#installPrivateSources'))$('#installPrivateSources').onclick=installPrivateSources;
 $('#clearNotes').onclick=()=>{if(notes.length&&confirm('Delete every note for this book on this browser? Export a backup first if needed.')){snapshot();notes=[];persist()}};
 if(localStorage.getItem(INSTALL_NOTE_KEY)==='hidden')$('#privateInstallNote')?.remove();else if($('#dismissInstallNote'))$('#dismissInstallNote').onclick=()=>{localStorage.setItem(INSTALL_NOTE_KEY,'hidden');$('#privateInstallNote').remove()};
-document.addEventListener('fullscreenchange',()=>requestAnimationFrame(resizeEpub));
 setLayout(options.layout||'english-first');renderNotes();historyButtons();if(options.remember!==false){loadStored('english').catch(console.warn);loadStored('chinese').catch(console.warn)}window.addEventListener('beforeunload',()=>Object.values(urls).forEach(URL.revokeObjectURL));
 })();
