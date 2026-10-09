@@ -10,7 +10,7 @@
   display: block;
 }
 
-.english-pane.format-epub iframe {
+.english-pane.format-epub > iframe {
   display: none !important;
 }
 
