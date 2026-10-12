@@ -1,0 +1,10 @@
+<!doctype html>
+<html lang="en">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Open Books · Offline PDF & EPUB Reader</title><link rel="stylesheet" href="reader.css"></head>
+<body>
+<header class="top"><a href="../../index.html#offline">← Library</a><h1>Open Books · Offline PDF & EPUB Reader</h1><label>Layout <select id="layout"><option value="both">Side by side</option><option value="left">Left only</option><option value="right">Right only</option></select></label><span id="offlineStatus" role="status"></span></header>
+<p class="intro">Open any PDF or EPUB in either pane. Files stay in this browser on this device. <label><input id="remember" type="checkbox" checked> Remember books</label> <span id="storageStatus" role="status">Use a normal browser window to keep books after closing.</span></p>
+<main id="panes" data-layout="both"></main>
+<template id="paneTemplate"><section class="pane"><header><h2></h2><label class="button">Open PDF / EPUB<input class="file" type="file" accept=".pdf,.epub,application/pdf,application/epub+zip"></label><button class="remove" disabled>Remove</button><button class="fullscreen">Full screen</button></header><p class="status" role="status">No book attached</p><nav class="controls" hidden><button class="prev">←</button><button class="next">→</button><form class="pageForm"><label>Page <input class="page" type="number" min="1" value="1" required></label><button>Go</button></form><label class="tocLabel" hidden>Contents <select class="toc"></select></label></nav><div class="empty">Choose a PDF or EPUB above.<small>Read two books, translations, or reference documents together.</small></div><iframe class="pdf" title="PDF reader" hidden></iframe><div class="epub" hidden></div></section></template>
+<script src="../../vendor/jszip/jszip.min.js"></script><script src="../../vendor/epubjs/epub.min.js"></script><script src="reader.js"></script>
+</body></html>
