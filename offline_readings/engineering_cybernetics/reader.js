@@ -14,7 +14,13 @@ function editNote(id){const n=notes.find(x=>x.id===id);if(!n)return;$('#editingI
 function saveOptions(){options.layout=$('#workspace').dataset.layout;options.remember=$('#rememberFiles').checked;localStorage.setItem(OPTIONS_KEY,JSON.stringify(options))}
 function resizeEpub(){const rendition=epubRendition;if(!rendition?.manager?.isRendered()||!rendition.location)return;const host=$('#englishEpubViewer');if(host?.clientWidth&&host?.clientHeight)rendition.resize(host.clientWidth,host.clientHeight)}
 function setLayout(v){$('#workspace').dataset.layout=v;saveOptions();$('#layoutMenu').hidden=true;requestAnimationFrame(resizeEpub)}
-function go(edition,target){if(formats[edition]==='epub'){const index=Math.max(0,Number($('#englishPage').value)-1);const section=epubBook?.spine.get(index);if(epubRendition&&(target||section))epubRendition.display(target||section.href);return}const page=Math.max(1,Number($(`#${edition}Page`).value)||1),viewer=$(`#${edition}Viewer`);viewer.dataset.page=page;if(urls[edition])viewer.src=`${urls[edition]}#page=${page}&view=FitH`}
+function go(edition,target){if(formats[edition]==='epub'){const index=Math.max(0,Number($('#englishPage').value)-1);const section=epubBook?.spine.get(index);if(epubRendition&&(target||section))epubRendition.display(target||section.href);return}const page=Math.max(1,Number($(`#${edition}Page`).value)||1),viewer=$(`#${edition}Viewer`);viewer.dataset.page=page;
+  if(!urls[edition])return;
+  // Chrome's PDF plugin can ignore fragment-only navigation, even on Go.
+  // A fresh frame starts a new viewer at the requested page for local and blob URLs.
+  const next=viewer.cloneNode(false);
+  next.src=`${urls[edition]}#page=${page}&view=FitH`;
+  viewer.replaceWith(next)}
 function db(){return new Promise((resolve,reject)=>{const req=indexedDB.open('offline-reader-files',1);req.onupgradeneeded=()=>req.result.createObjectStore('pdfs');req.onsuccess=()=>resolve(req.result);req.onerror=()=>reject(req.error)})}
 async function storeFile(edition,file){const d=await db();await new Promise((res,rej)=>{const tx=d.transaction('pdfs','readwrite');tx.objectStore('pdfs').put(file,`${BOOK}-${edition}`);tx.oncomplete=res;tx.onerror=()=>rej(tx.error)});d.close()}
 async function loadStored(edition){const d=await db(),value=await new Promise((res,rej)=>{const q=d.transaction('pdfs').objectStore('pdfs').get(`${BOOK}-${edition}`);q.onsuccess=()=>res(q.result);q.onerror=()=>rej(q.error)});d.close();if(value){await showFile(edition,value);return true}return false}
