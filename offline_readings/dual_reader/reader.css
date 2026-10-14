@@ -199,22 +199,6 @@ details[open] summary {
   display: flex;
   position: relative;
 }
-.split {
-  display: flex;
-  flex: 1;
-  min-height: 0;
-  min-width: 0;
-  gap: 0;
-}
-.split.rows {
-  flex-direction: column;
-}
-.slot {
-  display: flex;
-  min-width: 0;
-  min-height: 0;
-  overflow: hidden;
-}
 .divider {
   flex: 0 0 9px;
   background: transparent;
@@ -231,12 +215,6 @@ details[open] summary {
   inset: 20% 3px;
   background: #bbcabe;
   border-radius: 4px;
-}
-.rows > .divider {
-  cursor: row-resize;
-}
-.rows > .divider:after {
-  inset: 3px 20%;
 }
 .divider:focus-visible {
   outline: 2px solid var(--accent);
@@ -436,4 +414,94 @@ fieldset label {
   clip: rect(0, 0, 0, 0);
   white-space: nowrap;
   border: 0;
+}
+
+/* The workspace viewport scrolls independently of the documents inside its panes. */
+#panes.scrollable {
+  overflow-y: auto;
+  overflow-x: hidden;
+  align-items: flex-start;
+  scrollbar-gutter: stable;
+}
+.workspace-canvas {
+  display: flex;
+  flex: 0 0 100%;
+  min-width: 0;
+  max-width: 100%;
+}
+.paneDrag {
+  cursor: grab;
+  touch-action: none;
+  padding: 2px 6px;
+  flex-shrink: 0;
+}
+.paneDrag:disabled {
+  cursor: default;
+}
+body.dragging-pane {
+  user-select: none;
+}
+body.dragging-pane iframe {
+  pointer-events: none;
+}
+.pane-drag-cover {
+  cursor: grabbing;
+}
+.pane-drop-preview {
+  position: fixed;
+  z-index: 1000;
+  pointer-events: none;
+  border: 3px solid #176b45;
+  background: #60b27f44;
+  border-radius: 8px;
+}
+.pane-drag-status {
+  position: fixed;
+  bottom: 18px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1001;
+  padding: 10px 15px;
+  border-radius: 8px;
+  background: #173b2b;
+  color: white;
+  pointer-events: none;
+  max-width: 90vw;
+  font-size: 13px;
+  box-shadow: 0 3px 15px #0003;
+}
+/* Geometry updates leave each live document iframe attached to the same canvas. */
+.workspace-canvas {
+  position: relative;
+}
+.workspace-canvas > .pane {
+  position: absolute;
+}
+.workspace-canvas > .divider {
+  position: absolute;
+  z-index: 2;
+}
+.divider.row-divider {
+  cursor: row-resize;
+}
+.divider.row-divider:after {
+  inset: 3px 20%;
+}
+/* Keep workspace chrome above composited iframe layers during outer scrolling. */
+.top,
+.targetbar,
+#toolbars,
+#paneTabs,
+#layoutHint {
+  position: relative;
+  z-index: 3;
+}
+#panes {
+  z-index: 0;
+  isolation: isolate;
+}
+.pane > header,
+.pane > .status {
+  position: relative;
+  z-index: 1;
 }

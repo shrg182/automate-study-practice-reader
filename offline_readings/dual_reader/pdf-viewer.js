@@ -61,8 +61,9 @@ window.addEventListener('message', (event) => {
     locationChanged();
   }
 });
-container.addEventListener('pointerdown', () => notify({ type: 'PDF_FOCUS' }));
-container.addEventListener('focusin', () => notify({ type: 'PDF_FOCUS' }));
+container.addEventListener('pointerdown', () => notify({ type: 'PDF_FOCUS', intent: 'pointer' }));
+container.addEventListener('focusin', () => notify({ type: 'PDF_FOCUS', intent: 'focus' }));
+container.addEventListener('keydown', () => notify({ type: 'PDF_FOCUS', intent: 'keyboard' }));
 container.addEventListener(
   'scroll',
   () => {

@@ -57,6 +57,18 @@
   function validateWorkspace(value) {
     if (!value || value.version !== 1 || !Array.isArray(value.panes) || !value.panes.length)
       throw Error('Invalid workspace.');
+    if (
+      value.canvas !== undefined &&
+      (!value.canvas ||
+        !['fit', 'scroll'].includes(value.canvas.mode) ||
+        !Number.isInteger(value.canvas.minHeight) ||
+        value.canvas.minHeight < 240 ||
+        value.canvas.minHeight > 1200 ||
+        !Number.isInteger(value.canvas.minWidth) ||
+        value.canvas.minWidth < 240 ||
+        value.canvas.minWidth > 800)
+    )
+      throw Error('Invalid workspace dimensions.');
     const ids = new Set();
     for (const p of value.panes) {
       if (
@@ -90,6 +102,8 @@
     const leaves = new Set();
     function visit(node, depth = 0) {
       if (!node || depth > 100) throw Error('Invalid pane layout.');
+      if (node.height !== undefined && (!Number.isFinite(node.height) || node.height < 0))
+        throw Error('Invalid pane height.');
       if (node.pane) {
         if (!ids.has(node.pane) || leaves.has(node.pane)) throw Error('Invalid pane layout.');
         leaves.add(node.pane);

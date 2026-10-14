@@ -15,9 +15,10 @@
       this.mounted = false;
       this.ready = false;
       this.contents = [];
+      this.disposeDrag = callbacks.drag(this.q('.paneDrag'), record.id);
       this.q('.activate').onclick = () => callbacks.activate(record.id);
       this.element.addEventListener('pointerdown', () => callbacks.activate(record.id));
-      this.element.addEventListener('focusin', () => callbacks.activate(record.id));
+      this.element.addEventListener('focusin', () => callbacks.activate(record.id, 'focus'));
       this.q('.paneMax').onclick = () => callbacks.maximize(record.id);
       this.q('.paneClose').onclick = () => callbacks.close(record.id);
       this.q('.paneFile').onchange = (e) => {
@@ -51,7 +52,7 @@
           this.q('.status').textContent = `Page ${d.page} of ${d.total}`;
           callbacks.changed(record.id);
         } else if (d?.type === 'PDF_FOCUS' && d.session === this.session)
-          callbacks.activate(record.id);
+          callbacks.activate(record.id, d.intent || 'focus');
         else if (d?.type === 'PDF_ERROR' && d.session === this.session) {
           this.q('.status').textContent = d.message;
           callbacks.notice(d.message);
@@ -82,7 +83,16 @@
       this.mounted = false;
       this.ready = false;
       this.rendition?.destroy();
-      this.book?.destroy();
+      const oldBook = this.book;
+      if (oldBook) {
+        oldBook.opened
+          .then(() => oldBook.loaded.navigation)
+          .then(
+            () => oldBook.destroy(),
+            () => oldBook.destroy(),
+          )
+          .catch(() => {});
+      }
       this.rendition = this.book = null;
       if (this.url) URL.revokeObjectURL(this.url);
       this.url = null;
@@ -94,6 +104,7 @@
       this.file = null;
     }
     destroy() {
+      this.disposeDrag();
       this.unmount();
       this.observer.disconnect();
       window.removeEventListener('message', this.message);
@@ -132,14 +143,14 @@
               'Native PDF view · use the hosted reader for workspace zoom controls';
             this.ready = true;
             this.callbacks.changed(this.record.id);
-          } else this.q('.pdf').src = 'pdf-viewer.html?v=workspace-1';
+          } else this.q('.pdf').src = 'pdf-viewer.html?v=workspace-2';
           return;
         }
         this.q('.epub').hidden = false;
-        const book = ePub();
-        this.book = book;
         const bytes = await file.arrayBuffer();
         if (version !== this.generation) return;
+        const book = ePub();
+        this.book = book;
         await book.open(bytes, 'binary');
         if (version !== this.generation) return;
         const navigation = await book.loaded.navigation;
@@ -166,10 +177,13 @@
         this.setFont(view.fontSize || 18);
         rendition.hooks.content.register((content) => {
           content.document.addEventListener('pointerdown', () =>
-            this.callbacks.activate(this.record.id),
+            this.callbacks.activate(this.record.id, 'pointer'),
           );
           content.document.addEventListener('focusin', () =>
-            this.callbacks.activate(this.record.id),
+            this.callbacks.activate(this.record.id, 'focus'),
+          );
+          content.document.addEventListener('keydown', () =>
+            this.callbacks.activate(this.record.id, 'keyboard'),
           );
         });
         rendition.on('relocated', (where) => {
@@ -184,6 +198,7 @@
         try {
           await rendition.display(view.cfi || undefined);
         } catch {
+          if (version !== this.generation) return;
           await rendition.display();
         }
         if (version !== this.generation) return;

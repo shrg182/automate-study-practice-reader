@@ -4,7 +4,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1" />
     <title>Open Books · Offline Reading Workspace</title>
-    <link rel="stylesheet" href="reader.css?v=workspace-1" />
+    <link rel="stylesheet" href="reader.css?v=workspace-2" />
   </head>
   <body>
     <header class="top">
@@ -104,6 +104,39 @@
               <option value="grid">Grid</option>
             </select>
           </label>
+          <label
+            >Workspace
+            <select id="workspaceMode">
+              <option value="fit">Fit to window</option>
+              <option value="scroll">Scrollable workspace</option>
+            </select></label
+          >
+          <label
+            >Minimum height
+            <input
+              id="minPaneHeight"
+              required
+              type="number"
+              min="240"
+              max="1200"
+              step="10"
+              value="400"
+            />
+            px</label
+          >
+          <label
+            >Minimum width
+            <input
+              id="minPaneWidth"
+              required
+              type="number"
+              min="240"
+              max="800"
+              step="10"
+              value="320"
+            />
+            px</label
+          >
           <button id="closePane">Close view</button>
         </div>
       </details>
@@ -186,6 +219,13 @@
     <template id="paneTemplate">
       <section class="pane" tabindex="0" role="tabpanel">
         <header>
+          <button
+            class="paneDrag"
+            title="Drag to relocate; use Move earlier/later for keyboard movement"
+            aria-label="Drag pane to relocate"
+          >
+            ⠿
+          </button>
           <button class="activate" title="Activate this pane"></button>
           <button class="paneMax" title="Maximize or restore pane">⛶</button>
           <button class="paneClose" title="Close view">×</button>
@@ -209,9 +249,11 @@
     </template>
     <script src="../../vendor/jszip/jszip.min.js"></script>
     <script src="../../vendor/epubjs/epub.min.js"></script>
-    <script src="workspace-store.js?v=workspace-1"></script>
-    <script src="workspace-toolbar.js?v=workspace-1"></script>
-    <script src="reader-pane.js?v=workspace-1"></script>
-    <script src="reader.js?v=workspace-1"></script>
+    <script src="workspace-store.js?v=workspace-2"></script>
+    <script src="workspace-toolbar.js?v=workspace-2"></script>
+    <script src="reader-pane.js?v=workspace-2"></script>
+    <script src="workspace-drag.js?v=workspace-2"></script>
+    <script src="workspace-layout.js?v=workspace-2"></script>
+    <script src="reader.js?v=workspace-2"></script>
   </body>
 </html>

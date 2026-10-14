@@ -16,9 +16,13 @@
     saveTimer,
     saveQueue = Promise.resolve(),
     ready = false,
+    keyboardFocus = false,
     loading = 0,
     noticeTimer,
-    libraryGeneration = 0;
+    libraryGeneration = 0,
+    paneObserver,
+    canvasTree;
+  const dividerElements = new Map();
   let remember = true;
   try {
     remember = localStorage.getItem('open-books-remember') !== 'false';
@@ -108,90 +112,125 @@
       second: balance(ids.slice(n), axis),
     };
   }
+  function canvasSettings() {
+    return workspace.canvas || { mode: 'fit', minWidth: 320, minHeight: 400 };
+  }
+  function layoutSettings() {
+    const value = { ...canvasSettings() };
+    if (scrollMode())
+      value.minWidth = Math.min(value.minWidth, Math.max(0, $('#panes').clientWidth - 20));
+    return value;
+  }
   function minimum(node) {
-    if (node.pane) return { width: 280, height: 230 };
-    const a = minimum(node.first),
-      b = minimum(node.second);
-    return node.axis === 'cols'
-      ? { width: a.width + b.width + 9, height: Math.max(a.height, b.height) }
-      : { width: Math.max(a.width, b.width), height: a.height + b.height + 9 };
+    return OpenBooksLayout.measure(node, layoutSettings());
+  }
+  function scrollMode() {
+    return canvasSettings().mode === 'scroll' && !maximized && workspace.layout !== 'tabs';
+  }
+  function responsiveTree(node, width) {
+    return OpenBooksLayout.responsive(node, width, layoutSettings());
   }
   function focused() {
+    if (maximized || workspace.layout === 'tabs') return true;
+    if (scrollMode()) return false;
     const size = minimum(workspace.tree),
       host = $('#panes');
-    return (
-      !!maximized ||
-      workspace.layout === 'tabs' ||
-      host.clientWidth < size.width ||
-      host.clientHeight < size.height
-    );
+    return host.clientWidth - 20 < size.width || host.clientHeight - 18 < size.height;
   }
-  function build(node) {
-    if (node.pane) return controllers.get(node.pane).element;
-    const split = document.createElement('div');
-    split.className = 'split ' + node.axis;
-    const first = document.createElement('div'),
-      second = document.createElement('div');
-    first.className = second.className = 'slot';
-    first.style.flex = `${node.ratio} 1 0`;
-    second.style.flex = `${1 - node.ratio} 1 0`;
-    first.append(build(node.first));
-    second.append(build(node.second));
+  function relocate(sourceId, targetId, edge) {
+    if (sourceId === targetId || !paneRecord(sourceId) || !paneRecord(targetId)) return;
+    const source = find(workspace.tree, sourceId),
+      rest = without(workspace.tree, sourceId);
+    const target = find(rest, targetId),
+      before = edge === 'left' || edge === 'top';
+    workspace.tree = replace(rest, targetId, {
+      axis: edge === 'left' || edge === 'right' ? 'cols' : 'rows',
+      ratio: 0.5,
+      first: before ? source : target,
+      second: before ? target : source,
+    });
+    workspace.active = sourceId;
+    workspace.layout = 'custom';
+    maximized = null;
+    render();
+    revealPane(workspace.active);
+    saveSoon();
+    controllers.get(sourceId).q('.paneDrag').focus({ preventScroll: true });
+    notice('Pane moved. Reading positions are preserved.');
+  }
+  function place(element, box) {
+    Object.assign(element.style, {
+      left: box.x + 'px',
+      top: box.y + 'px',
+      width: box.width + 'px',
+      height: box.height + 'px',
+    });
+  }
+  function makeDivider() {
     const divider = document.createElement('div');
     divider.className = 'divider';
     divider.tabIndex = 0;
     divider.setAttribute('role', 'separator');
-    divider.setAttribute('aria-label', node.axis === 'cols' ? 'Resize columns' : 'Resize rows');
-    divider.setAttribute('aria-orientation', node.axis === 'cols' ? 'vertical' : 'horizontal');
-    const update = (ratio) => {
-      node.ratio = Math.max(0.15, Math.min(0.85, ratio));
-      first.style.flex = `${node.ratio} 1 0`;
-      second.style.flex = `${1 - node.ratio} 1 0`;
-      divider.setAttribute('aria-valuenow', String(Math.round(node.ratio * 100)));
-    };
-    divider.setAttribute('aria-valuemin', '15');
-    divider.setAttribute('aria-valuemax', '85');
-    update(node.ratio);
+    function resize(delta, home = false) {
+      const m = divider.model,
+        source = m.node.source || m.node,
+        span = m.first + m.second,
+        cols = m.node.axis === 'cols';
+      if (!cols && scrollMode()) {
+        const first = source.first,
+          base = minimum({ ...m.node.first, height: 0 }).height;
+        first.height = home ? base : Math.max(base, m.first + delta);
+        source.ratio = Math.max(
+          0.1,
+          Math.min(0.9, first.height / Math.max(1, first.height + m.second)),
+        );
+      } else {
+        const key = cols ? 'width' : 'height',
+          a = minimum(m.node.first)[key],
+          b = minimum(m.node.second)[key];
+        source.ratio = Math.max(
+          0.1,
+          Math.min(
+            0.9,
+            Math.max(a / span, Math.min(1 - b / span, home ? 0.5 : (m.first + delta) / span)),
+          ),
+        );
+      }
+      render();
+      saveSoon();
+    }
     divider.onpointerdown = (event) => {
       event.preventDefault();
       divider.setPointerCapture(event.pointerId);
       document.body.classList.add('resizing');
-      const cover = document.createElement('div');
-      cover.className = 'drag-cover';
-      cover.style.cursor = node.axis === 'cols' ? 'col-resize' : 'row-resize';
-      document.body.append(cover);
-      const rect = split.getBoundingClientRect();
-      const move = (e) =>
-        update(
-          node.axis === 'cols'
-            ? (e.clientX - rect.left) / rect.width
-            : (e.clientY - rect.top) / rect.height,
-        );
+      const start = { x: event.clientX, y: event.clientY };
+      let previous = 0;
+      const move = (e) => {
+        const amount =
+          divider.model.node.axis === 'cols' ? e.clientX - start.x : e.clientY - start.y;
+        resize(amount - previous);
+        previous = amount;
+      };
       const finish = () => {
         document.body.classList.remove('resizing');
-        cover.remove();
         divider.removeEventListener('pointermove', move);
         divider.removeEventListener('pointerup', finish);
         divider.removeEventListener('pointercancel', finish);
+        divider.removeEventListener('lostpointercapture', finish);
         saveSoon();
       };
       divider.addEventListener('pointermove', move);
       divider.addEventListener('pointerup', finish);
       divider.addEventListener('pointercancel', finish);
+      divider.addEventListener('lostpointercapture', finish);
     };
     divider.onkeydown = (event) => {
-      if (['ArrowLeft', 'ArrowUp', 'ArrowRight', 'ArrowDown', 'Home'].includes(event.key)) {
+      if (['ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown', 'Home'].includes(event.key)) {
         event.preventDefault();
-        update(
-          event.key === 'Home'
-            ? 0.5
-            : node.ratio + (['ArrowLeft', 'ArrowUp'].includes(event.key) ? -0.05 : 0.05),
-        );
-        saveSoon();
+        resize(['ArrowLeft', 'ArrowUp'].includes(event.key) ? -40 : 40, event.key === 'Home');
       }
     };
-    split.append(first, divider, second);
-    return split;
+    return divider;
   }
   async function getFile(id) {
     if (files.has(id)) return files.get(id);
@@ -213,6 +252,18 @@
           p.id,
           new OpenBooksPane(p, {
             activate,
+            drag: (handle, id) =>
+              OpenBooksDrag.install(handle, {
+                root: $('#panes'),
+                allowed: () => !focused() && workspace.panes.length > 1,
+                activate: () => activate(id),
+                targets: () =>
+                  [...$('#panes').querySelectorAll('.pane')].filter((p) => p.id !== id),
+                drop: (target) => relocate(id, target.id, target.edge),
+                finished: () => render(),
+                help: () =>
+                  notice('Drag this handle, or use Move earlier / Move later in Panes & layout.'),
+              }),
             close: closePane,
             maximize,
             toggle: render,
@@ -236,11 +287,23 @@
       c.element.classList.toggle('active', p.id === workspace.active);
     }
   }
+  function revealPane(id) {
+    if (!scrollMode()) return;
+    const element = controllers.get(id).element,
+      host = $('#panes'),
+      top = element.offsetTop,
+      bottom = top + element.offsetHeight;
+    if (element.offsetHeight > host.clientHeight - 18) host.scrollTop = top;
+    else if (top < host.scrollTop) host.scrollTop = top;
+    else if (bottom > host.scrollTop + host.clientHeight - 18)
+      host.scrollTop = bottom - host.clientHeight + 18;
+  }
   function updateTabs() {
     const tabs = $('#paneTabs');
-    tabs.replaceChildren();
+    const existing = new Map([...tabs.children].map((button) => [button.id, button]));
     for (const [i, p] of workspace.panes.entries()) {
-      const button = document.createElement('button');
+      const button = existing.get('tab-' + p.id) || document.createElement('button');
+      existing.delete('tab-' + p.id);
       button.type = 'button';
       button.id = 'tab-' + p.id;
       button.setAttribute('role', 'tab');
@@ -248,7 +311,10 @@
       button.setAttribute('aria-selected', String(p.id === workspace.active));
       button.tabIndex = p.id === workspace.active ? 0 : -1;
       button.textContent = `${i + 1} · ${documents.get(p.documentId)?.name || 'Empty pane'}`;
-      button.onclick = () => activate(p.id);
+      button.onclick = () => {
+        activate(p.id);
+        revealPane(p.id);
+      };
       button.onkeydown = (event) => {
         if (['ArrowLeft', 'ArrowRight', 'Home', 'End'].includes(event.key)) {
           event.preventDefault();
@@ -260,49 +326,153 @@
                 : (i + (event.key === 'ArrowLeft' ? -1 : 1) + workspace.panes.length) %
                   workspace.panes.length;
           activate(workspace.panes[index].id);
+          revealPane(workspace.panes[index].id);
           document.getElementById('tab-' + workspace.active)?.focus();
         }
       };
-      tabs.append(button);
+      if (tabs.children[i] !== button) tabs.insertBefore(button, tabs.children[i] || null);
     }
+    for (const button of existing.values()) button.remove();
   }
-  function render(force = false) {
-    if (!workspace) return;
+  function render() {
+    if (!workspace || OpenBooksDrag.isDragging) return;
     syncControllers();
     labels();
     const focus = focused(),
       visible = focus ? [maximized || workspace.active] : order(workspace.tree),
-      key = JSON.stringify({ tree: workspace.tree, visible });
+      host = $('#panes');
     $('#layoutHint').hidden = !focus || !!maximized || workspace.layout === 'tabs';
     $('#layout').value = workspace.layout || 'custom';
+    $('#workspaceMode').value = canvasSettings().mode;
+    for (const [id, key] of [
+      ['minPaneHeight', 'minHeight'],
+      ['minPaneWidth', 'minWidth'],
+    ])
+      if (document.activeElement !== $('#' + id)) $('#' + id).value = canvasSettings()[key];
     if (document.activeElement !== $('#workspaceName')) $('#workspaceName').value = workspace.name;
-    if (force || key !== renderedKey) {
-      renderedKey = key;
-      for (const c of controllers.values()) c.unmount();
-      $('#panes').replaceChildren();
-      if (focus) $('#panes').append(controllers.get(visible[0]).element);
-      else $('#panes').append(build(workspace.tree));
-      for (const id of visible) {
-        const c = controllers.get(id),
-          docId = c.record.documentId,
-          version = c.generation;
-        if (!docId) c.mount(null);
-        else
-          getFile(docId)
-            .then((file) => {
-              if (controllers.has(id) && c.generation === version && c.element.isConnected)
-                c.mount(file);
-            })
-            .catch((error) => {
-              failed(error);
-              if (controllers.get(id) === c && c.element.isConnected) c.mount(null);
-            });
+    host.classList.toggle('scrollable', scrollMode());
+    let canvas = host.querySelector('.workspace-canvas');
+    if (!canvas) {
+      canvas = document.createElement('div');
+      canvas.className = 'workspace-canvas';
+      host.append(canvas);
+    }
+    const width = Math.max(
+        1,
+        host.clientWidth - (matchMedia('(max-width:760px)').matches ? 12 : 20),
+      ),
+      available = Math.max(1, host.clientHeight - 18);
+    canvasTree = scrollMode() ? responsiveTree(workspace.tree, width) : workspace.tree;
+    const height = scrollMode() ? Math.max(available, minimum(canvasTree).height) : available;
+    canvas.style.height = height + 'px';
+    const geometry = OpenBooksLayout.frames(
+      focus ? leaf(visible[0]) : canvasTree,
+      { x: 0, y: 0, width, height },
+      layoutSettings(),
+    );
+    const visibleSet = new Set(visible);
+    for (const c of controllers.values()) {
+      if (c.element.parentNode !== canvas) canvas.append(c.element);
+      c.element.hidden = !visibleSet.has(c.record.id);
+      if (
+        c.loadedDocumentId !== c.record.documentId ||
+        (c.mounted && !c.file && files.has(c.record.documentId))
+      ) {
+        c.unmount();
+        c.loadedDocumentId = c.record.documentId;
       }
+      if (c.element.hidden && c.document?.format !== 'epub') c.unmount();
+      c.q('.paneDrag').disabled = focus || workspace.panes.length < 2;
+      c.q('.paneDrag').title = focus
+        ? 'Restore a multi-pane layout to drag this pane.'
+        : workspace.panes.length < 2
+          ? 'Add another pane to relocate views.'
+          : 'Drag to relocate; use Move earlier/later for keyboard movement';
+    }
+    for (const box of geometry.panes) place(controllers.get(box.id).element, box);
+    const paths = new Set();
+    for (const model of geometry.dividers) {
+      paths.add(model.path);
+      let element = dividerElements.get(model.path);
+      if (!element) {
+        element = makeDivider();
+        dividerElements.set(model.path, element);
+        canvas.append(element);
+      }
+      element.model = model;
+      element.hidden = false;
+      place(element, model.box);
+      const cols = model.node.axis === 'cols';
+      element.classList.toggle('row-divider', !cols);
+      element.setAttribute('aria-label', cols ? 'Resize columns' : 'Resize rows');
+      element.setAttribute('aria-orientation', cols ? 'vertical' : 'horizontal');
+      element.setAttribute('aria-valuemin', '10');
+      element.setAttribute('aria-valuemax', '90');
+      element.setAttribute(
+        'aria-valuenow',
+        String(Math.round((model.first / (model.first + model.second)) * 100)),
+      );
+    }
+    for (const [path, element] of dividerElements)
+      if (!paths.has(path)) {
+        element.remove();
+        dividerElements.delete(path);
+      }
+    const mountController = (id) => {
+      const c = controllers.get(id);
+      if (!c || c.mounted || !c.element.isConnected || c.element.hidden) return;
+      const version = c.generation,
+        docId = c.record.documentId;
+      if (!docId) c.mount(null);
+      else
+        getFile(docId)
+          .then((file) => {
+            if (
+              controllers.get(id) === c &&
+              c.generation === version &&
+              c.element.isConnected &&
+              !c.element.hidden
+            )
+              c.mount(file);
+          })
+          .catch((error) => {
+            failed(error);
+            if (controllers.get(id) === c) c.mount(null);
+          });
+    };
+    const visibilityKey = JSON.stringify({ visible, scroll: scrollMode() });
+    if (visibilityKey !== renderedKey) {
+      renderedKey = visibilityKey;
+      paneObserver?.disconnect();
+      if (scrollMode()) {
+        paneObserver = new IntersectionObserver(
+          (entries) => {
+            for (const entry of entries) {
+              const c = controllers.get(entry.target.id);
+              if (!c) continue;
+              if (entry.isIntersecting) mountController(c.record.id);
+              else if (c.document?.format !== 'epub') c.unmount();
+            }
+          },
+          { root: host, rootMargin: '600px 0px' },
+        );
+        for (const id of visible) paneObserver.observe(controllers.get(id).element);
+      }
+    }
+    for (const id of visible) {
+      const c = controllers.get(id),
+        rect = c.element.getBoundingClientRect(),
+        port = host.getBoundingClientRect();
+      if (!scrollMode() || (rect.bottom >= port.top - 600 && rect.top <= port.bottom + 600))
+        mountController(id);
     }
     updateTabs();
     updateControls();
   }
-  function activate(id) {
+  function activate(id, intent = 'explicit') {
+    if (intent === 'focus' && !keyboardFocus) return;
+    if (intent === 'keyboard') keyboardFocus = true;
+    if (intent === 'pointer') keyboardFocus = false;
     if (!ready || !paneRecord(id)) return;
     if (workspace.active === id) {
       updateControls();
@@ -373,7 +543,8 @@
     workspace.active = p.id;
     workspace.layout = 'custom';
     maximized = null;
-    render(true);
+    render();
+    revealPane(workspace.active);
     saveSoon();
     return p;
   }
@@ -393,7 +564,8 @@
       if (workspace.active === id) workspace.active = workspace.panes[Math.max(0, index - 1)].id;
     }
     maximized = null;
-    render(true);
+    render();
+    revealPane(workspace.active);
     saveSoon();
   }
   function maximize(id = workspace.active) {
@@ -421,7 +593,8 @@
       return { ...node, first: swap(node.first), second: swap(node.second) };
     }
     workspace.tree = swap(workspace.tree);
-    render(true);
+    render();
+    revealPane(workspace.active);
     saveSoon();
   }
   function preset(layout) {
@@ -444,7 +617,8 @@
       }
       workspace.tree = combine(subtrees);
     }
-    render(true);
+    render();
+    revealPane(workspace.active);
     saveSoon();
   }
   async function attach(id, file) {
@@ -479,7 +653,8 @@
       // A user may close this view while its source is being saved.
       if (paneRecord(id) !== p) return;
       workspace.active = id;
-      render(true);
+      render();
+      revealPane(workspace.active);
       saveSoon();
       notice('Opened ' + record.name);
     } catch (error) {
@@ -517,7 +692,7 @@
         p.documentId = id;
         p.view = { page: 1, scale: 'page-width', rotation: 0 };
         dialog.close();
-        render(true);
+        render();
         saveSoon();
       };
       open.onclick = () => use(false);
@@ -658,7 +833,7 @@
       }
       maximized = null;
       renderedKey = '';
-      render(true);
+      render();
       notice('Workspace restored. Reattach any books not included in the backup.');
       $('#saveStatus').textContent = unsavedBooks.size
         ? 'Workspace saved · book file not saved'
@@ -668,6 +843,20 @@
     }
   }
   function wire() {
+    document.addEventListener(
+      'keydown',
+      (event) => {
+        if (event.key === 'Tab') keyboardFocus = true;
+      },
+      true,
+    );
+    document.addEventListener(
+      'pointerdown',
+      () => {
+        keyboardFocus = false;
+      },
+      true,
+    );
     toolbar = new OpenBooksToolbar($('#toolbars'), notice);
     $('#configureTools').onclick = () => $('#toolbarDialog').showModal();
     $('#addPane').onclick = () => addPane();
@@ -679,6 +868,19 @@
     $('#moveLater').onclick = () => move(1);
     $('#maximize').onclick = () => maximize();
     $('#layout').onchange = (e) => preset(e.target.value);
+    const canvasChanged = () => {
+      if (!$('#minPaneHeight').reportValidity() || !$('#minPaneWidth').reportValidity()) return;
+      workspace.canvas = {
+        mode: $('#workspaceMode').value,
+        minHeight: Number($('#minPaneHeight').value),
+        minWidth: Number($('#minPaneWidth').value),
+      };
+      render();
+      revealPane(workspace.active);
+      saveSoon();
+    };
+    for (const id of ['workspaceMode', 'minPaneHeight', 'minPaneWidth'])
+      $('#' + id).onchange = canvasChanged;
     $('#previous').onclick = () => {
       active().navigate(-1);
       toolbar.closeUnpinned();
@@ -777,12 +979,14 @@
           active: panes[0].id,
           tree: { axis: 'cols', ratio: 0.5, first: leaf(panes[0].id), second: leaf(panes[1].id) },
           layout: 'custom',
+          canvas: { mode: 'scroll', minWidth: 320, minHeight: 400 },
         };
         if (remember)
           for (const [i, key] of ['left', 'right'].entries()) {
             const old = await store.getLegacy(key),
               file = old instanceof File ? old : store.toFile(old);
             if (file) {
+              workspace.canvas.mode = 'fit';
               const record = await store.identify(file);
               await store.putDocument(record);
               const meta = { ...record };
@@ -807,7 +1011,8 @@
     }
     wire();
     ready = true;
-    render(true);
+    render();
+    revealPane(workspace.active);
     saveSoon();
     cacheOffline();
   }
@@ -831,13 +1036,15 @@
         paths = [
           'editor.html',
           location.pathname + location.search,
-          'reader.css?v=workspace-1',
-          'reader.js?v=workspace-1',
-          'reader-pane.js?v=workspace-1',
-          'workspace-store.js?v=workspace-1',
-          'workspace-toolbar.js?v=workspace-1',
-          'pdf-viewer.html?v=workspace-1',
-          'pdf-viewer.js?v=workspace-1',
+          'reader.css?v=workspace-2',
+          'reader.js?v=workspace-2',
+          'reader-pane.js?v=workspace-2',
+          'workspace-store.js?v=workspace-2',
+          'workspace-toolbar.js?v=workspace-2',
+          'workspace-drag.js?v=workspace-2',
+          'workspace-layout.js?v=workspace-2',
+          'pdf-viewer.html?v=workspace-2',
+          'pdf-viewer.js?v=workspace-2',
           '../../vendor/jszip/jszip.min.js',
           '../../vendor/epubjs/epub.min.js',
           '../../vendor/pdfjs/assets.json',

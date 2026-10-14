@@ -7,8 +7,13 @@ It accepts PDF and EPUB files; existing article editors are not converted by thi
 
 - Add any number of views; split beside or below, duplicate a book view, reorder views,
   resize dividers, maximize/restore, and close views without deleting their books.
-- Preset layouts and an automatic tab layout when the proposed splits are too narrow
-  or short. Tabs retain all views; hidden views release their renderers.
+- Drag handles with edge drop previews to move a pane beside, above, or below another.
+  Escape cancels; Move earlier/later remains available for keyboard movement.
+- Fit-to-window mode with tab fallback, plus a vertically scrollable workspace that grows
+  with its panes. Default minimums are 400 px high and 320 px wide; narrow screens stack
+  panes at the available width. These settings are saved and included in backups.
+- Distant PDF panes release their rendering resources. Opened EPUB views retain their
+  text renderer to avoid interrupting initialization or losing position.
 - One shared toolbar with an explicit active-pane target. Read, View, Panes, and Save
   groups can be opened, closed, pinned, or hidden. Primary, Intermediate, and Advanced
   presets control these currently implemented groups.
@@ -54,11 +59,35 @@ Unchecking **Keep book files on this device** clears stored book bytes, includin
 slots, but retains layout and source identities. Open books remain available until the
 session ends. Local browser storage is not a substitute for a portable backup.
 
+## Pane arrangement and workspace length
+
+In **Panes & layout**, choose **Scrollable workspace** to keep pane minimum heights and
+extend the workspace downward. The outer workspace scrolls between panes; PDF and EPUB
+scrolling inside each pane remains independent. There is no fixed application-imposed
+vertical workspace length. Existing workspaces retain Fit-to-window mode, while new
+empty workspaces default to Scrollable mode.
+
+Use a pane's dotted header handle to relocate it. Drag toward another pane's left, right,
+top, or bottom edge; the shaded preview shows the result before dropping. Dragging near
+the workspace's upper/lower edge scrolls it. Drop outside the workspace or press Escape
+to cancel. Document text selection and drawing areas are not drag handles.
+
+Divider dragging and arrow keys respect minimum pane sizes. In Scrollable mode, expanding
+rows can extend the workspace instead of squeezing other panes. On narrow screens,
+columns stack without overwriting their saved desktop arrangement. Maximizing remains a
+temporary focused view; restore returns to the arrangement.
+
+Relocation updates pane geometry while keeping each live document iframe attached to the
+same canvas. Book identities, saved page/section positions, zoom, and edits are not
+replaced when a pane moves.
+
 ## Code and records
 
 - `workspace-store.js`: IndexedDB access, content identity, versioned workspace validation.
 - `workspace-toolbar.js`: toolbar-group registry behavior and layered preferences.
 - `reader-pane.js`: per-view PDF/EPUB lifecycle and active-pane notifications.
+- `workspace-layout.js`: responsive split geometry and pane minimums.
+- `workspace-drag.js`: pointer handles, drop previews, cancellation, and edge scrolling.
 - `reader.js`: layout tree, library, restoration, backup/import, migration, and orchestration.
 - `pdf-viewer.js`: PDF rendering and bidirectional view-state messages.
 
@@ -66,7 +95,8 @@ IndexedDB `open-books-offline` version 2 keeps the legacy `books` store and adds
 `documents` and `workspaces`. Source bytes belong to document records, and each pane
 references a document ID with separate view settings. Toolbar preferences live in the
 versioned `open-books-toolbar-v1` localStorage record and are included in workspace exports.
-The backup format is `open-books-workspace`, version 1.
+The backup format is `open-books-workspace`, version 1. Optional `canvas` settings and
+per-node height overrides are additive, so previous backups still load in Fit-to-window mode.
 
 ## Verification
 
