@@ -1,10 +1,217 @@
 <!doctype html>
 <html lang="en">
-<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Open Books · Offline PDF & EPUB Reader</title><link rel="stylesheet" href="reader.css"></head>
-<body>
-<header class="top"><a href="../../index.html#offline">← Library</a><h1>Open Books · Offline PDF & EPUB Reader</h1><label>Layout <select id="layout"><option value="both">Side by side</option><option value="left">Left only</option><option value="right">Right only</option></select></label><span id="offlineStatus" role="status"></span></header>
-<p class="intro">Open any PDF or EPUB in either pane. Files stay in this browser on this device. <label><input id="remember" type="checkbox" checked> Remember books</label> <span id="storageStatus" role="status">Use a normal browser window to keep books after closing.</span></p>
-<main id="panes" data-layout="both"></main>
-<template id="paneTemplate"><section class="pane"><header><h2></h2><label class="button">Open PDF / EPUB<input class="file" type="file" accept=".pdf,.epub,application/pdf,application/epub+zip"></label><button class="remove" disabled>Remove</button><button class="fullscreen">Full screen</button></header><p class="status" role="status">No book attached</p><nav class="controls" hidden><button class="prev">←</button><button class="next">→</button><form class="pageForm"><label>Page <input class="page" type="number" min="1" value="1" required></label><button>Go</button></form><label class="tocLabel" hidden>Contents <select class="toc"></select></label></nav><div class="empty">Choose a PDF or EPUB above.<small>Read two books, translations, or reference documents together.</small></div><iframe class="pdf" title="PDF reader" hidden></iframe><div class="epub" hidden></div></section></template>
-<script src="../../vendor/jszip/jszip.min.js"></script><script src="../../vendor/epubjs/epub.min.js"></script><script src="reader.js"></script>
-</body></html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Open Books · Offline Reading Workspace</title>
+    <link rel="stylesheet" href="reader.css?v=workspace-1" />
+  </head>
+  <body>
+    <header class="top">
+      <a href="../../index.html#offline">← Library</a>
+      <h1>Open Books<span class="sr-only"> · Offline Reading Workspace</span></h1>
+      <input
+        id="workspaceName"
+        aria-label="Workspace name"
+        value="My reading workspace"
+        maxlength="100"
+      />
+      <button id="addPane">＋ Add pane</button>
+      <button id="hideTools" aria-expanded="true">Reading mode</button>
+      <button id="configureTools">Tool groups</button>
+      <span id="saveStatus" role="status">Opening workspace…</span>
+      <span id="offlineStatus" role="status"> </span>
+    </header>
+    <div class="targetbar">
+      <strong id="activeTarget">Active pane</strong>
+      <label class="button"
+        >Open PDF / EPUB<input
+          id="activeFile"
+          class="file"
+          type="file"
+          accept=".pdf,.epub,application/pdf,application/epub+zip"
+        />
+      </label>
+      <span id="notice" role="status"> </span>
+    </div>
+    <nav id="toolbars" aria-label="Shared reading tools">
+      <details data-toolgroup="read" open>
+        <summary>Read & navigate</summary>
+        <div class="tools">
+          <button data-pin type="button">Unpin</button>
+          <button id="previous" title="Previous page or section">←</button>
+          <button id="next" title="Next page or section">→</button>
+          <form id="pageForm">
+            <label>Page <input id="activePage" type="number" min="1" value="1" required /> </label>
+            <button>Go</button>
+          </form>
+          <label id="contentsLabel" hidden
+            >Contents
+            <select id="activeContents"></select>
+          </label>
+          <span id="positionLabel"> </span>
+        </div>
+      </details>
+      <details data-toolgroup="view">
+        <summary>View</summary>
+        <div class="tools">
+          <button data-pin>Pin</button>
+          <label id="zoomLabel"
+            >PDF zoom
+            <select id="zoom">
+              <option value="page-width">Fit width</option>
+              <option value="page-fit">Fit page</option>
+              <option value="page-actual">Actual size</option>
+              <option value="0.75">75%</option>
+              <option value="1">100%</option>
+              <option value="1.25">125%</option>
+              <option value="1.5">150%</option>
+              <option value="2">200%</option>
+            </select>
+          </label>
+          <button id="rotate">Rotate PDF</button>
+          <label id="fontLabel" hidden
+            >EPUB text
+            <select id="fontSize">
+              <option>16</option>
+              <option selected>18</option>
+              <option>20</option>
+              <option>24</option>
+              <option>28</option>
+            </select>
+            px</label
+          >
+          <button id="maximize">Maximize pane</button>
+          <button id="fullScreen">Full screen</button>
+        </div>
+      </details>
+      <details data-toolgroup="panes">
+        <summary>Panes & layout</summary>
+        <div class="tools">
+          <button data-pin>Pin</button>
+          <button id="splitCols">Split beside</button>
+          <button id="splitRows">Split below</button>
+          <button id="duplicate">Duplicate view</button>
+          <button id="moveEarlier">Move earlier</button>
+          <button id="moveLater">Move later</button>
+          <label
+            >Layout
+            <select id="layout">
+              <option value="custom">Custom splits</option>
+              <option value="tabs">Tabs / focus</option>
+              <option value="columns2">Two columns</option>
+              <option value="columns3">Three columns</option>
+              <option value="grid">Grid</option>
+            </select>
+          </label>
+          <button id="closePane">Close view</button>
+        </div>
+      </details>
+      <details data-toolgroup="save">
+        <summary>Library & save</summary>
+        <div class="tools">
+          <button data-pin>Pin</button>
+          <button id="showBooks">Saved books</button>
+          <label>
+            <input id="remember" type="checkbox" checked /> Keep book files on this device</label
+          >
+          <label> <input id="includeFiles" type="checkbox" /> Include book files in backup</label>
+          <button id="exportWorkspace">Export workspace</button>
+          <label class="button"
+            >Import workspace<input
+              id="importWorkspace"
+              class="file"
+              type="file"
+              accept="application/json,.json"
+            />
+          </label>
+          <span>Layout and reading positions autosave.</span>
+        </div>
+      </details>
+    </nav>
+    <div id="paneTabs" role="tablist" aria-label="Open views"></div>
+    <p id="layoutHint" hidden>
+      Views are shown as tabs to keep reading space usable. Select a tab to switch.
+    </p>
+    <main id="panes" aria-label="Reading panes"></main>
+    <dialog id="toolbarDialog">
+      <form method="dialog">
+        <header>
+          <h2>Tool groups</h2>
+          <button aria-label="Close tool settings">×</button>
+        </header>
+      </form>
+      <label
+        >Save changes for
+        <select id="toolbarScope">
+          <option value="library">All books</option>
+          <option value="format">This file type</option>
+          <option value="document">This book</option>
+        </select>
+      </label>
+      <label
+        >Preset
+        <select id="toolPreset">
+          <option value="primary">Primary</option>
+          <option value="intermediate">Intermediate</option>
+          <option value="advanced">Advanced</option>
+        </select>
+      </label>
+      <fieldset>
+        <legend>Available groups</legend>
+        <label> <input type="checkbox" data-group-choice="read" checked /> Read & navigate</label>
+        <label> <input type="checkbox" data-group-choice="view" checked /> View</label>
+        <label> <input type="checkbox" data-group-choice="panes" checked /> Panes & layout</label>
+        <label> <input type="checkbox" data-group-choice="save" checked /> Library & save</label>
+      </fieldset>
+      <button id="resetTools">Reset / inherit defaults</button>
+      <p>
+        This first release establishes the workspace and toolbar framework. Annotation and language
+        groups will be added in later phases.
+      </p>
+    </dialog>
+    <dialog id="booksDialog">
+      <form method="dialog">
+        <header>
+          <h2>Saved books</h2>
+          <button aria-label="Close saved books">×</button>
+        </header>
+      </form>
+      <p>
+        Closing a view keeps its book here. Open a saved book in the active pane, or add another
+        view.
+      </p>
+      <div id="bookList"></div>
+    </dialog>
+    <template id="paneTemplate">
+      <section class="pane" tabindex="0" role="tabpanel">
+        <header>
+          <button class="activate" title="Activate this pane"></button>
+          <button class="paneMax" title="Maximize or restore pane">⛶</button>
+          <button class="paneClose" title="Close view">×</button>
+        </header>
+        <p class="status" role="status">No book attached</p>
+        <div class="empty">
+          <strong>Open a PDF or EPUB</strong>
+          <p>Choose a file, or reopen a saved book.</p>
+          <label class="button"
+            >Choose file<input
+              class="file paneFile"
+              type="file"
+              accept=".pdf,.epub,application/pdf,application/epub+zip"
+            />
+          </label>
+          <button class="paneBooks">Saved books</button>
+        </div>
+        <iframe class="pdf" title="PDF reader" hidden> </iframe>
+        <div class="epub" hidden></div>
+      </section>
+    </template>
+    <script src="../../vendor/jszip/jszip.min.js"></script>
+    <script src="../../vendor/epubjs/epub.min.js"></script>
+    <script src="workspace-store.js?v=workspace-1"></script>
+    <script src="workspace-toolbar.js?v=workspace-1"></script>
+    <script src="reader-pane.js?v=workspace-1"></script>
+    <script src="reader.js?v=workspace-1"></script>
+  </body>
+</html>
