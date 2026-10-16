@@ -5,12 +5,14 @@
     controllers = new Map(),
     documents = new Map(),
     files = new Map(),
-    unsavedBooks = new Set();
+    unsavedBooks = new Set(),
+    savedFiles = new Set();
   const uid = () => crypto.randomUUID(),
     copy = (value) => structuredClone(value),
     leaf = (id) => ({ pane: id });
   let workspace,
     toolbar,
+    speech,
     maximized = null,
     renderedKey = '',
     saveTimer,
@@ -20,6 +22,7 @@
     loading = 0,
     noticeTimer,
     libraryGeneration = 0,
+    workspaceChanging = false,
     paneObserver,
     canvasTree;
   const dividerElements = new Map();
@@ -53,6 +56,14 @@
       view: { page: 1, scale: 'page-width', rotation: 0, ...copy(view) },
     };
   }
+  function savedStatus() {
+    const ids = [...new Set(workspace.panes.map(p => p.documentId).filter(Boolean))];
+    const missing = ids.filter(id => !savedFiles.has(id) && !files.has(id)).length;
+    const temporary = ids.filter(id => !savedFiles.has(id) && files.has(id)).length;
+    if (missing) return `Workspace saved · ${missing} book file${missing === 1 ? '' : 's'} need reattachment`;
+    if (temporary || unsavedBooks.size) return 'Workspace saved · book files available for this session only';
+    return 'Workspace saved on this device';
+  }
   function saveSoon() {
     if (!ready) return;
     $('#saveStatus').textContent = 'Saving…';
@@ -67,9 +78,7 @@
       .catch(() => {})
       .then(() => store.putWorkspace(snapshot))
       .then(() => {
-        $('#saveStatus').textContent = unsavedBooks.size
-          ? 'Workspace saved · book file not saved'
-          : 'Workspace saved on this device';
+        $('#saveStatus').textContent = savedStatus();
       })
       .catch(failed);
     return saveQueue;
@@ -349,7 +358,7 @@
       ['minPaneWidth', 'minWidth'],
     ])
       if (document.activeElement !== $('#' + id)) $('#' + id).value = canvasSettings()[key];
-    if (document.activeElement !== $('#workspaceName')) $('#workspaceName').value = workspace.name;
+    $('#workspaceSelect').value = workspace.id;
     host.classList.toggle('scrollable', scrollMode());
     let canvas = host.querySelector('.workspace-canvas');
     if (!canvas) {
@@ -492,10 +501,6 @@
       hasFile = !!c?.file && c.ready;
     $('#activeTarget').textContent =
       `Active: Pane ${workspace.panes.indexOf(p) + 1} · ${doc?.name || 'Empty pane'}`;
-    if (document.activeElement !== $('#activePage')) $('#activePage').value = p.view.page || 1;
-    $('#activePage').max = c?.total || '';
-    $('#positionLabel').textContent = c?.total ? `of ${c.total}` : '';
-    $('#pageForm').hidden = doc?.format === 'epub';
     $('#contentsLabel').hidden = doc?.format !== 'epub';
     const toc = $('#activeContents'),
       signature = p.id + ':' + c.contents.length;
@@ -507,7 +512,6 @@
     for (const id of [
       'previous',
       'next',
-      'activePage',
       'activeContents',
       'zoom',
       'rotate',
@@ -519,15 +523,19 @@
       $('#zoom').disabled = true;
       $('#rotate').disabled = true;
     }
-    $('#zoomLabel').hidden = doc?.format === 'epub';
-    $('#rotate').hidden = doc?.format !== 'pdf';
-    $('#fontLabel').hidden = doc?.format !== 'epub';
+    $('#zoomLabel').hidden = !['pdf', 'image'].includes(doc?.format);
+    $('#zoomTitle').textContent = doc?.format === 'image' ? 'Image zoom' : 'PDF zoom';
+    $('#rotate').hidden = !['pdf', 'image'].includes(doc?.format);
+    $('#rotate').textContent = doc?.format === 'image' ? 'Rotate image' : 'Rotate PDF';
+    $('#previous').disabled = $('#next').disabled = !hasFile || doc?.format === 'image';
+    $('#fontLabel').hidden = !['epub', 'text', 'markdown'].includes(doc?.format);
     $('#zoom').value = String(p.view.scale || 'page-width');
     $('#fontSize').value = String(p.view.fontSize || 18);
     $('#maximize').textContent = maximized ? 'Restore layout' : 'Maximize pane';
     $('#moveEarlier').disabled = workspace.panes.indexOf(p) === 0;
     $('#moveLater').disabled = workspace.panes.indexOf(p) === workspace.panes.length - 1;
     if (toolbar) toolbar.setContext(doc?.format, p.documentId);
+    speech?.context();
   }
   function addPane(axis = 'cols', duplicate = false) {
     if (!ready) return;
@@ -641,10 +649,12 @@
       documents.set(record.id, meta);
       const sameDocument = p.documentId === record.id;
       p.documentId = record.id;
-      if (!sameDocument) p.view = { page: 1, scale: 'page-width', rotation: 0 };
+      if (!sameDocument) p.view = { page: 1, scale: record.format === 'image' ? 'page-fit' : 'page-width', rotation: 0 };
       try {
-        if (remember) await store.putDocument(record);
-        else await store.putDocument(meta);
+        if (remember) {
+          await store.putDocument(record);
+          savedFiles.add(record.id);
+        } else await store.putDocument(meta);
         unsavedBooks.delete(record.id);
       } catch (error) {
         unsavedBooks.add(record.id);
@@ -758,7 +768,8 @@
   }
   async function importWorkspace(file) {
     if (!file) return;
-    if (loading) return notice('Wait for the current book to finish opening before importing.');
+    if (loading || workspaceChanging) return notice('Wait for the current book or workspace to finish opening before importing.');
+    loading++;
     try {
       const backup = JSON.parse(await file.text());
       if (
@@ -777,7 +788,7 @@
           !/^sha256-[a-f0-9]{64}$/.test(item.id) ||
           seen.has(item.id) ||
           typeof item.name !== 'string' ||
-          !['pdf', 'epub'].includes(item.format)
+          !['pdf', 'epub', 'text', 'markdown', 'image'].includes(item.format)
         )
           throw Error('Invalid book record.');
         seen.add(item.id);
@@ -809,6 +820,8 @@
       )
         return;
       await flushSave();
+      speech.stop();
+      next.id = workspace.id;
       await store.importWorkspace(
         next,
         records.map((record) => {
@@ -823,6 +836,7 @@
         delete meta.bytes;
         documents.set(record.id, meta);
         if (record.bytes) files.set(record.id, store.toFile(record));
+        if (remember && record.bytes) savedFiles.add(record.id);
       }
       for (const c of controllers.values()) c.destroy();
       controllers.clear();
@@ -834,12 +848,13 @@
       maximized = null;
       renderedKey = '';
       render();
+      await refreshWorkspaces();
       notice('Workspace restored. Reattach any books not included in the backup.');
-      $('#saveStatus').textContent = unsavedBooks.size
-        ? 'Workspace saved · book file not saved'
-        : 'Workspace saved on this device';
+      $('#saveStatus').textContent = savedStatus();
     } catch (error) {
       notice(error.message);
+    } finally {
+      loading--;
     }
   }
   function wire() {
@@ -858,6 +873,7 @@
       true,
     );
     toolbar = new OpenBooksToolbar($('#toolbars'), notice);
+    speech = new OpenBooksSpeech(active);
     $('#configureTools').onclick = () => $('#toolbarDialog').showModal();
     $('#addPane').onclick = () => addPane();
     $('#splitCols').onclick = () => addPane('cols');
@@ -889,10 +905,6 @@
       active().navigate(1);
       toolbar.closeUnpinned();
     };
-    $('#pageForm').onsubmit = (e) => {
-      e.preventDefault();
-      active().go($('#activePage').value);
-    };
     $('#activeContents').onchange = (e) => active().rendition?.display(e.target.value);
     $('#zoom').onchange = (e) => {
       const value = e.target.value;
@@ -921,28 +933,75 @@
         notice('Full screen is unavailable in this browser.');
       }
     };
-    $('#workspaceName').onchange = (e) => {
-      workspace.name = e.target.value.trim() || 'My reading workspace';
-      e.target.value = workspace.name;
-      saveSoon();
+    $('#workspaceSelect').onchange = async (event) => {
+      const id = event.target.value;
+      if (workspaceChanging || loading) {
+        event.target.value = workspace.id;
+        return notice('Wait for the current book or workspace to finish opening.');
+      }
+      await changeWorkspace(async () => {
+        const next = await store.getWorkspace(id);
+        if (!next) throw Error('This workspace is no longer available.');
+        return store.validateWorkspace(next);
+      });
+    };
+    $('#workspaceAction').onchange = async (event) => {
+      const action = event.target.value;
+      event.target.value = '';
+      if (!action) return;
+      if (workspaceChanging || loading) return notice('Wait for the current book or workspace to finish opening.');
+      if (action === 'delete') {
+        if (!confirm(`Delete workspace “${workspace.name}”? Its arrangement and reading positions will be removed. Saved books remain in the library.`)) return;
+        await changeWorkspace(async () => {
+          const other = (await store.listWorkspaces()).find(item => item.id !== workspace.id);
+          const next = other ? store.validateWorkspace(await store.getWorkspace(other.id)) : emptyWorkspace('My reading workspace');
+          await store.deleteWorkspace(workspace.id, next);
+          return next;
+        });
+        return;
+      }
+      const suggested = action === 'new' ? 'New reading workspace' : action === 'duplicate' ? `${workspace.name} copy` : workspace.name;
+      const answer = prompt(action === 'rename' ? 'Rename workspace:' : 'Workspace name:', suggested);
+      if (answer === null) return;
+      const name = answer.trim().slice(0, 100);
+      if (!name) return notice('Enter a workspace name.');
+      if (action === 'rename') {
+        workspace.name = name;
+        await flushSave();
+        await refreshWorkspaces();
+      } else await changeWorkspace(async () => action === 'new' ? emptyWorkspace(name) : duplicateWorkspace(name));
     };
     $('#remember').onchange = async (e) => {
       remember = e.target.checked;
       try {
         localStorage.setItem('open-books-remember', String(remember));
         if (!remember) {
-          await store.forgetFiles();
-          notice('Saved book bytes cleared. Open views remain available for this session.');
+          notice('New book files will be session-only. Previously saved files are kept.');
         } else {
           for (const [id, file] of files) {
             const meta = documents.get(id);
             await store.putDocument({ ...meta, bytes: await file.arrayBuffer() });
+            savedFiles.add(id);
+            unsavedBooks.delete(id);
           }
-          notice('Open book files saved on this device.');
+          notice('Open book files saved. Missing files must be reattached once.');
         }
+        saveSoon();
       } catch (error) {
         failed(error);
       }
+    };
+    $('#clearStoredFiles').onclick = async () => {
+      if (!confirm('Remove all saved book files from this browser? Layout and positions stay saved, but books will need reattachment after closing.')) return;
+      try {
+        await store.forgetFiles();
+        savedFiles.clear();
+        remember = false;
+        $('#remember').checked = false;
+        localStorage.setItem('open-books-remember', 'false');
+        notice('Saved book files removed. Open files remain available for this session.');
+        saveSoon();
+      } catch (error) { failed(error); }
     };
     $('#exportWorkspace').onclick = exportWorkspace;
     $('#importWorkspace').onchange = (e) => {
@@ -961,9 +1020,62 @@
       if (document.hidden) flushSave();
     });
   }
+  function emptyWorkspace(name) {
+    const pane = newPane();
+    return {version: 1, id: uid(), name, panes: [pane], active: pane.id, tree: leaf(pane.id), layout: 'custom', canvas: {mode: 'scroll', minWidth: 320, minHeight: 400}};
+  }
+  function duplicateWorkspace(name) {
+    const next = copy(workspace), ids = new Map(next.panes.map(p => [p.id, uid()]));
+    next.id = uid(); next.name = name;
+    next.panes.forEach(p => { p.id = ids.get(p.id); delete p.openTicket; });
+    next.active = ids.get(next.active);
+    const remap = node => node.pane ? {...node, pane: ids.get(node.pane)} : {...node, first: remap(node.first), second: remap(node.second)};
+    next.tree = remap(next.tree);
+    return next;
+  }
+  async function refreshWorkspaces() {
+    const list = await store.listWorkspaces();
+    $('#workspaceSelect').replaceChildren(...list.map(item => new Option(item.name, item.id)));
+    $('#workspaceSelect').value = workspace.id;
+  }
+  async function changeWorkspace(resolveNext) {
+    workspaceChanging = true;
+    $('#workspaceSelect').disabled = $('#workspaceAction').disabled = true;
+    try {
+      await flushSave();
+      await store.putWorkspace(copy(workspace));
+      // Pause view callbacks while the current record is saved and replaced.
+      speech.stop();
+      ready = false;
+      const next = await resolveNext();
+      await store.putWorkspace(next);
+      libraryGeneration++;
+      $('#booksDialog').close();
+      for (const controller of controllers.values()) controller.destroy();
+      controllers.clear();
+      paneObserver?.disconnect();
+      workspace = next;
+      maximized = null;
+      renderedKey = '';
+      $('#panes').scrollTop = 0;
+      ready = true;
+      render();
+      revealPane(workspace.active);
+      await refreshWorkspaces();
+      saveSoon();
+    } catch (error) {
+      ready = true;
+      $('#workspaceSelect').value = workspace.id;
+      failed(error);
+    } finally {
+      workspaceChanging = false;
+      $('#workspaceSelect').disabled = $('#workspaceAction').disabled = false;
+    }
+  }
   async function initialize() {
     try {
       for (const record of await store.listDocuments()) {
+        if (record.hasStoredFile) savedFiles.add(record.id);
         const meta = { ...record };
         delete meta.bytes;
         documents.set(record.id, meta);
@@ -989,6 +1101,7 @@
               workspace.canvas.mode = 'fit';
               const record = await store.identify(file);
               await store.putDocument(record);
+              savedFiles.add(record.id);
               const meta = { ...record };
               delete meta.bytes;
               documents.set(record.id, meta);
@@ -1009,7 +1122,14 @@
         layout: 'custom',
       };
     }
+    workspace.id ||= uid();
+    try { await store.putWorkspace(workspace); } catch (error) { failed(error); }
     wire();
+    try { await refreshWorkspaces(); }
+    catch (error) {
+      $('#workspaceSelect').replaceChildren(new Option(workspace.name, workspace.id));
+      failed(error);
+    }
     ready = true;
     render();
     revealPane(workspace.active);
@@ -1036,15 +1156,17 @@
         paths = [
           'editor.html',
           location.pathname + location.search,
-          'reader.css?v=workspace-2',
-          'reader.js?v=workspace-2',
-          'reader-pane.js?v=workspace-2',
-          'workspace-store.js?v=workspace-2',
-          'workspace-toolbar.js?v=workspace-2',
-          'workspace-drag.js?v=workspace-2',
-          'workspace-layout.js?v=workspace-2',
-          'pdf-viewer.html?v=workspace-2',
-          'pdf-viewer.js?v=workspace-2',
+          'reader.css?v=reader-1.28.19',
+          'reader.js?v=reader-1.28.19',
+          'reader-pane.js?v=reader-1.28.19',
+          'content-reader.js?v=reader-1.28.19',
+          'workspace-speech.js?v=reader-1.28.19',
+          'workspace-store.js?v=reader-1.28.19',
+          'workspace-toolbar.js?v=reader-1.28.19',
+          'workspace-drag.js?v=reader-1.28.19',
+          'workspace-layout.js?v=reader-1.28.19',
+          'pdf-viewer.html?v=reader-1.28.19',
+          'pdf-viewer.js?v=reader-1.28.19',
           '../../vendor/jszip/jszip.min.js',
           '../../vendor/epubjs/epub.min.js',
           '../../vendor/pdfjs/assets.json',

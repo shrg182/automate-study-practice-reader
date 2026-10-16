@@ -50,6 +50,12 @@ window.addEventListener('message', (event) => {
     initialView = data.view || {};
     open(data.file);
   }
+  if (data?.type === 'PDF_READ_TEXT' && data.session === session && viewer?.pdfDocument) {
+    const requestSession = session;
+    viewer.pdfDocument.getPage(viewer.currentPageNumber).then(page => page.getTextContent()).then(content => {
+      if (session === requestSession) notify({type: 'PDF_READ_TEXT', requestId: data.requestId, text: content.items.map(item => item.str + (item.hasEOL ? '\n' : ' ')).join('')});
+    }).catch(() => { if (session === requestSession) notify({type: 'PDF_READ_TEXT', requestId: data.requestId, error: 'Could not extract text from this PDF page.'}); });
+  }
   if (data?.type === 'PDF_PAGE') {
     initialView.page = data.page;
     applyView({ page: data.page });

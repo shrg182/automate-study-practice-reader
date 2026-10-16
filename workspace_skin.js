@@ -638,6 +638,117 @@
     }, true);
   }
 
+  function installUserNoteActions() {
+    const list = document.getElementById("userNoteList");
+    if (!list || typeof NOTES_KEY === "undefined" || typeof window.renderNotes !== "function" || list.dataset.noteActionsInstalled) return;
+    list.dataset.noteActionsInstalled = "true";
+    const notesKey = NOTES_KEY, trashKey = notesKey + "-trash-v1", suppressedKey = notesKey + "-suppressed-v1";
+    const words = englishInterface
+      ? {edit:"Edit", remove:"Delete", save:"Save", cancel:"Cancel", undo:"Undo delete", empty:"Enter a note or keep an attachment.", deleted:"Note deleted. You can undo this deletion.", restored:"Note restored.", saved:"Note updated.", label:"Edit reading note"}
+      : russianInterface
+      ? {edit:"Изменить", remove:"Удалить", save:"Сохранить", cancel:"Отмена", undo:"Отменить удаление", empty:"Введите текст или оставьте вложение.", deleted:"Заметка удалена. Удаление можно отменить.", restored:"Заметка восстановлена.", saved:"Заметка обновлена.", label:"Изменить заметку"}
+      : {edit:"编辑", remove:"删除", save:"保存", cancel:"取消", undo:"撤销删除", empty:"请填写札记，或保留至少一个附件。", deleted:"札记已删除，可撤销。", restored:"札记已恢复。", saved:"札记已更新。", label:"编辑札记"};
+    const read = (key) => { try { const value = JSON.parse(localStorage.getItem(key) || "[]"); return Array.isArray(value) ? value : []; } catch { return []; } };
+    const write = (key, value) => localStorage.setItem(key, JSON.stringify(value));
+    const identity = (note) => `${note.time || ""}\u0000${note.text || ""}`;
+    const originalRender = window.renderNotes, originalMerge = window.mergeInitialNotes;
+    const originalState = window.state, originalLoad = window.loadState;
+    const controls = document.createElement("div"), undo = document.createElement("button"), status = document.createElement("span");
+    controls.className = "reading-note-management";
+    undo.type = "button"; undo.textContent = words.undo; undo.dataset.noteUndo = "";
+    status.setAttribute("role", "status");
+    controls.append(undo, status); list.before(controls);
+    const style = document.createElement("style");
+    style.textContent = `.reading-note-actions,.reading-note-management{display:flex;gap:6px;align-items:center;flex-wrap:wrap;margin:6px 0}.note-item[data-reading-note-id]{display:flex;flex-direction:column}.reading-note-actions{order:-1;position:sticky;top:0;background:var(--paper,#fff);z-index:1}.reading-note-actions button,.reading-note-management button{font-size:12px;padding:4px 8px}.reading-note-actions [data-note-delete]{color:#8f2922}.reading-note-edit{display:block;width:100%;min-height:100px;resize:vertical;box-sizing:border-box;padding:8px;font:inherit;line-height:1.5}.reading-note-management [role=status]{font-size:12px}.note-item>div:first-child{white-space:pre-wrap;overflow-wrap:anywhere}@media print{.reading-note-actions,.reading-note-management{display:none!important}}`;
+    document.head.appendChild(style);
+    function normalizeNotes() {
+      const blocked = new Set(read(suppressedKey));
+      const notes = read(notesKey).filter(note => !blocked.has(identity(note)));
+      let changed = notes.length !== read(notesKey).length;
+      const used = new Set();
+      for (const note of notes) {
+        if (!note.id || used.has(note.id)) { note.id = crypto.randomUUID(); changed = true; }
+        used.add(note.id);
+      }
+      if (changed) write(notesKey, notes);
+      return notes;
+    }
+    function persist(action) {
+      if (typeof window.addLog === "function") window.addLog(action);
+      if (typeof window.saveLocal === "function") window.saveLocal(true);
+    }
+    function button(text, action) {
+      const node = document.createElement("button"); node.type = "button"; node.textContent = text;
+      node.addEventListener("click", action); return node;
+    }
+    window.renderNotes = function () {
+      const notes = normalizeNotes();
+      originalRender.apply(this, arguments);
+      undo.disabled = read(trashKey).length === 0;
+      [...list.querySelectorAll(".note-item")].forEach((row, index) => {
+        const note = notes[index]; if (!note) return;
+        row.dataset.readingNoteId = note.id;
+        const actions = document.createElement("div"); actions.className = "reading-note-actions";
+        const edit = button(words.edit, () => {
+          if (row.querySelector(".reading-note-edit")) return;
+          const text = row.firstElementChild, area = document.createElement("textarea");
+          area.className = "reading-note-edit"; area.setAttribute("aria-label", words.label); area.value = note.text || "";
+          text.hidden = true; text.after(area); actions.replaceChildren();
+          actions.append(button(words.save, () => {
+            const current = normalizeNotes(), target = current.find(item => item.id === note.id);
+            if (!target) { window.renderNotes(); return; }
+            const value = area.value.trim();
+            if (!value && !(target.mediaIds || []).length) { status.textContent = words.empty; area.focus(); return; }
+            const blocked = new Set(read(suppressedKey)), previous = identity(target);
+            target.text = value; target.editedAt = new Date().toISOString();
+            if (identity(target) !== previous) blocked.add(previous);
+            blocked.delete(identity(target));
+            write(suppressedKey, [...blocked]); write(notesKey, current);
+            window.renderNotes(); persist("编辑用户札记"); status.textContent = words.saved;
+            list.querySelector(`[data-reading-note-id="${CSS.escape(note.id)}"] [data-note-edit]`)?.focus();
+          }), button(words.cancel, () => { window.renderNotes(); list.querySelector(`[data-reading-note-id="${CSS.escape(note.id)}"] [data-note-edit]`)?.focus(); }));
+          area.focus(); area.setSelectionRange(area.value.length, area.value.length);
+        });
+        edit.dataset.noteEdit = "";
+        const remove = button(words.remove, () => {
+          const current = normalizeNotes(), index = current.findIndex(item => item.id === note.id);
+          if (index < 0) return;
+          const [deleted] = current.splice(index, 1), trash = read(trashKey), blocked = new Set(read(suppressedKey));
+          trash.push({note: deleted, index, deletedAt: new Date().toISOString()}); blocked.add(identity(deleted));
+          // Keep source attachments in IndexedDB so undo can restore the complete note.
+          write(trashKey, trash); write(suppressedKey, [...blocked]); write(notesKey, current);
+          window.renderNotes(); persist("删除用户札记"); status.textContent = words.deleted; undo.focus();
+        });
+        remove.dataset.noteDelete = ""; actions.append(edit, remove); row.append(actions);
+      });
+    };
+    if (typeof originalMerge === "function") window.mergeInitialNotes = function () { originalMerge.apply(this, arguments); normalizeNotes(); };
+    if (typeof originalState === "function") window.state = function () {
+      return {...originalState.apply(this, arguments), readingNoteTrash: read(trashKey), readingNoteSuppressed: read(suppressedKey)};
+    };
+    if (typeof originalLoad === "function") window.loadState = function (data) {
+      if (Array.isArray(data?.notes)) {
+        if (Array.isArray(data.readingNoteSuppressed)) write(suppressedKey, data.readingNoteSuppressed.filter(item => typeof item === "string"));
+        else { const restored = new Set(data.notes.map(identity)); write(suppressedKey, read(suppressedKey).filter(key => !restored.has(key))); }
+        if (Array.isArray(data.readingNoteTrash)) write(trashKey, data.readingNoteTrash.filter(item => item?.note && typeof item.note.time === "string"));
+      }
+      return originalLoad.apply(this, arguments);
+    };
+    undo.addEventListener("click", () => {
+      const trash = read(trashKey), deleted = trash.pop(); if (!deleted?.note) return;
+      const blocked = new Set(read(suppressedKey)); blocked.delete(identity(deleted.note));
+      write(suppressedKey, [...blocked]);
+      const notes = normalizeNotes();
+      if (!notes.some(note => note.id === deleted.note.id)) notes.splice(Math.min(deleted.index, notes.length), 0, deleted.note);
+      write(notesKey, notes); write(trashKey, trash);
+      window.renderNotes(); persist("撤销删除用户札记"); status.textContent = words.restored;
+      list.querySelector(`[data-reading-note-id="${CSS.escape(deleted.note.id)}"] [data-note-edit]`)?.focus();
+    });
+    window.renderNotes();
+    // Keep the editor's complete saved snapshot consistent with the separate note list.
+    if (typeof window.saveLocal === "function") window.saveLocal(true);
+  }
+
   function installImmersiveMode() {
     let primaryPane = document.querySelector("[data-pane-primary]");
     let secondaryPane = document.querySelector("[data-pane-secondary]");
@@ -1369,7 +1480,7 @@
     });
   }
 
-  function installWorkspaceControls() { installBasicEditorToolbar(); installReliableSpeechReading(); installReadFromCursor(); installToolbarLayering(); installColoredUnderlines(); installDictionaryOccurrences(); installProjectDictionaryLinks(); installRussianInterfaceTranslation(); installContextNavigation(); installHomeMark(); installSwitch(); installReadingThemeToggle(); installReadingEnvironment(); installPaneBalancer(); installFileMenu(); installInsertMenu(); installUserNotesAccess(); installExpandingReviewFields(); installAnnotationSync(); installAllNotesView(); installImmersiveMode(); installGoogleVoicePriority(); window.ReadingWorkspace ||= {}; window.ReadingWorkspace.interfaceLanguage = interfaceLanguage; }
+  function installWorkspaceControls() { installBasicEditorToolbar(); installReliableSpeechReading(); installReadFromCursor(); installToolbarLayering(); installColoredUnderlines(); installDictionaryOccurrences(); installProjectDictionaryLinks(); installRussianInterfaceTranslation(); installContextNavigation(); installHomeMark(); installSwitch(); installReadingThemeToggle(); installReadingEnvironment(); installPaneBalancer(); installFileMenu(); installInsertMenu(); installUserNotesAccess(); installUserNoteActions(); installExpandingReviewFields(); installAnnotationSync(); installAllNotesView(); installImmersiveMode(); installGoogleVoicePriority(); window.ReadingWorkspace ||= {}; window.ReadingWorkspace.interfaceLanguage = interfaceLanguage; }
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", installWorkspaceControls);
   else installWorkspaceControls();
 })();

@@ -4,60 +4,77 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1" />
     <title>Open Books · Offline Reading Workspace</title>
-    <link rel="stylesheet" href="reader.css?v=workspace-2" />
+    <link rel="stylesheet" href="reader.css?v=reader-1.28.19" />
   </head>
   <body>
     <header class="top">
       <a href="../../index.html#offline">← Library</a>
       <h1>Open Books<span class="sr-only"> · Offline Reading Workspace</span></h1>
-      <input
-        id="workspaceName"
-        aria-label="Workspace name"
-        value="My reading workspace"
-        maxlength="100"
-      />
+      <label class="sr-only" for="workspaceSelect">Workspace</label>
+      <select id="workspaceSelect" aria-label="Workspace"><option>Opening workspace…</option></select>
+      <label class="sr-only" for="workspaceAction">Workspace actions</label>
+      <select id="workspaceAction" aria-label="Workspace actions">
+        <option value="">Workspace actions…</option>
+        <option value="new">New workspace…</option>
+        <option value="duplicate">Duplicate workspace…</option>
+        <option value="rename">Rename workspace…</option>
+        <option value="delete">Delete workspace…</option>
+      </select>
       <button id="addPane">＋ Add pane</button>
-      <button id="hideTools" aria-expanded="true">Reading mode</button>
-      <button id="configureTools">Tool groups</button>
+      <button id="hideTools" aria-expanded="true" aria-controls="toolbars">Collapse ribbon</button>
+      <button id="configureTools">Ribbon settings</button>
       <span id="saveStatus" role="status">Opening workspace…</span>
       <span id="offlineStatus" role="status"> </span>
+      <span id="notice" role="status"></span>
     </header>
-    <div class="targetbar">
-      <strong id="activeTarget">Active pane</strong>
-      <label class="button"
-        >Open PDF / EPUB<input
-          id="activeFile"
-          class="file"
-          type="file"
-          accept=".pdf,.epub,application/pdf,application/epub+zip"
-        />
-      </label>
-      <span id="notice" role="status"> </span>
+    <div class="ribbon-tabs" role="tablist" aria-label="Reading tools">
+      <button id="tab-read" role="tab" data-ribbon-tab="read" aria-controls="panel-read">Read</button>
+      <button id="tab-view" role="tab" data-ribbon-tab="view" aria-controls="panel-view">View</button>
+      <button id="tab-panes" role="tab" data-ribbon-tab="panes" aria-controls="panel-panes">Layout</button>
+      <button id="tab-save" role="tab" data-ribbon-tab="save" aria-controls="panel-save">Library</button>
+      <label class="ribbon-keep"><input id="keepRibbon" type="checkbox" checked> Keep ribbon open</label>
     </div>
     <nav id="toolbars" aria-label="Shared reading tools">
-      <details data-toolgroup="read" open>
-        <summary>Read & navigate</summary>
+      <section data-toolgroup="read" id="panel-read" role="tabpanel" tabindex="0" aria-labelledby="tab-read">
+        <h2 class="ribbon-label">Read & navigate</h2>
         <div class="tools">
-          <button data-pin type="button">Unpin</button>
-          <button id="previous" title="Previous page or section">←</button>
-          <button id="next" title="Next page or section">→</button>
-          <form id="pageForm">
-            <label>Page <input id="activePage" type="number" min="1" value="1" required /> </label>
-            <button>Go</button>
-          </form>
+          <div class="read-book" role="group" aria-label="Active book">
+            <strong id="activeTarget">Active pane</strong>
+            <label class="button"
+              >Open file<input
+                id="activeFile"
+                class="file"
+                type="file"
+                accept=".pdf,.epub,.txt,.md,.markdown,.png,.jpg,.jpeg,.webp,application/pdf,application/epub+zip,text/plain,text/markdown,image/png,image/jpeg,image/webp"
+              />
+            </label>
+          </div>
+          <div class="read-navigation" role="group" aria-label="Navigate active book">
+            <button id="previous" title="Previous page or section">← Previous</button>
+            <button id="next" title="Next page or section">Next →</button>
+          </div>
+          <div class="speech-tools" role="group" aria-label="Read aloud">
+            <div class="speech-controls">
+              <button id="speechRead">Read aloud</button>
+              <button id="speechPause" disabled>Pause</button>
+              <button id="speechStop" disabled>Stop</button>
+              <label>Voice <select id="speechVoice"><option value="">System default</option></select></label>
+              <label>Speed <select id="speechRate"><option value="0.75">0.75×</option><option value="1" selected>1×</option><option value="1.25">1.25×</option><option value="1.5">1.5×</option><option value="2">2×</option></select></label>
+            </div>
+            <span id="speechStatus" role="status">Open a document to read aloud.</span>
+          </div>
           <label id="contentsLabel" hidden
             >Contents
             <select id="activeContents"></select>
           </label>
-          <span id="positionLabel"> </span>
+
         </div>
-      </details>
-      <details data-toolgroup="view">
-        <summary>View</summary>
+      </section>
+      <section data-toolgroup="view" id="panel-view" role="tabpanel" tabindex="0" aria-labelledby="tab-view">
+        <h2 class="ribbon-label">View</h2>
         <div class="tools">
-          <button data-pin>Pin</button>
-          <label id="zoomLabel"
-            >PDF zoom
+          <div class="ribbon-cluster" role="group" aria-label="Scale"><label id="zoomLabel"
+            ><span id="zoomTitle">PDF zoom</span>
             <select id="zoom">
               <option value="page-width">Fit width</option>
               <option value="page-fit">Fit page</option>
@@ -71,7 +88,7 @@
           </label>
           <button id="rotate">Rotate PDF</button>
           <label id="fontLabel" hidden
-            >EPUB text
+            ><span id="fontTitle">Text size</span>
             <select id="fontSize">
               <option>16</option>
               <option selected>18</option>
@@ -81,18 +98,17 @@
             </select>
             px</label
           >
-          <button id="maximize">Maximize pane</button>
+          <span class="cluster-label">Scale</span></div><div class="ribbon-cluster" role="group" aria-label="Display"><button id="maximize">Maximize pane</button>
           <button id="fullScreen">Full screen</button>
-        </div>
-      </details>
-      <details data-toolgroup="panes">
-        <summary>Panes & layout</summary>
+        <span class="cluster-label">Display</span></div></div>
+      </section>
+      <section data-toolgroup="panes" id="panel-panes" role="tabpanel" tabindex="0" aria-labelledby="tab-panes">
+        <h2 class="ribbon-label">Panes & layout</h2>
         <div class="tools">
-          <button data-pin>Pin</button>
-          <button id="splitCols">Split beside</button>
+          <div class="ribbon-cluster" role="group" aria-label="Panes"><button id="splitCols">Split beside</button>
           <button id="splitRows">Split below</button>
           <button id="duplicate">Duplicate view</button>
-          <button id="moveEarlier">Move earlier</button>
+          <button id="closePane">Close view</button><span class="cluster-label">Panes</span></div><div class="ribbon-cluster" role="group" aria-label="Arrange"><button id="moveEarlier">Move earlier</button>
           <button id="moveLater">Move later</button>
           <label
             >Layout
@@ -104,7 +120,7 @@
               <option value="grid">Grid</option>
             </select>
           </label>
-          <label
+          <span class="cluster-label">Arrange</span></div><div class="ribbon-cluster" role="group" aria-label="Workspace"><label
             >Workspace
             <select id="workspaceMode">
               <option value="fit">Fit to window</option>
@@ -137,18 +153,18 @@
             />
             px</label
           >
-          <button id="closePane">Close view</button>
-        </div>
-      </details>
-      <details data-toolgroup="save">
-        <summary>Library & save</summary>
+
+        <span class="cluster-label">Workspace</span></div></div>
+      </section>
+      <section data-toolgroup="save" id="panel-save" role="tabpanel" tabindex="0" aria-labelledby="tab-save">
+        <h2 class="ribbon-label">Library & save</h2>
         <div class="tools">
-          <button data-pin>Pin</button>
-          <button id="showBooks">Saved books</button>
+          <div class="ribbon-cluster" role="group" aria-label="Books"><button id="showBooks">Saved books</button>
           <label>
             <input id="remember" type="checkbox" checked /> Keep book files on this device</label
           >
-          <label> <input id="includeFiles" type="checkbox" /> Include book files in backup</label>
+          <button id="clearStoredFiles">Remove saved files…</button>
+          <span class="cluster-label">Books</span></div><div class="ribbon-cluster" role="group" aria-label="Backup"><label> <input id="includeFiles" type="checkbox" /> Include book files in backup</label>
           <button id="exportWorkspace">Export workspace</button>
           <label class="button"
             >Import workspace<input
@@ -159,8 +175,8 @@
             />
           </label>
           <span>Layout and reading positions autosave.</span>
-        </div>
-      </details>
+        <span class="cluster-label">Backup</span></div></div>
+      </section>
     </nav>
     <div id="paneTabs" role="tablist" aria-label="Open views"></div>
     <p id="layoutHint" hidden>
@@ -170,7 +186,7 @@
     <dialog id="toolbarDialog">
       <form method="dialog">
         <header>
-          <h2>Tool groups</h2>
+          <h2>Ribbon settings</h2>
           <button aria-label="Close tool settings">×</button>
         </header>
       </form>
@@ -191,7 +207,7 @@
         </select>
       </label>
       <fieldset>
-        <legend>Available groups</legend>
+        <legend>Visible tabs</legend>
         <label> <input type="checkbox" data-group-choice="read" checked /> Read & navigate</label>
         <label> <input type="checkbox" data-group-choice="view" checked /> View</label>
         <label> <input type="checkbox" data-group-choice="panes" checked /> Panes & layout</label>
@@ -199,8 +215,7 @@
       </fieldset>
       <button id="resetTools">Reset / inherit defaults</button>
       <p>
-        This first release establishes the workspace and toolbar framework. Annotation and language
-        groups will be added in later phases.
+        Primary shows Read and View; Intermediate adds Layout; Advanced includes Library. Customize tab visibility. Settings can apply to all books, a file type, or one book.
       </p>
     </dialog>
     <dialog id="booksDialog">
@@ -232,28 +247,32 @@
         </header>
         <p class="status" role="status">No book attached</p>
         <div class="empty">
-          <strong>Open a PDF or EPUB</strong>
-          <p>Choose a file, or reopen a saved book.</p>
+          <strong>Open a document or image</strong>
+          <p>PDF, EPUB, TXT, Markdown, PNG, JPG, WebP — or reopen a saved file.</p>
           <label class="button"
             >Choose file<input
               class="file paneFile"
               type="file"
-              accept=".pdf,.epub,application/pdf,application/epub+zip"
+              accept=".pdf,.epub,.txt,.md,.markdown,.png,.jpg,.jpeg,.webp,application/pdf,application/epub+zip,text/plain,text/markdown,image/png,image/jpeg,image/webp"
             />
           </label>
           <button class="paneBooks">Saved books</button>
         </div>
         <iframe class="pdf" title="PDF reader" hidden> </iframe>
         <div class="epub" hidden></div>
+        <div class="text-reader" tabindex="0" aria-label="Text document" hidden></div>
+        <div class="image-view" tabindex="0" aria-label="Image viewer" hidden><div class="image-stage"><img alt=""></div></div>
       </section>
     </template>
     <script src="../../vendor/jszip/jszip.min.js"></script>
     <script src="../../vendor/epubjs/epub.min.js"></script>
-    <script src="workspace-store.js?v=workspace-2"></script>
-    <script src="workspace-toolbar.js?v=workspace-2"></script>
-    <script src="reader-pane.js?v=workspace-2"></script>
-    <script src="workspace-drag.js?v=workspace-2"></script>
-    <script src="workspace-layout.js?v=workspace-2"></script>
-    <script src="reader.js?v=workspace-2"></script>
+    <script src="workspace-store.js?v=reader-1.28.19"></script>
+    <script src="workspace-toolbar.js?v=reader-1.28.19"></script>
+    <script src="content-reader.js?v=reader-1.28.19"></script>
+    <script src="workspace-speech.js?v=reader-1.28.19"></script>
+    <script src="reader-pane.js?v=reader-1.28.19"></script>
+    <script src="workspace-drag.js?v=reader-1.28.19"></script>
+    <script src="workspace-layout.js?v=reader-1.28.19"></script>
+    <script src="reader.js?v=reader-1.28.19"></script>
   </body>
 </html>

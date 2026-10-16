@@ -31,10 +31,15 @@
   }
   function format(file) {
     const name = file.name.toLowerCase();
-    return name.endsWith('.pdf') ? 'pdf' : name.endsWith('.epub') ? 'epub' : null;
+    if (name.endsWith('.pdf')) return 'pdf';
+    if (name.endsWith('.epub')) return 'epub';
+    if (name.endsWith('.txt')) return 'text';
+    if (/\.(md|markdown)$/.test(name)) return 'markdown';
+    if (/\.(png|jpe?g|webp)$/.test(name)) return 'image';
+    return null;
   }
   async function identify(file) {
-    if (!format(file)) throw Error('Choose a PDF or EPUB file.');
+    if (!format(file)) throw Error('Choose a PDF, EPUB, TXT, Markdown, PNG, JPG, or WebP file.');
     if (!crypto.subtle)
       throw Error(
         'Open the reader through HTTPS or the local reader service to identify and save books.',
@@ -69,6 +74,7 @@
         value.canvas.minWidth > 800)
     )
       throw Error('Invalid workspace dimensions.');
+    if (value.id !== undefined && !/^[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$/.test(value.id)) throw Error('Invalid workspace identity.');
     const ids = new Set();
     for (const p of value.panes) {
       if (
@@ -96,6 +102,7 @@
         !['page-width', 'page-fit', 'auto', 'page-actual'].includes(p.view.scale)
       )
         throw Error('Invalid zoom.');
+      if (p.view.textOffset !== undefined && (!Number.isFinite(p.view.textOffset) || p.view.textOffset < 0 || p.view.textOffset > 1)) throw Error('Invalid text position.');
       if (p.view.cfi !== undefined && (typeof p.view.cfi !== 'string' || p.view.cfi.length > 10000))
         throw Error('Invalid EPUB location.');
     }
@@ -130,7 +137,15 @@
     format,
     validateWorkspace,
     getDocument: (id) => transaction('documents', 'readonly', (s) => s.get(id)),
-    putDocument: (record) => transaction('documents', 'readwrite', (s) => s.put(record, record.id)),
+    // Metadata-only updates must never erase an already saved source file.
+    putDocument: (record) => transaction('documents', 'readwrite', (s) => {
+      const request = s.get(record.id);
+      request.onsuccess = () => {
+        const previous = request.result;
+        s.put(!record.bytes && previous?.bytes ? { ...record, bytes: previous.bytes } : record, record.id);
+      };
+      return request;
+    }),
     async listDocuments() {
       const db = await database();
       try {
@@ -142,8 +157,9 @@
             const cursor = r.result;
             if (cursor) {
               const value = cursor.value;
+              const hasStoredFile = !!value.bytes;
               delete value.bytes;
-              records.push(value);
+              records.push({ ...value, hasStoredFile });
               cursor.continue();
             }
           };
@@ -155,9 +171,34 @@
         db.close();
       }
     },
-    getWorkspace: () => transaction('workspaces', 'readonly', (s) => s.get('current')),
-    putWorkspace: (value) =>
-      transaction('workspaces', 'readwrite', (s) => s.put(clone(value), 'current')),
+    async getWorkspace(id = 'current') {
+      const value = await transaction('workspaces', 'readonly', s => s.get(id));
+      if (value && !value.id) {
+        value.id = crypto.randomUUID();
+        await this.putWorkspace(value);
+      }
+      return value;
+    },
+    putWorkspace(value) {
+      value.id ||= crypto.randomUUID();
+      return transaction('workspaces', 'readwrite', s => {
+        s.put(clone(value), value.id);
+        return s.put(clone(value), 'current');
+      });
+    },
+    async listWorkspaces() {
+      const values = await transaction('workspaces', 'readonly', s => s.getAll());
+      const byId = new Map();
+      for (const value of values || []) if (value.id) byId.set(value.id, {id: value.id, name: value.name});
+      return [...byId.values()];
+    },
+    deleteWorkspace(id, replacement) {
+      return transaction('workspaces', 'readwrite', s => {
+        s.delete(id);
+        s.put(clone(replacement), replacement.id);
+        return s.put(clone(replacement), 'current');
+      });
+    },
     getLegacy: (key) => transaction('books', 'readonly', (s) => s.get(key)),
     async forgetFiles() {
       const db = await database();
@@ -190,7 +231,15 @@
         await new Promise((resolve, reject) => {
           const tx = db.transaction(['documents', 'workspaces'], 'readwrite'),
             store = tx.objectStore('documents');
-          for (const record of records) store.put(record, record.id);
+          for (const record of records) {
+            const request = store.get(record.id);
+            request.onsuccess = () => {
+              const previous = request.result;
+              store.put(!record.bytes && previous?.bytes ? { ...record, bytes: previous.bytes } : record, record.id);
+            };
+          }
+          workspace.id ||= crypto.randomUUID();
+          tx.objectStore('workspaces').put(clone(workspace), workspace.id);
           tx.objectStore('workspaces').put(clone(workspace), 'current');
           tx.oncomplete = resolve;
           tx.onerror = () => reject(tx.error);
