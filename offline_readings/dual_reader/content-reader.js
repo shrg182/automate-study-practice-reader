@@ -1,4 +1,4 @@
-/* Local text/Markdown rendering. Source HTML stays literal; no source scripts run. */
+/* Local reading views: literal text, basic Markdown, and allowlisted static HTML. */
 (() => {
   'use strict';
   const element = (tag, text) => {
@@ -55,5 +55,46 @@
     }
     flush(); return root;
   }
-  window.OpenBooksContent = {markdown};
+  function html(source) {
+    // Template contents are inert: source resources never enter the live document.
+    const template = document.createElement('template'); template.innerHTML = source;
+    const root = element('article'), anchors = new Map(), pending = [];
+    const allowed = new Set('article section main header footer nav aside div span p h1 h2 h3 h4 h5 h6 ul ol li dl dt dd blockquote pre code strong b em i u s del ins mark small sub sup br hr table caption thead tbody tfoot tr th td colgroup col figure figcaption a img abbr time address'.split(' '));
+    const discard = new Set('script style link meta base title iframe frame frameset object embed template noscript svg math canvas audio video source track input textarea select button option'.split(' '));
+    const copy = (node, parent) => {
+      if (node.nodeType === Node.TEXT_NODE) { parent.append(document.createTextNode(node.textContent)); return; }
+      if (node.nodeType !== Node.ELEMENT_NODE) return;
+      const tag = node.localName.toLowerCase();
+      if (discard.has(tag)) return;
+      if (!allowed.has(tag)) { for (const child of node.childNodes) copy(child, parent); return; }
+      if (tag === 'img') {
+        const src = node.getAttribute('src') || '', alt = node.getAttribute('alt') || 'Image';
+        if (/^data:image\/(png|jpe?g|webp|gif);base64,[a-z0-9+/=\s]+$/i.test(src)) {
+          const image = element('img'); image.alt = alt; image.src = src; parent.append(image);
+        } else parent.append(element('span', `[${alt} — image not embedded in this file]`));
+        return;
+      }
+      const target = element(tag);
+      const id = node.getAttribute('id');
+      if (id && !anchors.has(id)) anchors.set(id, target);
+      for (const attr of ['title', 'lang']) if (node.hasAttribute(attr)) target.setAttribute(attr, node.getAttribute(attr));
+      const dir = node.getAttribute('dir'); if (['ltr', 'rtl', 'auto'].includes(dir)) target.dir = dir;
+      for (const attr of ['colspan', 'rowspan']) if (/^\d{1,2}$/.test(node.getAttribute(attr) || '')) target.setAttribute(attr, node.getAttribute(attr));
+      if (tag === 'a') {
+        const href = (node.getAttribute('href') || '').trim();
+        if (/^(https?:\/\/|mailto:)/i.test(href)) { target.href = href; target.target = '_blank'; target.rel = 'noopener noreferrer'; }
+        else if (href.startsWith('#')) pending.push({target, fragment: href.slice(1)});
+      }
+      for (const child of node.childNodes) copy(child, target);
+      parent.append(target);
+    };
+    for (const child of template.content.childNodes) copy(child, root);
+    for (const {target, fragment} of pending) {
+      let key; try { key = decodeURIComponent(fragment); } catch { continue; }
+      const destination = anchors.get(key);
+      if (destination) { target.href = '#'; target.onclick = event => { event.preventDefault(); destination.scrollIntoView({block: 'start'}); }; }
+    }
+    return root;
+  }
+  window.OpenBooksContent = {markdown, html};
 })();

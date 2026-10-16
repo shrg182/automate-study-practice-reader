@@ -121,7 +121,7 @@
       }
       const result = { version: 1, library: config(value.library), formats: {}, documents: {} };
       for (const [key, item] of Object.entries(value.formats || {})) {
-        if (!['pdf', 'epub', 'text', 'markdown', 'image'].includes(key)) throw Error('Invalid file-type preferences.');
+        if (!['pdf', 'epub', 'text', 'markdown', 'html', 'image'].includes(key)) throw Error('Invalid file-type preferences.');
         result.formats[key] = config(item);
       }
       for (const [key, item] of Object.entries(value.documents || {})) {

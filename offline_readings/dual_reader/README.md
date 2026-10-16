@@ -183,3 +183,50 @@ Browser API reference: [SpeechSynthesis](https://developer.mozilla.org/en-US/doc
 verify rendering safety, restored positions/transforms, backup imports, PDF/EPUB
 text extraction, controls, cancellation, and narrow layouts. It does not verify
 OS voice quality or audible playback.
+
+## Workspaces in the main library
+
+The main library now has a Reading workspaces section and filter. Cards display the
+workspace name, pane count, distinct document count, and last-opened time, with an
+Open workspace link. Entries remain device/browser-local and are not added to the
+public generated catalog. Individual saved documents remain in Open Books.
+
+Cards read workspace metadata only, never document source bytes. They refresh on
+page focus, visibility return, local storage notifications, or the Refresh button.
+Workspace links use ?workspace=<UUID> in the Open Books URL and restore that exact
+saved workspace. A stale/deleted link falls back to the last workspace with a notice.
+Opening/switching a workspace updates lastOpenedAt; ordinary autosaving does not.
+Older single-workspace records migrate without losing their arrangement.
+
+The generated shell is maintained in practice/build_index.py. workspace-library.js
+and workspace-library.css implement the cards/filter; their assets and the shared
+workspace store are included in the offline shell cache. Chrome hosted and direct
+file:// storage access are covered by tests/test_workspace_library.cjs, alongside
+WebKit hosted coverage, legacy/empty states, safe names, counts, stale links, and
+mobile layout. Storage is separate for different origins/browser profiles.
+
+## HTML / HTM files
+
+Open file also accepts .html and .htm (including uppercase extensions). They open
+as a static reading view, not as an executable website. Headings, paragraphs,
+lists, emphasis, code, tables, and HTTP(S)/mailto links are preserved. Internal
+fragment links scroll within the reading view without changing the workspace URL.
+Embedded base64 PNG/JPEG/WebP/GIF images are retained. External/relative images
+show an alt-text placeholder because only the selected HTML file is available.
+
+The reader rebuilds an allowlisted DOM from an inert template. Scripts, event
+handlers, styles/stylesheets, frames, forms/inputs, SVG/MathML, media embeds,
+redirect metadata, and automatic external resource loads are omitted. Source IDs
+are not copied into the app DOM. This intentionally does not preserve full website
+styling or interactive behavior. Files are decoded as UTF-8.
+
+HTML supports font size, Previous/Next scrolling, saved positions, Read aloud,
+retained source files, backups, named workspaces, and offline reopening. Embedded
+images finish decoding before position restoration, and changing text size keeps
+the relative reading position. HTML has a format-specific content identity so an
+identical .txt source remains a separate literal-text document. Existing document
+identities are unchanged.
+
+Tests: tests/test_open_books_html.cjs covers Chrome hosted/direct-file and WebKit
+hosted rendering, malicious/inert source fixtures, no automatic resource requests,
+embedded images, anchors, font/position restore, mocked speech, and backup imports.

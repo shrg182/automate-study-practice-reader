@@ -33,19 +33,22 @@
     const name = file.name.toLowerCase();
     if (name.endsWith('.pdf')) return 'pdf';
     if (name.endsWith('.epub')) return 'epub';
+    if (/\.html?$/.test(name)) return 'html';
     if (name.endsWith('.txt')) return 'text';
     if (/\.(md|markdown)$/.test(name)) return 'markdown';
     if (/\.(png|jpe?g|webp)$/.test(name)) return 'image';
     return null;
   }
   async function identify(file) {
-    if (!format(file)) throw Error('Choose a PDF, EPUB, TXT, Markdown, PNG, JPG, or WebP file.');
+    if (!format(file)) throw Error('Choose a PDF, EPUB, TXT, Markdown, HTML, PNG, JPG, or WebP file.');
     if (!crypto.subtle)
       throw Error(
         'Open the reader through HTTPS or the local reader service to identify and save books.',
       );
-    const bytes = await file.arrayBuffer(),
-      hash = await crypto.subtle.digest('SHA-256', bytes);
+    const bytes = await file.arrayBuffer();
+    // HTML and an identical plain-text source need independent reading formats.
+    const identityBytes = format(file) === 'html' ? await new Blob(['open-books:html:v1\u0000', bytes]).arrayBuffer() : bytes;
+    const hash = await crypto.subtle.digest('SHA-256', identityBytes);
     return {
       id:
         'sha256-' + [...new Uint8Array(hash)].map((n) => n.toString(16).padStart(2, '0')).join(''),
@@ -184,12 +187,12 @@
       return transaction('workspaces', 'readwrite', s => {
         s.put(clone(value), value.id);
         return s.put(clone(value), 'current');
-      });
+      }).then(result => { try { localStorage.setItem('open-books-workspaces-changed-v1', String(Date.now())); } catch {} return result; });
     },
     async listWorkspaces() {
       const values = await transaction('workspaces', 'readonly', s => s.getAll());
       const byId = new Map();
-      for (const value of values || []) if (value.id) byId.set(value.id, {id: value.id, name: value.name});
+      for (const value of values || []) if (value.id) byId.set(value.id, {id: value.id, name: value.name, paneCount: value.panes?.length || 0, documentCount: new Set((value.panes || []).map(p => p?.documentId).filter(Boolean)).size, lastOpenedAt: value.lastOpenedAt || null});
       return [...byId.values()];
     },
     deleteWorkspace(id, replacement) {

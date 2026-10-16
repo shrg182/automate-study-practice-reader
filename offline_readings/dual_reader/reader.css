@@ -554,3 +554,7 @@ body.dragging-pane iframe {
   .text-reader { padding: 16px; }
   #panel-read #activeTarget { max-width: 250px; }
 }
+
+.text-reader article img { max-width: 100%; height: auto; }
+.text-reader table { border-collapse: collapse; max-width: 100%; }
+.text-reader th,.text-reader td { border: 1px solid var(--line); padding: 6px 10px; vertical-align: top; }

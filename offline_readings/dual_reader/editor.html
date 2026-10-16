@@ -4,7 +4,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1" />
     <title>Open Books · Offline Reading Workspace</title>
-    <link rel="stylesheet" href="reader.css?v=reader-1.28.19" />
+    <link rel="stylesheet" href="reader.css?v=reader-1.28.20" />
   </head>
   <body>
     <header class="top">
@@ -45,7 +45,7 @@
                 id="activeFile"
                 class="file"
                 type="file"
-                accept=".pdf,.epub,.txt,.md,.markdown,.png,.jpg,.jpeg,.webp,application/pdf,application/epub+zip,text/plain,text/markdown,image/png,image/jpeg,image/webp"
+                accept=".pdf,.epub,.txt,.md,.markdown,.html,.htm,.png,.jpg,.jpeg,.webp,application/pdf,application/epub+zip,text/plain,text/markdown,text/html,image/png,image/jpeg,image/webp"
               />
             </label>
           </div>
@@ -248,12 +248,12 @@
         <p class="status" role="status">No book attached</p>
         <div class="empty">
           <strong>Open a document or image</strong>
-          <p>PDF, EPUB, TXT, Markdown, PNG, JPG, WebP — or reopen a saved file.</p>
+          <p>PDF, EPUB, TXT, Markdown, HTML, PNG, JPG, WebP — or reopen a saved file.</p>
           <label class="button"
             >Choose file<input
               class="file paneFile"
               type="file"
-              accept=".pdf,.epub,.txt,.md,.markdown,.png,.jpg,.jpeg,.webp,application/pdf,application/epub+zip,text/plain,text/markdown,image/png,image/jpeg,image/webp"
+              accept=".pdf,.epub,.txt,.md,.markdown,.html,.htm,.png,.jpg,.jpeg,.webp,application/pdf,application/epub+zip,text/plain,text/markdown,text/html,image/png,image/jpeg,image/webp"
             />
           </label>
           <button class="paneBooks">Saved books</button>
@@ -266,13 +266,13 @@
     </template>
     <script src="../../vendor/jszip/jszip.min.js"></script>
     <script src="../../vendor/epubjs/epub.min.js"></script>
-    <script src="workspace-store.js?v=reader-1.28.19"></script>
-    <script src="workspace-toolbar.js?v=reader-1.28.19"></script>
-    <script src="content-reader.js?v=reader-1.28.19"></script>
-    <script src="workspace-speech.js?v=reader-1.28.19"></script>
-    <script src="reader-pane.js?v=reader-1.28.19"></script>
-    <script src="workspace-drag.js?v=reader-1.28.19"></script>
-    <script src="workspace-layout.js?v=reader-1.28.19"></script>
-    <script src="reader.js?v=reader-1.28.19"></script>
+    <script src="workspace-store.js?v=reader-1.28.20"></script>
+    <script src="workspace-toolbar.js?v=reader-1.28.20"></script>
+    <script src="content-reader.js?v=reader-1.28.20"></script>
+    <script src="workspace-speech.js?v=reader-1.28.20"></script>
+    <script src="reader-pane.js?v=reader-1.28.20"></script>
+    <script src="workspace-drag.js?v=reader-1.28.20"></script>
+    <script src="workspace-layout.js?v=reader-1.28.20"></script>
+    <script src="reader.js?v=reader-1.28.20"></script>
   </body>
 </html>

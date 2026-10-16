@@ -166,20 +166,26 @@
               'Native PDF view · use the hosted reader for workspace zoom controls';
             this.ready = true;
             this.callbacks.changed(this.record.id);
-          } else this.q('.pdf').src = 'pdf-viewer.html?v=reader-1.28.19';
+          } else this.q('.pdf').src = 'pdf-viewer.html?v=reader-1.28.20';
           return;
         }
-        if (['text', 'markdown'].includes(this.document.format)) {
+        if (['text', 'markdown', 'html'].includes(this.document.format)) {
           const text = await file.text();
           if (version !== this.generation) return;
           const host = this.q('.text-reader');
           if (this.document.format === 'markdown') host.replaceChildren(OpenBooksContent.markdown(text));
+          else if (this.document.format === 'html') host.replaceChildren(OpenBooksContent.html(text));
           else { const pre = document.createElement('pre'); pre.textContent = text; host.replaceChildren(pre); }
           host.hidden = false;
+          await Promise.all([...host.querySelectorAll('img')].map(image => image.complete ? Promise.resolve() : new Promise(resolve => {
+            image.addEventListener('load', resolve, {once: true});
+            image.addEventListener('error', resolve, {once: true});
+          })));
+          if (version !== this.generation) return;
           this.setFont(view.fontSize || 18);
           host.scrollTop = (view.textOffset || 0) * Math.max(0, host.scrollHeight - host.clientHeight);
           this.ready = true;
-          this.q('.status').textContent = this.document.format === 'markdown' ? 'Markdown · reading view' : 'Text document · UTF-8';
+          this.q('.status').textContent = this.document.format === 'html' ? 'HTML · reading view (scripts disabled)' : this.document.format === 'markdown' ? 'Markdown · reading view' : 'Text document · UTF-8';
           this.callbacks.changed(this.record.id);
           return;
         }
@@ -277,7 +283,7 @@
       } else this.send({ type: 'PDF_PAGE', page: n });
     }
     navigate(delta) {
-      if (['text', 'markdown'].includes(this.document?.format)) { this.q('.text-reader').scrollTop += delta * this.q('.text-reader').clientHeight * 0.8; return; }
+      if (['text', 'markdown', 'html'].includes(this.document?.format)) { this.q('.text-reader').scrollTop += delta * this.q('.text-reader').clientHeight * 0.8; return; }
       if (this.document?.format === 'image') return;
       if (this.document?.format === 'epub') this.rendition?.[delta < 0 ? 'prev' : 'next']();
       else this.go((this.record.view.page || 1) + delta);
@@ -304,7 +310,7 @@
       image.style.transform = `translate(-50%, -50%) rotate(${rotation}deg)`;
     }
     async readableText() {
-      if (['text', 'markdown'].includes(this.document?.format)) return this.q('.text-reader').innerText;
+      if (['text', 'markdown', 'html'].includes(this.document?.format)) return this.q('.text-reader').innerText;
       if (this.document?.format === 'epub') {
         const current = this.rendition?.getContents().find(content => content.sectionIndex === (this.record.view.page || 1) - 1) || this.rendition?.getContents()[0];
         return current?.document?.body?.innerText || '';
@@ -324,7 +330,14 @@
     }
     setFont(size) {
       this.record.view.fontSize = Number(size);
-      this.q('.text-reader').style.fontSize = size + 'px';
+      const host = this.q('.text-reader');
+      const text = ['text', 'markdown', 'html'].includes(this.document?.format);
+      const offset = text && this.ready ? host.scrollTop / Math.max(1, host.scrollHeight - host.clientHeight) : this.record.view.textOffset || 0;
+      host.style.fontSize = size + 'px';
+      if (text) {
+        host.scrollTop = offset * Math.max(0, host.scrollHeight - host.clientHeight);
+        this.record.view.textOffset = offset;
+      }
       this.rendition?.themes.default({
         body: {
           'font-size': size + 'px',

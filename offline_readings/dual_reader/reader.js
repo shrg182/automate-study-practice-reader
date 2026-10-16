@@ -23,6 +23,7 @@
     noticeTimer,
     libraryGeneration = 0,
     workspaceChanging = false,
+    initialNotice = '',
     paneObserver,
     canvasTree;
   const dividerElements = new Map();
@@ -528,7 +529,7 @@
     $('#rotate').hidden = !['pdf', 'image'].includes(doc?.format);
     $('#rotate').textContent = doc?.format === 'image' ? 'Rotate image' : 'Rotate PDF';
     $('#previous').disabled = $('#next').disabled = !hasFile || doc?.format === 'image';
-    $('#fontLabel').hidden = !['epub', 'text', 'markdown'].includes(doc?.format);
+    $('#fontLabel').hidden = !['epub', 'text', 'markdown', 'html'].includes(doc?.format);
     $('#zoom').value = String(p.view.scale || 'page-width');
     $('#fontSize').value = String(p.view.fontSize || 18);
     $('#maximize').textContent = maximized ? 'Restore layout' : 'Maximize pane';
@@ -788,7 +789,7 @@
           !/^sha256-[a-f0-9]{64}$/.test(item.id) ||
           seen.has(item.id) ||
           typeof item.name !== 'string' ||
-          !['pdf', 'epub', 'text', 'markdown', 'image'].includes(item.format)
+          !['pdf', 'epub', 'text', 'markdown', 'html', 'image'].includes(item.format)
         )
           throw Error('Invalid book record.');
         seen.add(item.id);
@@ -822,6 +823,7 @@
       await flushSave();
       speech.stop();
       next.id = workspace.id;
+      next.lastOpenedAt = new Date().toISOString();
       await store.importWorkspace(
         next,
         records.map((record) => {
@@ -1048,6 +1050,7 @@
       speech.stop();
       ready = false;
       const next = await resolveNext();
+      next.lastOpenedAt = new Date().toISOString();
       await store.putWorkspace(next);
       libraryGeneration++;
       $('#booksDialog').close();
@@ -1080,7 +1083,13 @@
         delete meta.bytes;
         documents.set(record.id, meta);
       }
-      const saved = await store.getWorkspace();
+      let saved = await store.getWorkspace();
+      const requested = new URLSearchParams(location.search).get('workspace');
+      if (requested) {
+        const selected = /^[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$/.test(requested) ? await store.getWorkspace(requested) : null;
+        if (selected) saved = selected;
+        else initialNotice = 'The requested workspace is no longer available. Your last workspace is shown.';
+      }
       if (saved) workspace = store.validateWorkspace(saved);
       else {
         const panes = [newPane(), newPane()];
@@ -1123,6 +1132,7 @@
       };
     }
     workspace.id ||= uid();
+    workspace.lastOpenedAt = new Date().toISOString();
     try { await store.putWorkspace(workspace); } catch (error) { failed(error); }
     wire();
     try { await refreshWorkspaces(); }
@@ -1134,6 +1144,7 @@
     render();
     revealPane(workspace.active);
     saveSoon();
+    if (initialNotice) notice(initialNotice);
     cacheOffline();
   }
   async function cacheOffline() {
@@ -1156,17 +1167,17 @@
         paths = [
           'editor.html',
           location.pathname + location.search,
-          'reader.css?v=reader-1.28.19',
-          'reader.js?v=reader-1.28.19',
-          'reader-pane.js?v=reader-1.28.19',
-          'content-reader.js?v=reader-1.28.19',
-          'workspace-speech.js?v=reader-1.28.19',
-          'workspace-store.js?v=reader-1.28.19',
-          'workspace-toolbar.js?v=reader-1.28.19',
-          'workspace-drag.js?v=reader-1.28.19',
-          'workspace-layout.js?v=reader-1.28.19',
-          'pdf-viewer.html?v=reader-1.28.19',
-          'pdf-viewer.js?v=reader-1.28.19',
+          'reader.css?v=reader-1.28.20',
+          'reader.js?v=reader-1.28.20',
+          'reader-pane.js?v=reader-1.28.20',
+          'content-reader.js?v=reader-1.28.20',
+          'workspace-speech.js?v=reader-1.28.20',
+          'workspace-store.js?v=reader-1.28.20',
+          'workspace-toolbar.js?v=reader-1.28.20',
+          'workspace-drag.js?v=reader-1.28.20',
+          'workspace-layout.js?v=reader-1.28.20',
+          'pdf-viewer.html?v=reader-1.28.20',
+          'pdf-viewer.js?v=reader-1.28.20',
           '../../vendor/jszip/jszip.min.js',
           '../../vendor/epubjs/epub.min.js',
           '../../vendor/pdfjs/assets.json',
