@@ -810,23 +810,16 @@
   }
 
   function installAnnotationSync() {
-    if (!document.querySelector(".editor, .rich-editor") || document.querySelector(".reading-sync-dialog")) return;
-    const configKey = "reading-workspace-sync-config-v1";
-    const syncable = key => /(notes?|annotation|highlight|marker|editor-v\d|reading-lexicon-entry-overrides)/i.test(key) && !/(log|history|difficulty|environment|sync-config)/i.test(key);
-    const snapshot = () => { const data = {}; for (let i = 0; i < localStorage.length; i++) { const key = localStorage.key(i); if (key && syncable(key)) data[key] = localStorage.getItem(key); } return data; };
-    const style = document.createElement("style"); style.textContent = `.reading-sync-dialog{width:min(520px,calc(100% - 28px));padding:0;border:0;border-radius:12px;box-shadow:0 18px 60px #0005;color:#202124}.reading-sync-dialog::backdrop{background:#0006}.reading-sync-form{display:grid;gap:12px;padding:20px;font:13px/1.45 Arial,"PingFang SC",sans-serif}.reading-sync-form h2{margin:0;font-size:18px}.reading-sync-form p{margin:0;color:#5f6368}.reading-sync-form label{display:grid;gap:5px}.reading-sync-form input{width:100%;min-width:0;padding:9px;border:1px solid #bdc1c6;border-radius:6px;font:inherit}.reading-sync-actions{display:flex;flex-wrap:wrap;gap:8px}.reading-sync-actions button{min-height:34px;padding:7px 11px;border:1px solid #c7d3e3;border-radius:6px;background:#fff;color:#174ea6;cursor:pointer}.reading-sync-actions .primary{background:#1a73e8;color:#fff}.reading-sync-status{min-height:20px;color:#137333!important}@media print{.reading-sync-dialog{display:none!important}}`; document.head.appendChild(style);
-    const dialog = document.createElement("dialog"); dialog.className = "reading-sync-dialog";
-    dialog.innerHTML = `<form class="reading-sync-form" method="dialog"><h2>跨设备批注同步</h2><p>填写支持 GET 和 PUT 的 WebDAV 或 JSON 文件地址。数据仅在此地址与您的设备之间传输。</p><label>同步文件地址<input name="url" type="url" placeholder="https://cloud.example.com/reader-notes.json"></label><label>Bearer 令牌（可选）<input name="token" type="password" autocomplete="off"></label><label><span><input name="automatic" type="checkbox" style="width:auto"> 打开阅读器时自动下载，编辑后定期上传</span></label><p class="reading-sync-status" role="status"></p><div class="reading-sync-actions"><button type="button" data-sync="pull">从云端下载</button><button type="button" data-sync="push" class="primary">上传到云端</button><button type="button" data-sync="save">保存设置</button><button value="close">关闭</button></div></form>`;
-    document.body.appendChild(dialog); const form = dialog.querySelector("form"), status = dialog.querySelector(".reading-sync-status");
-    const getConfig = () => { try { return JSON.parse(localStorage.getItem(configKey) || "{}"); } catch { return {}; } };
-    const readForm = () => ({ url: form.elements.url.value.trim(), token: form.elements.token.value.trim(), automatic: form.elements.automatic.checked });
-    const headers = config => ({ "Content-Type": "application/json", ...(config.token ? { Authorization: `Bearer ${config.token}` } : {}) });
-    const pull = async (quiet = false) => { const config = readForm(); if (!config.url) throw new Error("请先填写同步文件地址"); status.textContent = "正在下载…"; const response = await fetch(config.url, { headers: headers(config), cache: "no-store" }); if (!response.ok) throw new Error(`下载失败（HTTP ${response.status}）`); const payload = await response.json(); Object.entries(payload.data || {}).forEach(([key, value]) => { if (syncable(key) && typeof value === "string") localStorage.setItem(key, value); }); localStorage.setItem("reading-workspace-last-sync", new Date().toISOString()); status.textContent = "下载完成；刷新页面后显示云端批注。"; if (!quiet) setTimeout(() => location.reload(), 700); };
-    const push = async () => { const config = readForm(); if (!config.url) throw new Error("请先填写同步文件地址"); status.textContent = "正在上传…"; const response = await fetch(config.url, { method: "PUT", headers: headers(config), body: JSON.stringify({ version: 1, updatedAt: new Date().toISOString(), data: snapshot() }) }); if (!response.ok) throw new Error(`上传失败（HTTP ${response.status}）`); localStorage.setItem("reading-workspace-last-sync", new Date().toISOString()); status.textContent = "批注与高亮已上传。"; };
-    dialog.addEventListener("click", async event => { const action = event.target.closest("[data-sync]")?.dataset.sync; if (!action) return; try { if (action === "save") { localStorage.setItem(configKey, JSON.stringify(readForm())); status.textContent = "同步设置已保存。"; } if (action === "pull") await pull(); if (action === "push") await push(); } catch (error) { status.textContent = error.message; } });
-    const open = () => { const config = getConfig(); form.elements.url.value = config.url || ""; form.elements.token.value = config.token || ""; form.elements.automatic.checked = Boolean(config.automatic); status.textContent = ""; dialog.showModal(); };
-    window.ReadingWorkspace ||= {}; window.ReadingWorkspace.openSync = open;
-    const config = getConfig(); if (config.automatic && config.url) { form.elements.url.value = config.url; form.elements.token.value = config.token || ""; form.elements.automatic.checked = true; pull(true).catch(error => console.warn("Reader sync pull failed", error)); window.setInterval(() => push().catch(error => console.warn("Reader sync push failed", error)), 60000); }
+    const open = () => {
+      if (typeof saveLocal === "function" && document.querySelector('#editor')) saveLocal(true);
+      location.href = new URL("sync/index.html", workspaceRoot).href;
+    };
+    window.ReadingWorkspace ||= {};
+    window.ReadingWorkspace.openSync = open;
+    if (!document.querySelector('[data-cloud-sync]')) {
+      const host = document.querySelector('.masthead-inner,.topbar,.toolbar') || document.querySelector('header');
+      if (host) { const button=document.createElement('button');button.type='button';button.textContent='阅读数据随身包';button.dataset.cloudSync='';button.onclick=open;host.append(button); }
+    }
   }
 
   function installContextNavigation() {
