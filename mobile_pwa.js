@@ -207,7 +207,7 @@
       const path = typeof asset === "string" ? asset : asset?.path;
       if (path) urls.push(new URL(path, manifestUrl).href);
     });
-    ["workspace_theme.css", "workspace_skin.js", "mobile_pwa.js", "index.html"].forEach(path => urls.push(new URL(path, scriptRoot).href));
+    ["workspace_theme.css", "workspace_skin.js", "mobile_pwa.js", "index.html", "reading-review.js", "reading-review.css", "reading-review-catalog.js"].forEach(path => urls.push(new URL(path, scriptRoot).href));
     return [...new Set(urls)];
   }
 

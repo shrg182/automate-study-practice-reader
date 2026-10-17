@@ -2,6 +2,9 @@
   const workspaceRoot = document.currentScript?.src
     ? new URL(".", document.currentScript.src)
     : new URL("./", location.href);
+  const reviewScript = document.createElement("script");
+  reviewScript.src = new URL("reading-review.js", workspaceRoot).href;
+  document.head.append(reviewScript);
   const key = "reading-workspace-skin";
   const requested = new URLSearchParams(location.search).get("skin");
   const saved = localStorage.getItem(key);

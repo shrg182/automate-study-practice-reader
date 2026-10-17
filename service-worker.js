@@ -1,9 +1,9 @@
-const VERSION = "reading-room-v159";
+const VERSION = "reading-room-v160";
 const CORE_CACHE = `${VERSION}-core`;
 const ARTICLE_CACHE = `${VERSION}-articles`;
 const root = new URL("./", self.registration.scope);
 const coreFiles = [
-  "index.html", "workspace-library.js?v=reader-1.28.20", "workspace-library.css?v=reader-1.28.20", "offline_readings/dual_reader/workspace-store.js?v=reader-1.28.20", "workspace_theme.css", "workspace_skin.js", "editor_history.js", "mobile_pwa.js",
+  "index.html", "reading-review.js", "reading-review.css", "reading-review-catalog.js", "workspace-library.js?v=reader-1.28.20", "workspace-library.css?v=reader-1.28.20", "offline_readings/dual_reader/workspace-store.js?v=reader-1.28.20", "workspace_theme.css", "workspace_skin.js", "editor_history.js", "mobile_pwa.js",
   "manifest.webmanifest", "icons/reading-room-192.png", "icons/reading-room-512.png"
 ].map(path => new URL(path, root).href);
 
@@ -24,7 +24,7 @@ self.addEventListener("fetch", event => {
   if (event.request.mode === "navigate") {
     event.respondWith(fetch(event.request).then(response => {
       const copy = response.clone(); caches.open(ARTICLE_CACHE).then(cache => cache.put(event.request, copy)); return response;
-    }).catch(() => caches.match(event.request).then(response => response || caches.match(new URL("index.html", root)))));
+    }).catch(() => caches.match(event.request).then(response => response || caches.match(new URL("index.html", "reading-review.js", "reading-review.css", "reading-review-catalog.js", root)))));
     return;
   }
   event.respondWith(caches.match(event.request).then(cached => cached || fetch(event.request).then(response => {

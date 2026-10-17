@@ -15,7 +15,7 @@ import re
 
 BASE_DIR = Path(__file__).resolve().parent
 OUTPUT = BASE_DIR / "index.html"
-MOBILE_READER_VERSION = "1.28.20"
+MOBILE_READER_VERSION = "1.28.21"
 COPYRIGHT_YEAR = 2026
 COPYRIGHT_HOLDER = "Ruixing"
 
@@ -730,6 +730,8 @@ html[data-workspace-skin="reading"] .news-columns{{background:#eee8dc;color:var(
 <footer><strong>教育用途说明：</strong>本站仅供个人阅读、校读与学习，不隶属于所引用的原文来源网站；原始资料的权利归其相应权利人所有。<br><span>Mobile Reader v{MOBILE_READER_VERSION} · &copy; {COPYRIGHT_YEAR} {escape(COPYRIGHT_HOLDER)}. All rights reserved.</span><br>目录由 <code>practice/build_index.py</code> 自动生成 · 新增编辑器后重新运行即可更新</footer>
 <script src="offline_readings/dual_reader/workspace-store.js?v=reader-1.28.20"></script>
 <script src="workspace-library.js?v=reader-1.28.20"></script>
+<script src="reading-review-catalog.js"></script>
+<script src="reading-review.js"></script>
 <script>
 const search=document.getElementById('catalogSearch'),empty=document.getElementById('emptyState');
 const readingHistoryKey='reading-workspace-history-v1',editingHistoryKey='reading-workspace-editing-history-v1';
@@ -754,7 +756,21 @@ window.addEventListener('focus',()=>{{renderHistory();applyRussianWarsLibrary()}
 </html>'''
 
 
+def build_review_catalog():
+    import re, json, html
+    rows = []
+    for path in OUTPUT.parent.rglob("editor.html"):
+        source = path.read_text(encoding="utf-8")
+        key = re.search(r"\b(?:const\s+)?STORAGE_KEY\s*=\s*(['\"])(.*?)\1", source)
+        if not key or 'function state()' not in source:
+            continue
+        title = re.search(r"<h1[^>]*>(.*?)</h1>", source, re.S)
+        rows.append(dict(key=key[2], notesKey=key[2]+'-notes-v1', logKey=key[2]+'-log-v1', title=html.unescape(re.sub('<[^>]+>', '', title[1])) if title else path.parent.name, path=path.relative_to(OUTPUT.parent).as_posix()))
+    (OUTPUT.parent/'reading-review-catalog.js').write_text('window.ReadingReviewCatalog='+json.dumps(rows, ensure_ascii=False).replace('</', '<\\/')+';\n', encoding='utf-8')
+
+
 def main() -> None:
+    build_review_catalog()
     grouped = collect_entries()
     OUTPUT.write_text(build_html(grouped), encoding="utf-8")
     total = sum(len(entries) for entries in grouped.values())
