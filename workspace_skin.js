@@ -15,7 +15,7 @@
   const interfaceLanguage = interfacePreference === "auto" ? (russianFirst ? "ru" : englishFirst ? "en" : "zh") : interfacePreference;
   const englishInterface = englishFirst || (russianFirst && interfaceLanguage === "en");
   const russianInterface = russianFirst && interfaceLanguage === "ru";
-  const fallback = /目录/.test(document.title) ? "sheet" : "reading";
+  const fallback = "sheet";
   const supportedSkins = new Set(["reading", "sheet", "source"]);
   const initial = supportedSkins.has(requested)
     ? requested
