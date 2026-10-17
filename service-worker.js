@@ -1,15 +1,17 @@
-const VERSION = "reading-room-v162";
+const VERSION = "reading-room-v163";
 const CORE_CACHE = `${VERSION}-core`;
 const ARTICLE_CACHE = `${VERSION}-articles`;
 const root = new URL("./", self.registration.scope);
 const coreFiles = [
-  "index.html", "sync/index.html", "sync/client.js", "sync/portable.js", "reading-review.js", "reading-review.css", "reading-review-catalog.js", "workspace-library.js?v=reader-1.28.20", "workspace-library.css?v=reader-1.28.20", "offline_readings/dual_reader/workspace-store.js?v=reader-1.28.20", "workspace_theme.css", "workspace_skin.js", "editor_history.js", "mobile_pwa.js",
+  "index.html", "sync/index.html", "sync/client.js", "sync/portable.js", "sync/published-info.js", "sync/published-info.json", "reading-review.js", "reading-review.css", "reading-review-catalog.js", "workspace-library.js?v=reader-1.28.20", "workspace-library.css?v=reader-1.28.20", "offline_readings/dual_reader/workspace-store.js?v=reader-1.28.20", "workspace_theme.css", "workspace_skin.js", "editor_history.js", "mobile_pwa.js",
   "manifest.webmanifest", "icons/reading-room-192.png", "icons/reading-room-512.png"
 ].map(path => new URL(path, root).href);
 
-self.addEventListener("install", event => {
-  event.waitUntil(caches.open(CORE_CACHE).then(cache => cache.addAll(coreFiles)).then(() => self.skipWaiting()));
-});
+async function cachePublishedSnapshot() {
+  const cache=await caches.open(CORE_CACHE), response=await cache.match(new URL("sync/published-info.json",root));
+  if(response){const info=await response.json();if(/^snapshots\/[a-f0-9]{64}\.js$/.test(info.asset))await cache.add(new URL("sync/"+info.asset,root));}
+}
+self.addEventListener("install",event=>event.waitUntil(caches.open(CORE_CACHE).then(cache=>cache.addAll(coreFiles)).then(cachePublishedSnapshot).then(()=>self.skipWaiting())));
 
 self.addEventListener("activate", event => {
   event.waitUntil(caches.keys()
@@ -40,6 +42,7 @@ self.addEventListener("message", event => {
     event.waitUntil(caches.delete(CORE_CACHE)
       .then(() => caches.open(CORE_CACHE))
       .then(cache => cache.addAll(coreFiles.map(url => new Request(url, {cache: "reload"}))))
+      .then(cachePublishedSnapshot)
       .then(() => event.source?.postMessage({type: "APP_REFRESHED"}))
       .catch(error => event.source?.postMessage({type: "APP_REFRESH_ERROR", message: error.message})));
   }

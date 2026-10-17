@@ -90,6 +90,7 @@
       dialog.querySelector('[data-close]').onclick=()=>dialog.close();dialog.addEventListener('close',()=>returnFocus?.focus());dialog.querySelectorAll('input,select').forEach(el=>el.addEventListener('input',render));dialog.querySelector('[data-refresh]').onclick=()=>{items=collect();render();};
       for(const [value,label] of Object.entries(labels)){const opt=node('option',label);opt.value=value;dialog.querySelector('[data-type]').append(opt);}document.body.append(dialog);
     }
+    if(!dialog.querySelector('[data-published-reading]')){const link=node('a','载入 iMac 最新发布数据');link.dataset.publishedReading='';link.href=new URL('sync/index.html?published=1',root).href;dialog.querySelector('header').after(link);}
     items=collect();const select=dialog.querySelector('[data-book]');select.replaceChildren(new Option('全部书籍',''));const unique=new Map(items.map(item=>[item.book.key,item.book]));for(const book of unique.values())select.add(new Option(book.title,book.key));select.value=!all&&current?current.key:'';render();dialog.showModal();dialog.querySelector('[data-search]').focus();
   }
   function init() {
