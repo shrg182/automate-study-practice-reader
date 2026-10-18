@@ -15,7 +15,7 @@ import re
 
 BASE_DIR = Path(__file__).resolve().parent
 OUTPUT = BASE_DIR / "index.html"
-MOBILE_READER_VERSION = "1.28.25"
+MOBILE_READER_VERSION = "1.28.26"
 COPYRIGHT_YEAR = 2026
 COPYRIGHT_HOLDER = "Ruixing"
 
@@ -536,6 +536,13 @@ def marxist_book_groups(entries: list[dict[str, str | None]]) -> list[dict[str, 
             "prefix": "marxist_classics/proletarian_dictatorship_33_quotes/",
         },
     ]
+    groups.extend([
+        {"key": "mao-on-practice", "title": "《实践论》", "meta": "毛泽东 · 1937年7月",
+         "contents": "论认识和实践的关系——知和行的关系 · 全文及注释",
+         "prefix": "marxist_classics/on_practice/"},
+        {"key": "mao-on-contradiction", "title": "《矛盾论》", "meta": "毛泽东 · 1937年8月",
+         "contents": "七节全文及注释", "prefix": "marxist_classics/on_contradiction/"},
+    ])
     for group in groups:
         prefix = str(group.pop("prefix"))
         group["entries"] = [entry for entry in entries if str(entry["editor"]).startswith(prefix)]
