@@ -15,7 +15,7 @@ import re
 
 BASE_DIR = Path(__file__).resolve().parent
 OUTPUT = BASE_DIR / "index.html"
-MOBILE_READER_VERSION = "1.28.26"
+MOBILE_READER_VERSION = "1.28.27"
 COPYRIGHT_YEAR = 2026
 COPYRIGHT_HOLDER = "Ruixing"
 
@@ -304,6 +304,7 @@ def collect_entries() -> dict[str, list[dict[str, str | None]]]:
         ("xi_visit_to_usa/xi_jinping_usa_visit_news_report_20260930.pdf", "News report", "October 2, 2026", "Xi Jinping's State Visit to the United States"),
         ("xi_trump_world_reactions_20261007/xi_trump_world_reactions_20261007.pdf", "News analysis", "October 7, 2026", "World Reactions to the Xi-Trump Washington Summit"),
         ("six_capitals_capital_analysis_20261018/six_capitals_capital_analysis_20261018.pdf", "News and analysis", "October 18, 2026", "Six Capitals and the World Crisis: News and Analysis through Marx’s Capital"),
+        ("white_house_press_secretary_20261019/white_house_press_secretary_20261019.pdf", "News and analysis", "October 19, 2026", "Who Will Speak for the White House? Zacharia’s Departure and Possible Successors"),
     ]
     for relative, report_type, report_date, title in news_items:
         path = BASE_DIR / "news_reports" / relative

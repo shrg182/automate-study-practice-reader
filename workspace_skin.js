@@ -1004,6 +1004,7 @@
   }
 
   function installPaneBalancer() {
+    if (document.body.classList.contains("news-editor-workspace")) return;
     if (document.querySelector(".pane-balance,.bilingual-layout-control,.workspace-pane-balance,.source-layout-control,#layoutButton,[data-pane-balancer]")) return;
     const containers = [...document.querySelectorAll(".workspace,.content-grid,.editor-shell,.reader-layout,.main-layout,.reading-layout,.split-layout,.layout,main")];
     const candidate = containers.map(container => {
